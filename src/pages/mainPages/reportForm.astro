@@ -140,7 +140,6 @@ import ReportFormComponent from "../../components/ReportFormComponent";
 
         items.forEach(function (item) {
           item.addEventListener("click", function (e) {
-            e.stopPropagation();
             const value = item.getAttribute("data-value");
 
             if (input) (input as HTMLInputElement).value = value || "";

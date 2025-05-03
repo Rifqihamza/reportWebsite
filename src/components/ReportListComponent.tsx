@@ -1,72 +1,25 @@
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { AccountType, getReport, ReportStatus, ReportType, type ReportData } from "../api/api";
+
 export default function ReportListComponent() {
-  type ReportStatus = "Pending" | "On Process" | "Complete";
-  const reports: Array<{
-    id: number;
-    tanggal: string;
-    laporan: string;
-    lokasi: string;
-    pic: string;
-    kategori: string;
-    followup: string;
-    status: ReportStatus;
-  }> = [
+  const [reports, setReports]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([
     {
-      id: 1,
-      tanggal: "2024-05-01",
-      laporan: "Temuan kebocoran pipa di area workshop",
-      lokasi: "Workshop A",
-      pic: "Suhaimi",
-      kategori: "Safety",
-      followup: "Guru",
-      status: "Pending",
+      id: "c1i241v13-5v4b62-v1tvdfsc",
+      created_at: "2024-05-01T00:00:00",
+      message: "Temuan kebocoran pipa di area workshop",
+      location: "Workshop A",
+      pic_name: "Suhaimi",
+      type: ReportType.Safety as ReportType,
+      follow_up: AccountType.Guru as AccountType,
+      status: ReportStatus.OnProgress as ReportStatus,
     },
-    {
-      id: 2,
-      tanggal: "2024-04-28",
-      laporan: "Peralatan tidak tertata rapi setelah praktikum",
-      lokasi: "Lab Komputer",
-      pic: "Heas Priyo",
-      kategori: "5R",
-      followup: "Siswa",
-      status: "On Process",
-    },
-    {
-      id: 3,
-      tanggal: "2024-04-25",
-      laporan: "Material bahan praktik tercecer di lantai",
-      lokasi: "Workshop B",
-      pic: "Amalia",
-      kategori: "5R",
-      followup: "Siswa",
-      status: "Complete",
-    },
-    {
-      id: 4,
-      tanggal: "2024-04-20",
-      laporan: "AC ruangan tidak berfungsi dengan baik",
-      lokasi: "Ruang Teori 3",
-      pic: "Munir",
-      kategori: "Kualitas",
-      followup: "Vendor",
-      status: "Complete",
-    },
-    {
-      id: 5,
-      tanggal: "2024-04-20",
-      laporan: "AC ruangan tidak berfungsi dengan baik",
-      lokasi: "Ruang Teori 8",
-      pic: "Tya",
-      kategori: "Kualitas",
-      followup: "Vendor",
-      status: "Complete",
-    },
-  ];
+  ]);
 
   // Status color mapping
   const statusColors = {
     Pending: "bg-red-100 text-red-800",
-    "On Process": "bg-yellow-100 text-yellow-800",
-    Complete: "bg-green-100 text-green-800",
+    "On Progress": "bg-yellow-100 text-yellow-800",
+    Completed: "bg-green-100 text-green-800",
   };
 
   // Format date helper function
@@ -79,6 +32,16 @@ export default function ReportListComponent() {
       day: "numeric",
     }).format(date);
   }
+
+
+
+  useEffect(() => {
+    getReport().then(report_data_array => {
+        if(typeof report_data_array == "object") {
+            setReports(report_data_array);
+        }
+    });
+  }, []);
 
   return (
     <>
@@ -132,20 +95,20 @@ export default function ReportListComponent() {
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {reports.map((report) => (
-              <tr className="report-row" data-report-id={report.id}>
+            {reports.map((report, index) => (
+              <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {formatDate(report.tanggal)}
+                  {formatDate(report.created_at)}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
-                  {report.laporan}
+                  {report.message}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.lokasi}
+                  {report.location}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.kategori}
+                  {report.type}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
@@ -169,13 +132,14 @@ export default function ReportListComponent() {
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reports.map((report) => (
+        {reports.map((report, index) => (
           <div
+            key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
             data-report-id={report.id}
           >
             <div className="flex justify-between items-start mb-2">
-              <h3 className="font-medium text-gray-900 truncate">{report.laporan}</h3>
+              <h3 className="font-medium text-gray-900 truncate">{report.message}</h3>
               <span
                 className={`px-2 py-1 text-xs font-semibold rounded-full ${
                   statusColors[report.status]
@@ -186,16 +150,16 @@ export default function ReportListComponent() {
             </div>
             <div className="text-sm text-gray-500 space-y-1">
               <p>
-                <span className="font-medium">Tanggal:</span> {formatDate(report.tanggal)}
+                <span className="font-medium">Tanggal:</span> {formatDate(report.created_at)}
               </p>
               <p>
-                <span className="font-medium">Lokasi:</span> {report.lokasi}
+                <span className="font-medium">Lokasi:</span> {report.location}
               </p>
               <p>
-                <span className="font-medium">PIC:</span> {report.pic}
+                <span className="font-medium">PIC:</span> {report.pic_name}
               </p>
               <p>
-                <span className="font-medium">Kategori:</span> {report.kategori}
+                <span className="font-medium">Kategori:</span> {report.type}
               </p>
             </div>
             <div className="mt-3 flex justify-end">

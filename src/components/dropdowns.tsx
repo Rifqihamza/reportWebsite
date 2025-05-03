@@ -1,3 +1,5 @@
+'use client';
+
 export default function Dropdown(props: { id: string; label: string; items: string[], action: (value: string) => void }) {
   const { id, label, items, action } = props;
 
@@ -6,7 +8,7 @@ export default function Dropdown(props: { id: string; label: string; items: stri
       <div className="relative text-left mb-6 w-full dropdown-container" data-dropdown-id={id}>
         <button
           type="button"
-          className="dropdown-trigger rounded-lg flex items-center justify-between px-6 py-2 w-full text-white bg-red-900 -translate-y-[10px] [box-shadow:0_10px_0_#d1c9b4] active:[box-shadow:0_5px_0_#d1c2b5] active:-translate-y-[5px]"
+          className="kon dropdown-trigger rounded-lg flex items-center justify-between px-6 py-2 w-full text-white bg-red-900 -translate-y-[10px] [box-shadow:0_10px_0_#d1c9b4] active:[box-shadow:0_5px_0_#d1c2b5] active:-translate-y-[5px]"
           aria-expanded="false"
           aria-haspopup="true"
         >
@@ -20,22 +22,22 @@ export default function Dropdown(props: { id: string; label: string; items: stri
             <path
               d="M1 1L5 5L9 1"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             ></path>
           </svg>
         </button>
 
         <div className="hidden absolute z-10 mt-2 w-full bg-white rounded-lg shadow divide-y divide-gray-100 dropdown-menu">
           <ul className="py-2 text-sm text-gray-700">
-            {items.map((item) => (
-              <li>
+            {items.map((item, index) => (
+              <li key={index}>
                 <button
                   type="button"
                   className="dropdown-item block w-full text-left px-4 py-2 hover:bg-gray-100"
                   data-value={item}
-                  onClick={() => action(item)}
+                  onClick={() => {action(item)}}
                 >
                   {item}
                 </button>

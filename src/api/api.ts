@@ -17,10 +17,10 @@ export enum ReportType {
     VR = "5R",
     Safety = "Safety",
     SOP = "SOP",
-    Kualitas = "Kualitas"
+    Quality = "Quality"
 }
 
-enum ReportStatus {
+export enum ReportStatus {
     Pending = "Pending",
     OnProgress = "On Progress",
     Completed = "Completed"
@@ -45,7 +45,9 @@ export type ReportData = {
     type: ReportType,
     follow_up: AccountType,
     status: ReportStatus,
-    pic_name: string
+    location: string,
+    pic_name: string,
+    created_at: string
 }
 
 export type User = {
@@ -54,7 +56,8 @@ export type User = {
     username: string,
     password: string,
     role: AccountType,
-    report_pic: Report[]
+    report_pic: Report[],
+    created_at: string
 }
 
 
