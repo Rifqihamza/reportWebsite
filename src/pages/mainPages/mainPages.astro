@@ -1,0 +1,141 @@
+---
+import ReportForm from "./reportForm/reportForm.astro";
+import ListDataReport from "./listDataReport/listDataReport.astro";
+---
+
+<section>
+  <div id="container" class="max-w-6xl mx-auto p-6 md:px-10 md:py-4">
+    <!-- Tabs -->
+    <div class="flex items-center">
+      <button id="tab-form" class="tab-button active" data-tab="form"
+        >Report</button
+      >
+      <button id="tab-data" class="tab-button" data-tab="data"
+        >Report Data</button
+      >
+    </div>
+
+    <!-- Content -->
+    <div
+      class="rounded-b-xl rounded-tr-xl px-4 py-6 min-h-[30rem] relative bg-white shadow-md shadow-gray-600"
+    >
+      <div id="form-section" class="tab-content active">
+        <ReportForm />
+      </div>
+      <div id="data-section" class="tab-content hidden">
+        <ListDataReport />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+
+  // Use a self-executing function to avoid global scope pollution
+  (function () {
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get all tab buttons (both desktop and mobile)
+      const tabButtons = document.querySelectorAll(".tab-button, .mobile-tab");
+      const tabContents = document.querySelectorAll(".tab-content");
+
+      // Function to set active tab
+      function setActiveTab(tabName: string) {
+        // Update all tab buttons
+        tabButtons.forEach(function (button) {
+          if (button.getAttribute("data-tab") === tabName) {
+            button.classList.add("active");
+          } else {
+            button.classList.remove("active");
+          }
+        });
+
+        // Update all tab contents
+        tabContents.forEach(function (content) {
+          if (content.id === `${tabName}-section`) {
+            content.classList.remove("hidden");
+            content.classList.add("active");
+          } else {
+            content.classList.add("hidden");
+            content.classList.remove("active");
+          }
+        });
+
+        // Optionally update URL hash for bookmarking
+        window.location.hash = tabName;
+      }
+
+      // Add click event listeners to all tab buttons
+      tabButtons.forEach(function (button) {
+        button.addEventListener("click", function (this: HTMLElement) {
+          const tabName = this.getAttribute("data-tab") || "form";
+          setActiveTab(tabName);
+        });
+      });
+
+      // Check for hash in URL to set initial tab
+      if (window.location.hash) {
+        const tabName = window.location.hash.substring(1); // Remove the # character
+        if (tabName === "data" || tabName === "form") {
+          setActiveTab(tabName);
+        }
+      }
+    });
+  })();
+</script>
+
+<style>
+  .tab-button {
+    cursor: pointer;
+    background-color: #f9f9f9;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 2rem;
+    border-radius: 1rem 1rem 0 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #aeaeae;
+  }
+
+  .tab-button.active {
+    background-color: #fff;
+    z-index: 10;
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.202);
+    position: relative;
+    color: #000; /* blue-800 */
+  }
+
+  .mobile-tab {
+    color: #6b7280;
+    position: relative;
+  }
+
+  .mobile-tab.active {
+    color: #1e40af; /* blue-800 */
+  }
+
+  .mobile-tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background-color: #1e40af; /* blue-800 */
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .fixed.bottom-0.md\:hidden {
+      display: none;
+    }
+  }
+</style>
