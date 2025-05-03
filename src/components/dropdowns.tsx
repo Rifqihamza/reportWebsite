@@ -1,5 +1,5 @@
-export default function Dropdown(props: { id: string; label: string; items: string[] }) {
-  const { id, label, items } = props;
+export default function Dropdown(props: { id: string; label: string; items: string[], action: (value: string) => void }) {
+  const { id, label, items, action } = props;
 
   return (
     <>
@@ -35,6 +35,7 @@ export default function Dropdown(props: { id: string; label: string; items: stri
                   type="button"
                   className="dropdown-item block w-full text-left px-4 py-2 hover:bg-gray-100"
                   data-value={item}
+                  onClick={() => action(item)}
                 >
                   {item}
                 </button>

@@ -16,7 +16,26 @@ export enum AccountType {
 export enum ReportType {
     VR = "5R",
     Safety = "Safety",
-    SOP = "SOP"
+    SOP = "SOP",
+    Kualitas = "Kualitas"
+}
+
+enum ReportStatus {
+    Pending = "Pending",
+    OnProgress = "On Progress",
+    Completed = "Completed"
+}
+
+export function string_to_reporttype(data: string): ReportType|undefined {
+    return Object.values(ReportType).find(value => value.toString() == data);
+}
+
+export function string_to_accounttype(data: string): AccountType|undefined {
+    return Object.values(AccountType).find(value => value.toString() == data);
+}
+
+export function string_to_reportstatus(data: string): ReportStatus|undefined {
+    return Object.values(ReportStatus).find(value => value.toString() == data);
 }
 
 // DATABASE MODEL
@@ -29,12 +48,13 @@ export type ReportData = {
     pic_name: string
 }
 
-
-
-enum ReportStatus {
-    Pending,
-    OnProgress,
-    Completed
+export type User = {
+    id: string,
+    email: string,
+    username: string,
+    password: string,
+    role: AccountType,
+    report_pic: Report[]
 }
 
 
@@ -65,7 +85,7 @@ export async function userLogin(username: string, password: string): Promise<API
     }
 }
 
-export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: string): Promise<APIResultType> {
+export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, location?: string): Promise<APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
@@ -77,7 +97,8 @@ export async function addReport(message: string, pic_name: string, report_type: 
             "message": message,
             "pic_name": pic_name,
             "report_type": report_type,
-            "follow_up": follow_up
+            "follow_up": follow_up,
+            "location": location
         })
     });
 
@@ -154,6 +175,25 @@ export async function deleteReport(report_id: string): Promise<APIResultType> {
     // Check the response
     if(response.ok) {
         return APIResultType.NoError;
+    }
+    else if(response.status == 500) {
+        return APIResultType.InternalServerError;
+    }
+    else {
+        return APIResultType.Unauthorized;
+    }
+}
+
+export async function getPIC(): Promise<User[]|APIResultType> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/pic/get", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    // Check the response
+    if(response.ok) {
+        return (await response.json()) as User[];
     }
     else if(response.status == 500) {
         return APIResultType.InternalServerError;

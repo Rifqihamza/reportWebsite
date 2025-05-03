@@ -1,7 +1,15 @@
+import { useEffect, useState } from "react";
 import Dropdown from "./dropdowns";
+import { AccountType, addReport, APIResultType, getPIC, ReportType, string_to_accounttype, string_to_reporttype } from '../api/api';
 
 export default function ReportFormComponent() {
-  const dropdowns = [
+  const [message, setMessage] = useState("");
+  const [location, setLocation] = useState("");
+  const [pic, setPic] = useState("");
+  const [category, setCategory] = useState(ReportType.SOP);
+  const [followUp, setFollowUp] = useState(AccountType.Siswa);
+  
+  const [dropdowns, setDropdowns] = useState([
     {
       id: "pic",
       label: "PIC",
@@ -10,11 +18,41 @@ export default function ReportFormComponent() {
     {
       id: "kategori",
       label: "Kategori",
-      items: ["5R", "Safety", "Kualitas", "Produksi"],
+      items: Object.values(ReportType),
     },
-    { id: "followup", label: "Follow Up", items: ["Guru", "Siswa", "Vendor"] },
-  ];
+    { id: "followup", label: "Follow Up", items: Object.values(AccountType) },
+  ]);
 
+  useEffect(() => {
+    getPIC().then(pic_data_array => {
+      console.log(pic_data_array);
+      if (pic_data_array && typeof pic_data_array === "object") {
+        setDropdowns(dropdowns.map((value) => value.id == "pic" ? {id: value.id, items: pic_data_array.map(pic_data => pic_data.username), label: value.label} : value));
+        setPic(pic_data_array[0].username);
+      }
+      else {
+        alert("There's an error when trying to get PIC data");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(pic);
+  }, [pic]);
+
+  const handle_submit = async () => {
+    const result = await addReport(message, pic, category, followUp, location);
+    if(result == APIResultType.NoError) {
+      alert("Successfully add the report!");
+    }
+    else if(result == APIResultType.Unauthorized) {
+      window.location.href = "/";
+    }
+    else if(result == APIResultType.InternalServerError) {
+      alert("There's an unexpected error occured in the server side!");
+    }
+  }
+    
   return (
     <>
       <form id="report-form" className="mx-8 space-y-2">
@@ -34,14 +72,31 @@ export default function ReportFormComponent() {
               id="laporan"
               placeholder="Ketik deskripsi temuan disini..."
               className="p-4 outline-none rounded-xl resize-none w-full bg-red-900 placeholder-white text-white"
+              onChange={(e) => setMessage(e.target.value)}
               required
             ></textarea>
           </div>
           {/* Dropdowns Section */}
           <div className="flex flex-col w-full mt-2">
-            {dropdowns.map((d, index) => (
-              <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} />
-            ))}
+            {dropdowns.map((d, index) => {
+              let handler = (value: string) => {
+
+              };
+
+              if(d.id == "pic") {
+                handler = (value: string) => setPic(value);
+              }
+              else if(d.id == "kategori") {
+                handler = (value: string) => setCategory(string_to_reporttype(value)!);
+              }
+              else if(d.id == "followup") {
+                handler = (value: string) => setFollowUp(string_to_accounttype(value)!);
+              }
+              
+              return (
+                <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} action={handler} />
+              );
+            })}
           </div>
         </div>
 
@@ -60,6 +115,7 @@ export default function ReportFormComponent() {
             id="lokasi"
             placeholder="Lokasi temuan"
             className="p-3 outline-none rounded-xl resize-none w-full bg-red-900 placeholder-white text-white"
+            onChange={(e) => setLocation(e.target.value)}
             required
           />
         </div>
@@ -108,6 +164,7 @@ export default function ReportFormComponent() {
           <button
             type="submit"
             className="flex items-center px-6 py-3 bg-red-900 -translate-y-[10px] [box-shadow:0_10px_0_#d1c9b4] active:[box-shadow:0_5px_0_#d1c2b5] active:-translate-y-[5px] text-white rounded-xl"
+            onClick={handle_submit}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
