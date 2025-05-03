@@ -1,19 +1,5 @@
 ---
-import Dropdown from "../../components/dropdowns.astro";
-
-const dropdowns = [
-  {
-    id: "pic",
-    label: "PIC",
-    items: ["Suhaimi", "Heas Priyo", "Amalia", "Munir"],
-  },
-  {
-    id: "kategori",
-    label: "Kategori",
-    items: ["5R", "Safety", "Kualitas", "Produksi"],
-  },
-  { id: "followup", label: "Follow Up", items: ["Guru", "Siswa", "Vendor"] },
-];
+import ReportFormComponent from "../../components/ReportFormComponent";
 ---
 
 <div>
@@ -30,131 +16,7 @@ const dropdowns = [
       class="h-12 w-auto"
     />
   </div>
-
-  <form id="report-form" class="mx-8 space-y-2">
-    <label
-      for="laporan"
-      class="md:text-md text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-    >
-      <img
-        src="../../../public/detailsReportIcon.svg"
-        class="w-5 h-5"
-        alt=""
-      />
-      Detail Laporan</label
-    >
-    <!-- Laporan Text Area -->
-    <div class="mt-0 flex md:flex-row flex-col md:mt-2 gap-4 md:gap-8">
-      <div class="w-full">
-        <textarea
-          rows="6"
-          name="laporan"
-          id="laporan"
-          placeholder="Ketik deskripsi temuan disini..."
-          class="p-4 outline-none rounded-xl resize-none w-full bg-red-900 placeholder-white text-white"
-          required></textarea>
-      </div>
-      <!-- Dropdowns Section -->
-      <div class="flex flex-col w-full mt-2">
-        {
-          dropdowns.map((d) => (
-            <Dropdown id={d.id} label={`Pilih ${d.label}`} items={d.items} />
-          ))
-        }
-      </div>
-    </div>
-
-    <!-- Lokasi Field -->
-    <div class="space-y-2">
-      <label
-        for="lokasi"
-        class="md:text-md text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-      >
-        <img src="/locationIcon.svg" class="w-5 h-5" alt="" />
-        Lokasi</label
-      >
-      <input
-        type="text"
-        name="lokasi"
-        id="lokasi"
-        placeholder="Lokasi temuan"
-        class="p-3 outline-none rounded-xl resize-none w-full bg-red-900 placeholder-white text-white"
-        required
-      />
-    </div>
-
-    <!-- File Upload -->
-    <div class="space-y-2 mt-4">
-      <label
-        for="foto"
-        class="md:text-md text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-      >
-        <img
-          src="/uploadFileIcon.svg"
-          class="w-5 h-5"
-          alt=""
-        />
-        Foto Bukti</label
-      >
-      <div class="flex items-center justify-center w-full">
-        <label
-          for="foto"
-          class="flex flex-col items-center justify-center w-full h-32 border-2 border-red-900 border-dashed rounded-xl cursor-pointer bg-[#e7dfcaa5] hover:bg-[#d1c9b4] duration-400"
-        >
-          <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg
-              class="w-8 h-8 mb-3 text-red-900"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-              ></path>
-            </svg>
-            <p class="mb-1 text-sm text-red-900" id="file-name-display">
-              Klik untuk upload foto
-            </p>
-            <p class="text-xs text-red-900">PNG, JPG atau JPEG (Max. 2MB)</p>
-          </div>
-          <input
-            id="foto"
-            name="foto"
-            type="file"
-            class="hidden"
-            accept="image/*"
-          />
-        </label>
-      </div>
-    </div>
-
-    <!-- Submit Button -->
-    <div class="flex md:justify-end justify-center w-full md:w-auto mt-6">
-      <button
-        type="submit"
-        class="flex items-center px-6 py-3 bg-red-900 -translate-y-[10px] [box-shadow:0_10px_0_#d1c9b4] active:[box-shadow:0_5px_0_#d1c2b5] active:-translate-y-[5px] text-white rounded-xl"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 mr-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-        </svg>
-        Kirim Laporan
-      </button>
-    </div>
-  </form>
+  <ReportFormComponent />  
 </div>
 
 <script>
@@ -239,4 +101,66 @@ const dropdowns = [
       }
     });
   })();
+
+  // Used for dropdown
+  (function () {
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdowns = document.querySelectorAll(".dropdown-container");
+
+      dropdowns.forEach(function (dropdown) {
+        const trigger = dropdown.querySelector(".dropdown-trigger");
+        const menu = dropdown.querySelector(".dropdown-menu");
+        const items = dropdown.querySelectorAll(".dropdown-item");
+        const input = dropdown.querySelector('input[type="hidden"]');
+        const labelEl = dropdown.querySelector(".dropdown-label");
+
+        if (!trigger || !menu) return;
+
+        trigger.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          const isExpanded = trigger.getAttribute("aria-expanded") === "true";
+
+          // Close all other dropdowns
+          dropdowns.forEach(function (otherDropdown) {
+            if (otherDropdown !== dropdown) {
+              const otherTrigger =
+                otherDropdown.querySelector(".dropdown-trigger");
+              const otherMenu = otherDropdown.querySelector(".dropdown-menu");
+              if (otherTrigger)
+                otherTrigger.setAttribute("aria-expanded", "false");
+              if (otherMenu) otherMenu.classList.add("hidden");
+            }
+          });
+
+          // Toggle current dropdown
+          trigger.setAttribute("aria-expanded", String(!isExpanded));
+          menu.classList.toggle("hidden");
+        });
+
+        items.forEach(function (item) {
+          item.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const value = item.getAttribute("data-value");
+
+            if (input) (input as HTMLInputElement).value = value || "";
+            if (labelEl) labelEl.textContent = value;
+
+            trigger.setAttribute("aria-expanded", "false");
+            menu.classList.add("hidden");
+          });
+        });
+      });
+
+      document.addEventListener("click", function () {
+        dropdowns.forEach(function (dropdown) {
+          const trigger = dropdown.querySelector(".dropdown-trigger");
+          const menu = dropdown.querySelector(".dropdown-menu");
+
+          if (trigger) trigger.setAttribute("aria-expanded", "false");
+          if (menu) menu.classList.add("hidden");
+        });
+      });
+    });
+  })()
 </script>

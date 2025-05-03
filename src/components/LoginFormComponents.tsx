@@ -1,24 +1,13 @@
 'use client';
 import { useState } from "react";
-import { APIResultType, userLogin } from "../api/api";
 
-export default function FormComponent() {
+export default function LoginFormComponent() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLogin = async () => {
         console.log("LOGGING IN...");
         
-        const result = await userLogin(username, password);
-        if(result == APIResultType.NoError) {
-            window.location.href = "/#login";
-        }
-        else if(result == APIResultType.Unauthorized) {
-            alert("Unauthorized!");
-        }
-        else {
-            alert("There's an error!");
-        }
     }
 
     return <>
