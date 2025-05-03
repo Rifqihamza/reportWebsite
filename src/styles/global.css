@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 @font-face {
   font-family: codecFont;
   src: url("../assets/fonts/Codec-Cold-Regular-trial.ttf");
