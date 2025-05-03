@@ -43,6 +43,7 @@ export async function userLogin(username: string, password: string): Promise<API
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/login", {
         method: "POST",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -68,6 +69,7 @@ export async function addReport(message: string, pic_name: string, report_type: 
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -95,6 +97,7 @@ export async function getReport(): Promise<ReportData[]|APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/get", {
         method: "GET",
+        credentials: "include",
     });
 
     // Check the response
@@ -113,6 +116,7 @@ export async function changeReportStatus(report_id: string, report_status: Repor
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/change_status", {
         method: "PUT",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -138,6 +142,7 @@ export async function deleteReport(report_id: string): Promise<APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/delete", {
         method: "DELETE",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
