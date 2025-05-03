@@ -1,23 +1,8 @@
 @import "tailwindcss";
 
 
-@font-face {
-  font-family: codecFont;
-  src: url("../assets/fonts/Codec-Cold-Regular-trial.ttf");
-}
-
-@font-face {
-  font-family: codecFontBold;
-  src: url("../assets/fonts/Codec-Cold-Bold-trial.ttf");
-}
-
-@font-face {
-  font-family: codecFontEBold;
-  src: url("../assets/fonts/Codec-Cold-ExtraBold-trial.ttf");
-}
-
 .labelText {
-  font-family: codecFontEBold;
+  /* font-family: codecFontEBold; */
 }
 
 ::-webkit-scrollbar {
@@ -26,9 +11,9 @@
 body {
   margin: auto;
   /* font-family: -apple-system, BlinkMacSystemFont, sans-serif; */
-  font-family: codecFont;
+  /* font-family: codecFont; */
   overflow: auto;
-  background-image: url("../../public/batik_background.jpg");
+  background-image: url("/batik_background.jpg");
   animation: gradient 15s ease infinite;
   background-size: 100%;
   background-attachment: fixed;
