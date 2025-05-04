@@ -56,7 +56,6 @@ export type User = {
     username: string,
     password: string,
     role: AccountType,
-    report_pic: Report[],
     created_at: string
 }
 
@@ -215,4 +214,19 @@ export async function userLogout(): Promise<boolean> {
 
     // Check the response
     return response.ok;
+}
+
+
+export async function getUser(): Promise<User|APIResultType> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/user/get", {
+        method: "POST",
+        credentials: "include",
+    });
+
+    if(response.ok) {
+        return (await response.json()) as User;
+    }
+
+    return APIResultType.InternalServerError;
 }

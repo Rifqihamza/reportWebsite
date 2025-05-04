@@ -1,5 +1,5 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, APIResultType, deleteReport, getReport, ReportStatus, ReportType, userLogout, type ReportData } from "../api/api";
+import { AccountType, APIResultType, deleteReport, getReport, getUser, ReportStatus, ReportType, userLogout, type ReportData, type User } from "../api/api";
 
 export default function ReportListComponent() {
   const [showDetail, setShowDetail] = useState(false);
@@ -17,6 +17,15 @@ export default function ReportListComponent() {
       status: ReportStatus.OnProgress as ReportStatus,
     },
   ]);
+
+  const [userData, setUserData]: [User, Dispatch<SetStateAction<User>>] = useState({
+    id: "",
+    username: "",
+    email: "",
+    password: "",
+    role: AccountType.Siswa as AccountType,
+    created_at: "",
+  });
 
   // Status color mapping
   const statusColors = {
@@ -46,7 +55,7 @@ export default function ReportListComponent() {
   }
 
   async function handle_delete(id: string) {
-    if(!confirm("Are you sure?")) {
+    if(userData.role == AccountType.Siswa && !confirm("Are you sure?")) {
       return;
     }
     
@@ -59,7 +68,7 @@ export default function ReportListComponent() {
       alert("There's an error!");
     }
     else if(result == APIResultType.Unauthorized) {
-      window.location.href = "/";
+      alert("You have no access!");
     }
   }
 
@@ -74,10 +83,16 @@ export default function ReportListComponent() {
 
   useEffect(() => {
     getReport().then(report_data_array => {
-        if(typeof report_data_array == "object") {
-            setReports(report_data_array);
-        }
+      if(typeof report_data_array == "object") {
+        setReports(report_data_array);
+      }
     });
+
+    getUser().then(user_data => {
+      if(typeof user_data == "object") {
+        setUserData(user_data);
+      }
+    })
   }, []);
 
 
@@ -156,7 +171,7 @@ export default function ReportListComponent() {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3" onClick={() => { handle_detail(report.id) }}>
+                  <button className="text-blue-600 hover:text-blue-900 mr-3 disabled:pointer-events-none disabled:opacity-50" onClick={() => { handle_detail(report.id) }} disabled={userData.role == AccountType.Siswa}>
                     Detail
                   </button>
                 </td>
