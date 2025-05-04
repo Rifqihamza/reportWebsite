@@ -58,16 +58,14 @@ import ReportFormComponent from "../../components/ReportFormComponent";
           const followup = formData.get("followup");
 
           if (!laporan || !lokasi) {
-            alert("Harap isi semua kolom yang diperlukan");
             return;
           }
 
           // Log form data (for demonstration)
-          console.log("Form data:", Object.fromEntries(formData));
+        //   console.log("Form data:", Object.fromEntries(formData));
 
           // Here you would send the data to your server
           // For now, just show a success message
-          alert("Laporan berhasil dikirim!");
           (form as HTMLFormElement).reset();
 
           // Reset dropdown labels

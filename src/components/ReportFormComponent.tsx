@@ -6,8 +6,8 @@ export default function ReportFormComponent() {
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [pic, setPic] = useState("");
-  const [category, setCategory] = useState(ReportType.SOP);
-  const [followUp, setFollowUp] = useState(AccountType.Siswa);
+  const [category, setCategory] = useState(ReportType.NoType);
+  const [followUp, setFollowUp] = useState(AccountType.NoType);
   
   const [dropdowns, setDropdowns] = useState([
     {
@@ -36,6 +36,11 @@ export default function ReportFormComponent() {
   }, []);
   
   const handle_submit = async () => {
+    if(!message || !pic || category == ReportType.NoType || followUp == AccountType.NoType || !location) {
+        alert("Please complete the form.");
+        return;
+    }
+    
     const result = await addReport(message, pic, category, followUp, location);
     if(result == APIResultType.NoError) {
       alert("Successfully add the report!");

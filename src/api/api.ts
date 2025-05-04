@@ -8,12 +8,14 @@ export enum APIResultType {
 }
 
 export enum AccountType {
+    NoType = "",
     Guru = "Guru",
     Siswa = "Siswa",
     Vendor = "Vendor"
 }
 
 export enum ReportType {
+    NoType = "",
     VR = "5R",
     Safety = "Safety",
     SOP = "SOP",

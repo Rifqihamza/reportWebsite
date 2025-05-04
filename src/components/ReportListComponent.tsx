@@ -12,8 +12,8 @@ export default function ReportListComponent() {
       message: "Temuan kebocoran pipa di area workshop",
       location: "Workshop A",
       pic_name: "Suhaimi",
-      type: ReportType.Safety as ReportType,
-      follow_up: AccountType.Guru as AccountType,
+      type: ReportType.NoType as ReportType,
+      follow_up: AccountType.NoType as AccountType,
       status: ReportStatus.OnProgress as ReportStatus,
     },
   ]);
