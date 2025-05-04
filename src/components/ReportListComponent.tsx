@@ -1,5 +1,5 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, APIResultType, deleteReport, getReport, getUser, ReportStatus, ReportType, userLogout, type ReportData, type User } from "../api/api";
+import { AccountType, APIResultType, changeReportStatus, deleteReport, getReport, getUser, ReportStatus, ReportType, userLogout, type ReportData, type User } from "../api/api";
 
 export default function ReportListComponent() {
   const [showDetail, setShowDetail] = useState(false);
@@ -60,6 +60,7 @@ export default function ReportListComponent() {
     }
     
     const result = await deleteReport(id);
+
     if(result == APIResultType.NoError) {
       setShowDetail(false);
       setReports(reports.filter((value) => value.id != id));
@@ -80,6 +81,22 @@ export default function ReportListComponent() {
 
     window.location.href = "/login";
   }
+
+  async function handle_change_status(id: string, report_status: ReportStatus) {
+    const result = await changeReportStatus(id, report_status);
+
+    if(result == APIResultType.NoError) {
+      setShowDetail(false);
+      setReports(reports.map((value) => value.id == id ? { ...value, status: report_status } : value));
+    }
+    else if(result == APIResultType.InternalServerError) {
+      alert("There's an error!");
+    }
+    else if(result == APIResultType.Unauthorized) {
+      alert("You have no access!");
+    }
+  }
+  
 
   useEffect(() => {
     getReport().then(report_data_array => {
@@ -253,8 +270,8 @@ export default function ReportListComponent() {
                 <h1>Follow Up:  {report_data?.follow_up}</h1>
               </div>
               <div className="gap-2 w-full justify-stretch *:w-full grid md:flex">
-                <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">{report_data?.status == ReportStatus.Completed ? "Set On Progress" : "Set Complete"}</button>
-                <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Pending Laporan</button>
+                <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, report_data.status == ReportStatus.OnProgress ? ReportStatus.Completed : ReportStatus.OnProgress)}>{report_data.status == ReportStatus.OnProgress ? "Set Complete" : "Set On Progress"}</button>
+                <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, ReportStatus.Pending)}>Pending Laporan</button>
                 <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl" onClick={() => handle_delete(report_data.id)}>Hapus</button>
               </div>
             </>
