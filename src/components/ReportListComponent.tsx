@@ -1,5 +1,5 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, APIResultType, deleteReport, getReport, ReportStatus, ReportType, type ReportData } from "../api/api";
+import { AccountType, APIResultType, deleteReport, getReport, ReportStatus, ReportType, userLogout, type ReportData } from "../api/api";
 
 export default function ReportListComponent() {
   const [showDetail, setShowDetail] = useState(false);
@@ -61,6 +61,15 @@ export default function ReportListComponent() {
     else if(result == APIResultType.Unauthorized) {
       window.location.href = "/";
     }
+  }
+
+  async function handle_logout() {
+    if(!(await userLogout())) {
+      alert("There's an error when trying to logout.");
+      return;
+    }
+
+    window.location.href = "/login";
   }
 
   useEffect(() => {
@@ -208,7 +217,7 @@ export default function ReportListComponent() {
             Next
           </button>
         </div>
-        <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
+        <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer" onClick={handle_logout}>
           Logout
         </button>
       </div>

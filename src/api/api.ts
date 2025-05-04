@@ -205,3 +205,14 @@ export async function getPIC(): Promise<User[]|APIResultType> {
         return APIResultType.Unauthorized;
     }
 }
+
+export async function userLogout(): Promise<boolean> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/user/logout", {
+        method: "POST",
+        credentials: "include",
+    });
+
+    // Check the response
+    return response.ok;
+}
