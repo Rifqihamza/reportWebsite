@@ -22,7 +22,7 @@ export enum ReportType {
 
 export enum ReportStatus {
     Pending = "Pending",
-    OnProgress = "On Progress",
+    OnProgress = "OnProgress",
     Completed = "Completed"
 }
 

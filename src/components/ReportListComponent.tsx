@@ -1,5 +1,5 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, getReport, ReportStatus, ReportType, type ReportData } from "../api/api";
+import { AccountType, APIResultType, deleteReport, getReport, ReportStatus, ReportType, type ReportData } from "../api/api";
 
 export default function ReportListComponent() {
   const [showDetail, setShowDetail] = useState(false);
@@ -21,7 +21,7 @@ export default function ReportListComponent() {
   // Status color mapping
   const statusColors = {
     Pending: "bg-red-100 text-red-800",
-    "On Progress": "bg-yellow-100 text-yellow-800",
+    OnProgress: "bg-yellow-100 text-yellow-800",
     Completed: "bg-green-100 text-green-800",
   };
 
@@ -45,7 +45,23 @@ export default function ReportListComponent() {
     setShowDetail(false);
   }
 
-
+  async function handle_delete(id: string) {
+    if(!confirm("Are you sure?")) {
+      return;
+    }
+    
+    const result = await deleteReport(id);
+    if(result == APIResultType.NoError) {
+      setShowDetail(false);
+      setReports(reports.filter((value) => value.id != id));
+    }
+    else if(result == APIResultType.InternalServerError) {
+      alert("There's an error!");
+    }
+    else if(result == APIResultType.Unauthorized) {
+      window.location.href = "/";
+    }
+  }
 
   useEffect(() => {
     getReport().then(report_data_array => {
@@ -125,9 +141,7 @@ export default function ReportListComponent() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      statusColors[report.status]
-                    }`}
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                   >
                     {report.status}
                   </span>
@@ -202,22 +216,23 @@ export default function ReportListComponent() {
       {/*  Modal Element */}
       <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 translate-y-[-50%] -translate-x-1/2 duration-1000 absolute bg-red-900 *:text-white w-min-[40dvw] h-[60dvh] p-10 flex flex-col gap-4"}>
         {(() => {
-            const report_data = reports.find(value => value.id == detailId)
+            const report_data = reports.find(value => value.id == detailId) || reports[0];
 
-            return <div className="flex flex-col gap-2">
+            return <><div className="flex flex-col gap-2">
               <h1>Laporan: {report_data?.message}</h1>
-              <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
+              <h1>Status:  <span className={`${statusColors[report_data.status]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
               <br />
               <h1>Tempat:  {report_data?.location}</h1>
               <h1>PIC:  {report_data?.pic_name}</h1>
               <h1>Kategori:  {report_data?.type}</h1>
               <h1>Follow Up:  {report_data?.follow_up}</h1>
             </div>
+            <div className="flex gap-2 w-full justify-stretch *:w-full">
+              <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl" onClick={() => handle_delete(report_data.id)}>Delete</button>
+              <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Change Status</button>
+            </div>
+            </>
         })()}
-        <div className="flex gap-2 w-full justify-stretch *:w-full">
-          <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Delete</button>
-          <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Change Status</button>
-        </div>
         <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl hover:bg-gray-900">Close</button>
       </div>
     </>
