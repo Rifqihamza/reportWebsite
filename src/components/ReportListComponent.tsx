@@ -1,63 +1,70 @@
+'use client';
+import { useState } from "react";
+
+
 export default function ReportListComponent() {
+  const [showDetail, setShowDetail] = useState(false);
+  const [detailId, setDetailId] = useState("");
+  
   type ReportStatus = "Pending" | "On Process" | "Complete";
   const reports: Array<{
-    id: number;
-    tanggal: string;
-    laporan: string;
-    lokasi: string;
-    pic: string;
-    kategori: string;
-    followup: string;
+    id: string;
+    created_at: string;
+    message: string;
+    location: string;
+    pic_name: string;
+    type: string;
+    follow_up: string;
     status: ReportStatus;
   }> = [
     {
-      id: 1,
-      tanggal: "2024-05-01",
-      laporan: "Temuan kebocoran pipa di area workshop",
-      lokasi: "Workshop A",
-      pic: "Suhaimi",
-      kategori: "Safety",
-      followup: "Guru",
+      id: "1",
+      created_at: "2024-05-01",
+      message: "Temuan kebocoran pipa di area workshop",
+      location: "Workshop A",
+      pic_name: "Suhaimi",
+      type: "Safety",
+      follow_up: "Guru",
       status: "Pending",
     },
     {
-      id: 2,
-      tanggal: "2024-04-28",
-      laporan: "Peralatan tidak tertata rapi setelah praktikum",
-      lokasi: "Lab Komputer",
-      pic: "Heas Priyo",
-      kategori: "5R",
-      followup: "Siswa",
+      id: "2",
+      created_at: "2024-04-28",
+      message: "Peralatan tidak tertata rapi setelah praktikum",
+      location: "Lab Komputer",
+      pic_name: "Heas Priyo",
+      type: "5R",
+      follow_up: "Siswa",
       status: "On Process",
     },
     {
-      id: 3,
-      tanggal: "2024-04-25",
-      laporan: "Material bahan praktik tercecer di lantai",
-      lokasi: "Workshop B",
-      pic: "Amalia",
-      kategori: "5R",
-      followup: "Siswa",
+      id: "3",
+      created_at: "2024-04-25",
+      message: "Material bahan praktik tercecer di lantai",
+      location: "Workshop B",
+      pic_name: "Amalia",
+      type: "5R",
+      follow_up: "Siswa",
       status: "Complete",
     },
     {
-      id: 4,
-      tanggal: "2024-04-20",
-      laporan: "AC ruangan tidak berfungsi dengan baik",
-      lokasi: "Ruang Teori 3",
-      pic: "Munir",
-      kategori: "Kualitas",
-      followup: "Vendor",
+      id: "4",
+      created_at: "2024-04-20",
+      message: "AC ruangan tidak berfungsi dengan baik",
+      location: "Ruang Teori 3",
+      pic_name: "Munir",
+      type: "Kualitas",
+      follow_up: "Vendor",
       status: "Complete",
     },
     {
-      id: 5,
-      tanggal: "2024-04-20",
-      laporan: "AC ruangan tidak berfungsi dengan baik",
-      lokasi: "Ruang Teori 8",
-      pic: "Tya",
-      kategori: "Kualitas",
-      followup: "Vendor",
+      id: "5",
+      created_at: "2024-04-20",
+      message: "AC ruangan tidak berfungsi dengan baik",
+      location: "Ruang Teori 8",
+      pic_name: "Tya",
+      type: "Kualitas",
+      follow_up: "Vendor",
       status: "Complete",
     },
   ];
@@ -78,6 +85,15 @@ export default function ReportListComponent() {
       month: "long",
       day: "numeric",
     }).format(date);
+  }
+
+  function handle_detail(id: string) {
+    setDetailId(id);
+    setShowDetail(true);
+  }
+
+  function handle_close() {
+    setShowDetail(false);
   }
 
   return (
@@ -132,20 +148,20 @@ export default function ReportListComponent() {
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {reports.map((report) => (
-              <tr className="report-row" data-report-id={report.id}>
+            {reports.map((report, index) => (
+              <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {formatDate(report.tanggal)}
+                  {formatDate(report.created_at)}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
-                  {report.laporan}
+                  {report.message}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.lokasi}
+                  {report.location}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.kategori}
+                  {report.type}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
@@ -157,7 +173,7 @@ export default function ReportListComponent() {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="detail-button text-blue-600 hover:text-blue-900 mr-3">
+                  <button className="text-blue-600 hover:text-blue-900 mr-3" onClick={() => { handle_detail(report.id) }}>
                     Detail
                   </button>
                 </td>
@@ -169,13 +185,14 @@ export default function ReportListComponent() {
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reports.map((report) => (
+        {reports.map((report, index) => (
           <div
+            key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
             data-report-id={report.id}
           >
             <div className="flex justify-between items-start mb-2">
-              <h3 className="font-medium text-gray-900 truncate">{report.laporan}</h3>
+              <h3 className="font-medium text-gray-900 truncate">{report.message}</h3>
               <span
                 className={`px-2 py-1 text-xs font-semibold rounded-full ${
                   statusColors[report.status]
@@ -186,16 +203,16 @@ export default function ReportListComponent() {
             </div>
             <div className="text-sm text-gray-500 space-y-1">
               <p>
-                <span className="font-medium">Tanggal:</span> {formatDate(report.tanggal)}
+                <span className="font-medium">Tanggal:</span> {formatDate(report.created_at)}
               </p>
               <p>
-                <span className="font-medium">Lokasi:</span> {report.lokasi}
+                <span className="font-medium">Lokasi:</span> {report.location}
               </p>
               <p>
-                <span className="font-medium">PIC:</span> {report.pic}
+                <span className="font-medium">PIC:</span> {report.pic_name}
               </p>
               <p>
-                <span className="font-medium">Kategori:</span> {report.kategori}
+                <span className="font-medium">Kategori:</span> {report.type}
               </p>
             </div>
             <div className="mt-3 flex justify-end">
@@ -220,6 +237,23 @@ export default function ReportListComponent() {
         <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
           Logout
         </button>
+      </div>
+      
+      {/*  Modal Element */}
+      <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 translate-y-[-50%] -translate-x-1/2 duration-1000 absolute bg-red-900 *:text-white w-min-[40dvw] h-[60dvh] p-10"}>
+        <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl">Close</button>
+        {(() => {
+            const report_data = reports.find(value => value.id == detailId)
+
+            return <div>
+                <h1>Laporan: {report_data?.message}</h1>
+                <h1>Tempat:  {report_data?.location}</h1>
+                <h1>PIC:  {report_data?.pic_name}</h1>
+                <h1>Status:  {report_data?.status}</h1>
+                <h1>Kategori:  {report_data?.type}</h1>
+                <h1>Follow Up:  {report_data?.follow_up}</h1>
+            </div>
+        })()}
       </div>
     </>
   );
