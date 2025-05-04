@@ -216,7 +216,7 @@ export default function ReportListComponent() {
               </p>
             </div>
             <div className="mt-3 flex justify-end">
-              <button className="mobile-detail-button text-blue-600 hover:text-blue-900 text-sm font-medium">
+              <button className="mobile-detail-button text-blue-600 hover:text-blue-900 text-sm font-medium" onClick={() => { handle_detail(report.id) }}>
                 Lihat Detail
               </button>
             </div>
@@ -225,7 +225,7 @@ export default function ReportListComponent() {
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between mt-6">
+      <div className="flex flex-col gap-4 md:flex-row items-center justify-between mt-6">
         <div className="flex flex-row gap-2 items-center">
           <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
             Prev
@@ -240,25 +240,28 @@ export default function ReportListComponent() {
       </div>
       
       {/*  Modal Element */}
-      <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 translate-y-[-50%] -translate-x-1/2 duration-1000 absolute bg-red-900 *:text-white w-min-[40dvw] h-[60dvh] p-10 flex flex-col gap-4"}>
+      <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 -translate-y-1/2 -translate-x-1/2 duration-1000 fixed bg-red-900 *:text-white w-[90vw] max-w-[800px] min-w-[250px] h-[60dvh] shadow-[0_0_8px_5px_#000] p-10 box-border flex flex-col gap-4 z-10 rounded-xl"}>
         {(() => {
             const report_data = reports.find(value => value.id == detailId)
 
-            return <div className="flex flex-col gap-2">
-              <h1>Laporan: {report_data?.message}</h1>
-              <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
-              <br />
-              <h1>Tempat:  {report_data?.location}</h1>
-              <h1>PIC:  {report_data?.pic_name}</h1>
-              <h1>Kategori:  {report_data?.type}</h1>
-              <h1>Follow Up:  {report_data?.follow_up}</h1>
-            </div>
+            return <>
+              <div className="flex flex-col gap-2">
+                <h1>Laporan: {report_data?.message}</h1>
+                <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
+                <br />
+                <h1>Tempat:  {report_data?.location}</h1>
+                <h1>PIC:  {report_data?.pic_name}</h1>
+                <h1>Kategori:  {report_data?.type}</h1>
+                <h1>Follow Up:  {report_data?.follow_up}</h1>
+              </div>
+              <div className="gap-2 w-full justify-stretch *:w-full grid md:flex">
+                <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">{report_data?.status == "Complete" ? "Set On Progress" : "Set Complete"}</button>
+                <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Pending Laporan</button>
+                <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Hapus</button>
+              </div>
+            </>
         })()}
-        <div className="flex gap-2 w-full justify-stretch *:w-full">
-          <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Delete</button>
-          <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Change Status</button>
-        </div>
-        <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl hover:bg-gray-900">Close</button>
+        <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl hover:bg-gray-900">Tutup</button>
       </div>
     </>
   );
