@@ -1,0 +1,36 @@
+---
+import LoginFormComponent from "../../components/LoginFormComponents";
+import Layout from "../../layouts/Layout.astro";
+import Background from "../../components/background.astro";
+
+---
+
+<Layout>
+    <section>
+        <div class="flex justify-center p-6">
+        <form
+            method="POST"
+            action=""
+            class="bg-white p-6 rounded-xl shadow-md shadow-gray-400"
+        >
+            <div
+            class="px-4 py-3 bg-red-900 rounded-xl text-white flex flex-row items-center justify-between"
+            >
+            <!-- Label Login -->
+            <div>
+                <h1
+                class="font-extrabold uppercase tracking-wider text-xl font-[codecFont]"
+                >
+                Login Form
+                </h1>
+                <p class="text-[14px]">Please Login First!</p>
+            </div>
+            <img src="/logoSekolah.png" class="w-4 h-auto" alt="" />
+            </div>
+    
+            <LoginFormComponent client:load />
+        </form>
+        </div>
+    </section>
+    <Background />
+</Layout>
