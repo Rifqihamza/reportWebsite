@@ -238,25 +238,28 @@ export default function ReportListComponent() {
       </div>
 
       {/*  Modal Element */}
-        <div id="modal" className={(showDetail ? "visible pointer-events-auto bottom-1/2" : "invisible pointer-events-none -bottom-96") + " left-1/2 translate-y-[50%] -translate-x-1/2 duration-500 absolute bg-white rounded-xl shadow-gray-500 shadow-lg *:text-black w-min-[40dvw] h-[60dvh] p-10 flex flex-col gap-4 "}>
-          {(() => {
-            const report_data = reports.find(value => value.id == detailId)
+      <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 -translate-y-1/2 -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-[60dvh] shadow-[0_0_15px_1px_#aaa] p-10 box-border flex flex-col gap-4 z-10 rounded-xl"}>
+        {(() => {
+            const report_data = reports.find(value => value.id == detailId) || reports[0];
 
-            return <div className="flex flex-col gap-2 p-4">
-              <h1>Laporan: {report_data?.message}</h1>
-              <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
-              <br />
-              <h1>Tempat:  {report_data?.location}</h1>
-              <h1>PIC:  {report_data?.pic_name}</h1>
-              <h1>Kategori:  {report_data?.type}</h1>
-              <h1>Follow Up:  {report_data?.follow_up}</h1>
-            </div>
-          })()}
-          <div className="flex gap-2 w-full justify-stretch *:w-full">
-            <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Delete</button>
-            <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Change Status</button>
-          </div>
-          <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl hover:bg-gray-900">Close</button>
+            return <>
+              <div className="flex flex-col gap-2">
+                <h1>Laporan: {report_data?.message}</h1>
+                <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
+                <br />
+                <h1>Tempat:  {report_data?.location}</h1>
+                <h1>PIC:  {report_data?.pic_name}</h1>
+                <h1>Kategori:  {report_data?.type}</h1>
+                <h1>Follow Up:  {report_data?.follow_up}</h1>
+              </div>
+              <div className="gap-2 w-full justify-stretch *:w-full grid md:flex">
+                <button className="bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl">{report_data.status == "On Process" ? "Set Complete" : "Set On Progress"}</button>
+                <button className="bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl">Pending Laporan</button>
+                <button className="bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl">Hapus</button>
+              </div>
+            </>
+        })()}
+        <button onClick={handle_close} className="bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl">Tutup</button>
       </div>
     </>
   );
