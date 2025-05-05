@@ -1,25 +1,20 @@
 @import "tailwindcss";
 
-.labelText {
-  /* font-family: codecFontEBold; */
-}
-
 ::-webkit-scrollbar {
   display: none;
 }
 body {
   margin: auto;
-  /* font-family: -apple-system, BlinkMacSystemFont, sans-serif; */
-  /* font-family: codecFont; */
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   overflow: auto;
-  background-image: url("/batik_background.jpg");
+  background-color: #6482ad;
   animation: gradient 15s ease infinite;
   background-size: 100%;
   background-attachment: fixed;
 }
 
 .wave {
-  background: rgba(166, 113, 82, 0.241);
+  background: #E2DAD6;
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 150%;

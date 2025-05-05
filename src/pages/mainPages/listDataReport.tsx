@@ -1,11 +1,11 @@
 import type { User } from "../../types/variables";
 import ReportListComponent from "../../components/ReportListComponent";
+import type { User } from "../../types/variables";
 
 
 export default function ListDataReport({ userData }: { userData: User }) {
 
     return <>
-
       <div>
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:justify-between md:items-center mb-6">
           <h2 className="font-bold uppercase tracking-[2px] text-md flex flex-row gap-2 items-center">
@@ -38,7 +38,7 @@ export default function ListDataReport({ userData }: { userData: User }) {
 
             <button
                 id="filter-button"
-                className="bg-red-900 shadow-inner shadow-zinc-500 text-white px-6 py-3 rounded-lg hover:bg-zinc-900 transition-colors"
+                className="bg-[#7FA1C3] shadow-inner shadow-zinc-500 text-white px-6 py-3 rounded-lg hover:bg-zinc-900 transition-colors"
                 aria-label="Filter"
             >
               <svg
