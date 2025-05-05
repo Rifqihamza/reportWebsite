@@ -10,7 +10,7 @@ export default function MainPage() {
     username: "",
     email: "",
     password: "",
-    role: AccountType.Guru as AccountType,
+    role: AccountType.Siswa as AccountType,
     created_at: "",
   });
 
