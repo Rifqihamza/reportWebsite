@@ -100,87 +100,89 @@ export default function ReportListComponent({ userData }: { userData: User }) {
   return (
     <>
       {/* Table for desktop */}
-      <div className="hidden md:block overflow-x-auto rounded-xl">
-        <table className="min-w-full">
-          <thead className="bg-red-900">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Tanggal
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Laporan
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Lokasi
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                PIC
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Kategori
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Status
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white/20 backdrop-blur-md">
-            {reports.map((report, index) => (
-              <tr key={index} className="report-row" data-report-id={report.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {formatDate(report.created_at)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
-                  {report.message}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.location}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.type}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]
-                      }`}
-                  >
-                    {report.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3" onClick={() => { handle_detail(report.id) }}>
-                    Detail
-                  </button>
-                </td>
+      <div className="px-4 py-2">
+        <div className="hidden md:block overflow-x-auto border border-gray-300 rounded-xl">
+          <table className="min-w-full">
+            <thead className="bg-[#7FA1C3]">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Tanggal
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Laporan
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Lokasi
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  PIC
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Kategori
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Status
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Action
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white/20 backdrop-blur-md">
+              {reports.map((report, index) => (
+                <tr key={index} className="report-row" data-report-id={report.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {formatDate(report.created_at)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
+                    {report.message}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {report.location}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {report.type}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]
+                        }`}
+                    >
+                      {report.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button className="text-blue-600 hover:text-blue-900 mr-3" onClick={() => { handle_detail(report.id) }}>
+                      Detail
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Cards for mobile */}
@@ -224,16 +226,19 @@ export default function ReportListComponent({ userData }: { userData: User }) {
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-col gap-4 md:flex-row items-center justify-between mt-6">
+      <div className="flex flex-col gap-4 md:flex-row justify-between items-center mt-6">
         <div className="flex flex-row gap-2 items-center">
-          <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
+          <button className="rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+          >
             Prev
           </button>
-          <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
+          <button className="rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+          >
             Next
           </button>
         </div>
-        <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
+        <button className="rounded-[20px] flex px-6 py-2 w-1/5 justify-center text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+        >
           Logout
         </button>
       </div>
