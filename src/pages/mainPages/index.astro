@@ -11,88 +11,6 @@ import MainPage from "./index";
 </section>
 
 <script>
-  // Use a self-executing function to avoid global scope pollution
-  (function () {
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("report-form");
-      const fileInput = document.getElementById("foto");
-      const fileNameDisplay = document.getElementById("file-name-display");
-
-      // File input change handler
-      if (fileInput && fileNameDisplay) {
-        fileInput.addEventListener("change", function () {
-          const inputElement = this as HTMLInputElement;
-          if (inputElement.files && inputElement.files[0]) {
-            const files = (this as HTMLInputElement).files;
-            const fileName =
-              files && files[0] ? files[0].name : "Klik untuk upload foto";
-            fileNameDisplay.textContent = fileName;
-          } else {
-            fileNameDisplay.textContent = "Klik untuk upload foto";
-          }
-        });
-      }
-
-      // Form submission
-      if (form) {
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          // Collect form data
-          const formData = new FormData(form as HTMLFormElement);
-
-          // Simple form validation
-          const laporan = formData.get("laporan");
-          const lokasi = formData.get("lokasi");
-          const pic = formData.get("pic");
-          const kategori = formData.get("kategori");
-          const followup = formData.get("followup");
-
-          if (!laporan || !lokasi) {
-            alert("Harap isi semua kolom yang diperlukan");
-            return;
-          }
-
-          // Log form data (for demonstration)
-          console.log("Form data:", Object.fromEntries(formData));
-
-          // Here you would send the data to your server
-          // For now, just show a success message
-          alert("Laporan berhasil dikirim!");
-          (form as HTMLFormElement).reset();
-
-          // Reset dropdown labels
-          document
-            .querySelectorAll(".dropdown-label")
-            .forEach(function (label) {
-              const dropdownContainer = label.closest(".dropdown-container");
-              const dropdownId = dropdownContainer
-                ? dropdownContainer.getAttribute("data-dropdown-id")
-                : null;
-              const defaultLabels = {
-                pic: "Pilih PIC",
-                kategori: "Pilih Kategori",
-                followup: "Pilih Follow Up",
-              };
-
-              if (
-                dropdownId &&
-                defaultLabels[dropdownId as keyof typeof defaultLabels]
-              ) {
-                label.textContent =
-                  defaultLabels[dropdownId as keyof typeof defaultLabels];
-              }
-            });
-
-          // Reset file input display
-          if (fileNameDisplay) {
-            fileNameDisplay.textContent = "Klik untuk upload foto";
-          }
-        });
-      }
-    });
-  })();
-
   // Used for dropdown
   (function () {
     document.addEventListener("DOMContentLoaded", function () {
@@ -131,7 +49,6 @@ import MainPage from "./index";
 
         items.forEach(function (item) {
           item.addEventListener("click", function (e) {
-            e.stopPropagation();
             const value = item.getAttribute("data-value");
 
             if (input) (input as HTMLInputElement).value = value || "";

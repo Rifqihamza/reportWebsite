@@ -7,10 +7,9 @@ export enum AccountType {
 
 export enum ReportType {
     NoType = "",
-    VR = "5R",
+    VR = "VR",
     Safety = "Safety",
-    SOP = "SOP",
-    Quality = "Quality"
+    Abnormality = "Abnormality"
 }
 
 export enum ReportStatus {
@@ -40,7 +39,9 @@ export type ReportData = {
     status: ReportStatus,
     location: string,
     pic_name: string,
-    created_at: string
+    created_at: string,
+    report_date: string,
+    due_date: string
 }
 
 export type User = {

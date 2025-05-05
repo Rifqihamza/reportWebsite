@@ -37,7 +37,7 @@ export async function userLogin(username: string, password: string): Promise<API
     }
 }
 
-export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, location?: string): Promise<APIResultType> {
+export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string): Promise<APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
@@ -50,7 +50,10 @@ export async function addReport(message: string, pic_name: string, report_type: 
             "pic_name": pic_name,
             "report_type": report_type,
             "follow_up": follow_up,
-            "location": location
+            "location": location,
+            "report_date": report_date,
+            "due_date": due_date,
+            "follow_up_name": follow_up_name
         })
     });
 

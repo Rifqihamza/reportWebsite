@@ -1,4 +1,3 @@
-import type { User } from "../../types/variables";
 import ReportListComponent from "../../components/ReportListComponent";
 import type { User } from "../../types/variables";
 

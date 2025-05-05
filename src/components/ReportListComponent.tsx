@@ -16,6 +16,8 @@ export default function ReportListComponent({ userData }: { userData: User }) {
       type: ReportType.NoType as ReportType,
       follow_up: AccountType.NoType as AccountType,
       status: ReportStatus.OnProgress as ReportStatus,
+      report_date: "",
+      due_date: ""
     },
   ]);
 
@@ -167,7 +169,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {report.type}
+                    {report.type == "VR" ? "5R" : report.type}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
@@ -249,7 +251,11 @@ export default function ReportListComponent({ userData }: { userData: User }) {
       {/*  Modal Element */}
       <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 -translate-y-1/2 -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-[60dvh] shadow-[0_0_15px_1px_#aaa] p-10 box-border flex flex-col gap-4 z-10 rounded-xl"}>
         {(() => {
-            const report_data = reports.find(value => value.id == detailId) || reports[0];
+            const report_data = reports.find(value => value.id == detailId);
+
+            if(!report_data) {
+                return <></>;
+            }
 
             return <>
               <div className="flex flex-col gap-2">
@@ -258,8 +264,10 @@ export default function ReportListComponent({ userData }: { userData: User }) {
                 <br />
                 <h1>Tempat:  {report_data?.location}</h1>
                 <h1>PIC:  {report_data?.pic_name}</h1>
-                <h1>Kategori:  {report_data?.type}</h1>
+                <h1>Kategori:  {(report_data?.type == "VR" ? "5R" : report_data?.type)}</h1>
                 <h1>Follow Up:  {report_data?.follow_up}</h1>
+                <h1>Tanggal Laporan:  {report_data?.report_date}</h1>
+                <h1>Tenggat Waktu:  {report_data?.due_date}</h1>
               </div>
               <div className={`gap-2 w-full justify-stretch *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
                 <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, report_data.status == ReportStatus.OnProgress ? ReportStatus.Completed : ReportStatus.OnProgress)}>{report_data.status == ReportStatus.OnProgress ? "Set Complete" : "Set On Progress"}</button>

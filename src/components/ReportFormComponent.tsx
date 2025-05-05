@@ -8,41 +8,28 @@ export default function ReportFormComponent() {
   const [location, setLocation] = useState("");
   const [pic, setPic] = useState("");
   const [category, setCategory] = useState(ReportType.NoType);
-  const [followUp, setFollowUp] = useState(AccountType.NoType);
+  const [followUpType, setFollowUpType] = useState(AccountType.NoType);
+  const [followUpName, setFollowUpName] = useState("");
+  const [reportDate, setReportDate] = useState("");
+  const [reportDueDate, setReportDueDate] = useState("");
   
   const [dropdowns, setDropdowns] = useState([
     {
-      id: "pic",
-      label: "PIC",
-      items: ["Suhaimi", "Heas Priyo", "Amalia", "Munir"],
-    },
-    {
       id: "kategori",
       label: "Kategori",
-      items: Object.values(ReportType),
+      items: Object.keys(ReportType).filter(x => x != "NoType"),
     },
-    { id: "followup", label: "Follow Up", items: Object.values(AccountType) },
+    { id: "followup", label: "Follow Up", items: Object.keys(AccountType).filter(x => x != "NoType") },
   ]);
-
-  useEffect(() => {
-    getPIC().then(pic_data_array => {
-      if (pic_data_array && typeof pic_data_array === "object") {
-        setDropdowns(dropdowns.map((value) => value.id == "pic" ? {id: value.id, items: pic_data_array.map(pic_data => pic_data.username), label: value.label} : value));
-        setPic(pic_data_array[0].username);
-      }
-      else if(pic_data_array == APIResultType.InternalServerError) {
-        alert("There's an error when trying to get PIC data");
-      }
-    });
-  }, []);
   
   const handle_submit = async () => {
-    if(!message || !pic || category == ReportType.NoType || followUp == AccountType.NoType || !location) {
+    if(!message || !pic || category == ReportType.NoType || followUpType == AccountType.NoType || !location || !reportDate || !reportDueDate || !followUpName) {
         alert("Please complete the form.");
         return;
     }
+
     
-    const result = await addReport(message, pic, category, followUp, location);
+    const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString());
     if(result == APIResultType.NoError) {
       alert("Successfully add the report!");
     }
@@ -94,6 +81,7 @@ export default function ReportFormComponent() {
                 id="laporan"
                 placeholder="Nama PIC..."
                 className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-xs"
+                onChange={(e) => setPic(e.target.value)}
                 required
               />
             </div>
@@ -101,9 +89,30 @@ export default function ReportFormComponent() {
 
             {/* Dropdowns Section */}
             <div className="flex flex-col md:flex-row gap-2 w-full mt-8">
-              {dropdowns.map((d, index) => (
-                <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} />
-              ))}
+            {dropdowns.map((d, index) => {
+              let handler = (value: string) => {
+
+              };
+
+              if(d.id == "kategori") {
+                handler = (value: string) => {
+                    if(value == "5R") {
+                        value = "VR";
+                    }
+
+                    setCategory(string_to_reporttype(value)!)
+                };
+
+                d.items = d.items.map(value => value == "VR" ? "5R" : value);
+              }
+              else if(d.id == "followup") {
+                handler = (value: string) => setFollowUpType(string_to_accounttype(value)!);
+              }
+              
+              return (
+                <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} action={handler} />
+              );
+            })}
             </div>
             {/* End */}
 
@@ -122,6 +131,7 @@ export default function ReportFormComponent() {
                 id="lokasi"
                 placeholder="Lokasi temuan"
                 className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-xs"
+                onChange={(e) => setLocation(e.target.value)}
                 required
               />
             </div>
@@ -136,8 +146,9 @@ export default function ReportFormComponent() {
                   <img src="../../../public/dateTimeIcon.svg" className="w-5 h-5" alt="" />
                   Tanggal Temuan</label>
                 <input type="datetime-local"
-                  placeholder="Lokasi temuan"
+                  placeholder="Tanggal temuan"
                   className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-xs"
+                  onChange={(e) => setReportDate(e.target.value)}
                   required />
               </div>
               {/* End */}
@@ -150,8 +161,9 @@ export default function ReportFormComponent() {
                   <img src="../../../public/timeIcon.svg" className="w-5 h-5" alt="" />
                   Due Date</label>
                 <input type="datetime-local"
-                  placeholder="Lokasi temuan"
+                  placeholder="Tenggat Waktu"
                   className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-xs"
+                  onChange={(e) => setReportDueDate(e.target.value)}
                   required />
               </div>
             </div>
@@ -169,7 +181,7 @@ export default function ReportFormComponent() {
                 id="lokasi"
                 placeholder="Nama Follow Up..."
                 className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-xs"
-                onChange={(e) => setLocation(e.target.value)}
+                onChange={(e) => setFollowUpName(e.target.value)}
                 required
               />
             </div>
@@ -219,8 +231,9 @@ export default function ReportFormComponent() {
         {/* Submit Button */}
         <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
           <button
-            type="submit"
+            type="button"
             className="rounded-[20px] flex items-center px-6 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            onClick={handle_submit}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
