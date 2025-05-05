@@ -99,87 +99,89 @@ export default function ReportListComponent() {
   return (
     <>
       {/* Table for desktop */}
-      <div className="hidden md:block overflow-x-auto rounded-xl">
-        <table className="min-w-full">
-          <thead className="bg-red-900">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Tanggal
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Laporan
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Lokasi
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                PIC
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Kategori
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Status
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white/20 backdrop-blur-md">
-            {reports.map((report, index) => (
-              <tr key={index} className="report-row" data-report-id={report.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {formatDate(report.created_at)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
-                  {report.message}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.location}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.type}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]
-                      }`}
-                  >
-                    {report.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3" onClick={() => { handle_detail(report.id) }}>
-                    Detail
-                  </button>
-                </td>
+      <div className="px-4 py-2">
+        <div className="hidden md:block overflow-x-auto border border-gray-300 rounded-xl">
+          <table className="min-w-full">
+            <thead className="bg-[#7FA1C3]">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Tanggal
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Laporan
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Lokasi
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  PIC
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Kategori
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Status
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                >
+                  Action
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white/20 backdrop-blur-md">
+              {reports.map((report, index) => (
+                <tr key={index} className="report-row" data-report-id={report.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {formatDate(report.created_at)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
+                    {report.message}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {report.location}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {report.type}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]
+                        }`}
+                    >
+                      {report.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button className="text-blue-600 hover:text-blue-900 mr-3" onClick={() => { handle_detail(report.id) }}>
+                      Detail
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Cards for mobile */}
@@ -223,40 +225,43 @@ export default function ReportListComponent() {
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-col gap-4 md:flex-row items-center justify-between mt-6">
+      <div className="flex flex-col gap-4 md:flex-row justify-between items-center mt-6">
         <div className="flex flex-row gap-2 items-center">
-          <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
+          <button className="rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+          >
             Prev
           </button>
-          <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
+          <button className="rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+          >
             Next
           </button>
         </div>
-        <button className="px-6 py-1 bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white rounded-xl cursor-pointer">
+        <button className="rounded-[20px] flex px-6 py-2 w-1/5 justify-center text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+        >
           Logout
         </button>
       </div>
 
       {/*  Modal Element */}
-        <div id="modal" className={(showDetail ? "visible pointer-events-auto bottom-1/2" : "invisible pointer-events-none -bottom-96") + " left-1/2 translate-y-[50%] -translate-x-1/2 duration-500 absolute bg-white rounded-xl shadow-gray-500 shadow-lg *:text-black w-min-[40dvw] h-[60dvh] p-10 flex flex-col gap-4 "}>
-          {(() => {
-            const report_data = reports.find(value => value.id == detailId)
+      <div id="modal" className={(showDetail ? "visible pointer-events-auto bottom-1/2" : "invisible pointer-events-none -bottom-96") + " left-1/2 translate-y-[50%] -translate-x-1/2 duration-500 absolute bg-white rounded-xl shadow-gray-500 shadow-lg *:text-black w-min-[40dvw] h-[60dvh] p-10 flex flex-col gap-4 "}>
+        {(() => {
+          const report_data = reports.find(value => value.id == detailId)
 
-            return <div className="flex flex-col gap-2 p-4">
-              <h1>Laporan: {report_data?.message}</h1>
-              <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
-              <br />
-              <h1>Tempat:  {report_data?.location}</h1>
-              <h1>PIC:  {report_data?.pic_name}</h1>
-              <h1>Kategori:  {report_data?.type}</h1>
-              <h1>Follow Up:  {report_data?.follow_up}</h1>
-            </div>
-          })()}
-          <div className="flex gap-2 w-full justify-stretch *:w-full">
-            <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Delete</button>
-            <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Change Status</button>
+          return <div className="flex flex-col gap-2 p-4">
+            <h1>Laporan: {report_data?.message}</h1>
+            <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
+            <br />
+            <h1>Tempat:  {report_data?.location}</h1>
+            <h1>PIC:  {report_data?.pic_name}</h1>
+            <h1>Kategori:  {report_data?.type}</h1>
+            <h1>Follow Up:  {report_data?.follow_up}</h1>
           </div>
-          <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl hover:bg-gray-900">Close</button>
+        })()}
+        <div className="flex gap-2 w-full justify-stretch *:w-full">
+          <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Delete</button>
+          <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Change Status</button>
+        </div>
+        <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl hover:bg-gray-900">Close</button>
       </div>
     </>
   );

@@ -2,21 +2,21 @@
 import ReportFormComponent from "../../components/ReportFormComponent";
 ---
 
-<div>
-  <div class="flex flex-row justify-between items-center mb-2 px-4">
+<div class="px-4">
+  <div class="flex flex-row justify-between items-center mb-2 px-4 py-2">
     <h1
       class="flex flex-row gap-2 items-center font-bold uppercase tracking-[2px] text-xs md:text-lg text-black"
     >
-      <img src="/reportIcon.svg" class="w-6 h-6" alt="" />
+      <img src="/public/reportIcon.svg" class="w-6 h-6" alt="" />
       Laporkan Temuanmu!
     </h1>
     <img
       src="/logoSekolah.png"
       alt="Logo SMK Mitra Industri MM2100"
-      class="h-12 w-auto"
+      class="h-12 w-auto p-1 bg-white rounded-[50px]"
     />
   </div>
-  <ReportFormComponent />  
+  <ReportFormComponent />
 </div>
 
 <script>
@@ -162,5 +162,5 @@ import ReportFormComponent from "../../components/ReportFormComponent";
         });
       });
     });
-  })()
+  })();
 </script>
