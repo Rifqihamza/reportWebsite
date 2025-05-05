@@ -209,9 +209,8 @@ export default function ReportListComponent() {
             <div className="flex justify-between items-start mb-2">
               <h3 className="font-medium text-gray-900 truncate">{report.message}</h3>
               <span
-                className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                  statusColors[report.status]
-                }`}
+                className={`px-2 py-1 text-xs font-semibold rounded-full ${statusColors[report.status]
+                  }`}
               >
                 {report.status}
               </span>
@@ -253,7 +252,7 @@ export default function ReportListComponent() {
           Logout
         </button>
       </div>
-      
+
       {/*  Modal Element */}
       <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 -translate-y-1/2 -translate-x-1/2 duration-1000 fixed bg-red-900 *:text-white w-[90vw] max-w-[800px] min-w-[250px] h-[60dvh] shadow-[0_0_8px_5px_#000] p-10 box-border flex flex-col gap-4 z-10 rounded-xl"}>
         {(() => {
