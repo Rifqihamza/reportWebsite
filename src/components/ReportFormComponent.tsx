@@ -29,7 +29,7 @@ export default function ReportFormComponent() {
         setDropdowns(dropdowns.map((value) => value.id == "pic" ? {id: value.id, items: pic_data_array.map(pic_data => pic_data.username), label: value.label} : value));
         setPic(pic_data_array[0].username);
       }
-      else {
+      else if(pic_data_array == APIResultType.InternalServerError) {
         alert("There's an error when trying to get PIC data");
       }
     });

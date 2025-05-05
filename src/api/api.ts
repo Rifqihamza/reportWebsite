@@ -229,6 +229,9 @@ export async function getUser(): Promise<User|APIResultType> {
     if(response.ok) {
         return (await response.json()) as User;
     }
-
+    else if (response.status == 401) {
+        return APIResultType.Unauthorized;
+    }
+ 
     return APIResultType.InternalServerError;
 }
