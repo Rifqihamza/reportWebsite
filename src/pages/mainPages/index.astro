@@ -1,31 +1,11 @@
 ---
-import ReportForm from "./reportForm.astro";
-import ListDataReport from "./listDataReport.astro";
+import MainPage from "./index";
+
 ---
 
 <section>
   <div id="container" class="max-w-6xl mx-auto p-6 md:px-10 md:py-4">
-    <!-- Tabs -->
-    <div class="flex items-center">
-      <button id="tab-form" class="tab-button active" data-tab="form"
-        >Report</button
-      >
-      <button id="tab-data" class="tab-button" data-tab="data"
-        >Report Data</button
-      >
-    </div>
-
-    <!-- Content -->
-    <div
-      class="rounded-b-xl rounded-tr-xl px-4 py-6 min-h-[30rem] relative bg-white shadow-md shadow-gray-600"
-    >
-      <div id="form-section" class="tab-content active">
-        <ReportForm />
-      </div>
-      <div id="data-section" class="tab-content hidden">
-        <ListDataReport />
-      </div>
-    </div>
+    <MainPage client:load />
   </div>
 </section>
 
@@ -82,7 +62,154 @@ import ListDataReport from "./listDataReport.astro";
   })();
 </script>
 
-<style>
+<script>
+  // Use a self-executing function to avoid global scope pollution
+  (function () {
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("report-form");
+      const fileInput = document.getElementById("foto");
+      const fileNameDisplay = document.getElementById("file-name-display");
+
+      // File input change handler
+      if (fileInput && fileNameDisplay) {
+        fileInput.addEventListener("change", function () {
+          const inputElement = this as HTMLInputElement;
+          if (inputElement.files && inputElement.files[0]) {
+            const files = (this as HTMLInputElement).files;
+            const fileName =
+              files && files[0] ? files[0].name : "Klik untuk upload foto";
+            fileNameDisplay.textContent = fileName;
+          } else {
+            fileNameDisplay.textContent = "Klik untuk upload foto";
+          }
+        });
+      }
+
+      // Form submission
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Collect form data
+          const formData = new FormData(form as HTMLFormElement);
+
+          // Simple form validation
+          const laporan = formData.get("laporan");
+          const lokasi = formData.get("lokasi");
+          const pic = formData.get("pic");
+          const kategori = formData.get("kategori");
+          const followup = formData.get("followup");
+
+          if (!laporan || !lokasi) {
+            alert("Harap isi semua kolom yang diperlukan");
+            return;
+          }
+
+          // Log form data (for demonstration)
+          console.log("Form data:", Object.fromEntries(formData));
+
+          // Here you would send the data to your server
+          // For now, just show a success message
+          alert("Laporan berhasil dikirim!");
+          (form as HTMLFormElement).reset();
+
+          // Reset dropdown labels
+          document
+            .querySelectorAll(".dropdown-label")
+            .forEach(function (label) {
+              const dropdownContainer = label.closest(".dropdown-container");
+              const dropdownId = dropdownContainer
+                ? dropdownContainer.getAttribute("data-dropdown-id")
+                : null;
+              const defaultLabels = {
+                pic: "Pilih PIC",
+                kategori: "Pilih Kategori",
+                followup: "Pilih Follow Up",
+              };
+
+              if (
+                dropdownId &&
+                defaultLabels[dropdownId as keyof typeof defaultLabels]
+              ) {
+                label.textContent =
+                  defaultLabels[dropdownId as keyof typeof defaultLabels];
+              }
+            });
+
+          // Reset file input display
+          if (fileNameDisplay) {
+            fileNameDisplay.textContent = "Klik untuk upload foto";
+          }
+        });
+      }
+    });
+  })();
+
+  // Used for dropdown
+  (function () {
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdowns = document.querySelectorAll(".dropdown-container");
+
+      dropdowns.forEach(function (dropdown) {
+        const trigger = dropdown.querySelector(".dropdown-trigger");
+        const menu = dropdown.querySelector(".dropdown-menu");
+        const items = dropdown.querySelectorAll(".dropdown-item");
+        const input = dropdown.querySelector('input[type="hidden"]');
+        const labelEl = dropdown.querySelector(".dropdown-label");
+
+        if (!trigger || !menu) return;
+
+        trigger.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          const isExpanded = trigger.getAttribute("aria-expanded") === "true";
+
+          // Close all other dropdowns
+          dropdowns.forEach(function (otherDropdown) {
+            if (otherDropdown !== dropdown) {
+              const otherTrigger =
+                otherDropdown.querySelector(".dropdown-trigger");
+              const otherMenu = otherDropdown.querySelector(".dropdown-menu");
+              if (otherTrigger)
+                otherTrigger.setAttribute("aria-expanded", "false");
+              if (otherMenu) otherMenu.classList.add("hidden");
+            }
+          });
+
+          // Toggle current dropdown
+          trigger.setAttribute("aria-expanded", String(!isExpanded));
+          menu.classList.toggle("hidden");
+        });
+
+        items.forEach(function (item) {
+          item.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const value = item.getAttribute("data-value");
+
+            if (input) (input as HTMLInputElement).value = value || "";
+            if (labelEl) labelEl.textContent = value;
+
+            trigger.setAttribute("aria-expanded", "false");
+            menu.classList.add("hidden");
+          });
+        });
+      });
+
+      document.addEventListener("click", function () {
+        dropdowns.forEach(function (dropdown) {
+          const trigger = dropdown.querySelector(".dropdown-trigger");
+          const menu = dropdown.querySelector(".dropdown-menu");
+
+          if (trigger) trigger.setAttribute("aria-expanded", "false");
+          if (menu) menu.classList.add("hidden");
+        });
+      });
+    });
+  })()
+</script>
+
+
+<style is:global>
   .tab-button {
     cursor: pointer;
     background-color: #f9f9f9;
