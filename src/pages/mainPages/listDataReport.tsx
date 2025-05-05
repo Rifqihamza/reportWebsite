@@ -37,7 +37,7 @@ export default function ListDataReport({ userData }: { userData: User }) {
 
             <button
                 id="filter-button"
-                className="bg-red-900 shadow-inner shadow-zinc-500 text-white px-6 py-3 rounded-lg hover:bg-zinc-900 transition-colors"
+                className="bg-[#7FA1C3] shadow-inner shadow-zinc-500 text-white px-6 py-3 rounded-lg hover:bg-zinc-900 transition-colors"
                 aria-label="Filter"
             >
               <svg
