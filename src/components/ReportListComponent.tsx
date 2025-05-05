@@ -1,5 +1,6 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, APIResultType, changeReportStatus, deleteReport, getReport, getUser, ReportStatus, ReportType, userLogout, type ReportData, type User } from "../api/api";
+import { AccountType, ReportStatus, ReportType, type ReportData, type User } from "../types/variables";
+import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../api/api";
 
 export default function ReportListComponent({ userData }: { userData: User }) {
   const [showDetail, setShowDetail] = useState(false);

@@ -1,4 +1,4 @@
-import type { User } from "../../api/api";
+import type { User } from "../../types/variables";
 import ReportListComponent from "../../components/ReportListComponent";
 
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Dropdown from "./dropdowns";
-import { AccountType, addReport, APIResultType, getPIC, ReportType, string_to_accounttype, string_to_reporttype } from '../api/api';
+import { AccountType, ReportType, string_to_accounttype, string_to_reporttype } from '../types/variables';
+import { addReport, APIResultType, getPIC } from '../api/api';
 
 export default function ReportFormComponent() {
   const [message, setMessage] = useState("");

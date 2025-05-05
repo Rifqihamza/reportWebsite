@@ -1,6 +1,7 @@
 import ReportForm from "./reportForm";
 import ListDataReport from "./listDataReport";
-import { AccountType, getUser, type User } from "../../api/api";
+import { AccountType, type User } from "../../types/variables";
+import { getUser } from "../../api/api";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 export default function MainPage() {
