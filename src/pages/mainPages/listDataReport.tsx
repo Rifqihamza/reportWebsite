@@ -1,7 +1,8 @@
+import type { User } from "../../api/api";
 import ReportListComponent from "../../components/ReportListComponent";
 
 
-export default function ListDataReport() {
+export default function ListDataReport({ userData }: { userData: User }) {
 
     return <>
 
@@ -58,7 +59,7 @@ export default function ListDataReport() {
           </div>
         </div>
 
-        <ReportListComponent />
+        <ReportListComponent userData={userData} />
       </div>
     </>
 }

@@ -14,59 +14,6 @@ import MainPage from "./index";
   // Use a self-executing function to avoid global scope pollution
   (function () {
     document.addEventListener("DOMContentLoaded", function () {
-      // Get all tab buttons (both desktop and mobile)
-      const tabButtons = document.querySelectorAll(".tab-button, .mobile-tab");
-      const tabContents = document.querySelectorAll(".tab-content");
-
-      // Function to set active tab
-      function setActiveTab(tabName: string) {
-        // Update all tab buttons
-        tabButtons.forEach(function (button) {
-          if (button.getAttribute("data-tab") === tabName) {
-            button.classList.add("active");
-          } else {
-            button.classList.remove("active");
-          }
-        });
-
-        // Update all tab contents
-        tabContents.forEach(function (content) {
-          if (content.id === `${tabName}-section`) {
-            content.classList.remove("hidden");
-            content.classList.add("active");
-          } else {
-            content.classList.add("hidden");
-            content.classList.remove("active");
-          }
-        });
-
-        // Optionally update URL hash for bookmarking
-        window.location.hash = tabName;
-      }
-
-      // Add click event listeners to all tab buttons
-      tabButtons.forEach(function (button) {
-        button.addEventListener("click", function (this: HTMLElement) {
-          const tabName = this.getAttribute("data-tab") || "form";
-          setActiveTab(tabName);
-        });
-      });
-
-      // Check for hash in URL to set initial tab
-      if (window.location.hash) {
-        const tabName = window.location.hash.substring(1); // Remove the # character
-        if (tabName === "data" || tabName === "form") {
-          setActiveTab(tabName);
-        }
-      }
-    });
-  })();
-</script>
-
-<script>
-  // Use a self-executing function to avoid global scope pollution
-  (function () {
-    document.addEventListener("DOMContentLoaded", function () {
       const form = document.getElementById("report-form");
       const fileInput = document.getElementById("foto");
       const fileNameDisplay = document.getElementById("file-name-display");

@@ -1,7 +1,7 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { AccountType, APIResultType, changeReportStatus, deleteReport, getReport, getUser, ReportStatus, ReportType, userLogout, type ReportData, type User } from "../api/api";
 
-export default function ReportListComponent() {
+export default function ReportListComponent({ userData }: { userData: User }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
 
@@ -18,14 +18,7 @@ export default function ReportListComponent() {
     },
   ]);
 
-  const [userData, setUserData]: [User, Dispatch<SetStateAction<User>>] = useState({
-    id: "",
-    username: "",
-    email: "",
-    password: "",
-    role: AccountType.Siswa as AccountType,
-    created_at: "",
-  });
+  
 
   // Status color mapping
   const statusColors = {
@@ -104,12 +97,6 @@ export default function ReportListComponent() {
         setReports(report_data_array);
       }
     });
-
-    getUser().then(user_data => {
-      if(typeof user_data == "object") {
-        setUserData(user_data);
-      }
-    })
   }, []);
 
 
@@ -268,7 +255,7 @@ export default function ReportListComponent() {
                 <h1>Kategori:  {report_data?.type}</h1>
                 <h1>Follow Up:  {report_data?.follow_up}</h1>
               </div>
-              <div className="gap-2 w-full justify-stretch *:w-full grid md:flex">
+              <div className={`gap-2 w-full justify-stretch *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
                 <button className="bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, report_data.status == ReportStatus.OnProgress ? ReportStatus.Completed : ReportStatus.OnProgress)}>{report_data.status == ReportStatus.OnProgress ? "Set Complete" : "Set On Progress"}</button>
                 <button className="bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, ReportStatus.Pending)}>Pending Laporan</button>
                 <button className="bg-red-900 -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_delete(report_data.id)}>Hapus</button>
