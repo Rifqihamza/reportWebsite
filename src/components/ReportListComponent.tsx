@@ -238,11 +238,11 @@ export default function ReportListComponent() {
       </div>
 
       {/*  Modal Element */}
-      <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 translate-y-[-50%] -translate-x-1/2 duration-1000 absolute bg-red-900 *:text-white w-min-[40dvw] h-[60dvh] p-10 flex flex-col gap-4"}>
-        {(() => {
+        <div id="modal" className={(showDetail ? "visible pointer-events-auto bottom-1/2" : "invisible pointer-events-none -bottom-96") + " left-1/2 translate-y-[50%] -translate-x-1/2 duration-500 absolute bg-white rounded-xl shadow-gray-500 shadow-lg *:text-black w-min-[40dvw] h-[60dvh] p-10 flex flex-col gap-4 "}>
+          {(() => {
             const report_data = reports.find(value => value.id == detailId)
 
-            return <div className="flex flex-col gap-2">
+            return <div className="flex flex-col gap-2 p-4">
               <h1>Laporan: {report_data?.message}</h1>
               <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
               <br />
@@ -251,12 +251,12 @@ export default function ReportListComponent() {
               <h1>Kategori:  {report_data?.type}</h1>
               <h1>Follow Up:  {report_data?.follow_up}</h1>
             </div>
-        })()}
-        <div className="flex gap-2 w-full justify-stretch *:w-full">
-          <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Delete</button>
-          <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Change Status</button>
-        </div>
-        <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl hover:bg-gray-900">Close</button>
+          })()}
+          <div className="flex gap-2 w-full justify-stretch *:w-full">
+            <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Delete</button>
+            <button className="bg-black hover:bg-gray-900 text-white p-2 px-4 rounded-2xl">Change Status</button>
+          </div>
+          <button onClick={handle_close} className="bg-black text-white p-2 px-4 rounded-2xl hover:bg-gray-900">Close</button>
       </div>
     </>
   );
