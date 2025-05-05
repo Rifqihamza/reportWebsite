@@ -1,10 +1,10 @@
 import ReportListComponent from "../../components/ReportListComponent";
+import type { User } from "../../types/variables";
 
 
-export default function ListDataReport() {
+export default function ListDataReport({ userData }: { userData: User }) {
 
     return <>
-
       <div>
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:justify-between md:items-center mb-6">
           <h2 className="font-bold uppercase tracking-[2px] text-md flex flex-row gap-2 items-center">
@@ -58,7 +58,7 @@ export default function ListDataReport() {
           </div>
         </div>
 
-        <ReportListComponent />
+        <ReportListComponent userData={userData} />
       </div>
     </>
 }

@@ -1,8 +1,9 @@
 'use client';
 import { useState } from "react";
+import type { User } from "../types/variables";
 
 
-export default function ReportListComponent() {
+export default function ReportListComponent({ userData }: { userData: User }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
 

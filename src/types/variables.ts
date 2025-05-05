@@ -1,0 +1,53 @@
+export enum AccountType {
+    NoType = "",
+    Guru = "Guru",
+    Siswa = "Siswa",
+    Vendor = "Vendor"
+}
+
+export enum ReportType {
+    NoType = "",
+    VR = "5R",
+    Safety = "Safety",
+    SOP = "SOP",
+    Quality = "Quality"
+}
+
+export enum ReportStatus {
+    Pending = "Pending",
+    OnProgress = "OnProgress",
+    Completed = "Completed"
+}
+
+export function string_to_reporttype(data: string): ReportType|undefined {
+    return Object.values(ReportType).find(value => value.toString() == data);
+}
+
+export function string_to_accounttype(data: string): AccountType|undefined {
+    return Object.values(AccountType).find(value => value.toString() == data);
+}
+
+export function string_to_reportstatus(data: string): ReportStatus|undefined {
+    return Object.values(ReportStatus).find(value => value.toString() == data);
+}
+
+// DATABASE MODEL
+export type ReportData = {
+    id: string,
+    message: string,
+    type: ReportType,
+    follow_up: AccountType,
+    status: ReportStatus,
+    location: string,
+    pic_name: string,
+    created_at: string
+}
+
+export type User = {
+    id: string,
+    email: string,
+    username: string,
+    password: string,
+    role: AccountType,
+    created_at: string
+}
