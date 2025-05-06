@@ -51,7 +51,7 @@ export default function ReportFormComponent() {
               htmlFor="laporan"
               className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
             >
-              <img src="/detailsReportIcon.svg" className="w-5 h-5" alt="" />
+              <img src="/detailsReporticon.svg" className="w-5 h-5" alt="" />
               Detail Laporan
             </label>
             <textarea
