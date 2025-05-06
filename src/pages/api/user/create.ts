@@ -1,6 +1,6 @@
 import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
-import { create_response_status, first_initialization, get_cookie_from_request, verify_admin_token } from "../../../utils/api_helper";
+import { create_response_status, first_initialization, get_cookies_from_request, verify_admin_token } from "../../../utils/api_helper";
 import { type AccountType, Prisma } from "@prisma/client";
 
 export async function POST({ request }: APIContext) {
@@ -11,7 +11,7 @@ export async function POST({ request }: APIContext) {
 
 
     // Verify the admin token
-    const request_cookies = get_cookie_from_request(request);
+    const request_cookies = get_cookies_from_request(request);
     if(!request_cookies || !verify_admin_token(request_cookies["admin_token"])) {
         return create_response_status(401);
     }

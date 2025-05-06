@@ -44,7 +44,7 @@ export function create_response_cookie(body: object, cookie: string): Response {
 
 
 // Get Cookie
-export function get_cookie_from_request(request: Request): Record<string, string | undefined> | undefined {
+export function get_cookies_from_request(request: Request): Record<string, string | undefined> | undefined {
     const request_cookie = request.headers.get('cookie');
     
     if(!request_cookie) {
