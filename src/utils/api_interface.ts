@@ -1,6 +1,6 @@
 import type { AccountType, ReportData, ReportStatus, ReportType, User } from "../types/variables";
 
-const base_url_endpoint: string = "http://localhost:8000";
+const base_url_endpoint: string = "http://localhost:4321";
 
 // Useful enum!
 export enum APIResultType {
