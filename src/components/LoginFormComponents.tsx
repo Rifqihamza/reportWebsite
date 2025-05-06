@@ -1,6 +1,6 @@
 'use client';
 import { useState } from "react";
-import { APIResultType, userLogin } from "../api/api";
+import { APIResultType, userLogin } from "../utils/api_interface";
 
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
