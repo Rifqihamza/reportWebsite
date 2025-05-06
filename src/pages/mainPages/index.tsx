@@ -21,7 +21,7 @@ export default function MainPage() {
     <div className="flex items-center">
       <button id="tab-data" onClick={() => setActiveTab(0)} className={`tab-button ${activeTab == 0 ? "active" : ""}`} data-tab="data">Report Data</button>
       <button id="tab-form" onClick={() => setActiveTab(1)} className={`tab-button ${activeTab == 1 ? "active" : ""} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "hidden"}`} data-tab="form">Report</button>
-      <button id="tab-graph" onClick={() => setActiveTab(2)} className={`tab-button ${activeTab == 2 ? "active" : ""} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "hidden"}`} data-tab="graph">Graphic Data</button>
+      <button id="tab-graph" onClick={() => setActiveTab(2)} className={`tab-button ${activeTab == 2 ? "active" : ""}`} data-tab="graph">Graphic Data</button>
     </div>
 
     {/* Content */}
