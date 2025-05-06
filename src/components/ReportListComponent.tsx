@@ -107,7 +107,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
     <>
       {/* Table for desktop */}
       <div className="px-4 py-2">
-        <div className="hidden md:block overflow-x-auto border border-gray-300 rounded-xl">
+        <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl">
           <table className="min-w-full">
             <thead className="bg-[#7FA1C3]">
               <tr>
