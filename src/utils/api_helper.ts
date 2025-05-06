@@ -1,6 +1,8 @@
 import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
 import cookie from 'cookie';
+import { prisma } from "./db";
+import { AccountType } from "@prisma/client";
 
 let done_initialization = false;
 
@@ -72,6 +74,22 @@ export function verify_user_token(token: string): string | undefined {
     catch {
         return undefined;
     }
+}
+
+export async function verify_teacher_token(token: string): Promise<boolean | undefined> {
+    const result = verify_user_token(token);
+
+    if(!result) {
+        return;
+    }
+    
+    const user_data = await prisma.users.findUnique({
+        where: {
+            username: result
+        }
+    })
+    
+    return user_data?.role === AccountType.Guru;
 }
 
 export function verify_admin_token(token?: string): boolean {

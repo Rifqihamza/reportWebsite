@@ -13,7 +13,7 @@ export default function MainPage() {
     username: "",
     email: "",
     password: "",
-    role: AccountType.Guru as AccountType,
+    role: AccountType.NoType as AccountType,
     created_at: "",
   });
   
