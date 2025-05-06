@@ -51,7 +51,7 @@ export default function ReportFormComponent() {
               htmlFor="laporan"
               className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
             >
-              <img src="public/detailsReportIcon.svg" className="w-5 h-5" alt="" />
+              <img src="/detailsReportIcon.svg" className="w-5 h-5" alt="" />
               Detail Laporan
             </label>
             <textarea
@@ -73,7 +73,7 @@ export default function ReportFormComponent() {
                 htmlFor="laporan"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="public/avatarIcon.svg" className="w-5 h-5" alt="" />
+                <img src="/avatarIcon.svg" className="w-5 h-5" alt="" />
                 Nama PIC
               </label>
               <input
@@ -122,7 +122,7 @@ export default function ReportFormComponent() {
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="public/locationIcon.svg" className="w-5 h-5" alt="" />
+                <img src="/locationIcon.svg" className="w-5 h-5" alt="" />
                 Lokasi
               </label>
               <input
@@ -143,7 +143,7 @@ export default function ReportFormComponent() {
                 <label htmlFor="tanggal"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <img src="public/dateTimeIcon.svg" className="w-5 h-5" alt="" />
+                  <img src="/dateTimeIcon.svg" className="w-5 h-5" alt="" />
                   Tanggal Temuan</label>
                 <input type="datetime-local"
                   placeholder="Tanggal temuan"
@@ -158,7 +158,7 @@ export default function ReportFormComponent() {
                 <label htmlFor="dueDate"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <img src="public/timeIcon.svg" className="w-5 h-5" alt="" />
+                  <img src="/timeIcon.svg" className="w-5 h-5" alt="" />
                   Due Date</label>
                 <input type="datetime-local"
                   placeholder="Tenggat Waktu"
@@ -172,7 +172,7 @@ export default function ReportFormComponent() {
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="public/followUpIcon.svg" className="w-5 h-5" alt="" />
+                <img src="/followUpIcon.svg" className="w-5 h-5" alt="" />
                 Follow Up Oleh
               </label>
               <input
@@ -195,7 +195,7 @@ export default function ReportFormComponent() {
             htmlFor="foto"
             className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
           >
-            <img src="public/uploadFileIcon.svg" className="w-5 h-5" alt="" />
+            <img src="/uploadFileIcon.svg" className="w-5 h-5" alt="" />
             Foto Bukti
           </label>
           <div className="flex items-center justify-center w-full">
