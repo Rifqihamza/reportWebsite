@@ -12,8 +12,7 @@ export async function POST({ request }: APIContext) {
 
     // Verify the admin token
     const request_cookies = get_cookie_from_request(request);
-    const admin_token = request_cookies["admin_token"];
-    if(!verify_admin_token(admin_token)) {
+    if(!request_cookies || !verify_admin_token(request_cookies["admin_token"])) {
         return create_response_status(401);
     }
 

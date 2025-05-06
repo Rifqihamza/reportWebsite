@@ -1,5 +1,6 @@
 import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
+import cookie from 'cookie';
 
 let done_initialization = false;
 
@@ -43,18 +44,14 @@ export function create_response_cookie(body: object, cookie: string): Response {
 
 
 // Get Cookie
-export function get_cookie_from_request(request: Request): {
-    [k: string]: string;
-} {
-    const cookieHeader = request.headers.get('cookie') || '';
-    const cookies = Object.fromEntries(
-        cookieHeader.split('; ').map(c => {
-        const [key, ...v] = c.split('=');
-        return [key, v.join('=')];
-        })
-    );
+export function get_cookie_from_request(request: Request): Record<string, string | undefined> | undefined {
+    const request_cookie = request.headers.get('cookie');
+    
+    if(!request_cookie) {
+        return undefined;
+    }
 
-    return cookies;
+    return cookie.parse(request_cookie);
 }
 
 
@@ -77,6 +74,6 @@ export function verify_user_token(token: string): string | undefined {
     }
 }
 
-export function verify_admin_token(token: string): boolean {
+export function verify_admin_token(token?: string): boolean {
     return token === process.env.ADMIN_TOKEN;
 }
