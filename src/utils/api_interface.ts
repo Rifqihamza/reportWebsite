@@ -173,7 +173,7 @@ export async function userLogout(): Promise<boolean> {
 export async function getUser(): Promise<User|APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/get", {
-        method: "POST",
+        method: "GET",
         credentials: "include",
     });
 
