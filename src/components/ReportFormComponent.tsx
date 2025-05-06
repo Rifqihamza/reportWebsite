@@ -21,7 +21,7 @@ export default function ReportFormComponent() {
               htmlFor="laporan"
               className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
             >
-              <img src="../../../public/detailsReportIcon.svg" className="w-5 h-5" alt="" />
+              <img src="public/detailsReportIcon.svg" className="w-5 h-5" alt="" />
               Detail Laporan
             </label>
             <textarea
@@ -29,7 +29,7 @@ export default function ReportFormComponent() {
               name="laporan"
               id="laporan"
               placeholder="Deskripsikan Temuan Anda..."
-              className="p-4 outline-none border border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-xs"
+              className="px-6 py-3 outline-none border border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
               required
             ></textarea>
           </div>
@@ -42,14 +42,14 @@ export default function ReportFormComponent() {
                 htmlFor="laporan"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="../../../public/avatarIcon.svg" className="w-5 h-5" alt="" />
+                <img src="public/avatarIcon.svg" className="w-5 h-5" alt="" />
                 Nama PIC
               </label>
               <input
                 name="laporan"
                 id="laporan"
                 placeholder="Nama PIC..."
-                className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-xs"
+                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 required
               />
             </div>
@@ -69,7 +69,7 @@ export default function ReportFormComponent() {
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="/locationIcon.svg" className="w-5 h-5" alt="" />
+                <img src="public/locationIcon.svg" className="w-5 h-5" alt="" />
                 Lokasi
               </label>
               <input
@@ -77,7 +77,7 @@ export default function ReportFormComponent() {
                 name="lokasi"
                 id="lokasi"
                 placeholder="Lokasi temuan"
-                className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-xs"
+                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 required
               />
             </div>
@@ -89,11 +89,11 @@ export default function ReportFormComponent() {
                 <label htmlFor="tanggal"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <img src="../../../public/dateTimeIcon.svg" className="w-5 h-5" alt="" />
+                  <img src="public/dateTimeIcon.svg" className="w-5 h-5" alt="" />
                   Tanggal Temuan</label>
                 <input type="datetime-local"
                   placeholder="Lokasi temuan"
-                  className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-xs"
+                  className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
                   required />
               </div>
               {/* End */}
@@ -103,11 +103,11 @@ export default function ReportFormComponent() {
                 <label htmlFor="dueDate"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <img src="../../../public/timeIcon.svg" className="w-5 h-5" alt="" />
+                  <img src="public/timeIcon.svg" className="w-5 h-5" alt="" />
                   Due Date</label>
                 <input type="datetime-local"
                   placeholder="Lokasi temuan"
-                  className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-xs"
+                  className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
                   required />
               </div>
             </div>
@@ -116,7 +116,7 @@ export default function ReportFormComponent() {
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="/followUpIcon.svg" className="w-5 h-5" alt="" />
+                <img src="public/followUpIcon.svg" className="w-5 h-5" alt="" />
                 Follow Up Oleh
               </label>
               <input
@@ -124,7 +124,7 @@ export default function ReportFormComponent() {
                 name="lokasi"
                 id="lokasi"
                 placeholder="Nama Follow Up..."
-                className="p-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-xs"
+                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 required
               />
             </div>
@@ -138,7 +138,7 @@ export default function ReportFormComponent() {
             htmlFor="foto"
             className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
           >
-            <img src="/uploadFileIcon.svg" className="w-5 h-5" alt="" />
+            <img src="public/uploadFileIcon.svg" className="w-5 h-5" alt="" />
             Foto Bukti
           </label>
           <div className="flex items-center justify-center w-full">
@@ -155,9 +155,9 @@ export default function ReportFormComponent() {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                   ></path>
                 </svg>
@@ -185,9 +185,9 @@ export default function ReportFormComponent() {
               stroke="currentColor"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
               ></path>
             </svg>

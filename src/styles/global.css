@@ -14,7 +14,7 @@ body {
 }
 
 .wave {
-  background: #E2DAD6;
+  background: #e2dad6;
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 150%;
@@ -59,4 +59,27 @@ body {
   100% {
     transform: translateX(-10);
   }
+}
+
+.tab-button {
+  cursor: pointer;
+  background-color: #f9f9f9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem 1rem 0 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #aeaeae;
+}
+
+.tab-button.active {
+  background-color: #fff;
+  z-index: 10;
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.202);
+  padding: 0.5rem 1rem;
+  position: relative;
+  color: #000; /* blue-800 */
 }
