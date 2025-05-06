@@ -2,6 +2,8 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 interface Report {
+    label: string;
+    value: number;
     type: string;
 }
 
@@ -10,14 +12,8 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({ reports }) => {
-    const reportByCategory = reports.reduce((acc, report) => {
-        const key = report.type;
-        acc[key] = (acc[key] || 0) + 1;
-        return acc;
-    }, {} as Record<string, number>);
-
-    const labels = Object.keys(reportByCategory);
-    const series = Object.values(reportByCategory);
+    const labels = reports.map(value => value.label);
+    const series = reports.map(value => value.value);
 
     const options = {
         chart: {
