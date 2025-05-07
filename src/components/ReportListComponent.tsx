@@ -266,8 +266,8 @@ export default function ReportListComponent({ userData }: { userData: User }) {
                 <h1>PIC:  {report_data?.pic_name}</h1>
                 <h1>Kategori:  {(report_data?.type == "VR" ? "5R" : report_data?.type)}</h1>
                 <h1>Follow Up:  {report_data?.follow_up}</h1>
-                <h1>Tanggal Laporan:  {report_data?.report_date}</h1>
-                <h1>Tenggat Waktu:  {report_data?.due_date}</h1>
+                <h1>Tanggal Laporan:  {formatDate(report_data?.report_date)}</h1>
+                <h1>Tenggat Waktu:  {formatDate(report_data?.due_date)}</h1>
               </div>
               <div className={`gap-2 w-full justify-stretch *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
                 <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, report_data.status == ReportStatus.OnProgress ? ReportStatus.Completed : ReportStatus.OnProgress)}>{report_data.status == ReportStatus.OnProgress ? "Set Complete" : "Set On Progress"}</button>

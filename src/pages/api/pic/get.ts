@@ -1,8 +1,10 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, verify_user_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, first_initialization, get_cookies_from_request, verify_user_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 
 export async function GET({ request }: APIContext) {
+    await first_initialization();
+
     // Get cookies
     const cookies = get_cookies_from_request(request)
 
