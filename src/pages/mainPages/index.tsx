@@ -121,8 +121,8 @@ export default function MainPage() {
     {/* Content */}
     <div className="rounded-xl px-4 py-4 max-h-[35rem] md:max-h-[40rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
-      </div>
         <ListDataReport userData={userData} reports={reports} setReports={setReports} />
+      </div>
       <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
         <ReportForm reportData={reports} setReportData={setReports} />
       </div>
