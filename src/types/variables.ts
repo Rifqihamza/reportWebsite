@@ -1,12 +1,10 @@
 export enum AccountType {
-    NoType = "",
     Guru = "Guru",
     Siswa = "Siswa",
     Vendor = "Vendor"
 }
 
 export enum ReportType {
-    NoType = "",
     VR = "VR",
     Safety = "Safety",
     Abnormality = "Abnormality"

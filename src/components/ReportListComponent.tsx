@@ -4,26 +4,9 @@ import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout 
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData }: { userData: User }) {
+export default function ReportListComponent({ userData, reports, setReports }: { userData: User, reports: ReportData[], setReports: Dispatch<SetStateAction<ReportData[]>> }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
-
-
-  const [reports, setReports]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([
-    {
-      id: "c1i241v13-5v4b62-v1tvdfsc",
-      created_at: "2024-05-01T00:00:00",
-      message: "Temuan kebocoran pipa di area workshop",
-      location: "Workshop A",
-      pic_name: "Suhaimi",
-      type: ReportType.NoType as ReportType,
-      follow_up: AccountType.NoType as AccountType,
-      status: ReportStatus.OnProgress as ReportStatus,
-      report_date: "",
-      due_date: ""
-    },
-  ]);
-
   
 
   // Status color mapping
@@ -167,10 +150,11 @@ export default function ReportListComponent({ userData }: { userData: User }) {
               </tr>
             </thead>
             <tbody className="bg-white/20 backdrop-blur-md">
-              {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+              {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => {
+                return (
                 <tr key={index} className="report-row" data-report-id={report.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {formatDate(report.created_at)}
+                    {formatDate(new Date(report.created_at).toISOString())}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
                     {report.message}
@@ -196,7 +180,8 @@ export default function ReportListComponent({ userData }: { userData: User }) {
                     </button>
                   </td>
                 </tr>
-              ))}
+              )
+              })}
             </tbody>
           </table>
         </div>
@@ -221,7 +206,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
             </div>
             <div className="text-sm text-gray-500 space-y-1">
               <p>
-                <span className="font-medium">Tanggal:</span> {formatDate(report.created_at)}
+                <span className="font-medium">Tanggal:</span> {formatDate(new Date(report.created_at).toISOString())}
               </p>
               <p>
                 <span className="font-medium">Lokasi:</span> {report.location}
@@ -283,8 +268,8 @@ export default function ReportListComponent({ userData }: { userData: User }) {
                 <h1>PIC:  {report_data?.pic_name}</h1>
                 <h1>Kategori:  {(report_data?.type == "VR" ? "5R" : report_data?.type)}</h1>
                 <h1>Follow Up:  {report_data?.follow_up}</h1>
-                <h1>Tanggal Laporan:  {formatDate(report_data?.report_date)}</h1>
-                <h1>Tenggat Waktu:  {formatDate(report_data?.due_date)}</h1>
+                <h1>Tanggal Laporan:  {formatDate(new Date(report_data?.report_date).toISOString())}</h1>
+                <h1>Tenggat Waktu:  {formatDate(new Date(report_data?.due_date).toISOString())}</h1>
               </div>
               <div className={`gap-2 w-full justify-stretch *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
                 <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, report_data.status == ReportStatus.OnProgress ? ReportStatus.Completed : ReportStatus.OnProgress)}>{report_data.status == ReportStatus.OnProgress ? "Set Complete" : "Set On Progress"}</button>

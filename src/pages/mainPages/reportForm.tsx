@@ -1,6 +1,9 @@
+import type { Dispatch, SetStateAction } from "react";
 import ReportFormComponent from "../../components/ReportFormComponent";
+import type { Report } from "@prisma/client";
+import type { ReportData } from "../../types/variables";
 
-export default function ReportForm() {
+export default function ReportForm({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
 
   return <>
     <div>
@@ -15,7 +18,7 @@ export default function ReportForm() {
           className="h-12 w-auto"
         />
       </div>
-      <ReportFormComponent />  
+      <ReportFormComponent reportData={reportData} setReportData={setReportData} />  
     </div>
   </>;
 }

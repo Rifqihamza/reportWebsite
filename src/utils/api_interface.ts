@@ -37,7 +37,7 @@ export async function userLogin(username: string, password: string): Promise<API
     }
 }
 
-export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string): Promise<APIResultType> {
+export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string): Promise<APIResultType|ReportData> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
@@ -59,7 +59,7 @@ export async function addReport(message: string, pic_name: string, report_type: 
 
     // Check the response
     if(response.ok) {
-        return APIResultType.NoError;
+        return (await response.json()) as ReportData;
     }
     else if(response.status == 500) {
         return APIResultType.InternalServerError;
