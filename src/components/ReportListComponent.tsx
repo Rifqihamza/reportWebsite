@@ -1,6 +1,7 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, ReportType, type ReportData, type User } from "../types/variables";
-import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
+import { AccountType, ReportStatus, type ReportData, type User } from "../types/variables";
+import { Image } from 'primereact/image'
+import Dropdown from "./dropdowns";import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
 
 const reportsPerPage = 5;
 
@@ -8,12 +9,21 @@ export default function ReportListComponent({ userData, reports, setReports }: {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   
+  const dropdowns = [
+
+    {
+      id: "status",
+      label: "Edit Status",
+      items: ["Complete", "In Process", "Hold", "Not Started"],
+    },
+  ];
 
   // Status color mapping
   const statusColors = {
-    Pending: "bg-red-100 text-red-800",
-    OnProgress: "bg-yellow-100 text-yellow-800",
-    Completed: "bg-green-100 text-green-800",
+    NotStarted: "bg-red-100 text-red-800",
+    InProcess: "bg-yellow-100 text-yellow-800",
+    Complete: "bg-green-100 text-green-800",
+    Hold: "bg-blue-200 text-blue-900"
   };
 
   // Format date helper function
@@ -100,91 +110,87 @@ export default function ReportListComponent({ userData, reports, setReports }: {
   return (
     <>
       {/* Table for desktop */}
-      <div className="px-4 py-2">
-        <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl">
-          <table className="min-w-full">
-            <thead className="bg-[#7FA1C3]">
-              <tr>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
-                >
-                  Tanggal
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
-                >
-                  Laporan
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
-                >
-                  Lokasi
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
-                >
-                  PIC
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
-                >
-                  Kategori
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
-                >
-                  Status
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
-                >
-                  Action
-                </th>
+      <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl">
+        <table className="min-w-full">
+          <thead className="bg-[#7FA1C3]">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+              >
+                Tanggal
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+              >
+                Laporan
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+              >
+                Lokasi
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+              >
+                PIC
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+              >
+                Kategori
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+              >
+                Status
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+              >
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white/20 backdrop-blur-md">
+            {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+              <tr key={index} className="report-row" data-report-id={report.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  {formatDate(report.created_at)}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
+                  {report.message}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  {report.location}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  {report.type}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]
+                      }`}
+                  >
+                    {report.status}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button className="text-blue-600 hover:text-blue-900 mr-3 disabled:pointer-events-none disabled:opacity-50" onClick={() => { handle_detail(report.id) }} disabled={userData.role == AccountType.Siswa}>
+                    Detail
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody className="bg-white/20 backdrop-blur-md">
-              {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => {
-                return (
-                <tr key={index} className="report-row" data-report-id={report.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {formatDate(new Date(report.created_at).toISOString())}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600 max-w-[13rem] truncate">
-                    {report.message}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {report.location}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {report.type == "VR" ? "5R" : report.type}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]
-                        }`}
-                    >
-                      {report.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-blue-600 hover:text-blue-900 mr-3 disabled:pointer-events-none disabled:opacity-50" onClick={() => { handle_detail(report.id) }} disabled={userData.role == AccountType.Siswa}>
-                      Detail
-                    </button>
-                  </td>
-                </tr>
-              )
-              })}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Cards for mobile */}
@@ -251,35 +257,99 @@ export default function ReportListComponent({ userData, reports, setReports }: {
       </div>
 
       {/*  Modal Element */}
-      <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 -translate-y-1/2 -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-[60dvh] shadow-[0_0_15px_1px_#aaa] p-10 box-border flex flex-col gap-4 z-10 rounded-xl"}>
+      <div className={(showDetail ? "visible pointer-events-auto top-1/2" : "invisible pointer-events-none -top-96") + " left-1/2 -translate-y-1/2 -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-[0_0_15px_1px_#aaa] md:p-14 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
         {(() => {
-            const report_data = reports.find(value => value.id == detailId);
+            const report_data = reports.find(value => value.id == detailId) || reports[0];
 
             if(!report_data) {
                 return <></>;
             }
 
-            return <>
-              <div className="flex flex-col gap-2">
-                <h1>Laporan: {report_data?.message}</h1>
-                <h1>Status:  <span className={`${statusColors[report_data?.status!]} text-sm p-1 rounded-xl`}>{report_data?.status}</span></h1>
-                <br />
-                <h1>Tempat:  {report_data?.location}</h1>
-                <h1>PIC:  {report_data?.pic_name}</h1>
-                <h1>Kategori:  {(report_data?.type == "VR" ? "5R" : report_data?.type)}</h1>
-                <h1>Follow Up:  {report_data?.follow_up}</h1>
-                <h1>Tanggal Laporan:  {formatDate(new Date(report_data?.report_date).toISOString())}</h1>
-                <h1>Tenggat Waktu:  {formatDate(new Date(report_data?.due_date).toISOString())}</h1>
+          return <>
+            <div className="relative flex flex-col gap-2">
+              <div className="fixed top-5 right-6">
+                <button onClick={handle_close}>
+                  <svg
+                    className="w-4 h-4 ml-2"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1 1L9 9M1 9L9 1"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
               </div>
-              <div className={`gap-2 w-full justify-stretch *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
-                <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, report_data.status == ReportStatus.OnProgress ? ReportStatus.Completed : ReportStatus.OnProgress)}>{report_data.status == ReportStatus.OnProgress ? "Set Complete" : "Set On Progress"}</button>
-                <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, ReportStatus.Pending)}>Pending Laporan</button>
-                <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_delete(report_data.id)}>Hapus</button>
+              {/* header Laporan */}
+              <div className="flex md:flex-row md:items-center md:justify-between md:gap-0 md:mt-0 flex-row gap-4 mt-5">
+                <h1 className="font-bold md:text-xl text-md">{report_data?.message}</h1>
+                <h1><span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs px-3 py-1 rounded-xl`}>{report_data?.status}</span></h1>
               </div>
-            </>
+              <div className="py-6 flex flex-col justify-center">
+                <Image
+                  src={report_data?.image}
+                  imageClassName="aspect-[16/9] object-contain rounded-lg w-[500px] md:w-1/2 mx-auto	"
+                  alt="Foto Bukti Laporan"
+                  preview={true}
+                />
+                <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
+              </div>
+
+              {/* Isi Laporan */}
+              <div className="md:px-10 md:py-4 md:space-y-6 px-3 py-2 space-y-2">
+
+                {/* Location */}
+                <div className="flex flex-row justify-between">
+                  <div className="flex flex-row gap-2 items-center">
+                    <img src="/locationIcon.svg" alt="" className="w-5 h-5" />
+                    <h1 className="text-lg">Lokasi</h1>
+                  </div>
+                  <p className="font-semibold">{report_data?.location}</p>
+                </div>
+
+                {/* Nama PIC */}
+                <div className="flex flex-row justify-between">
+                  <div className="flex flex-row gap-2 items-center">
+                    <img src="/avatarIcon.svg" alt="" className="w-5 h-5" />
+                    <h1 className="text-lg">Nama PIC</h1>
+                  </div>
+                  <p className="font-semibold">{report_data?.pic_name}</p>
+                </div>
+
+                {/* Kategori Laporan */}
+                <div className="flex flex-row justify-between">
+                  <div className="flex flex-row gap-2 items-center">
+                    <img src="/categoryIcon.svg" alt="" className="w-5 h-5" />
+                    <h1 className="text-lg">Kategori</h1>
+                  </div>
+                  <p className="font-semibold">{report_data?.type}</p>
+                </div>
+
+                {/* Follow Up Laporan */}
+                <div className="flex flex-row justify-between">
+                  <div className="flex flex-row gap-2 items-center">
+                    <img src="/followUpIcon.svg" alt="" className="w-5 h-5" />
+                    <h1 className="text-lg">Follow Up</h1>
+                  </div>
+                  <p className="font-semibold">{report_data?.follow_up}</p>
+                </div>
+              </div>
+            </div >
+            <div className={`space-y-2 gap-2 w-full justify-stretch *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
+              <div className="flex flex-row gap-4  items-center w-full">
+                {dropdowns.map((d, index) => (
+                  <Dropdown key={index} id={d.id} label={`${d.label}`} items={d.items} />
+                ))}              </div>
+              <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white px-2 py-1 rounded-2xl" onClick={() => handle_delete(report_data.id)}>Hapus</button>
+            </div>
+          </>
         })()}
-        <button onClick={handle_close} className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl">Tutup</button>
-      </div>
+      </div >
     </>
   );
 }

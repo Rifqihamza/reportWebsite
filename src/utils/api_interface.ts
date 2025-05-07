@@ -1,4 +1,5 @@
-import type { AccountType, ReportData, ReportStatus, ReportType, User } from "../types/variables";
+import { AccountType, ReportType, ReportStatus } from '../types/variables';
+import type { ReportData, User } from "../types/variables";
 
 const base_url_endpoint: string = "https://webreport.smkind-mm2100.sch.id";
 
@@ -188,4 +189,18 @@ export async function getUser(): Promise<User|APIResultType> {
     }
  
     return APIResultType.InternalServerError;
+}
+
+
+
+export function string_to_reporttype(data: string): ReportType|undefined {
+    return Object.values(ReportType).find(value => value.toString() == data);
+}
+
+export function string_to_accounttype(data: string): AccountType|undefined {
+    return Object.values(AccountType).find(value => value.toString() == data);
+}
+
+export function string_to_reportstatus(data: string): ReportStatus|undefined {
+    return Object.values(ReportStatus).find(value => value.toString() == data);
 }
