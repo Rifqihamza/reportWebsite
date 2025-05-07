@@ -1,14 +1,17 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { AccountType, type User } from "../types/variables";
+
+const reportsPerPage = 5;
 
 
 export default function ReportListComponent({ userData }: { userData: User }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
 
+
   type ReportStatus = "Pending" | "On Process" | "Complete";
-  const reports: Array<{
+  const [reports, setReports]: [{
     id: string;
     created_at: string;
     message: string;
@@ -17,7 +20,16 @@ export default function ReportListComponent({ userData }: { userData: User }) {
     type: string;
     follow_up: string;
     status: ReportStatus;
-  }> = [
+  }[], Dispatch<SetStateAction<{
+    id: string;
+    created_at: string;
+    message: string;
+    location: string;
+    pic_name: string;
+    type: string;
+    follow_up: string;
+    status: ReportStatus;
+  }[]>>] = useState([
       {
         id: "1",
         created_at: "2024-05-01",
@@ -68,7 +80,37 @@ export default function ReportListComponent({ userData }: { userData: User }) {
         follow_up: "Vendor",
         status: "Complete",
       },
-    ];
+      {
+        id: "6",
+        created_at: "2024-04-20",
+        message: "AC ruangan tidak berfungsi dengan baik",
+        location: "Ruang Teori 8",
+        pic_name: "Tya",
+        type: "Kualitas",
+        follow_up: "Vendor",
+        status: "Complete",
+      },
+      {
+        id: "7",
+        created_at: "2024-04-20",
+        message: "AC ruangan tidak berfungsi dengan baik",
+        location: "Ruang Teori 8",
+        pic_name: "Tya",
+        type: "Kualitas",
+        follow_up: "Vendor",
+        status: "Complete",
+      },
+      {
+        id: "8",
+        created_at: "2024-04-20",
+        message: "Test123",
+        location: "Ruang Teori 4",
+        pic_name: "Tya",
+        type: "5R",
+        follow_up: "Siswa",
+        status: "On Process",
+      },
+    ]);
 
   // Status color mapping
   const statusColors = {
@@ -96,6 +138,14 @@ export default function ReportListComponent({ userData }: { userData: User }) {
   function handle_close() {
     setShowDetail(false);
   }
+  
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(0);
+  const [maxPage, setMaxPage] = useState(0);
+
+  useEffect(() => {
+    setMaxPage(Math.ceil(reports.length / reportsPerPage));
+  }, [reports]);
 
   return (
     <>
@@ -150,7 +200,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
               </tr>
             </thead>
             <tbody className="bg-white/20 backdrop-blur-md">
-              {reports.map((report, index) => (
+              {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
                 <tr key={index} className="report-row" data-report-id={report.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     {formatDate(report.created_at)}
@@ -187,7 +237,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reports.map((report, index) => (
+        {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -228,11 +278,17 @@ export default function ReportListComponent({ userData }: { userData: User }) {
       {/* Pagination */}
       <div className="flex flex-col gap-4 md:flex-row justify-between items-center mt-6">
         <div className="flex flex-row gap-2 items-center">
-          <button className="rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+          <button 
+            className="disabled:opacity-50 disabled:pointer-events-none rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            disabled={currentPage <= 0}
+            onClick={() => setCurrentPage(currentPage-1)}
           >
             Prev
           </button>
-          <button className="rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+          <button 
+            className="disabled:opacity-50 disabled:pointer-events-none rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            disabled={currentPage >= (maxPage - 1)}
+            onClick={() => setCurrentPage(currentPage+1)}
           >
             Next
           </button>
