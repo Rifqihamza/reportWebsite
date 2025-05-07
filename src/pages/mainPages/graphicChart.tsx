@@ -41,26 +41,21 @@ const GraphicChart = () => {
     }, []);
     
     return (
-        <div>
-            <div className="flex flex-row justify-between items-center mb-2 px-4">
-                <h1 className="flex flex-row gap-2 items-center font-bold uppercase tracking-[2px] text-xs md:text-lg text-black">
-                    <img src="/chartPieIcon.svg" className="w-5 h-5" alt="" />
-                    Grafik Laporan
-                </h1>
-                <img
-                    src="/logoSekolah.png"
-                    alt="Logo SMK Mitra Industri MM2100"
-                    className="h-12 w-auto"
-                />
+        <>
+            {/* Header Title */}
+            <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
+                <img src="/chartPieIcon.svg" className="md:w-5 h-auto w-7 h-auto" alt="" />
+                <h1 className="font-bold uppercase tracking-[2px] text-md md:text-lg text-black">Data Grafik Laporan</h1>
             </div>
-            <div className="flex flex-row justify-between w-full gap-16 px-8 py-10">
+            {/* End Header Title */}
+            <div className="flex md:flex-row flex-col items-center md:items-start md:justify-between justify-center w-full gap-16 md:px-8 md:py-10">
                 <PieChart reports={reports} />
                 <div>
                     <h1 className="font-bold tracking-wide">Grafik Laporan (Kategori)</h1>
-                    <p className="text-justify w-2/3">Data disamping adalah grafik laporan yang diterima di bagian laporan kategori </p>
+                    <p className="text-justify">Data disamping adalah grafik laporan yang diterima di bagian laporan kategori </p>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
