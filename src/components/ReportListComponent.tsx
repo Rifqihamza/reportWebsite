@@ -172,7 +172,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.type}
+                  {report.type == "VR" ? "5R" : report.type}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
@@ -265,6 +265,18 @@ export default function ReportListComponent({ userData, reports, setReports }: {
                 return <></>;
             }
 
+            const imageComponent = <>
+                <div className="py-6 flex flex-col justify-center">
+                    <Image
+                    src={report_data?.image}
+                    imageClassName="aspect-[16/9] object-contain rounded-lg w-[500px] md:w-1/2 mx-auto	"
+                    alt="Foto Bukti Laporan"
+                    preview={true}
+                    />
+                    <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
+                </div>
+            </>;
+            
           return <>
             <div className="relative flex flex-col gap-2">
               <div className="fixed top-5 right-6">
@@ -287,18 +299,10 @@ export default function ReportListComponent({ userData, reports, setReports }: {
               </div>
               {/* header Laporan */}
               <div className="flex md:flex-row md:items-center md:justify-between md:gap-0 md:mt-0 flex-row gap-4 mt-5">
-                <h1 className="font-bold md:text-xl text-md">{report_data?.message}</h1>
-                <h1><span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs px-3 py-1 rounded-xl`}>{report_data?.status}</span></h1>
+                  <h1 className="font-bold md:text-xl text-md">{report_data?.message}</h1>
+                  <h1><span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs px-3 py-1 rounded-xl`}>{report_data?.status}</span></h1>
               </div>
-              <div className="py-6 flex flex-col justify-center">
-                <Image
-                  src={report_data?.image}
-                  imageClassName="aspect-[16/9] object-contain rounded-lg w-[500px] md:w-1/2 mx-auto	"
-                  alt="Foto Bukti Laporan"
-                  preview={true}
-                />
-                <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
-              </div>
+              {report_data?.image != "" ? imageComponent : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
 
               {/* Isi Laporan */}
               <div className="md:px-10 md:py-4 md:space-y-6 px-3 py-2 space-y-2">
