@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import PieChart from "../../components/pieChart"
 import { getReport } from "../../utils/api_interface";
+import type { ReportData } from "../../types/variables";
 
 
 
-const GraphicChart = () => {
+const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [reports, setReports] = useState([
         { label: "5R", value: 1, type: "5R" },
         { label: "5R", value: 1, type: "Safety" },
@@ -12,33 +13,31 @@ const GraphicChart = () => {
     ]);
     
     useEffect(() => {
-        getReport().then(report_data => {
-            if(typeof report_data == "object") {
-                let result_report:{ label: string, value: number, type: string }[] = [];
+        if(typeof reportData == "object") {
+            let result_report:{ label: string, value: number, type: string }[] = [];
 
-                report_data.forEach(report => {
-                    let type = report.type.toString();
+            reportData.forEach(report => {
+                let type = report.type.toString();
 
-                    if(type == "VR") type = "5R";
+                if(type == "VR") type = "5R";
 
-                    const result_index = result_report.findIndex(result_value => result_value.type == type);
-                    
-                    if(result_index >= 0) {
-                        result_report[result_index].value += 1;
-                    }
-                    else {
-                        result_report.push({
-                            label: type,
-                            type: type,
-                            value: 1
-                        });
-                    }
-                });
+                const result_index = result_report.findIndex(result_value => result_value.type == type);
                 
-                setReports(result_report);
-            }
-        });
-    }, []);
+                if(result_index >= 0) {
+                    result_report[result_index].value += 1;
+                }
+                else {
+                    result_report.push({
+                        label: type,
+                        type: type,
+                        value: 1
+                    });
+                }
+            });
+            
+            setReports(result_report);
+        }
+    }, [reportData]);
     
     return (
         <>

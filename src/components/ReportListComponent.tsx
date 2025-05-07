@@ -339,7 +339,6 @@ export default function ReportListComponent({ userData, reports, setReports }: {
                   <p className="font-semibold">{report_data?.follow_up}</p>
                 </div>
               </div>
-
             </div >
             <div className={`space-y-2 gap-2 w-full justify-stretch *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
               <div className="flex flex-row gap-4  items-center w-full">
