@@ -1,5 +1,5 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, ReportType, type ReportData, type User } from "../types/variables";
+import { AccountType, ReportStatus, type ReportData, type User } from "../types/variables";
 import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
 
 const reportsPerPage = 5;
@@ -11,9 +11,10 @@ export default function ReportListComponent({ userData, reports, setReports }: {
 
   // Status color mapping
   const statusColors = {
-    Pending: "bg-red-100 text-red-800",
-    OnProgress: "bg-yellow-100 text-yellow-800",
-    Completed: "bg-green-100 text-green-800",
+    NotStarted: "bg-red-100 text-red-800",
+    InProcess: "bg-yellow-100 text-yellow-800",
+    Complete: "bg-green-100 text-green-800",
+    Hold: "bg-blue-200 text-blue-900"
   };
 
   // Format date helper function
@@ -272,8 +273,8 @@ export default function ReportListComponent({ userData, reports, setReports }: {
                 <h1>Tenggat Waktu:  {formatDate(new Date(report_data?.due_date).toISOString())}</h1>
               </div>
               <div className={`gap-2 w-full justify-stretch *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
-                <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, report_data.status == ReportStatus.OnProgress ? ReportStatus.Completed : ReportStatus.OnProgress)}>{report_data.status == ReportStatus.OnProgress ? "Set Complete" : "Set On Progress"}</button>
-                <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, ReportStatus.Pending)}>Pending Laporan</button>
+                <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, report_data.status == ReportStatus.Complete ? ReportStatus.InProcess : ReportStatus.Complete)}>{report_data.status != ReportStatus.InProcess ? "Set In Process" : "Set Complete"}</button>
+                <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_change_status(report_data.id, ReportStatus.Hold)}>Pending Laporan</button>
                 <button className="bg-[#7FA1C3] -translate-y-[8px] [box-shadow:0_6px_0_#d1c9b4] active:[box-shadow:0_2px_0_#d1c2b5] active:-translate-y-[3px] text-white p-2 px-4 rounded-2xl" onClick={() => handle_delete(report_data.id)}>Hapus</button>
               </div>
             </>
