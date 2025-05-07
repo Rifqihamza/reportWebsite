@@ -1,9 +1,9 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 import Dropdown from "./dropdowns";
-import { addReport, APIResultType, getPIC, string_to_accounttype, string_to_reporttype } from '../utils/api_interface';
-import { AccountType, ReportType, type Report } from "@prisma/client";
+import { addReport, APIResultType } from '../utils/api_interface';
+import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../types/variables";
 
-export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<Report[]>>, reportData: Report[] }) {
+export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [pic, setPic] = useState("");

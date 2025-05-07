@@ -1,4 +1,5 @@
-import { AccountType, ReportStatus, ReportType, type Report, type Users } from "@prisma/client";
+import { AccountType, ReportType, ReportStatus } from '../types/variables';
+import type { ReportData, User } from "../types/variables";
 
 const base_url_endpoint: string = "https://webreport.smkind-mm2100.sch.id";
 
@@ -37,7 +38,7 @@ export async function userLogin(username: string, password: string): Promise<API
     }
 }
 
-export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string): Promise<APIResultType|Report> {
+export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string): Promise<APIResultType|ReportData> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
@@ -59,7 +60,7 @@ export async function addReport(message: string, pic_name: string, report_type: 
 
     // Check the response
     if(response.ok) {
-        return (await response.json()) as Report;
+        return (await response.json()) as ReportData;
     }
     else if(response.status == 500) {
         return APIResultType.InternalServerError;
@@ -69,7 +70,7 @@ export async function addReport(message: string, pic_name: string, report_type: 
     }
 }
 
-export async function getReport(): Promise<Report[]|APIResultType> {
+export async function getReport(): Promise<ReportData[]|APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/get", {
         method: "GET",
@@ -79,7 +80,7 @@ export async function getReport(): Promise<Report[]|APIResultType> {
     // Check the response
     if(response.ok) {
         // Sorting report data by date
-        let result = (await response.json()) as Report[];
+        let result = (await response.json()) as ReportData[];
         result = result.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
         return result;
     }
@@ -142,7 +143,7 @@ export async function deleteReport(report_id: string): Promise<APIResultType> {
     }
 }
 
-export async function getPIC(): Promise<Users[]|APIResultType> {
+export async function getPIC(): Promise<User[]|APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/pic/get", {
         method: "GET",
@@ -151,7 +152,7 @@ export async function getPIC(): Promise<Users[]|APIResultType> {
 
     // Check the response
     if(response.ok) {
-        return (await response.json()) as Users[];
+        return (await response.json()) as User[];
     }
     else if(response.status == 500) {
         return APIResultType.InternalServerError;
@@ -173,7 +174,7 @@ export async function userLogout(): Promise<boolean> {
 }
 
 
-export async function getUser(): Promise<Users|APIResultType> {
+export async function getUser(): Promise<User|APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/get", {
         method: "GET",
@@ -181,7 +182,7 @@ export async function getUser(): Promise<Users|APIResultType> {
     });
 
     if(response.ok) {
-        return (await response.json()) as Users;
+        return (await response.json()) as User;
     }
     else if (response.status == 401) {
         return APIResultType.Unauthorized;

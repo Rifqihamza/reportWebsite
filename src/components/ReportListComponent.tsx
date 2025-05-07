@@ -1,10 +1,10 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
-import { AccountType, ReportStatus, type Report, type Users } from "@prisma/client";
+import { AccountType, ReportStatus, ReportType, type ReportData, type User } from "../types/variables";
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reports, setReports }: { userData: Users, reports: Report[], setReports: Dispatch<SetStateAction<Report[]>> }) {
+export default function ReportListComponent({ userData, reports, setReports }: { userData: User, reports: ReportData[], setReports: Dispatch<SetStateAction<ReportData[]>> }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   
