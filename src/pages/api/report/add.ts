@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
-import { create_response_status, get_cookies_from_request, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cookies_from_request, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
-import { Prisma } from "@prisma/client";
+import { Prisma, type Report } from "@prisma/client";
 
 export async function POST({ request }: APIContext) {
     // Verify teacher token
@@ -14,8 +14,9 @@ export async function POST({ request }: APIContext) {
     const { message, pic_name, report_type, follow_up, location, report_date, due_date, follow_up_name } = await request.json();
 
     // Create new report data
+    let report_data: Report|null;
     try {
-        await prisma.report.create({
+        report_data = await prisma.report.create({
             data: {
                 message: message,
                 follow_up: follow_up,
@@ -39,5 +40,5 @@ export async function POST({ request }: APIContext) {
     
 
     // Return OK
-    return create_response_status(200);
+    return create_response_json(report_data);
 }
