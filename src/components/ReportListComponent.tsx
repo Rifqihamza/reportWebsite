@@ -2,9 +2,12 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { AccountType, ReportStatus, ReportType, type ReportData, type User } from "../types/variables";
 import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
 
+const reportsPerPage = 5;
+
 export default function ReportListComponent({ userData }: { userData: User }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
+
 
   const [reports, setReports]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([
     {
@@ -102,6 +105,14 @@ export default function ReportListComponent({ userData }: { userData: User }) {
     });
   }, []);
 
+  
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(0);
+  const [maxPage, setMaxPage] = useState(0);
+
+  useEffect(() => {
+    setMaxPage(Math.ceil(reports.length / reportsPerPage));
+  }, [reports]);
 
   return (
     <>
@@ -156,7 +167,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
               </tr>
             </thead>
             <tbody className="bg-white/20 backdrop-blur-md">
-              {reports.map((report, index) => (
+              {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
                 <tr key={index} className="report-row" data-report-id={report.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     {formatDate(report.created_at)}
@@ -193,7 +204,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reports.map((report, index) => (
+        {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -234,11 +245,17 @@ export default function ReportListComponent({ userData }: { userData: User }) {
       {/* Pagination */}
       <div className="flex flex-col gap-4 md:flex-row justify-between items-center mt-6">
         <div className="flex flex-row gap-2 items-center">
-          <button className="rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+          <button 
+            className="disabled:opacity-50 disabled:pointer-events-none rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            disabled={currentPage <= 0}
+            onClick={() => setCurrentPage(currentPage-1)}
           >
             Prev
           </button>
-          <button className="rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+          <button 
+            className="disabled:opacity-50 disabled:pointer-events-none rounded-[20px] flex px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            disabled={currentPage >= (maxPage - 1)}
+            onClick={() => setCurrentPage(currentPage+1)}
           >
             Next
           </button>
