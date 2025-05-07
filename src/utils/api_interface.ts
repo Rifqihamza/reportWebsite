@@ -1,7 +1,7 @@
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
 import type { ReportData, User } from "../types/variables";
 
-const base_url_endpoint: string = "http://localhost:4321";
+const base_url_endpoint: string = "https://webreport.smkind-mm2100.sch.id";
 
 // Useful enum!
 export enum APIResultType {
