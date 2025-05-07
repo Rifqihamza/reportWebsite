@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import Dropdown from "./dropdowns";
-import { AccountType, ReportType, string_to_accounttype, string_to_reporttype } from '../types/variables';
-import { addReport, APIResultType, getPIC } from '../utils/api_interface';
+import { addReport, APIResultType, getPIC, string_to_accounttype, string_to_reporttype } from '../utils/api_interface';
+import { AccountType, ReportType, type Report } from "@prisma/client";
 
-export default function ReportFormComponent() {
+export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<Report[]>>, reportData: Report[] }) {
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [pic, setPic] = useState("");
-  const [category, setCategory] = useState(ReportType.NoType);
-  const [followUpType, setFollowUpType] = useState(AccountType.NoType);
+  const [category, setCategory] = useState(null as ReportType | null);
+  const [followUpType, setFollowUpType] = useState(null as AccountType | null);
   const [followUpName, setFollowUpName] = useState("");
   const [reportDate, setReportDate] = useState("");
   const [reportDueDate, setReportDueDate] = useState("");
@@ -23,15 +23,17 @@ export default function ReportFormComponent() {
   ]);
   
   const handle_submit = async () => {
-    if(!message || !pic || category == ReportType.NoType || followUpType == AccountType.NoType || !location || !reportDate || !reportDueDate || !followUpName) {
+    if(!message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate || !followUpName) {
         alert("Please complete the form.");
         return;
     }
 
     
     const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString());
-    if(result == APIResultType.NoError) {
+    if(typeof result == "object") {
       alert("Successfully add the report!");
+
+      setReportData([result, ...reportData]);
     }
     else if(result == APIResultType.Unauthorized) {
       window.location.href = "/";

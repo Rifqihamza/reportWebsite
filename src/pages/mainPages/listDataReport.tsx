@@ -1,8 +1,9 @@
+import type { Dispatch, SetStateAction } from "react";
 import ReportListComponent from "../../components/ReportListComponent";
-import type { User } from "../../types/variables";
+import type { Report, Users } from "@prisma/client";
 
 
-export default function ListDataReport({ userData }: { userData: User }) {
+export default function ListDataReport({ userData, reports, setReports }: { userData: Users, reports: Report[], setReports: Dispatch<SetStateAction<Report[]>> }) {
 
     return <>
       <div>
@@ -58,7 +59,7 @@ export default function ListDataReport({ userData }: { userData: User }) {
           </div>
         </div>
 
-        <ReportListComponent userData={userData} />
+        <ReportListComponent userData={userData} reports={reports} setReports={setReports}  />
       </div>
     </>
 }
