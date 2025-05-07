@@ -1,6 +1,6 @@
 import { AccountType, ReportStatus, ReportType, type Report, type Users } from "@prisma/client";
 
-const base_url_endpoint: string = "http://localhost:4321";
+const base_url_endpoint: string = "https://webreport.smkind-mm2100.sch.id";
 
 // Useful enum!
 export enum APIResultType {
