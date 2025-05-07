@@ -78,7 +78,10 @@ export async function getReport(): Promise<ReportData[]|APIResultType> {
 
     // Check the response
     if(response.ok) {
-        return (await response.json()) as ReportData[];
+        // Sorting report data by date
+        let result = (await response.json()) as ReportData[];
+        result = result.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
+        return result;
     }
     else if(response.status == 500) {
         return APIResultType.InternalServerError;
