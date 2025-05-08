@@ -61,6 +61,8 @@ body {
     transform: translateX(-10);
   }
 }
+
+/* Tab Navigation Bar */
 .tab-button {
   color: #000;
   cursor: pointer;
@@ -77,7 +79,7 @@ body {
 
 .tab-button.active {
   width: 100%;
-  background-color: #6096b4;
+  background-color: #6482ad;
   color: #fff;
   z-index: 10;
 }
@@ -85,8 +87,8 @@ body {
 .side-button {
   color: #000;
   cursor: pointer;
-  border-radius: 10px;
-  padding: 0.7rem;
+  border-radius: 18px;
+  padding: 0.7rem 1rem;
   transition: all 0.2s ease-in-out;
   font-size: 12px;
   font-weight: 600;
@@ -94,18 +96,16 @@ body {
   letter-spacing: 2px;
   background-color: transparent;
   width: 100%;
-  text-align: left;
-  margin-top: 10px;
 }
 
 .side-button.active {
   width: 100%;
-  background-color: #6096b4;
+  background-color: #6482ad;
   color: #fff;
   z-index: 10;
 }
 
-
+/* Preview Image Details */
 .p-image-mask {
   background-color: rgba(0, 0, 0, 0.85);
 }
@@ -120,6 +120,7 @@ body {
   color: white; /* Ganti warna icon zoom */
 }
 
+/* Sidebar Style */
 .p-sidebar {
   width: 60%;
 }
@@ -134,4 +135,115 @@ body {
   height: 40px;
   border-radius: 50px;
   border: 1px solid;
+}
+
+/* Dropdowns Filter */
+.p-dropdown {
+  background-color: #6482ad;
+  color: #fff;
+  transition: all 0.3s ease;
+  padding: 0.8rem 0.8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.p-dropdown-label {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.p-dropdown:hover {
+  background-color: #7fa1c3;
+  color: #fff;
+}
+
+.p-dropdown-items {
+  background-color: #fff;
+  color: #000;
+  border-radius: 0.6rem;
+  padding: 1rem;
+  margin-top: 10px;
+}
+
+.p-dropdown-item {
+  padding: 0.2rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.p-dropdown-item:hover {
+  background-color: #f1f1f1;
+  border-radius: 0.5rem;
+  outline: none;
+}
+
+/* Tiered Menu*/
+
+/* Container element */
+.p-tieredmenu {
+  border-radius: 12px;
+  background-color: #ffffff;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: none;
+  min-width: 15rem;
+  font-family: "Inter", sans-serif;
+  margin-top: 10px;
+}
+
+/* List element */
+.p-menu-list {
+  list-style: none;
+  margin: 0;
+}
+
+/* Menuitem element */
+.p-menuitem {
+  margin: 0.25rem 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.p-menuitem > .p-menuitem-content {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.p-menuitem > .p-menuitem-content:hover {
+  background-color: #f0f4f8;
+  cursor: pointer;
+}
+
+/* Label of a menuitem */
+.p-menuitem-text {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Icon of a menuitem */
+.p-menuitem-icon {
+  color: #6b7280; /* Tailwind gray-500 */
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Arrow icon for submenu */
+.p-submenu-icon {
+  margin-left: auto;
+  color: #9ca3af; /* Tailwind gray-400 */
+  font-size: 0.9rem;
+}
+
+/* Separator if used */
+.p-menu-separator {
+  margin: 0.5rem 1rem;
+  border-top: 1px solid #e5e7eb;
 }
