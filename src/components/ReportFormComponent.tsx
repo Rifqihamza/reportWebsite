@@ -12,6 +12,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [followUpName, setFollowUpName] = useState("");
   const [reportDate, setReportDate] = useState("");
   const [reportDueDate, setReportDueDate] = useState("");
+  const [image, setImage] = useState(null as File | null)
   
   const [dropdowns, setDropdowns] = useState([
     {
@@ -220,12 +221,12 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                   ></path>
                 </svg>
-                <p className="mb-1 text-sm text-[#7FA1C3]" id="file-name-display">
-                  Klik untuk upload foto
+                <p className={`mb-1 text-sm text-[${image ? "black" : "#7FA1C3"}]`} id="file-name-display">
+                  {image ? image.name : "Klik untuk upload foto"}
                 </p>
-                <p className="text-xs text-[#7FA1C3]">PNG, JPG atau JPEG (Max. 2MB)</p>
+                <p className={`text-xs text-${image ? "black" : "[#7FA1C3]"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100)+"MB" : (Math.round(image.size / 10) / 100)+"KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
               </div>
-              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" />
+              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => {e.target.files ? setImage(e.target.files[0]) : ""}} />
             </label>
           </div>
         </div>
