@@ -33,6 +33,7 @@ CREATE TABLE `Report` (
     `follow_up_name` VARCHAR(191) NOT NULL,
     `status` ENUM('NotStarted', 'InProcess', 'Complete', 'Hold') NOT NULL DEFAULT 'Hold',
     `location` VARCHAR(191) NULL,
+    `image` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `report_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `due_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

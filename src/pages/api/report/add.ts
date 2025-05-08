@@ -25,7 +25,8 @@ export async function POST({ request }: APIContext) {
                 type: report_type,
                 location: location,
                 report_date: report_date,
-                due_date: due_date
+                due_date: due_date,
+                image: ""
             }
         })
     }
