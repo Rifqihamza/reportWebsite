@@ -18,10 +18,10 @@ export default function Dropdown({ id, label, items, onChange }: DropdownProps) 
   };
 
   return (
-    <div className="relative text-left mb-4 w-full dropdown-container" data-dropdown-id={id}>
+    <div className="relative text-left w-full dropdown-container" data-dropdown-id={id}>
       <button
         type="button"
-        className="dropdown-trigger rounded-[20px] flex items-center justify-between px-6 py-3 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+        className="dropdown-trigger rounded-[20px] flex items-center justify-between px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
         aria-expanded={isOpen}
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}
