@@ -31,7 +31,7 @@ const PieChart: React.FC<PieChartProps> = ({ reports }) => {
         },
         labels,
         theme: {
-            palette: 'palette2' // upto palette10
+            palette: 'palette1' // upto palette10
         },
         plotOptions: {
             pie: {
