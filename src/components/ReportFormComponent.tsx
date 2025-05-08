@@ -1,16 +1,34 @@
+import { useState, type Dispatch, type SetStateAction } from "react";
 import Dropdown from "./dropdowns";
+import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../types/variables";
 
-export default function ReportFormComponent() {
-  const dropdowns = [
-
+export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
+  const [message, setMessage] = useState("");
+  const [location, setLocation] = useState("");
+  const [pic, setPic] = useState("");
+  const [category, setCategory] = useState(null as ReportType | null);
+  const [followUpType, setFollowUpType] = useState(null as AccountType | null);
+  const [followUpName, setFollowUpName] = useState("");
+  const [reportDate, setReportDate] = useState("");
+  const [reportDueDate, setReportDueDate] = useState("");
+  const [image, setImage] = useState(null as File | null)
+  
+  const [dropdowns, setDropdowns] = useState([
     {
       id: "kategori",
       label: "Kategori",
       items: ["5R", "Safety", "Kualitas", "Produksi"],
     },
-    { id: "followup", label: "Follow Up", items: ["Guru", "Siswa", "Vendor"] },
-  ];
-
+    { id: "followup", label: "Follow Up", items: Object.keys(AccountType).filter(x => x != "NoType") },
+  ]);
+  
+  const handle_submit = async () => {
+    if(!message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate || !followUpName) {
+        alert("Please complete the form.");
+        return;
+    }
+  }
+    
   return (
     <>
       <form id="report-form" className="mx-8">
@@ -161,12 +179,12 @@ export default function ReportFormComponent() {
                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                   ></path>
                 </svg>
-                <p className="mb-1 text-sm text-[#7FA1C3]" id="file-name-display">
-                  Klik untuk upload foto
+                <p className={`mb-1 text-sm text-[${image ? "black" : "#7FA1C3"}]`} id="file-name-display">
+                  {image ? image.name : "Klik untuk upload foto"}
                 </p>
-                <p className="text-xs text-[#7FA1C3]">PNG, JPG atau JPEG (Max. 2MB)</p>
+                <p className={`text-xs text-${image ? "black" : "[#7FA1C3]"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100)+"MB" : (Math.round(image.size / 10) / 100)+"KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
               </div>
-              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" />
+              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => {e.target.files ? setImage(e.target.files[0]) : ""}} />
             </label>
           </div>
         </div>
@@ -174,8 +192,9 @@ export default function ReportFormComponent() {
         {/* Submit Button */}
         <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
           <button
-            type="submit"
+            type="button"
             className="rounded-[20px] flex items-center px-6 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            onClick={handle_submit}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
