@@ -6,7 +6,7 @@ export default function ReportFormComponent() {
     {
       id: "kategori",
       label: "Kategori",
-      items: ["5R", "Safety", "Kualitas", "Produksi"],
+      items: ["5R", "Safety", "SOP"],
     },
     { id: "followup", label: "Follow Up", items: ["Guru", "Siswa", "Vendor"] },
   ];
@@ -29,7 +29,7 @@ export default function ReportFormComponent() {
               name="laporan"
               id="laporan"
               placeholder="Deskripsikan Temuan Anda..."
-              className="px-6 py-3 outline-none border border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+              className="px-6 py-3 outline-none border-2 border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
               required
             ></textarea>
           </div>
@@ -49,14 +49,14 @@ export default function ReportFormComponent() {
                 name="laporan"
                 id="laporan"
                 placeholder="Nama PIC..."
-                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-6 py-3  outline-none border-2 border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 required
               />
             </div>
             {/* End */}
 
             {/* Dropdowns Section */}
-            <div className="flex flex-col md:flex-row gap-2 w-full mt-8">
+            <div className="flex flex-col md:flex-row gap-2 w-full mt-8 md:space-y-4 space-y-3">
               {dropdowns.map((d, index) => (
                 <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} />
               ))}
@@ -64,7 +64,7 @@ export default function ReportFormComponent() {
             {/* End */}
 
             {/* Di Follow Up Oleh Section */}
-            <div className="flex flex-col w-full space-y-2">
+            <div className="flex flex-col w-full space-y-2 md:mt-0 mt-4">
               <label
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
@@ -77,13 +77,13 @@ export default function ReportFormComponent() {
                 name="lokasi"
                 id="lokasi"
                 placeholder="Lokasi temuan"
-                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-6 py-3 outline-none border border-[#7FA1C3]  rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 required
               />
             </div>
             {/* End */}
 
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between w-full">
+            <div className="flex flex-col md:flex-row md:gap-4 gap-0 items-center justify-between w-full">
               {/* Tanggal Temuan section */}
               <div className="flex flex-col w-full space-y-2 mt-6">
                 <label htmlFor="tanggal"
@@ -93,7 +93,7 @@ export default function ReportFormComponent() {
                   Tanggal Temuan</label>
                 <input type="datetime-local"
                   placeholder="Lokasi temuan"
-                  className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                  className="px-6 py-3 outline-none border-2 border-[#E2DAD6] rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
                   required />
               </div>
               {/* End */}
@@ -107,7 +107,7 @@ export default function ReportFormComponent() {
                   Due Date</label>
                 <input type="datetime-local"
                   placeholder="Lokasi temuan"
-                  className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                  className="px-6 py-3 outline-none border-2 border-[#E2DAD6] rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
                   required />
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function ReportFormComponent() {
                 name="lokasi"
                 id="lokasi"
                 placeholder="Nama Follow Up..."
-                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-6 py-3 outline-none border-2 border-[#7FA1C3]  rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 required
               />
             </div>
