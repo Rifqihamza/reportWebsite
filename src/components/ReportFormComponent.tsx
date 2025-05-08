@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import Dropdown from "./dropdowns";
 import { addReport, APIResultType } from '../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../types/variables";
@@ -30,7 +30,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     }
 
     
-    const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString());
+    const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
     if(typeof result == "object") {
       alert("Successfully add the report!");
 
@@ -41,6 +41,9 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     }
     else if(result == APIResultType.InternalServerError) {
       alert("There's an unexpected error occured in the server side!");
+    }
+    else {
+        console.log(result);
     }
   }
     
