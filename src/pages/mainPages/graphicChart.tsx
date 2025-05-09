@@ -16,7 +16,7 @@ type CategoryType = {
 
 type LineChartValueType = {
     labels: string;
-    type: ReportType;
+    type: ReportType | string;
     value: number;
 }
 
@@ -37,7 +37,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             Object.values(ReportType).map(reportType => {
                 result.push({
                     labels: value,
-                    type: reportType,
+                    type: reportType == ReportType.VR ? "5R" : reportType,
                     value: 0
                 });
             });
@@ -46,7 +46,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             let date = new Date(data.created_at);
             let label = monthsShort[date.getMonth()];
             
-            let index = result.findIndex(value => value.labels == label && value.type == data.type);
+            let index = result.findIndex(value => value.labels == label && value.type == (data.type == ReportType.VR ? "5R" : data.type));
             result[index].value += 1;
         })
 
