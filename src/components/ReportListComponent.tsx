@@ -227,7 +227,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
                 <span className="font-medium">PIC:</span> {report.pic_name}
               </p>
               <p>
-                <span className="font-medium">Kategori:</span> {report.type}
+                <span className="font-medium">Kategori:</span> {report.type == "VR" ? "5R" : report.type}
               </p>
             </div>
             <div className="mt-3 flex justify-end">
@@ -350,7 +350,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
                     <img src="/categoryIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
                     <h1 className="md:text-lg text-sm">Kategori</h1>
                   </div>
-                  <p className="font-semibold md:text-lg text-sm">{report_data?.type}</p>
+                  <p className="font-semibold md:text-lg text-sm">{report_data.type == "VR" ? "5R" : report_data.type}</p>
                 </div>
 
                 {/* Follow Up Laporan */}
