@@ -13,6 +13,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   const [saveDisabled, setSaveDisabled] = useState(false);
+  const [deleteDisabled, setDeleteDisabled] = useState(false);
 
   const toastTopRight = useRef<Toast>(null);
 
@@ -52,8 +53,17 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   function handle_close() {
     setShowDetail(false);
   }
+
+  function handle_delete() {
+    setDeleteDisabled(true);
+
+    setTimeout(() => {
+        showMessage("Sukses", toastTopRight, 'success', "Rekaman berhasil dihapus!");
+        setDeleteDisabled(false);
+    }, 1000);
+  }
   
-  function handle_save(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function handle_save() {
       setSaveDisabled(true);
       
       setTimeout(() => {
@@ -316,10 +326,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {dropdowns.map((d, index) => (
                   <Dropdown key={index} id={d.id} label={`${d.label}`} items={d.items} />
                 ))}
-                <button className="rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide">Hapus</button>
+                <button className="disabled:opacity-50 rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide" onClick={handle_delete} disabled={saveDisabled || deleteDisabled}>
+                    {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                    Hapus
+                </button>
               </div>
               <div className="mt-2">
-                <button className="disabled:opacity-50  bg-[#7FA1C3] w-full px-4 py-2 rounded-2xl text-white" onClick={(e) => handle_save(e)} disabled={saveDisabled}>
+                <button className="disabled:opacity-50  bg-[#7FA1C3] w-full px-4 py-2 rounded-2xl text-white" onClick={handle_save} disabled={saveDisabled || deleteDisabled}>
                     {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Simpan
                 </button>
