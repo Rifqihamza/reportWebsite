@@ -6,11 +6,9 @@ export enum AccountType {
 }
 
 export enum ReportType {
-    NoType = "",
     VR = "5R",
     Safety = "Safety",
-    SOP = "SOP",
-    Quality = "Quality"
+    Abnormality = "Abnormality"
 }
 
 export enum ReportStatus {
