@@ -1,8 +1,15 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { AccountType, ReportStatus, string_to_reportstatus, type ReportData, type User } from '../types/variables';
 import { Image } from 'primereact/image'
-import Dropdown from "./dropdowns";import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
+import Dropdown from "./dropdowns";
+import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
 
+import { Toast } from 'primereact/toast';
+import type { ToastMessage } from 'primereact/toast';
+
+type labelType = {
+  label: string;
+}
 const reportsPerPage = 5;
 
 
@@ -10,8 +17,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
-  
-  
+  const [saveDisabled, setSaveDisabled] = useState(false);
+
+  const toastTopRight = useRef<Toast>(null);
+
+
   const dropdowns = [
     {
       id: "status",
@@ -78,16 +88,19 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   
 
   
-  async function handle_save(id: string) {
+  async function handle_save(event: React.MouseEvent<HTMLButtonElement>, id: string) {
     if(!selectedStatus) {
-        return;
+      return;
     }
+    
+    setSaveDisabled(true);
 
     const result = await changeReportStatus(id, selectedStatus);
 
     if(result == APIResultType.NoError) {
       setShowDetail(false);
       setReportData(reportData.map((value) => value.id == id ? { ...value, status: selectedStatus } : value));
+      showMessage(event, toastTopRight, 'success');
     }
     else if(result == APIResultType.InternalServerError) {
       alert("There's an error!");
@@ -95,6 +108,15 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     else if(result == APIResultType.Unauthorized) {
       alert("You have no access!");
     }
+    
+    setSaveDisabled(false);
+  }
+
+  function showMessage(event: React.MouseEvent<HTMLButtonElement>, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity']) {
+    const target = event.target as HTMLButtonElement;
+    const label = target.innerText;
+
+    ref.current?.show({ severity: severity, summary: label, detail: label, life: 3000 });
   }
 
   // Pagination
@@ -257,11 +279,10 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
       {/*  Modal Element */}
       <div className={(showDetail
-        ? "bg-black/30 w-full h-full fixed top-0 left-0 right-0 bottom-0 duration-500 transition-all z-10"
-        : "hidden duration-500 transition-all")}>
+        ? "bg-black opacity-50 w-full h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-all z-10"
+        : "hidden duration-500 transition-all opacity-0")}>
       </div>
-      <div className={(showDetail ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem]") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 md:p-14 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
-
+      <div className={(showDetail ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 md:p-14 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
         {(() => {
           const report_data = reportData.find(value => value.id == detailId) || reportData[0];
 
@@ -284,12 +305,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             
           return <>
             <div className="relative flex flex-col gap-2 md:gap-4">
-            <div className="fixed top-3 left-3">
-              <button
-              onClick={() => handle_save(report_data.id)}
-              className="rounded-[20px] flex items-center justify-center px-3 py-1 w-full text-white bg-[#7291af] hover:bg-[#6299be] duration-300 tracking-wide"
-              >Simpan</button>
-            </div>
               <div className="fixed top-3 right-3">
                 <button onClick={handle_close}>
                   <svg
@@ -322,7 +337,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Location */}
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <img src="/locationIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
+                    <img src="/icon/locationIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
                     <h1 className="md:text-lg text-sm">Lokasi</h1>
                   </div>
                   <p className="font-semibold md:text-lg text-sm">{report_data?.location}</p>
@@ -331,7 +346,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Nama PIC */}
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <img src="/avatarIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
+                    <img src="/icon/avatarIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
                     <h1 className="md:text-lg text-sm">Nama PIC</h1>
                   </div>
                   <p className="font-semibold md:text-lg text-sm">{report_data?.pic_name}</p>
@@ -340,7 +355,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Kategori Laporan */}
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <img src="/categoryIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
+                    <img src="/icon/categoryIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
                     <h1 className="md:text-lg text-sm">Kategori</h1>
                   </div>
                   <p className="font-semibold md:text-lg text-sm">{report_data.type == "VR" ? "5R" : report_data.type}</p>
@@ -357,15 +372,21 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               </div>
             </div >
             {/* Button Action */}
-            <div className={`mt-4 space-y-4 md:space-y-0 gap-2 w-full justify-row items-center *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
-              {dropdowns.map((d, index) => (
-                <Dropdown key={index} id={d.id} label={`${d.label}`} items={d.items} onChange={(value) => setSelectedStatus(string_to_reportstatus(value)!)} />
-              ))}
-              <button className="rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide" onClick={() => handle_delete(report_data.id)}>Hapus</button>
+            <div className={`flex flex-col gap-2 w-full ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
+              <div className="flex flex-col md:flex-row items-center gap-2 w-full space-y-2 md:space-y-0 ">
+                {dropdowns.map((d, index) => (
+                  <Dropdown key={index} id={d.id} label={`${d.label}`} items={d.items} onChange={(value) => setSelectedStatus(string_to_reportstatus(value)!)} />
+                ))}
+                <button className="rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide" onClick={() => handle_delete(report_data.id)}>Hapus</button>
+              </div>
+              <div className="mt-2">
+                <button className="disabled:opacity-50  bg-[#7FA1C3] w-full px-4 py-2 rounded-2xl text-white" onClick={(e) => handle_save(e, report_data?.id)} disabled={saveDisabled}>Simpan</button>
+              </div>
             </div>
           </>
         })()}
       </div>
+      <Toast ref={toastTopRight} position="top-right" />
     </>
   );
 }

@@ -12,7 +12,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [followUpName, setFollowUpName] = useState("");
   const [reportDate, setReportDate] = useState("");
   const [reportDueDate, setReportDueDate] = useState("");
-  const [image, setImage] = useState(null as File | null)
+  const [image, setImage] = useState(null as File | null);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
   
   const [dropdowns, setDropdowns] = useState([
     {
@@ -29,7 +30,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
         return;
     }
 
-    
+    setSubmitDisabled(true);
+
     const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
     if(typeof result == "object") {
       alert("Successfully add the report!");
@@ -45,6 +47,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     else {
         console.log(result);
     }
+
+    setSubmitDisabled(false);
   }
     
   return (
@@ -57,7 +61,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               htmlFor="laporan"
               className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
             >
-              <img src="/detailsReporticon.svg" className="w-5 h-5" alt="" />
+              <img src="/icon/detailsReporticon.svg" className="w-5 h-5" alt="" />
               Detail Laporan
             </label>
             <textarea
@@ -79,7 +83,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 htmlFor="laporan"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="/avatarIcon.svg" className="w-5 h-5" alt="" />
+                <img src="icon/avatarIcon.svg" className="w-5 h-5" alt="" />
                 Nama PIC
               </label>
               <input
@@ -128,7 +132,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="/locationIcon.svg" className="w-5 h-5" alt="" />
+                <img src="/icon/locationIcon.svg" className="w-5 h-5" alt="" />
                 Lokasi
               </label>
               <input
@@ -149,7 +153,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 <label htmlFor="tanggal"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <img src="/dateTimeIcon.svg" className="w-5 h-5" alt="" />
+                  <img src="/icon/dateTimeIcon.svg" className="w-5 h-5" alt="" />
                   Tanggal Temuan</label>
                 <input type="datetime-local"
                   placeholder="Tanggal temuan"
@@ -164,7 +168,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 <label htmlFor="dueDate"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <img src="/timeIcon.svg" className="w-5 h-5" alt="" />
+                  <img src="/icon/timeIcon.svg" className="w-5 h-5" alt="" />
                   Due Date</label>
                 <input type="datetime-local"
                   placeholder="Tenggat Waktu"
@@ -178,7 +182,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="/followUpIcon.svg" className="w-5 h-5" alt="" />
+                <img src="/icon/followUpIcon.svg" className="w-5 h-5" alt="" />
                 Follow Up Oleh
               </label>
               <input
@@ -201,7 +205,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             htmlFor="foto"
             className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
           >
-            <img src="/uploadFileIcon.svg" className="w-5 h-5" alt="" />
+            <img src="/icon/uploadFileIcon.svg" className="w-5 h-5" alt="" />
             Foto Bukti
           </label>
           <div className="flex items-center justify-center w-full">
@@ -238,7 +242,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
         <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
           <button
             type="button"
-            className="rounded-[20px] flex items-center px-6 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            className="disabled:opacity-50 rounded-[20px] flex items-center px-6 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            disabled={submitDisabled}
             onClick={handle_submit}
           >
             <svg
