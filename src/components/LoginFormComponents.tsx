@@ -11,15 +11,15 @@ export default function LoginFormComponent() {
     setLoginDisabled(true);
     
     const result = await userLogin(username, password);
-    if(result == APIResultType.NoError) {
-        window.location.href = "/login";
-    }
-    else if(result == APIResultType.Unauthorized) {
+    
+    if(result == APIResultType.Unauthorized) {
         alert("Unauthorized!");
     }
     else {
         alert("There's an error!");
     }
+    
+    window.location.href = "/login";
 
     setLoginDisabled(false);
   }
