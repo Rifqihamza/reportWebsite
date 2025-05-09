@@ -21,7 +21,7 @@ const ReportBodyType = z.object({
     report_date: z.string(),
     due_date: z.string(),
     follow_up_name: z.string(),
-    image: z.instanceof(File)
+    image: z.instanceof(File).optional()
 });
 
 export async function POST({ request }: APIContext) {
