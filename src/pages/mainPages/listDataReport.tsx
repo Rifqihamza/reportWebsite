@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import ReportListComponent from "../../components/ReportListComponent";
 import type { ReportData, User } from "../../types/variables";
-import { useState } from "react";
+import React, { useState } from "react";
 import TieredDropDowns from "../../components/TieredMenu";
 
 
@@ -9,8 +9,7 @@ interface Status {
     name: string;
     code: string;
 }
-
-export default function ListDataReport({ userData, reports, setReports }: { userData: User, reports: ReportData[], setReports: Dispatch<SetStateAction<ReportData[]>> }) {
+export default function ListDataReport({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
   const status: Status[] = [
     { name: 'Complete', code: 'C' },
@@ -61,7 +60,7 @@ export default function ListDataReport({ userData, reports, setReports }: { user
           </div>
         </div>
 
-        <ReportListComponent userData={userData} reports={reports} setReports={setReports}  />
+        <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} />
       </div>
     </>
   );

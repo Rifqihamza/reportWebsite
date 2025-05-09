@@ -1,29 +1,37 @@
 import LineChart from "../../components/lineChart";
 import PieChart from "../../components/pieChart"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dropdown, } from 'primereact/dropdown';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
 import { lineReports } from "../../types/lineChartData";
+import type { ReportData } from "../../types/variables";
 
 
-const pieCategory = [
-    { labels: "5R", value: 8 },
-    { labels: "Safety", value: 2 },
-    { labels: "K3", value: 5 },
-    { labels: "Abnormality", value: 5 },
-];
+// const pieCategory = [
+//     { labels: "5R", value: 8 },
+//     { labels: "Safety", value: 2 },
+//     { labels: "K3", value: 5 },
+//     { labels: "Abnormality", value: 5 },
+// ];
 
-const pieStatus = [
-    { labels: "In Process", value: 2 },
-    { labels: "Complete", value: 8 },
-    { labels: "Hold", value: 5 },
-    { labels: "Not Started", value: 5 },
-];
+// const pieStatus = [
+//     { labels: "In Process", value: 2 },
+//     { labels: "Complete", value: 5 },
+//     { labels: "Hold", value: 5 },
+//     { labels: "Not Started", value: 5 },
+// ];
 
-const GraphicChart = () => {
+type CategoryType = {
+    labels: string,
+    value: number
+}
+
+const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const availableYears = Array.from(new Set(lineReports.map(report => report.year)));
     const currentYear = new Date().getFullYear();
     const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+    const [pieCategory, setPieCategory] = useState([] as CategoryType[])
+    const [pieStatus, setPieStatus] = useState([] as CategoryType[])
 
     const currentYearReports = lineReports
         .filter(report => report.year === selectedYear)
@@ -33,6 +41,40 @@ const GraphicChart = () => {
 
     const yearOptions = availableYears.map(year => ({ label: year.toString(), value: year }));
 
+
+    useEffect(() => {
+        // Get the category and status statistics
+        let categoryStats: CategoryType[] = [];
+        let statusStats: CategoryType[] = [];
+        reportData.forEach(data => {
+            let index = categoryStats.findIndex(res_data => res_data.labels == data.type.toString());
+            if(index < 0) {
+                categoryStats.push({
+                    labels: data.type.toString(),
+                    value: 1
+                });
+            }
+            else {
+                categoryStats[index].value += 1;
+            }
+
+            index = statusStats.findIndex(res_data => res_data.labels == data.status.toString());
+            if(index < 0) {
+                statusStats.push({
+                    labels: data.status.toString(),
+                    value: 1
+                });
+            }
+            else {
+                statusStats[index].value += 1;
+            }
+        });
+        
+        setPieCategory(categoryStats);
+        setPieStatus(statusStats);
+    }, [reportData]);
+    
+    
     return (
         <>
             <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">

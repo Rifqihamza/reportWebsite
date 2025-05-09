@@ -20,7 +20,7 @@ export default function MainPage() {
   });
 
   
-  const [reports, setReports]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([
+  const [reportData, setReportData]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([
     {
       id: "",
       created_at: new Date().toISOString(),
@@ -129,13 +129,13 @@ export default function MainPage() {
     {/* Content */}
     <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35em] md:max-h-[40rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
-        <ListDataReport userData={userData} reports={reports} setReports={setReports} />
+        <ListDataReport userData={userData} reportData={reportData} setReportData={setReportData} />
       </div>
       <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
-        <ReportForm reportData={reports} setReportData={setReports} />
+        <ReportForm reportData={reportData} setReportData={setReportData} />
       </div>
       <div id="graph-section" className={`tab-content ${activeTab == 2 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
-        <ApexChart />
+        <ApexChart reportData={reportData} />
       </div>
     </div>
   </>
