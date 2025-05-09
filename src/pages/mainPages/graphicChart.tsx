@@ -12,9 +12,10 @@ const pieCategory = [
     { labels: "K3", value: 5 },
     { labels: "Abnormality", value: 5 },
 ];
+
 const pieStatus = [
-    { labels: "Complete", value: 8 },
     { labels: "In Process", value: 2 },
+    { labels: "Complete", value: 8 },
     { labels: "Hold", value: 5 },
     { labels: "Not Started", value: 5 },
 ];

@@ -98,6 +98,11 @@ export default function ReportListComponent({ userData, reports, setReports }: {
   }, []);
 
   
+  function handle_save() {
+    setShowDetail(false);
+    alert("Laporan Berhasil Disimpan!");
+  }
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPage, setMaxPage] = useState(0);
@@ -284,6 +289,12 @@ export default function ReportListComponent({ userData, reports, setReports }: {
             
           return <>
             <div className="relative flex flex-col gap-2 md:gap-4">
+            <div className="fixed top-3 left-3">
+              <button
+              onClick={handle_save}
+              className="rounded-[20px] flex items-center justify-center px-3 py-1 w-full text-white bg-[#7291af] hover:bg-[#6299be] duration-300 tracking-wide"
+              >Simpan</button>
+            </div>
               <div className="fixed top-3 right-3">
                 <button onClick={handle_close}>
                   <svg
@@ -306,7 +317,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
               {/* header Laporan */}
               <div className="flex md:flex-row md:items-center md:justify-between md:gap-0 md:mt-0 flex-row gap-2 mt-2 bg-[#7FA1C3] md:px-4 md:py-2 px-3 py-2 rounded-2xl">
                 <h1 className="font-bold md:text-lg text-sm text-white">{report_data?.message}</h1>
-                <h1><span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs px-3 py-1 rounded-xl`}>{report_data?.status}</span></h1>
+                <span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs px-3 rounded-xl`}>{report_data?.status}</span>
               </div>
               {report_data?.image != "" ? imageComponent : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
 
