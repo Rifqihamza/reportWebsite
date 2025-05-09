@@ -5,7 +5,7 @@ export enum AccountType {
 }
 
 export enum ReportType {
-    VR = "5R",
+    VR = "VR",
     Safety = "Safety",
     Abnormality = "Abnormality"
 }
