@@ -4,7 +4,6 @@ import "primereact/resources/themes/lara-light-blue/theme.css"; // atau tema lai
 import "primereact/resources/primereact.min.css"; // komponen core
 import "primeicons/primeicons.css"; // icon
 
-import { PrimeReactProvider } from "primereact/api";
 ---
 
 <!doctype html>
@@ -21,9 +20,7 @@ import { PrimeReactProvider } from "primereact/api";
     <title>Report Website | SMK Mitra Industri MM2100</title>
   </head>
   <body>
-    <PrimeReactProvider>
-      <slot />
-    </PrimeReactProvider>
+    <slot />
 
     <script
       is:inline

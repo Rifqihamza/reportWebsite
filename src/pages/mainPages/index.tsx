@@ -6,6 +6,7 @@ import { Sidebar } from 'primereact/sidebar';
 import { AccountType, ReportStatus, ReportType, type ReportData, type User } from "../../types/variables";
 import { getReport, getUser } from "../../utils/api_interface";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { PrimeReactProvider } from "primereact/api";
 
 export default function MainPage() {
   const [setVisible, setIsVisible] = useState<boolean>(false);
@@ -37,7 +38,7 @@ export default function MainPage() {
     });
   }, []);
 
-  return <>
+  return <PrimeReactProvider>
 
     {/* Desk Navbar */}
     <div className="mb-4 px-4 py-2 bg-white rounded-[50px] hidden md:flex flex-row items-center gap-6 mx-5">
@@ -128,5 +129,5 @@ export default function MainPage() {
         <ApexChart reportData={reportData} />
       </div>
     </div>
-  </>
+  </PrimeReactProvider>
 }
