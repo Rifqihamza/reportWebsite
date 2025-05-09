@@ -251,7 +251,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         </div>
         <button className="w-32 justify-center rounded-[20px] md:flex hidden px-3 py-0.5 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_6px_0_#E2DAD6] active:[box-shadow:0_2px_0_#E2DAD6] active:-translate-y-[5px]" onClick={handle_logout}
         >
-          Logout
+          {userData.role == AccountType.Siswa ? "Login" : "Logout"}
         </button>
       </div>
 
