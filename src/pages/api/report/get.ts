@@ -4,13 +4,6 @@ import { prisma } from "../../../utils/db";
 import type { Report } from "@prisma/client";
 
 export async function GET({ request }: APIContext) {
-    // Verify the user
-    const cookies = get_cookies_from_request(request);
-    if(!cookies || !cookies["user_token"] || !verify_user_token(cookies["user_token"])) {
-        return create_response_status(401);
-    }
-
-
     // Get the report data
     let report_data: Report[];
     try {
