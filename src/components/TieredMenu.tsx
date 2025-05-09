@@ -1,12 +1,21 @@
 
-import React, { useRef } from 'react';
-import { Button } from 'primereact/button';
+import { useRef } from 'react';
 import { TieredMenu } from 'primereact/tieredmenu';
 import type { MenuItem } from 'primereact/menuitem';
 
-export default function PopupDemo() {
+interface menuTieredProps {
+    label: string;
+}
+
+interface MenuItemExtended extends MenuItem {
+    label: string;
+    icon?: string;
+    items?: MenuItemExtended[];
+}
+
+export default function PopupDemo(this: void, props: menuTieredProps) {
     const menu = useRef<TieredMenu>(null);
-    const items: MenuItem[] = [
+    const items: MenuItemExtended[] = [
         {
             label: 'Status',
             items: [
@@ -19,8 +28,8 @@ export default function PopupDemo() {
         {
             label: 'Kategori',
             items: [
-                { label: 'Safety', icon: 'pi pi-fw pi-calendar' },
-                { label: '5R', icon: 'pi pi-fw pi-calendar' },
+                { label: 'Safety', icon: 'pi pi-lock' },
+                { label: '5R', icon: 'pi pi-trash' },
                 { label: 'Abnormality', icon: 'pi pi-fw pi-calendar' },
                 { label: 'K3', icon: 'pi pi-fw pi-calendar' },
             ],
@@ -30,8 +39,8 @@ export default function PopupDemo() {
     return (
         <div className="card flex justify-content-center" >
             <TieredMenu model={items} popup ref={menu} breakpoint='4096px' />
-            <Button className='bg-[#6482ad] px-5 py-2 rounded-lg text-white hover:bg-[#7fa1c3] duration-200' label="Filter" onClick={(e) => menu.current?.toggle(e)
-            } />
+            <button className='bg-[#6482ad] px-5 py-2 rounded-lg text-white hover:bg-[#7fa1c3] duration-200' onClick={(e) => menu.current?.toggle(e)
+            }>{props.label}</button>
         </div>
     )
 }

@@ -5,10 +5,8 @@ import { useState } from "react";
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const handleLogin = async () => {
-    console.log("LOGGING IN...");
-
+    
   }
 
   return <>
@@ -21,6 +19,7 @@ export default function LoginFormComponent() {
         placeholder="Username..."
         className="mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 transition-colors duration-300 placeholder-black"
         onChange={(e) => setUsername(e.target.value)}
+        required
       />
     </div>
 
@@ -33,6 +32,7 @@ export default function LoginFormComponent() {
         placeholder="Password..."
         className="mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 transition-colors duration-300 placeholder-black"
         onChange={(e) => setPassword(e.target.value)}
+        required
       />
     </div>
 

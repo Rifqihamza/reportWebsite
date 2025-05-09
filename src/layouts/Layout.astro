@@ -1,5 +1,10 @@
 ---
 import "../styles/global.css";
+import "primereact/resources/themes/lara-light-blue/theme.css"; // atau tema lain
+import "primereact/resources/primereact.min.css"; // komponen core
+import "primeicons/primeicons.css"; // icon
+
+import { PrimeReactProvider } from "primereact/api";
 ---
 
 <!doctype html>
@@ -11,12 +16,15 @@ import "../styles/global.css";
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <link rel="icon" type="image/svg+xml" href="../../logoSekolah.png" />
+    <link rel="icon" type="image/svg+xml" href="/img/logoSekolah.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>Report Website</title>
+    <title>Report Website | SMK Mitra Industri MM2100</title>
   </head>
   <body>
-    <slot />
+    <PrimeReactProvider>
+      <slot />
+    </PrimeReactProvider>
+
     <script
       is:inline
       src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"

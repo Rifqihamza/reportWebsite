@@ -8,19 +8,12 @@ interface Status {
   code: string;
 }
 export default function ListDataReport({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
-  const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
-  const status: Status[] = [
-    { name: 'Complete', code: 'C' },
-    { name: 'In Process', code: 'IPr' },
-    { name: 'Not Started', code: 'NS' },
-    { name: 'Hold', code: 'H' },
-  ];
 
   return (
     <>
       {/* Header Title */}
       <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
-        <img src="/reportDataIcon.svg" className="md:w-6 w-6 h-auto" alt="report icon" />
+        <img src="/icon/reportDataIcon.svg" className="md:w-6 w-6 h-auto" alt="report icon" />
         <h1 className="font-bold uppercase tracking-[2px] text-md md:text-lg text-black">
           Data Laporan
         </h1>
@@ -54,7 +47,7 @@ export default function ListDataReport({ userData, reportData, setReportData }: 
 
           {/* Filter Dropdown */}
           <div className="w-fit">
-            <TieredDropDowns />
+            <TieredDropDowns label="Filter" />
           </div>
         </div>
 
