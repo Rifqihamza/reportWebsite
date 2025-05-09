@@ -12,7 +12,7 @@ export default function LoginFormComponent() {
     
     const result = await userLogin(username, password);
     if(result == APIResultType.NoError) {
-        window.location.href = "/login";
+        window.location.href = "/";
     }
     else if(result == APIResultType.Unauthorized) {
         alert("Unauthorized!");
