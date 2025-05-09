@@ -3,49 +3,65 @@ import PieChart from "../../components/pieChart"
 import { useEffect, useState } from "react";
 import { Dropdown, } from 'primereact/dropdown';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
-import { lineReports } from "../../types/lineChartData";
-import type { ReportData } from "../../types/variables";
+import type { ReportData, ReportType } from "../../types/variables";
 
 
-// const pieCategory = [
-//     { labels: "5R", value: 8 },
-//     { labels: "Safety", value: 2 },
-//     { labels: "K3", value: 5 },
-//     { labels: "Abnormality", value: 5 },
-// ];
-
-// const pieStatus = [
-//     { labels: "In Process", value: 2 },
-//     { labels: "Complete", value: 5 },
-//     { labels: "Hold", value: 5 },
-//     { labels: "Not Started", value: 5 },
-// ];
+const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
 
 type CategoryType = {
     labels: string,
     value: number
 }
 
+type LineChartValueType = {
+    labels: string;
+    type: ReportType;
+    value: number;
+}
+
 const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
-    const availableYears = Array.from(new Set(lineReports.map(report => report.year)));
+    const [availableYears, setAvailableYears] = useState([] as string[]);
     const currentYear = new Date().getFullYear();
     const [selectedYear, setSelectedYear] = useState<number>(currentYear);
     const [pieCategory, setPieCategory] = useState([] as CategoryType[])
     const [pieStatus, setPieStatus] = useState([] as CategoryType[])
 
-    const currentYearReports = lineReports
-        .filter(report => report.year === selectedYear)
-        .flatMap(({ labels, data }) =>
-            Object.entries(data).map(([type, value]) => ({ labels, type, value }))
-        );
-
-    const yearOptions = availableYears.map(year => ({ label: year.toString(), value: year }));
+    const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
 
 
+
+    useEffect(() => {
+        let result: LineChartValueType[] = [];
+        reportData.filter(value => (new Date(value.created_at).getFullYear() == selectedYear)).forEach(data => {
+            let date = new Date(data.created_at);
+            let label = monthsShort[date.getMonth()];
+            
+            let index = result.findIndex(value => value.labels == label && value.type == data.type);
+            if(index < 0) {
+                result.push({
+                    labels: label,
+                    type: data.type,
+                    value: 1,
+                });
+            }
+            else {
+                result[index].value += 1;
+            }
+        })
+
+        result.sort((a, b) => monthsShort.indexOf(a.labels) - monthsShort.indexOf(b.labels));
+
+        setCurrentYearReports(result);
+    }, [selectedYear, reportData]);
+    
     useEffect(() => {
         // Get the category and status statistics
         let categoryStats: CategoryType[] = [];
         let statusStats: CategoryType[] = [];
+        let resultAvailableYears: {
+            [key: number]: number
+        } = {};
+
         reportData.forEach(data => {
             let index = categoryStats.findIndex(res_data => res_data.labels == data.type.toString());
             if(index < 0) {
@@ -68,10 +84,16 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             else {
                 statusStats[index].value += 1;
             }
+
+            let year = new Date(data.created_at).getFullYear();
+            resultAvailableYears[year] = 0;
         });
         
         setPieCategory(categoryStats);
         setPieStatus(statusStats);
+        let resultAvailableYearsKeys = Object.keys(resultAvailableYears);
+        setAvailableYears(resultAvailableYearsKeys);
+        setSelectedYear(Number.parseInt(resultAvailableYearsKeys[0]));
     }, [reportData]);
     
     
@@ -103,9 +125,9 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     <div className="w-full mt-6 px-4 py-2 rounded-xl shadow-inner shadow-gray-500 ">
                         <div className="w-fit mt-4">
                             <Dropdown
-                                value={selectedYear}
+                                value={availableYears[0]}
                                 onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                                options={yearOptions}
+                                options={availableYears}
                                 optionLabel="label"
                                 placeholder="Pilih Tahun"
                                 className="w-full border border-gray-300 rounded-lg text-xs"
