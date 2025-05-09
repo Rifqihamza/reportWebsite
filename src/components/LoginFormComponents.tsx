@@ -11,15 +11,16 @@ export default function LoginFormComponent() {
     setLoginDisabled(true);
     
     const result = await userLogin(username, password);
-    
-    if(result == APIResultType.Unauthorized) {
+    if(result == APIResultType.NoError) {
+        window.location.href = "/";
+    }
+    else if(result == APIResultType.Unauthorized) {
         alert("Unauthorized!");
     }
     else {
         alert("There's an error!");
     }
     
-    window.location.href = "/login";
 
     setLoginDisabled(false);
   }
@@ -58,7 +59,10 @@ export default function LoginFormComponent() {
         className="disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-3 bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-xl"
         disabled={loginDisabled}
         onClick={handleLogin}
-      >Login</button>
+      >
+        {loginDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+        Login
+        </button>
     </div>
   </>
 }
