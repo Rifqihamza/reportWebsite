@@ -38,35 +38,45 @@ export async function userLogin(username: string, password: string): Promise<API
     }
 }
 
-export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string): Promise<APIResultType|ReportData> {
+export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string, image?: File): Promise<APIResultType|ReportData> {
+    // Setting up Form Data
+    const form_data = new FormData();
+    form_data.append("message", message);
+    form_data.append("pic_name", pic_name);
+    form_data.append("report_type", report_type);
+    form_data.append("follow_up", follow_up);
+
+    if(location) {
+        form_data.append("location", location);
+    }
+    if(report_date) {
+        form_data.append("report_date", report_date);
+    }
+    if(due_date) {
+        form_data.append("due_date", due_date);
+    }
+    if(image) {
+        form_data.append("image", image);
+    }
+    
+    form_data.append("follow_up_name", follow_up_name);
+    
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
         credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "message": message,
-            "pic_name": pic_name,
-            "report_type": report_type,
-            "follow_up": follow_up,
-            "location": location,
-            "report_date": report_date,
-            "due_date": due_date,
-            "follow_up_name": follow_up_name
-        })
+        body: form_data
     });
 
     // Check the response
     if(response.ok) {
         return (await response.json()) as ReportData;
     }
-    else if(response.status == 500) {
-        return APIResultType.InternalServerError;
+    else if(response.status == 401) {
+        return APIResultType.Unauthorized;
     }
     else {
-        return APIResultType.Unauthorized;
+        return APIResultType.InternalServerError;
     }
 }
 

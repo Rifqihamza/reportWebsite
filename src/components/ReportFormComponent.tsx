@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import Dropdown from "./dropdowns";
 import { addReport, APIResultType } from '../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../types/variables";
@@ -12,6 +12,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [followUpName, setFollowUpName] = useState("");
   const [reportDate, setReportDate] = useState("");
   const [reportDueDate, setReportDueDate] = useState("");
+  const [image, setImage] = useState(null as File | null)
   
   const [dropdowns, setDropdowns] = useState([
     {
@@ -29,7 +30,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     }
 
     
-    const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString());
+    const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
     if(typeof result == "object") {
       alert("Successfully add the report!");
 
@@ -40,6 +41,9 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     }
     else if(result == APIResultType.InternalServerError) {
       alert("There's an unexpected error occured in the server side!");
+    }
+    else {
+        console.log(result);
     }
   }
     
@@ -61,7 +65,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               name="laporan"
               id="laporan"
               placeholder="Deskripsikan Temuan Anda..."
-              className="px-6 py-3 outline-none border border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+              className="px-6 py-3 outline-none border-2 border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
               onChange={(e) => setMessage(e.target.value)}
               required
             ></textarea>
@@ -82,7 +86,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 name="laporan"
                 id="laporan"
                 placeholder="Nama PIC..."
-                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-6 py-3  outline-none border-2 border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 onChange={(e) => setPic(e.target.value)}
                 required
               />
@@ -90,7 +94,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             {/* End */}
 
             {/* Dropdowns Section */}
-            <div className="flex flex-col md:flex-row gap-2 w-full mt-8">
+            <div className="flex flex-col md:flex-row gap-2 w-full mt-8 md:space-y-4 space-y-3">
             {dropdowns.map((d, index) => {
               let handler = (value: string) => {
 
@@ -119,7 +123,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             {/* End */}
 
             {/* Di Follow Up Oleh Section */}
-            <div className="flex flex-col w-full space-y-2">
+            <div className="flex flex-col w-full space-y-2 md:mt-0 mt-4">
               <label
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
@@ -132,14 +136,14 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 name="lokasi"
                 id="lokasi"
                 placeholder="Lokasi temuan"
-                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-6 py-3 outline-none border border-[#7FA1C3]  rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 onChange={(e) => setLocation(e.target.value)}
                 required
               />
             </div>
             {/* End */}
 
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between w-full">
+            <div className="flex flex-col md:flex-row md:gap-4 gap-0 items-center justify-between w-full">
               {/* Tanggal Temuan section */}
               <div className="flex flex-col w-full space-y-2 mt-6">
                 <label htmlFor="tanggal"
@@ -149,7 +153,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   Tanggal Temuan</label>
                 <input type="datetime-local"
                   placeholder="Tanggal temuan"
-                  className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                  className="px-6 py-3 outline-none border-2 border-[#E2DAD6] rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
                   onChange={(e) => setReportDate(e.target.value)}
                   required />
               </div>
@@ -164,7 +168,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   Due Date</label>
                 <input type="datetime-local"
                   placeholder="Tenggat Waktu"
-                  className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                  className="px-6 py-3 outline-none border-2 border-[#E2DAD6] rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
                   onChange={(e) => setReportDueDate(e.target.value)}
                   required />
               </div>
@@ -182,7 +186,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 name="lokasi"
                 id="lokasi"
                 placeholder="Nama Follow Up..."
-                className="px-6 py-3 outline-none rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-6 py-3 outline-none border-2 border-[#7FA1C3]  rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 onChange={(e) => setFollowUpName(e.target.value)}
                 required
               />
@@ -220,12 +224,12 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                   ></path>
                 </svg>
-                <p className="mb-1 text-sm text-[#7FA1C3]" id="file-name-display">
-                  Klik untuk upload foto
+                <p className={`mb-1 text-sm text-[${image ? "black" : "#7FA1C3"}]`} id="file-name-display">
+                  {image ? image.name : "Klik untuk upload foto"}
                 </p>
-                <p className="text-xs text-[#7FA1C3]">PNG, JPG atau JPEG (Max. 2MB)</p>
+                <p className={`text-xs text-${image ? "black" : "[#7FA1C3]"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100)+"MB" : (Math.round(image.size / 10) / 100)+"KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
               </div>
-              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" />
+              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => {e.target.files ? setImage(e.target.files[0]) : ""}} />
             </label>
           </div>
         </div>

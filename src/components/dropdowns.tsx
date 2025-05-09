@@ -18,10 +18,10 @@ export default function Dropdown({ id, label, items, onChange }: DropdownProps) 
   };
 
   return (
-    <div className="relative text-left mb-4 w-full dropdown-container" data-dropdown-id={id}>
+    <div className="relative text-left w-full dropdown-container" data-dropdown-id={id}>
       <button
         type="button"
-        className="dropdown-trigger rounded-[20px] flex items-center justify-between px-6 py-3 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+        className="dropdown-trigger rounded-[20px] flex items-center justify-between px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
         aria-expanded={isOpen}
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -46,8 +46,8 @@ export default function Dropdown({ id, label, items, onChange }: DropdownProps) 
       {isOpen && (
         <div className="absolute z-10 mt-2 w-full bg-white rounded-lg shadow divide-y divide-gray-100 dropdown-menu">
           <ul className="py-2 text-sm text-gray-700">
-            {items.map((item) => (
-              <li key={item}>
+            {items.map((item, index) => (
+              <li key={index}>
                 <button
                   type="button"
                   className="dropdown-item block w-full text-left px-4 py-2 hover:bg-gray-100"
