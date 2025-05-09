@@ -135,7 +135,7 @@ export default function MainPage() {
         <ReportForm reportData={reports} setReportData={setReports} />
       </div>
       <div id="graph-section" className={`tab-content ${activeTab == 2 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
-        <ApexChart reportData={reports} />
+        <ApexChart />
       </div>
     </div>
   </>
