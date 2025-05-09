@@ -6,9 +6,6 @@ import Dropdown from "./dropdowns";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 
-type labelType = {
-  label: string;
-}
 const reportsPerPage = 5;
 
 
@@ -60,16 +57,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       setSaveDisabled(true);
       
       setTimeout(() => {
-          showMessage(e, toastTopRight, 'success');
+          showMessage("Sukses", toastTopRight, 'success', "Berhasil menyimpan!");
           setSaveDisabled(false);
       }, 1000);
   }
   
-  const showMessage = (event: React.MouseEvent<HTMLButtonElement>, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity']) => {
-    const target = event.target as HTMLButtonElement;
-    const label = target.innerText;
-
-    ref.current?.show({ severity: severity, summary: label, detail: label, life: 3000 });
+  const showMessage = (label: string, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity'], detail: string) => {
+    ref.current?.show({ severity: severity, summary: label, detail: detail, life: 3000 });
   };
 
   
