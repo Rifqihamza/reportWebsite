@@ -5,7 +5,8 @@ import Dropdown from "./dropdowns";import { APIResultType, changeReportStatus, d
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reports, setReports }: { userData: User, reports: ReportData[], setReports: Dispatch<SetStateAction<ReportData[]>> }) {
+
+export default function ReportListComponent({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
@@ -56,7 +57,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
 
     if(result == APIResultType.NoError) {
       setShowDetail(false);
-      setReports(reports.filter((value) => value.id != id));
+      setReportData(reportData.filter((value) => value.id != id));
     }
     else if(result == APIResultType.InternalServerError) {
       alert("There's an error!");
@@ -75,15 +76,6 @@ export default function ReportListComponent({ userData, reports, setReports }: {
     window.location.href = "/login";
   }
   
-  
-
-  useEffect(() => {
-    getReport().then(report_data_array => {
-      if(typeof report_data_array == "object") {
-        setReports(report_data_array);
-      }
-    });
-  }, []);
 
   
   async function handle_save(id: string) {
@@ -95,7 +87,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
 
     if(result == APIResultType.NoError) {
       setShowDetail(false);
-      setReports(reports.map((value) => value.id == id ? { ...value, status: selectedStatus } : value));
+      setReportData(reportData.map((value) => value.id == id ? { ...value, status: selectedStatus } : value));
     }
     else if(result == APIResultType.InternalServerError) {
       alert("There's an error!");
@@ -110,8 +102,8 @@ export default function ReportListComponent({ userData, reports, setReports }: {
   const [maxPage, setMaxPage] = useState(0);
 
   useEffect(() => {
-    setMaxPage(Math.ceil(reports.length / reportsPerPage));
-  }, [reports]);
+    setMaxPage(Math.ceil(reportData.length / reportsPerPage));
+  }, [reportData]);
 
   return (
     <>
@@ -165,7 +157,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+            {reportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
@@ -201,7 +193,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+        {reportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -271,23 +263,24 @@ export default function ReportListComponent({ userData, reports, setReports }: {
       <div className={(showDetail ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem]") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 md:p-14 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
 
         {(() => {
-            const report_data = reports.find(value => value.id == detailId) || reports[0];
+          const report_data = reportData.find(value => value.id == detailId) || reportData[0];
 
-            if(!report_data) {
-                return <></>;
-            }
 
-            const imageComponent = <>
-                <div className="flex flex-col justify-center">
-                    <Image
-                    src={report_data?.image}
-                    imageClassName="aspect-[16/9] object-contain rounded-lg w-[500px] md:w-1/2 mx-auto	"
-                    alt="Foto Bukti Laporan"
-                    preview={true}
-                    />
-                    <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
-              </div>
-            </>;
+          if(!report_data) {
+              return <></>;
+          }
+
+          const imageComponent = <>
+              <div className="flex flex-col justify-center">
+                  <Image
+                  src={report_data?.image}
+                  imageClassName="aspect-[16/9] object-contain rounded-lg w-[500px] md:w-1/2 mx-auto	"
+                  alt="Foto Bukti Laporan"
+                  preview={true}
+                  />
+                  <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
+            </div>
+          </>;
             
           return <>
             <div className="relative flex flex-col gap-2 md:gap-4">
