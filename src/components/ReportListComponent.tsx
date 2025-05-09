@@ -76,15 +76,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     window.location.href = "/login";
   }
   
-  
-
-  useEffect(() => {
-    getReport().then(report_data_array => {
-      if(typeof report_data_array == "object") {
-        setReportData(report_data_array);
-      }
-    });
-  }, []);
 
   
   async function handle_save(id: string) {

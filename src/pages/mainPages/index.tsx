@@ -4,7 +4,7 @@ import ApexChart from "./graphicChart";
 
 import { Sidebar } from 'primereact/sidebar';
 import { AccountType, ReportStatus, ReportType, type ReportData, type User } from "../../types/variables";
-import { getUser } from "../../utils/api_interface";
+import { getReport, getUser } from "../../utils/api_interface";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 export default function MainPage() {
@@ -20,22 +20,7 @@ export default function MainPage() {
   });
 
   
-  const [reportData, setReportData]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([
-    {
-      id: "",
-      created_at: new Date().toISOString(),
-      message: "",
-      location: "",
-      pic_name: "",
-      follow_up_name: "",
-      type: ReportType.Abnormality as ReportType,
-      follow_up: AccountType.Guru as AccountType,
-      status: ReportStatus.Hold as ReportStatus,
-      report_date: new Date().toISOString(),
-      due_date: new Date().toISOString(),
-      image: ""
-    } as ReportData,
-  ]);
+  const [reportData, setReportData]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([] as ReportData[]);
   
   
   useEffect(() => {
@@ -44,6 +29,12 @@ export default function MainPage() {
         setUserData(user_data);
       }
     })
+    
+    getReport().then(report_data_array => {
+      if(typeof report_data_array == "object") {
+        setReportData(report_data_array);
+      }
+    });
   }, []);
 
   return <>
@@ -134,7 +125,7 @@ export default function MainPage() {
       <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
         <ReportForm reportData={reportData} setReportData={setReportData} />
       </div>
-      <div id="graph-section" className={`tab-content ${activeTab == 2 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
+      <div id="graph-section" className={`tab-content ${activeTab == 2 ? "active" : "hidden"}`}>
         <ApexChart reportData={reportData} />
       </div>
     </div>
