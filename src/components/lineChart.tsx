@@ -49,13 +49,6 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
         xaxis: {
             categories,
         },
-        title: {
-            text: 'Grafik Laporan Bulanan',
-            style: {
-                fontSize: '14px',
-                color: '#000',
-            },
-        },
         markers: {
             size: 3,
         },

@@ -5,21 +5,24 @@ import { APIResultType, userLogin } from "../utils/api_interface";
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-    const handleLogin = async () => {
-        console.log("LOGGING IN...");
-
-        const result = await userLogin(username, password);
-        if(result == APIResultType.NoError) {
-            window.location.href = "/#login";
-        }
-        else if(result == APIResultType.Unauthorized) {
-            alert("Unauthorized!");
-        }
-        else {
-            alert("There's an error!");
-        }
+  const [loginDisabled, setLoginDisabled] = useState(false);
+  
+  const handleLogin = async () => {
+    setLoginDisabled(true);
+    
+    const result = await userLogin(username, password);
+    if(result == APIResultType.NoError) {
+        window.location.href = "/login";
     }
+    else if(result == APIResultType.Unauthorized) {
+        alert("Unauthorized!");
+    }
+    else {
+        alert("There's an error!");
+    }
+
+    setLoginDisabled(false);
+  }
 
   return <>
     {/* Username */}
@@ -31,6 +34,7 @@ export default function LoginFormComponent() {
         placeholder="Username..."
         className="mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 transition-colors duration-300 placeholder-black"
         onChange={(e) => setUsername(e.target.value)}
+        required
       />
     </div>
 
@@ -43,6 +47,7 @@ export default function LoginFormComponent() {
         placeholder="Password..."
         className="mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 transition-colors duration-300 placeholder-black"
         onChange={(e) => setPassword(e.target.value)}
+        required
       />
     </div>
 
@@ -50,7 +55,8 @@ export default function LoginFormComponent() {
     <div className="space-y-2 mt-8">
       <button
         type="button"
-        className="w-full uppercase tracking-[2px] font-bold px-6 py-3 bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-xl"
+        className="disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-3 bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-xl"
+        disabled={loginDisabled}
         onClick={handleLogin}
       >Login</button>
     </div>
