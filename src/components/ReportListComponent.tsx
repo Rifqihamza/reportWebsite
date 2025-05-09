@@ -1,5 +1,5 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, type ReportData, type User } from "../types/variables";
+import { AccountType, ReportStatus, string_to_reportstatus, type ReportData, type User } from '../types/variables';
 import { Image } from 'primereact/image'
 import Dropdown from "./dropdowns";import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
 
@@ -8,12 +8,14 @@ const reportsPerPage = 5;
 export default function ReportListComponent({ userData, reports, setReports }: { userData: User, reports: ReportData[], setReports: Dispatch<SetStateAction<ReportData[]>> }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
+  
   
   const dropdowns = [
     {
       id: "status",
       label: "Edit Status",
-      items: ["Complete", "In Process", "Hold", "Not Started"],
+      items: Object.values(ReportStatus),
     },
   ];
 
@@ -72,21 +74,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
 
     window.location.href = "/login";
   }
-
-  async function handle_change_status(id: string, report_status: ReportStatus) {
-    const result = await changeReportStatus(id, report_status);
-
-    if(result == APIResultType.NoError) {
-      setShowDetail(false);
-      setReports(reports.map((value) => value.id == id ? { ...value, status: report_status } : value));
-    }
-    else if(result == APIResultType.InternalServerError) {
-      alert("There's an error!");
-    }
-    else if(result == APIResultType.Unauthorized) {
-      alert("You have no access!");
-    }
-  }
+  
   
 
   useEffect(() => {
@@ -98,9 +86,23 @@ export default function ReportListComponent({ userData, reports, setReports }: {
   }, []);
 
   
-  function handle_save() {
-    setShowDetail(false);
-    alert("Laporan Berhasil Disimpan!");
+  async function handle_save(id: string) {
+    if(!selectedStatus) {
+        return;
+    }
+
+    const result = await changeReportStatus(id, selectedStatus);
+
+    if(result == APIResultType.NoError) {
+      setShowDetail(false);
+      setReports(reports.map((value) => value.id == id ? { ...value, status: selectedStatus } : value));
+    }
+    else if(result == APIResultType.InternalServerError) {
+      alert("There's an error!");
+    }
+    else if(result == APIResultType.Unauthorized) {
+      alert("You have no access!");
+    }
   }
 
   // Pagination
@@ -291,7 +293,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
             <div className="relative flex flex-col gap-2 md:gap-4">
             <div className="fixed top-3 left-3">
               <button
-              onClick={handle_save}
+              onClick={() => handle_save(report_data.id)}
               className="rounded-[20px] flex items-center justify-center px-3 py-1 w-full text-white bg-[#7291af] hover:bg-[#6299be] duration-300 tracking-wide"
               >Simpan</button>
             </div>
@@ -364,7 +366,7 @@ export default function ReportListComponent({ userData, reports, setReports }: {
             {/* Button Action */}
             <div className={`mt-4 space-y-4 md:space-y-0 gap-2 w-full justify-row items-center *:w-full grid md:flex ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
               {dropdowns.map((d, index) => (
-                <Dropdown key={index} id={d.id} label={`${d.label}`} items={d.items} />
+                <Dropdown key={index} id={d.id} label={`${d.label}`} items={d.items} onChange={(value) => setSelectedStatus(string_to_reportstatus(value)!)} />
               ))}
               <button className="rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide" onClick={() => handle_delete(report_data.id)}>Hapus</button>
             </div>
