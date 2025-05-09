@@ -46,48 +46,47 @@ export default function MainPage() {
     {/* SideBar Section for Mobile */}
     <div className="md:hidden flex flex-row items-center justify-between px-6 py-2 bg-white rounded-[40px] mb-4">
       <button onClick={() => { setIsVisible(true) }}>
-        <img src="/sidebarIcon.svg" alt="" className="w-5 h-auto" />
+        <img src="/icon/sidebarIcon.svg" alt="" className="w-5 h-auto" />
       </button>
-      <img src="/logoSekolah.png" alt="" className="w-9 h-auto" />
+      <img src="/img/logoSekolah.png" alt="" className="w-9 h-auto" />
     </div>
 
-    <Sidebar className=" bg-white px-6 py-1 rounded-r-4xl" showCloseIcon={false} position="left" visible={setVisible} onHide={() => setIsVisible(false)}>
-      {/* Close Button */}
-      <div className="relative py-2 mb-10 w-full">
-        <button className="absolute top-4 right-0" onClick={() => { setIsVisible(false) }}>
-          <img src="/closeIcon.svg" alt="" className="w-6 h-auto" />
-        </button>
-      </div>
-
-      <button
-        onClick={() => {
-          setActiveTab(0);
-          setIsVisible(false);
-        }}
-        className={`side-button ${activeTab === 0 ? "active" : ""}`}
-      >
-        Report Data
-      </button>
-
-      {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
+    <Sidebar className="bg-white px-2 py-1 rounded-r-4xl" showCloseIcon={true} position="left" visible={setVisible} onHide={() => setIsVisible(false)}>
+      {/* End Sidebar Section for Mobile */}
+      <div className="flex flex-col items-start justify-center w-full gap-2">
         <button
           onClick={() => {
-            setActiveTab(1);
+            setActiveTab(0);
             setIsVisible(false);
-          }} className={`side-button ${activeTab === 1 ? "active" : ""}`}
+          }}
+          className={`w-full text-left px-4 py-2 rounded-lg flex flex-row items-center gap-2 ${activeTab === 0 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
         >
-          Report
+          <img src="/icon/reportDataIcon.svg" className="w-6 h-auto" alt="" />
+          Report Data
         </button>
-      )}
 
-      <button
-        onClick={() => {
-          setActiveTab(2);
-          setIsVisible(false);
-        }} className={`side-button ${activeTab === 2 ? "active" : ""}`}
-      >
-        Graphic Data
-      </button>
+        {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
+          <button
+            onClick={() => {
+              setActiveTab(1);
+              setIsVisible(false);
+            }} className={`w-full text-left px-4 py-2 rounded-lg flex flex-row items-center gap-2 ${activeTab === 1 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
+          >
+            <img src="/icon/reportIcon.svg" className="w-6 h-auto" alt="" />
+            Report
+          </button>
+        )}
+
+        <button
+          onClick={() => {
+            setActiveTab(2);
+            setIsVisible(false);
+          }} className={`w-full text-left px-4 py-2 rounded-lg flex flex-row items-center gap-2 ${activeTab === 2 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
+        >
+          <img src="/icon/chartPieIcon.svg" className="w-5 h-auto" alt="" />
+          Graphic Data
+        </button>
+      </div>
       <div className="absolute  left-4 right-4 bottom-4">
         <button className="w-full justify-center rounded-[20px] flex px-3 py-0.5 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_6px_0_#E2DAD6] active:[box-shadow:0_2px_0_#E2DAD6] active:-translate-y-[5px]"
         >
