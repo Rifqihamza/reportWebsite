@@ -15,6 +15,8 @@ const reportsPerPage = 5;
 export default function ReportListComponent({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
+  const [saveDisabled, setSaveDisabled] = useState(false);
+
   const toastTopRight = useRef<Toast>(null);
 
 
@@ -52,6 +54,15 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
   function handle_close() {
     setShowDetail(false);
+  }
+  
+  function handle_save(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+      setSaveDisabled(true);
+      
+      setTimeout(() => {
+          showMessage(e, toastTopRight, 'success');
+          setSaveDisabled(false);
+      }, 1000);
   }
   
   const showMessage = (event: React.MouseEvent<HTMLButtonElement>, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity']) => {
@@ -314,7 +325,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <button className="rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide">Hapus</button>
               </div>
               <div className="mt-2">
-                <button className=" bg-[#7FA1C3] w-full px-4 py-2 rounded-2xl text-white" onClick={(e) => showMessage(e, toastTopRight, 'success')}>Simpan</button>
+                <button className="disabled:opacity-50  bg-[#7FA1C3] w-full px-4 py-2 rounded-2xl text-white" onClick={(e) => handle_save(e)} disabled={saveDisabled}>Simpan</button>
               </div>
             </div>
           </>

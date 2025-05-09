@@ -11,7 +11,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [followUpName, setFollowUpName] = useState("");
   const [reportDate, setReportDate] = useState("");
   const [reportDueDate, setReportDueDate] = useState("");
-  const [image, setImage] = useState(null as File | null)
+  const [image, setImage] = useState(null as File | null);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
   
   const [dropdowns, setDropdowns] = useState([
     {
@@ -23,10 +24,12 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   ]);
   
   const handle_submit = async () => {
-    if(!message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate || !followUpName) {
-        alert("Please complete the form.");
-        return;
-    }
+    setSubmitDisabled(true);
+
+    
+    setTimeout(() => {
+        setSubmitDisabled(false);
+    }, 1000);
   }
     
   return (
@@ -193,7 +196,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
         <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
           <button
             type="button"
-            className="rounded-[20px] flex items-center px-6 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            className="disabled:opacity-50 rounded-[20px] flex items-center px-6 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            disabled={submitDisabled}
             onClick={handle_submit}
           >
             <svg
