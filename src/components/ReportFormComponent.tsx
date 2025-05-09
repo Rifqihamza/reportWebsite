@@ -1,7 +1,9 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import Dropdown from "./dropdowns";
 import { addReport, APIResultType } from '../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../types/variables";
+import { Toast } from "primereact/toast";
+import { ProgressBar } from "primereact/progressbar";
 
 export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
   const [message, setMessage] = useState("");
@@ -14,6 +16,9 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [reportDueDate, setReportDueDate] = useState("");
   const [image, setImage] = useState(null as File | null);
   const [submitDisabled, setSubmitDisabled] = useState(false);
+
+  const toastProgress = useRef<Toast>(null);
+  const toastSuccess = useRef<Toast>(null);
   
   const [dropdowns, setDropdowns] = useState([
     {
@@ -31,12 +36,22 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     }
 
     setSubmitDisabled(true);
+    toastSuccess.current!.clear();
+    toastProgress.current!.show({
+        summary: "Sedang upload data..."
+    });
 
     const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
     if(typeof result == "object") {
       alert("Successfully add the report!");
 
       setReportData([result, ...reportData]);
+      toastProgress.current!.clear();
+      toastSuccess.current!.show({
+          summary: "Data berhasil direkam!",
+          severity: "success",
+          life: 3000
+      });
     }
     else if(result == APIResultType.Unauthorized) {
       window.location.href = "/";
@@ -54,7 +69,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   return (
     <>
       <form id="report-form" className="mx-8">
-        <div className="space-y-6">
+        <div className={"space-y-6"+(submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
           {/* Laporan Text Area */}
           <div className="flex flex-col gap-2 w-full">
             <label
@@ -200,7 +215,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
 
 
         {/* File Upload */}
-        <div className="space-y-2 mt-4">
+        <div className={"space-y-2 mt-4"+(submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
           <label
             htmlFor="foto"
             className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
@@ -246,24 +261,28 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             disabled={submitDisabled}
             onClick={handle_submit}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              ></path>
-            </svg>
+            {submitDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : <i className="pi pi-send" style={{ fontSize: '1rem', marginRight: '10px' }}></i>}
             Kirim Laporan
           </button>
         </div>
       </form >
+      <Toast
+        ref={toastProgress}
+        content={({ message }) => (
+            <section className="flex p-3 gap-3 w-full bg-[#fffa] backdrop-blur-xl shadow-2 fadeindown" style={{ borderRadius: '10px' }}>
+                <i className="pi pi-cloud-upload text-primary-500 text-2xl"></i>
+                <div className="flex flex-col gap-3 w-full">
+                    <p className="m-0 font-semibold text-base text-[#7FA1C3]">{message.summary}</p>
+                    <p className="m-0 text-base text-700">{message.detail}</p>
+                    <div className="flex flex-col gap-2">
+                        <ProgressBar mode="indeterminate" showValue={true} style={{ height: "6px" }}></ProgressBar>
+                        <label className="text-right text-xs text-[#7FA1C3]">uploading...</label>
+                    </div>
+                </div>
+            </section>
+        )}
+    ></Toast>
+    <Toast ref={toastSuccess} />
     </>
   );
 }

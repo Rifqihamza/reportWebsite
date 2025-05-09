@@ -7,9 +7,6 @@ import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout 
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 
-type labelType = {
-  label: string;
-}
 const reportsPerPage = 5;
 
 
@@ -18,6 +15,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [detailId, setDetailId] = useState("");
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
+  const [deleteDisabled, setDeleteDisabled] = useState(false);
 
   const toastTopRight = useRef<Toast>(null);
 
@@ -62,12 +60,15 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     if(userData.role == AccountType.Siswa && !confirm("Are you sure?")) {
       return;
     }
+    setDeleteDisabled(true);
     
     const result = await deleteReport(id);
 
     if(result == APIResultType.NoError) {
       setShowDetail(false);
       setReportData(reportData.filter((value) => value.id != id));
+      showMessage("Sukses", toastTopRight, 'success', "Rekaman berhasil dihapus!");
+      setDeleteDisabled(false);
     }
     else if(result == APIResultType.InternalServerError) {
       alert("There's an error!");
@@ -88,7 +89,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   
 
   
-  async function handle_save(event: React.MouseEvent<HTMLButtonElement>, id: string) {
+  async function handle_save(id: string) {
     if(!selectedStatus) {
       return;
     }
@@ -100,7 +101,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     if(result == APIResultType.NoError) {
       setShowDetail(false);
       setReportData(reportData.map((value) => value.id == id ? { ...value, status: selectedStatus } : value));
-      showMessage(event, toastTopRight, 'success');
+      showMessage("Sukses", toastTopRight, 'success', "Berhasil menyimpan!");
     }
     else if(result == APIResultType.InternalServerError) {
       alert("There's an error!");
@@ -111,14 +112,12 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     
     setSaveDisabled(false);
   }
+  
+  const showMessage = (label: string, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity'], detail: string) => {
+    ref.current?.show({ severity: severity, summary: label, detail: detail, life: 3000 });
+  };
 
-  function showMessage(event: React.MouseEvent<HTMLButtonElement>, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity']) {
-    const target = event.target as HTMLButtonElement;
-    const label = target.innerText;
-
-    ref.current?.show({ severity: severity, summary: label, detail: label, life: 3000 });
-  }
-
+  
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPage, setMaxPage] = useState(0);
@@ -377,10 +376,16 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {dropdowns.map((d, index) => (
                   <Dropdown key={index} id={d.id} label={`${d.label}`} items={d.items} onChange={(value) => setSelectedStatus(string_to_reportstatus(value)!)} />
                 ))}
-                <button className="rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide" onClick={() => handle_delete(report_data.id)}>Hapus</button>
+                <button className="disabled:opacity-50 rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled}>
+                    {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                    Hapus
+                </button>
               </div>
               <div className="mt-2">
-                <button className="disabled:opacity-50  bg-[#7FA1C3] w-full px-4 py-2 rounded-2xl text-white" onClick={(e) => handle_save(e, report_data?.id)} disabled={saveDisabled}>Simpan</button>
+                <button className="disabled:opacity-50 bg-[#7FA1C3] w-full px-4 py-2 rounded-2xl text-white" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled}>
+                    {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                    Simpan
+                </button>
               </div>
             </div>
           </>
