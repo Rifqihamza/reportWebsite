@@ -49,7 +49,7 @@ export default function MainPage() {
   return <>
 
     {/* Desk Navbar */}
-    <div className="mb-4 px-3 py-2 bg-white rounded-[50px] hidden md:flex flex-row items-center gap-6 mx-5">
+    <div className="mb-4 px-4 py-2 bg-white rounded-[50px] hidden md:flex flex-row items-center gap-6 mx-5">
       <button
         onClick={() => setActiveTab(0)}
         className={`tab-button ${activeTab === 0 ? "active" : ""}`}
@@ -97,6 +97,7 @@ export default function MainPage() {
       >
         Report Data
       </button>
+
       {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
         <button
           onClick={() => {
@@ -107,6 +108,7 @@ export default function MainPage() {
           Report
         </button>
       )}
+
       <button
         onClick={() => {
           setActiveTab(2);
@@ -115,11 +117,17 @@ export default function MainPage() {
       >
         Graphic Data
       </button>
+      <div className="absolute  left-4 right-4 bottom-4">
+        <button className="w-full justify-center rounded-[20px] flex px-3 py-0.5 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_6px_0_#E2DAD6] active:[box-shadow:0_2px_0_#E2DAD6] active:-translate-y-[5px]"
+        >
+          Logout
+        </button>
+      </div>
     </Sidebar>
     {/* End Sidebar Section for mobile */}
 
     {/* Content */}
-    <div className="rounded-xl px-4 py-4 max-h-[35rem] md:max-h-[40rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
+    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35em] md:max-h-[40rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
         <ListDataReport userData={userData} reports={reports} setReports={setReports} />
       </div>

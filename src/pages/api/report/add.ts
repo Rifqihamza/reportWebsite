@@ -4,6 +4,13 @@ import { prisma } from "../../../utils/db";
 import { Prisma, type Report } from "@prisma/client";
 import { AccountType, ReportType } from "../../../types/variables";
 import { z } from 'zod';
+import { RateLimiterMemory } from "rate-limiter-flexible";
+
+
+const rateLimiterMemory = new RateLimiterMemory({
+    points: 10, // Max 10 requests
+    duration: 3600 * 24, // Per day
+});
 
 const ReportBodyType = z.object({
     message: z.string(),
@@ -24,6 +31,12 @@ export async function POST({ request }: APIContext) {
     if(!cookies || !cookies["user_token"] || !verify_teacher_token(cookies["user_token"])) {
         return create_response_status(401);
     }
+
+
+    // Check the rate-limiter
+    rateLimiterMemory.consume(cookies["user_token"]).catch(() => {
+        return create_response_status(429);
+    })
 
 
     // Get the required data

@@ -3,8 +3,8 @@ import type { MiddlewareHandler } from 'astro';
 import { create_response_status } from "./utils/api_helper";
 
 const rateLimiterMemory = new RateLimiterMemory({
-    points: 50, // Max 10 requests
-    duration: 60, // Per 60 seconds per IP
+    points: 50, // Max 50 requests
+    duration: 3600, // Per 1 hour
 });
 
 export const onRequest: MiddlewareHandler = async (context, next) => {    
