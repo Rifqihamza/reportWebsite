@@ -1,93 +1,14 @@
 'use client';
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, type User } from "../types/variables";
+import { AccountType, type ReportData, type User } from "../types/variables";
 import { Image } from 'primereact/image'
 import Dropdown from "./dropdowns";
 const reportsPerPage = 5;
 
 
-export default function ReportListComponent({ userData }: { userData: User }) {
+export default function ReportListComponent({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
-
-  type ReportStatus = "Not Started" | "In Process" | "Complete" | "Hold";
-  const [reports, setReports]: [{
-    id: string;
-    created_at: string;
-    message: string;
-    location: string;
-    pic_name: string;
-    type: string;
-    follow_up: string;
-    image: string;
-    status: ReportStatus;
-  }[], Dispatch<SetStateAction<{
-    id: string;
-    created_at: string;
-    message: string;
-    location: string;
-    pic_name: string;
-    type: string;
-    follow_up: string;
-    image: string;
-    status: ReportStatus;
-  }[]>>] = useState([
-      {
-        id: "1",
-        created_at: "2024-05-01",
-        message: "Temuan kebocoran pipa di area workshop",
-        location: "Workshop A",
-        pic_name: "Suhaimi",
-        type: "Safety",
-        follow_up: "Guru",
-        image: "/laporanNew.JPG",
-        status: "Not Started",
-      },
-      {
-        id: "2",
-        created_at: "2024-04-28",
-        message: "Peralatan tidak tertata rapi setelah praktikum",
-        location: "Lab Komputer",
-        pic_name: "Heas Priyo",
-        type: "5R",
-        follow_up: "Siswa",
-        image: "/laporanNew.JPG",
-        status: "In Process",
-      },
-      {
-        id: "3",
-        created_at: "2024-04-25",
-        message: "Material bahan praktik tercecer di lantai",
-        location: "Workshop B",
-        pic_name: "Amalia",
-        type: "5R",
-        follow_up: "Siswa",
-        image: "/laporanNew.JPG",
-        status: "Complete",
-      },
-      {
-        id: "4",
-        created_at: "2024-04-20",
-        message: "AC ruangan tidak berfungsi dengan baik",
-        location: "Ruang Teori 3",
-        pic_name: "Munir",
-        type: "Safety",
-        follow_up: "Vendor",
-        image: "/laporanNew.JPG",
-        status: "Hold",
-      },
-      {
-        id: "5",
-        created_at: "2024-04-20",
-        message: "AC ruangan tidak berfungsi dengan baik",
-        location: "Ruang Teori 8",
-        pic_name: "Tya",
-        type: "Abnormality",
-        follow_up: "Vendor",
-        image: "/laporanNew.JPG",
-        status: "Complete",
-      },
-    ]);
 
   const dropdowns = [
     {
@@ -99,8 +20,8 @@ export default function ReportListComponent({ userData }: { userData: User }) {
 
   // Status color mapping
   const statusColors = {
-    "Not Started": "bg-red-100 text-red-800 truncate",
-    "In Process": "bg-yellow-100 text-yellow-800 truncate",
+    NotStarted: "bg-red-100 text-red-800 truncate",
+    InProcess: "bg-yellow-100 text-yellow-800 truncate",
     Complete: "bg-green-100 text-green-800",
     Hold: "bg-blue-100 text-blue-800",
   };
@@ -135,8 +56,8 @@ export default function ReportListComponent({ userData }: { userData: User }) {
   const [maxPage, setMaxPage] = useState(0);
 
   useEffect(() => {
-    setMaxPage(Math.ceil(reports.length / reportsPerPage));
-  }, [reports]);
+    setMaxPage(Math.ceil(reportData.length / reportsPerPage));
+  }, [reportData]);
 
   return (
     <>
@@ -190,7 +111,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+            {reportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
@@ -226,7 +147,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reports.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+        {reportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -296,7 +217,7 @@ export default function ReportListComponent({ userData }: { userData: User }) {
       <div className={(showDetail ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem]") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 md:p-14 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
 
         {(() => {
-          const report_data = reports.find(value => value.id == detailId) || reports[0];
+          const report_data = reportData.find(value => value.id == detailId) || reportData[0];
 
           return <>
             <div className="relative flex flex-col gap-2 md:gap-4">

@@ -14,9 +14,10 @@ export enum ReportType {
 }
 
 export enum ReportStatus {
-    Pending = "Pending",
-    OnProgress = "OnProgress",
-    Completed = "Completed"
+    NotStarted="NotStarted",
+    InProcess="InProcess",
+    Complete="Complete",
+    Hold="Hold"
 }
 
 export function string_to_reporttype(data: string): ReportType|undefined {
@@ -40,7 +41,8 @@ export type ReportData = {
     status: ReportStatus,
     location: string,
     pic_name: string,
-    created_at: string
+    created_at: string,
+    image: string
 }
 
 export type User = {

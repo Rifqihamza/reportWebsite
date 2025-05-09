@@ -1,6 +1,8 @@
+import type { Dispatch, SetStateAction } from "react";
 import ReportFormComponent from "../../components/ReportFormComponent";
+import type { ReportData } from "../../types/variables";
 
-export default function ReportForm() {
+export default function ReportForm({ reportData, setReportData }: { reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
 
   return (
     <>
@@ -10,7 +12,7 @@ export default function ReportForm() {
         <h1 className="font-bold uppercase tracking-[2px] text-md md:text-lg text-black">Laporkan Temuanmu</h1>
       </div>
       {/* End Header Title */}
-      <ReportFormComponent />
+      <ReportFormComponent reportData={reportData} setReportData={setReportData} />
     </>
   )
 }

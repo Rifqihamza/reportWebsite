@@ -4,7 +4,7 @@ import ApexChart from "./graphicChart";
 
 import { Sidebar } from 'primereact/sidebar';
 import { useRef, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, type User } from "../../types/variables";
+import { AccountType, type ReportData, type User } from "../../types/variables";
 
 export default function MainPage() {
   const [setVisible, setIsVisible] = useState<boolean>(false);
@@ -17,6 +17,64 @@ export default function MainPage() {
     role: AccountType.Guru as AccountType,
     created_at: "",
   });
+  const [reportData, setReportData] = useState([
+    {
+      id: "1",
+      created_at: "2024-05-01",
+      message: "Temuan kebocoran pipa di area workshop",
+      location: "Workshop A",
+      pic_name: "Suhaimi",
+      type: "Safety",
+      follow_up: "Guru",
+      image: "/laporanNew.JPG",
+      status: "NotStarted",
+    },
+    {
+      id: "2",
+      created_at: "2024-04-28",
+      message: "Peralatan tidak tertata rapi setelah praktikum",
+      location: "Lab Komputer",
+      pic_name: "Heas Priyo",
+      type: "5R",
+      follow_up: "Siswa",
+      image: "/laporanNew.JPG",
+      status: "InProcess",
+    },
+    {
+      id: "3",
+      created_at: "2024-04-25",
+      message: "Material bahan praktik tercecer di lantai",
+      location: "Workshop B",
+      pic_name: "Amalia",
+      type: "5R",
+      follow_up: "Siswa",
+      image: "/laporanNew.JPG",
+      status: "Complete",
+    },
+    {
+      id: "4",
+      created_at: "2024-04-20",
+      message: "AC ruangan tidak berfungsi dengan baik",
+      location: "Ruang Teori 3",
+      pic_name: "Munir",
+      type: "Safety",
+      follow_up: "Vendor",
+      image: "/laporanNew.JPG",
+      status: "Hold",
+    },
+    {
+      id: "5",
+      created_at: "2024-04-20",
+      message: "AC ruangan tidak berfungsi dengan baik",
+      location: "Ruang Teori 8",
+      pic_name: "Tya",
+      type: "Abnormality",
+      follow_up: "Vendor",
+      image: "/laporanNew.JPG",
+      status: "Complete",
+    },
+  ] as ReportData[])
+  
   return <>
 
     {/* Desk Navbar */}
@@ -100,13 +158,13 @@ export default function MainPage() {
     {/* Content */}
     <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35em] md:max-h-[40rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
-        <ListDataReport userData={userData} />
+        <ListDataReport userData={userData} reportData={reportData} setReportData={setReportData} />
       </div>
       <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
-        <ReportForm />
+        <ReportForm reportData={reportData} setReportData={setReportData} />
       </div>
       <div id="graph-section" className={`tab-content ${activeTab == 2 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
-        <ApexChart />
+        <ApexChart reportData={reportData} />
       </div>
     </div>
   </>
