@@ -3,7 +3,8 @@ import PieChart from "../../components/pieChart"
 import { useEffect, useState } from "react";
 import { Dropdown, } from 'primereact/dropdown';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
-import type { ReportData, ReportType } from "../../types/variables";
+import type { ReportData } from "../../types/variables";
+import { ReportType } from '../../types/variables';
 
 
 // const pieCategory = [
@@ -46,21 +47,21 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
 
     useEffect(() => {
         let result: LineChartValueType[] = [];
+        monthsShort.forEach(value => {
+            Object.values(ReportType).map(reportType => {
+                result.push({
+                    labels: value,
+                    type: reportType,
+                    value: 0
+                });
+            });
+        });
         reportData.filter(value => (new Date(value.created_at).getFullYear() == selectedYear)).forEach(data => {
             let date = new Date(data.created_at);
             let label = monthsShort[date.getMonth()];
             
             let index = result.findIndex(value => value.labels == label && value.type == data.type);
-            if(index < 0) {
-                result.push({
-                    labels: label,
-                    type: data.type,
-                    value: 1,
-                });
-            }
-            else {
-                result[index].value += 1;
-            }
+            result[index].value += 1;
         })
 
         result.sort((a, b) => monthsShort.indexOf(a.labels) - monthsShort.indexOf(b.labels));
