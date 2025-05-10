@@ -1,6 +1,6 @@
 import ReportListComponent from "../../components/ReportListComponent";
-import type { ReportData, User } from "../../types/variables";
-import React, { useState, type Dispatch, type SetStateAction } from "react";
+import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
+import React, { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import TieredDropDowns from "../../components/TieredMenu";
 
 // icon
@@ -8,6 +8,8 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import SearchIcon from '@mui/icons-material/Search';
 
 export default function ListDataReport({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
+
+  const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
 
   return (
     <>
@@ -34,11 +36,11 @@ export default function ListDataReport({ userData, reportData, setReportData }: 
 
           {/* Filter Dropdown */}
           <div className="w-fit">
-            <TieredDropDowns label="Filter" />
+            <TieredDropDowns label="Filter" selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
           </div>
         </div>
 
-        <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} />
+        <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} />
       </div>
     </>
   );
