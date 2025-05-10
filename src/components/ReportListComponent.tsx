@@ -2,13 +2,24 @@ import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from 
 import { AccountType, ReportStatus, string_to_reportstatus, type ReportData, type User } from '../types/variables';
 import { Image } from 'primereact/image'
 import Dropdown from "./dropdowns";
-import { APIResultType, changeReportStatus, deleteReport, getReport, userLogout } from "../utils/api_interface";
+import { APIResultType, changeReportStatus, deleteReport } from "../utils/api_interface";
 
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 
-const reportsPerPage = 5;
+// icon
+import PlaceIcon from '@mui/icons-material/Place';
+import PersonIcon from '@mui/icons-material/Person';
+import CategoryIcon from '@mui/icons-material/Category';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
+import TrashIcon from '@mui/icons-material/DeleteForever';
+import ChevronLeft from "@mui/icons-material/chevronLeft";
+import ChevronRight from "@mui/icons-material/chevronRight";
 
+
+const reportsPerPage = 5;
 
 export default function ReportListComponent({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
   const [showDetail, setShowDetail] = useState(false);
@@ -16,6 +27,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [deleteDisabled, setDeleteDisabled] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const toastTopRight = useRef<Toast>(null);
 
@@ -30,8 +42,8 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
   // Status color mapping
   const statusColors = {
-    NotStarted: "bg-red-100 text-red-800 truncate",
-    InProcess: "bg-yellow-100 text-yellow-800 truncate",
+    NotStarted: "bg-red-100 text-red-800",
+    InProcess: "bg-yellow-100 text-yellow-800",
     Complete: "bg-green-100 text-green-800",
     Hold: "bg-blue-100 text-blue-800",
   };
@@ -48,9 +60,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   }
 
   function handle_detail(id: string) {
+    const selectedReport = reportData.find(report => report.id === id);
     setDetailId(id);
     setShowDetail(true);
+    setSelectedStatus(null);
+    setButtonDisabled(true); // default disable saat pertama buka
   }
+
 
   function handle_close() {
     setShowDetail(false);
@@ -61,33 +77,28 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       return;
     }
     setDeleteDisabled(true);
+
+    if (selectedStatus === ReportStatus.InProcess) {
+      alert("Tidak bisa menghapus laporan yang sudah di follow up");
+      return;
+    }
     
     const result = await deleteReport(id);
 
     if(result == APIResultType.NoError) {
       setShowDetail(false);
       setReportData(reportData.filter((value) => value.id != id));
-      showMessage("Sukses", toastTopRight, 'success', "Rekaman berhasil dihapus!");
-      setDeleteDisabled(false);
+      showMessage("Success", toastTopRight, 'success', "Data berhasil dihapus!");
     }
     else if(result == APIResultType.InternalServerError) {
-      alert("There's an error!");
+      showMessage("Error", toastTopRight, 'error', "Terjadi error di server!");
     }
     else if(result == APIResultType.Unauthorized) {
-      alert("You have no access!");
-    }
-  }
-
-  async function handle_logout() {
-    if(!(await userLogout())) {
-      alert("There's an error when trying to logout.");
-      return;
+      showMessage("Unauthroized!", toastTopRight, 'error', "Akses tidak dikenal!");
     }
 
-    window.location.reload();
+    setDeleteDisabled(false);
   }
-  
-
   
   async function handle_save(id: string) {
     if(!selectedStatus) {
@@ -101,7 +112,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     if(result == APIResultType.NoError) {
       setShowDetail(false);
       setReportData(reportData.map((value) => value.id == id ? { ...value, status: selectedStatus } : value));
-      showMessage("Sukses", toastTopRight, 'success', "Berhasil menyimpan!");
+      showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
     }
     else if(result == APIResultType.InternalServerError) {
       alert("There's an error!");
@@ -195,8 +206,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]
-                      }`}
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                   >
                     {report.status}
                   </span>
@@ -223,7 +233,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             <div className="flex justify-between items-start mb-2">
               <h3 className="font-medium text-gray-900 truncate">{report.message}</h3>
               <span
-                className={`px-2 py-1 text-xs font-semibold rounded-full ${statusColors[report.status]
+                className={`px-2 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]
                   }`}
               >
                 {report.status}
@@ -244,7 +254,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               </p>
             </div>
             <div className="mt-3 flex justify-end">
-              <button className="mobile-detail-button text-blue-600 hover:text-blue-900 text-sm font-medium" onClick={() => { handle_detail(report.id) }}>
+              <button className="mobile-detail-button text-white bg-[#7FA1C3] px-2 py-1 rounded-xl text-sm font-medium" onClick={() => { handle_detail(report.id) }}>
                 Lihat Detail
               </button>
             </div>
@@ -253,27 +263,25 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-row justify-between items-center mt-5">
-        <div className="flex flex-row gap-4 md:max-w-[15rem] w-full">
+      <div className="flex flex-row justify-between items-center mt-7">
+        <div className="flex flex-row justify-center gap-4 w-full">
           <button 
-            className="w-full justify-center disabled:opacity-50 disabled:pointer-events-none rounded-[20px] flex px-3 py-0.5 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_6px_0_#E2DAD6] active:[box-shadow:0_2px_0_#E2DAD6] active:-translate-y-[5px]"
+            className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
             disabled={currentPage <= 0}
             onClick={() => setCurrentPage(currentPage-1)}
-          >
+          > 
+            <ChevronLeft fontSize="small" />
             Prev
           </button>
           <button 
-            className="w-full justify-center disabled:opacity-50 disabled:pointer-events-none rounded-[20px] flex px-3 py-0.5 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_6px_0_#E2DAD6] active:[box-shadow:0_2px_0_#E2DAD6] active:-translate-y-[5px]"
+            className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
             disabled={currentPage >= (maxPage - 1)}
             onClick={() => setCurrentPage(currentPage+1)}
           >
             Next
+            <ChevronRight fontSize="small" />
           </button>
         </div>
-        <button className="w-32 justify-center rounded-[20px] md:flex hidden px-3 py-0.5 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_6px_0_#E2DAD6] active:[box-shadow:0_2px_0_#E2DAD6] active:-translate-y-[5px]" onClick={userData.role == AccountType.Siswa ? () => window.location.href = "/login" : handle_logout}
-        >
-          {userData.role == AccountType.Siswa ? "Login" : "Logout"}
-        </button>
       </div>
 
       {/*  Modal Element */}
@@ -281,15 +289,14 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         ? "bg-black opacity-50 w-full h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-all z-10"
         : "hidden duration-500 transition-all opacity-0")}>
       </div>
-      <div className={(showDetail ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 md:p-14 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
+      <div className={(showDetail ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
         {(() => {
           const report_data = reportData.find(value => value.id == detailId) || reportData[0];
-
 
           if(!report_data) {
               return <></>;
           }
-
+          
           const imageComponent = <>
               <div className="flex flex-col justify-center">
                   <Image
@@ -301,32 +308,20 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
             </div>
           </>;
-            
+
           return <>
-            <div className="relative flex flex-col gap-2 md:gap-4">
-              <div className="fixed top-3 right-3">
-                <button onClick={handle_close}>
-                  <svg
-                    className="w-8 h-auto p-2 border rounded-full"
-                    viewBox="0 0 10 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1 1L9 9M1 9L9 1"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+            <div className=" flex flex-col gap-4">
+              <div className="absolute top-1.5 right-1.5">
+                <button className="cursor-pointer" onClick={handle_close}>
+                  <CloseIcon />
                 </button>
               </div>
+            </div>
 
               {/* header Laporan */}
-              <div className="flex md:flex-row md:items-center md:justify-between md:gap-0 md:mt-0 flex-row gap-2 mt-2 bg-[#7FA1C3] md:px-4 md:py-2 px-3 py-2 rounded-2xl">
+              <div className="flex md:flex-row md:items-center justify-between flex-row bg-[#7FA1C3] md:px-4 md:py-2 px-3 py-2 rounded-xl">
                 <h1 className="font-bold md:text-lg text-sm text-white">{report_data?.message}</h1>
-                <span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs px-3 rounded-xl`}>{report_data?.status}</span>
+                <span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
               </div>
               {report_data?.image != "" ? imageComponent : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
 
@@ -336,7 +331,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Location */}
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <img src="/icon/locationIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
+                    <PlaceIcon />
                     <h1 className="md:text-lg text-sm">Lokasi</h1>
                   </div>
                   <p className="font-semibold md:text-lg text-sm">{report_data?.location}</p>
@@ -345,7 +340,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Nama PIC */}
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <img src="/icon/avatarIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
+                    <PersonIcon />
                     <h1 className="md:text-lg text-sm">Nama PIC</h1>
                   </div>
                   <p className="font-semibold md:text-lg text-sm">{report_data?.pic_name}</p>
@@ -354,41 +349,49 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Kategori Laporan */}
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <img src="/icon/categoryIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
+                    <CategoryIcon />
                     <h1 className="md:text-lg text-sm">Kategori</h1>
                   </div>
-                  <p className="font-semibold md:text-lg text-sm">{report_data.type == "VR" ? "5R" : report_data.type}</p>
+                  <p className="font-semibold md:text-lg text-sm">{report_data?.type}</p>
                 </div>
 
                 {/* Follow Up Laporan */}
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <img src="/followUpIcon.svg" alt="" className="w-4 h-auto md:w-5 md:h-5" />
+                    <AssignmentTurnedInIcon />
                     <h1 className="md:text-lg text-sm">Follow Up</h1>
                   </div>
                   <p className="font-semibold md:text-lg text-sm">{report_data?.follow_up}</p>
                 </div>
               </div>
-            </div >
-            {/* Button Action */}
-            <div className={`flex flex-col gap-2 w-full ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
+              <div className={`flex flex-col gap-2 w-full mt-2 ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
               <div className="flex flex-col md:flex-row items-center gap-2 w-full space-y-2 md:space-y-0 ">
                 {dropdowns.map((d, index) => (
-                  <Dropdown key={index} id={d.id} label={`${d.label}`} items={d.items} onChange={(value) => setSelectedStatus(string_to_reportstatus(value)!)} />
+                  <Dropdown
+                    key={index}
+                    id={d.id}
+                    label={d.label}
+                    items={d.items}
+                    onChange={(selectedValue) => {
+                      setSelectedStatus(string_to_reportstatus(selectedValue)!);
+                      const currentStatus = report_data?.status;
+                      setButtonDisabled(selectedValue === currentStatus); // disable jika belum berubah
+                    }}
+                  />
                 ))}
-                <button className="disabled:opacity-50 rounded-[20px] flex items-center justify-center px-6 py-2 w-full text-black bg-[#E2DAD6] -translate-y-[10px] [box-shadow:0_10px_0_#7FA1C3] active:[box-shadow:0_5px_0_#7FA1C3] active:-translate-y-[5px] tracking-wide" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled}>
+                <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled || buttonDisabled}>
                     {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Hapus
                 </button>
               </div>
               <div className="mt-2">
-                <button className="disabled:opacity-50 bg-[#7FA1C3] w-full px-4 py-2 rounded-2xl text-white" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled}>
+                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled || buttonDisabled}>
                     {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Simpan
                 </button>
               </div>
             </div>
-          </>
+          </>;
         })()}
       </div>
       <Toast ref={toastTopRight} position="top-right" />
