@@ -182,8 +182,8 @@ export default function ReportFormComponent() {
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <CloudUploadOutlined className="w-8 h-8 mb-3" />
-                <p className="mb-1 text-sm text-[#7FA1C3]" id="file-name-display">
-                  Klik untuk upload foto
+                <p className={`mb-1 text-sm text-${image ? "black" : "[#7FA1C3]"}`} id="file-name-display">
+                  {image ? image.name : "Klik untuk upload foto"}
                 </p>
                 <p className={`text-xs text-${image ? "black" : "[#7FA1C3]"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100)+"MB" : (Math.round(image.size / 10) / 100)+"KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
               </div>
