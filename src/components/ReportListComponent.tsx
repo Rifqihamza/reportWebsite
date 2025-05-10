@@ -27,7 +27,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [deleteDisabled, setDeleteDisabled] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [isChange, setIsChange] = useState(false);
 
   const toastTopRight = useRef<Toast>(null);
 
@@ -63,8 +63,8 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     const selectedReport = reportData.find(report => report.id === id);
     setDetailId(id);
     setShowDetail(true);
+    setIsChange(true); // default disable saat pertama buka
     setSelectedStatus(null);
-    setButtonDisabled(true); // default disable saat pertama buka
   }
 
 
@@ -375,17 +375,17 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     onChange={(selectedValue) => {
                       setSelectedStatus(string_to_reportstatus(selectedValue)!);
                       const currentStatus = report_data?.status;
-                      setButtonDisabled(selectedValue === currentStatus); // disable jika belum berubah
+                      setIsChange(selectedValue === currentStatus); // disable jika belum berubah
                     }}
                   />
                 ))}
-                <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled || buttonDisabled}>
+                <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled}>
                     {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Hapus
                 </button>
               </div>
               <div className="mt-2">
-                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled || buttonDisabled}>
+                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled || isChange}>
                     {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Simpan
                 </button>
