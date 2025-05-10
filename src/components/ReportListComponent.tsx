@@ -28,6 +28,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
   const toastTopRight = useRef<Toast>(null);
 
+  const [showedReportData, setShowedReportData] = useState([] as ReportData[]);
 
   const dropdowns = [
     {
@@ -131,8 +132,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [maxPage, setMaxPage] = useState(0);
 
   useEffect(() => {
-    setMaxPage(Math.ceil(reportData.length / reportsPerPage));
-  }, [reportData]);
+    console.log(showedReportData);
+    setMaxPage(Math.ceil(showedReportData.length / reportsPerPage));
+  }, [showedReportData]);
+
+  useEffect(() => {
+    setShowedReportData(reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true));
+  }, [currentPage, selectedFilter, reportData]);
 
   return (
     <>
@@ -186,7 +192,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true).slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+            {showedReportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
@@ -221,7 +227,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true).slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+        {showedReportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -263,7 +269,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       <div className="flex flex-row justify-between items-center mt-7">
         <div className="flex flex-row justify-center gap-4 w-full">
           <button 
-            className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
+            className="disabled:opacity-50 w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
             disabled={currentPage <= 0}
             onClick={() => setCurrentPage(currentPage-1)}
           > 
@@ -271,7 +277,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             Prev
           </button>
           <button 
-            className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
+            className="disabled:opacity-50 w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
             disabled={currentPage >= (maxPage - 1)}
             onClick={() => setCurrentPage(currentPage+1)}
           >
