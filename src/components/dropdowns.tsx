@@ -21,7 +21,7 @@ export default function Dropdown({ id, label, items, onChange }: DropdownProps) 
     <div className="relative text-left w-full dropdown-container" data-dropdown-id={id}>
       <button
         type="button"
-        className="dropdown-trigger rounded-[20px] flex items-center justify-between px-6 py-2 w-full text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+        className="dropdown-trigger flex flex-row items-center justify-between w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 "
         aria-expanded={isOpen}
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}

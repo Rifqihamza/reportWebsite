@@ -1,4 +1,15 @@
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  DescriptionOutlined,
+  PersonOutline,
+  LocationOnOutlined,
+  EventNoteOutlined,
+  AccessTimeOutlined,
+  AssignmentTurnedInOutlined,
+  UploadFileOutlined,
+  SendOutlined,
+  CloudUploadOutlined,
+} from '@mui/icons-material';
 import Dropdown from "./dropdowns";
 import { addReport, APIResultType } from '../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../types/variables";
@@ -19,15 +30,15 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
 
   const toastProgress = useRef<Toast>(null);
   const toastSuccess = useRef<Toast>(null);
-  
-  const [dropdowns, setDropdowns] = useState([
+
+  const dropdowns = [
     {
       id: "kategori",
       label: "Kategori",
       items: Object.keys(ReportType).filter(x => x != "NoType"),
     },
     { id: "followup", label: "Follow Up", items: Object.keys(AccountType).filter(x => x != "NoType") },
-  ]);
+  ];
   
   const handle_submit = async () => {
     if(!message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate || !followUpName) {
@@ -74,7 +85,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               htmlFor="laporan"
               className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
             >
-              <img src="/icon/detailsReporticon.svg" className="w-5 h-5" alt="" />
+              <DescriptionOutlined />
               Detail Laporan
             </label>
             <textarea
@@ -82,33 +93,31 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               name="laporan"
               id="laporan"
               placeholder="Deskripsikan Temuan Anda..."
-              className="px-6 py-3 outline-none border-2 border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+              className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
               onChange={(e) => setMessage(e.target.value)}
               required
             ></textarea>
           </div>
-          {/* End */}
 
           {/* PIC Name Section */}
           <div>
             <div className="flex flex-col gap-2 w-full">
               <label
-                htmlFor="laporan"
+                htmlFor="pic"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="icon/avatarIcon.svg" className="w-5 h-5" alt="" />
+                <PersonOutline />
                 Nama PIC
               </label>
               <input
-                name="laporan"
-                id="laporan"
+                name="pic"
+                id="pic"
                 placeholder="Nama PIC..."
-                className="px-6 py-3  outline-none border-2 border-[#7FA1C3] rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 onChange={(e) => setPic(e.target.value)}
                 required
               />
             </div>
-            {/* End */}
 
             {/* Dropdowns Section */}
             <div className="flex flex-col md:flex-row gap-2 w-full mt-8 md:space-y-4 space-y-3">
@@ -137,15 +146,14 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               );
             })}
             </div>
-            {/* End */}
 
-            {/* Di Follow Up Oleh Section */}
+            {/* Lokasi Section */}
             <div className="flex flex-col w-full space-y-2 md:mt-0 mt-4">
               <label
                 htmlFor="lokasi"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="/icon/locationIcon.svg" className="w-5 h-5" alt="" />
+                <LocationOnOutlined />
                 Lokasi
               </label>
               <input
@@ -153,12 +161,11 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 name="lokasi"
                 id="lokasi"
                 placeholder="Lokasi temuan"
-                className="px-6 py-3 outline-none border border-[#7FA1C3]  rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 onChange={(e) => setLocation(e.target.value)}
                 required
               />
             </div>
-            {/* End */}
 
             <div className="flex flex-col md:flex-row md:gap-4 gap-0 items-center justify-between w-full">
               {/* Tanggal Temuan section */}
@@ -166,22 +173,23 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 <label htmlFor="tanggal"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <img src="/icon/dateTimeIcon.svg" className="w-5 h-5" alt="" />
-                  Tanggal Temuan</label>
+                  <EventNoteOutlined />
+                  Tanggal Temuan
+                </label>
                 <input type="datetime-local"
                   placeholder="Tanggal temuan"
-                  className="px-6 py-3 outline-none border-2 border-[#E2DAD6] rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                  className="px-4 py-3 outline-none border-2 border-[#E2DAD6] rounded-xl resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
                   onChange={(e) => setReportDate(e.target.value)}
-                  required />
+                  required 
+                />
               </div>
-              {/* End */}
 
               {/* Due Date Section */}
               <div className="flex flex-col w-full space-y-2 mt-6">
                 <label htmlFor="dueDate"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <img src="/icon/timeIcon.svg" className="w-5 h-5" alt="" />
+                  <AccessTimeOutlined />
                   Due Date</label>
                 <input type="datetime-local"
                   placeholder="Tenggat Waktu"
@@ -190,20 +198,22 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   required />
               </div>
             </div>
+
+            {/* Follow Up Oleh */}
             <div className="flex flex-col w-full space-y-2 mt-5">
               <label
-                htmlFor="lokasi"
+                htmlFor="followUpOleh"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <img src="/icon/followUpIcon.svg" className="w-5 h-5" alt="" />
+                <AssignmentTurnedInOutlined />
                 Follow Up Oleh
               </label>
               <input
                 type="text"
-                name="lokasi"
-                id="lokasi"
+                name="followUpOleh"
+                id="followUpOleh"
                 placeholder="Nama Follow Up..."
-                className="px-6 py-3 outline-none border-2 border-[#7FA1C3]  rounded-[20px] resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300  rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
                 onChange={(e) => setFollowUpName(e.target.value)}
                 required
               />
@@ -211,38 +221,24 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
           </div>
         </div>
 
-
         {/* File Upload */}
         <div className={"space-y-2 mt-4"+(submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
           <label
             htmlFor="foto"
             className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
           >
-            <img src="/icon/uploadFileIcon.svg" className="w-5 h-5" alt="" />
+            <UploadFileOutlined />
             Foto Bukti
           </label>
           <div className="flex items-center justify-center w-full">
             <label
               htmlFor="foto"
-              className="flex flex-col items-center justify-center w-full h-32 border-2 border-[#7FA1C3] border-dashed rounded-[20px] cursor-pointer bg-[#E2DAD6] hover:bg-[#F5EDED] duration-400"
+              className="flex flex-col items-center justify-center w-full h-32 border-2 border-[#7FA1C3] border-dashed rounded-xl cursor-pointer bg-[#E2DAD6] hover:bg-[#F5EDED] duration-400"
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg
-                  className="w-8 h-8 mb-3 text-[#7FA1C3]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                  ></path>
-                </svg>
-                <p className={`mb-1 text-sm text-[${image ? "black" : "#7FA1C3"}]`} id="file-name-display">
-                  {image ? image.name : "Klik untuk upload foto"}
+                <CloudUploadOutlined className="w-8 h-8 mb-3" />
+                <p className="mb-1 text-sm text-[#7FA1C3]" id="file-name-display">
+                  Klik untuk upload foto
                 </p>
                 <p className={`text-xs text-${image ? "black" : "[#7FA1C3]"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100)+"MB" : (Math.round(image.size / 10) / 100)+"KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
               </div>
@@ -255,15 +251,15 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
         <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
           <button
             type="button"
-            className="disabled:opacity-50 rounded-[20px] flex items-center px-6 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+            className="disabled:opacity-50 rounded-xl flex items-center px-4 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
             disabled={submitDisabled}
             onClick={handle_submit}
           >
-            {submitDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : <i className="pi pi-send" style={{ fontSize: '1rem', marginRight: '10px' }}></i>}
+            {submitDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : <SendOutlined className="h-5 w-5 mr-2" />}
             Kirim Laporan
           </button>
         </div>
-      </form >
+      </form>
       <Toast
         ref={toastProgress}
         content={({ message }) => (
