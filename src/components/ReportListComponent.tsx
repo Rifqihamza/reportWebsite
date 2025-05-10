@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, type ReportData, type User } from "../types/variables";
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../types/variables';
 import { Image } from 'primereact/image'
 import Dropdown from "./dropdowns";
 import { Toast } from 'primereact/toast';
@@ -175,7 +175,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.type}
+                  {reporttype_to_string(report.type)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
@@ -223,7 +223,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <span className="font-medium">PIC:</span> {report.pic_name}
               </p>
               <p>
-                <span className="font-medium">Kategori:</span> {report.type}
+                <span className="font-medium">Kategori:</span> {reporttype_to_string(report.type)}
               </p>
             </div>
             <div className="mt-3 flex justify-end">

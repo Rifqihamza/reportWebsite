@@ -18,6 +18,10 @@ export enum ReportStatus {
     Hold="Hold"
 }
 
+export function reporttype_to_string(data: any): string {
+    return data == ReportType.VR ? "5R" : data.toString()
+}
+
 export function string_to_reporttype(data: string): ReportType|undefined {
     return Object.values(ReportType).find(value => value.toString() == data);
 }
