@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Dropdown, } from 'primereact/dropdown';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
 import type { ReportData } from "../../types/variables";
-import { ReportType } from '../../types/variables';
+import { ReportType, reporttype_to_string } from '../../types/variables';
 
 
 const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
@@ -38,7 +38,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             Object.values(ReportType).map(reportType => {
                 result.push({
                     labels: value,
-                    type: reportType == ReportType.VR ? "5R" : reportType,
+                    type: reporttype_to_string(reportType),
                     value: 0
                 });
             });
@@ -47,7 +47,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             let date = new Date(data.created_at);
             let label = monthsShort[date.getMonth()];
             
-            let index = result.findIndex(value => value.labels == label && value.type == (data.type == ReportType.VR ? "5R" : data.type));
+            let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
             result[index].value += 1;
         })
 

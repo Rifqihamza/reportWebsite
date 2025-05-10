@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, string_to_reportstatus, type ReportData, type User } from '../types/variables';
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../types/variables';
 import { Image } from 'primereact/image'
 import Dropdown from "./dropdowns";
 import { APIResultType, changeReportStatus, deleteReport } from "../utils/api_interface";
@@ -18,7 +18,7 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
+export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
@@ -186,7 +186,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {reportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+            {reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true).slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
@@ -199,7 +199,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.type == "VR" ? "5R" : report.type}
+                  {reporttype_to_string(report.type)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
@@ -221,7 +221,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+        {reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true).slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -247,7 +247,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <span className="font-medium">PIC:</span> {report.pic_name}
               </p>
               <p>
-                <span className="font-medium">Kategori:</span> {report.type == "VR" ? "5R" : report.type}
+                <span className="font-medium">Kategori:</span> {reporttype_to_string(report.type)}
               </p>
             </div>
             <div className="mt-3 flex justify-end">
