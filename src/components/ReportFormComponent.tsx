@@ -57,7 +57,6 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       alert("Successfully add the report!");
 
       setReportData([result, ...reportData]);
-      toastProgress.current!.clear();
       toastSuccess.current!.show({
           summary: "Data berhasil direkam!",
           severity: "success",
@@ -74,6 +73,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
         console.log(result);
     }
 
+    toastProgress.current!.clear();
     setSubmitDisabled(false);
   }
     
