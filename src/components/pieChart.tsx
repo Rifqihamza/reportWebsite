@@ -13,6 +13,7 @@ interface PieChartProps {
 const PieChart: React.FC<PieChartProps> = ({ reports }) => {
     // Hitung jumlah masing-masing jenis laporan
     const reportByCategory = reports.reduce((acc, report) => {
+        report.labels = (report.labels == "VR" ? "5R" : report.labels);
         if (!acc[report.labels]) {
             acc[report.labels] = 0;
         }
