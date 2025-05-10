@@ -1,5 +1,6 @@
 import LineChart from "../../components/lineChart";
 import PieChart from "../../components/pieChart"
+import BarChartIcon from '@mui/icons-material/BarChart';
 import { useEffect, useState } from "react";
 import { Dropdown, } from 'primereact/dropdown';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
@@ -115,7 +116,8 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     return (
         <>
             <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
-                <img src="/icon/chartPieIcon.svg" className="md:w-5 w-7 h-auto" alt="" />
+                <BarChartIcon fontSize="medium" />
+                {/* Header Title */}
                 <h1 className="font-bold uppercase tracking-[2px] text-md md:text-lg text-black">Data Grafik Laporan</h1>
             </div>
 
@@ -124,7 +126,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 {/* Inner Container */}
                 <div className="flex flex-col md:gap-15 gap-5 w-full justify-around items-center px-4 py-2">
                     {/* Pie Chart */}
-                    <div className="w-full flex md:flex-col lg:flex-row xl:flex-row flex-col gap-10 justify-around items-center px-4 py-6 rounded-xl shadow-inner shadow-gray-300">
+                    <div className="w-full flex md:flex-col lg:flex-row xl:flex-row flex-col gap-10 justify-around items-center px-4 py-6 rounded-xl border border-gray-100">
                         <div className="flex flex-col justify-center items-center">
                             <h1 className='font-bold'>Grafik Pie Kategori</h1>
                             <PieChart reports={pieCategory} />
@@ -137,7 +139,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     {/* End Pie Chart */}
 
                     {/* Line Chart */}
-                    <div className="w-full mt-6 px-4 py-2 rounded-xl shadow-inner shadow-gray-300 ">
+                    <div className="w-full mt-6 px-4 py-2 rounded-xl border border-gray-100">
                         <div className="w-full my-2">
                             <Dropdown
                                 value={availableYears[0]}
