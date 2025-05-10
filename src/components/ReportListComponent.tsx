@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, string_to_reportstatus, type ReportData, type User } from '../types/variables';
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../types/variables';
 import { Image } from 'primereact/image'
 import Dropdown from "./dropdowns";
 import { APIResultType, changeReportStatus, deleteReport } from "../utils/api_interface";
@@ -18,16 +18,17 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
+export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [deleteDisabled, setDeleteDisabled] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [isChange, setIsChange] = useState(false);
 
   const toastTopRight = useRef<Toast>(null);
 
+  const [showedReportData, setShowedReportData] = useState([] as ReportData[]);
 
   const dropdowns = [
     {
@@ -60,8 +61,8 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     const selectedReport = reportData.find(report => report.id === id);
     setDetailId(id);
     setShowDetail(true);
+    setIsChange(true); // default disable saat pertama buka
     setSelectedStatus(null);
-    setButtonDisabled(true); // default disable saat pertama buka
   }
 
 
@@ -131,8 +132,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [maxPage, setMaxPage] = useState(0);
 
   useEffect(() => {
-    setMaxPage(Math.ceil(reportData.length / reportsPerPage));
-  }, [reportData]);
+    console.log(showedReportData);
+    setMaxPage(Math.ceil(showedReportData.length / reportsPerPage));
+  }, [showedReportData]);
+
+  useEffect(() => {
+    setShowedReportData(reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true));
+  }, [currentPage, selectedFilter, reportData]);
 
   return (
     <>
@@ -186,7 +192,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {reportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+            {showedReportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
@@ -199,7 +205,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                  {report.type == "VR" ? "5R" : report.type}
+                  {reporttype_to_string(report.type)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
@@ -221,7 +227,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+        {showedReportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -247,7 +253,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <span className="font-medium">PIC:</span> {report.pic_name}
               </p>
               <p>
-                <span className="font-medium">Kategori:</span> {report.type == "VR" ? "5R" : report.type}
+                <span className="font-medium">Kategori:</span> {reporttype_to_string(report.type)}
               </p>
             </div>
             <div className="mt-3 flex justify-end">
@@ -263,7 +269,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       <div className="flex flex-row justify-between items-center mt-7">
         <div className="flex flex-row justify-center gap-4 w-full">
           <button 
-            className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
+            className="disabled:opacity-50 w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
             disabled={currentPage <= 0}
             onClick={() => setCurrentPage(currentPage-1)}
           > 
@@ -271,7 +277,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             Prev
           </button>
           <button 
-            className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
+            className="disabled:opacity-50 w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
             disabled={currentPage >= (maxPage - 1)}
             onClick={() => setCurrentPage(currentPage+1)}
           >
@@ -373,17 +379,17 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     onChange={(selectedValue) => {
                       setSelectedStatus(string_to_reportstatus(selectedValue)!);
                       const currentStatus = report_data?.status;
-                      setButtonDisabled(selectedValue === currentStatus); // disable jika belum berubah
+                      setIsChange(selectedValue === currentStatus); // disable jika belum berubah
                     }}
                   />
                 ))}
-                <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled || buttonDisabled}>
+                <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled}>
                     {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Hapus
                 </button>
               </div>
               <div className="mt-2">
-                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled || buttonDisabled}>
+                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled || isChange}>
                     {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Simpan
                 </button>
