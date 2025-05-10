@@ -209,7 +209,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3 disabled:pointer-events-none disabled:opacity-50" onClick={() => { handle_detail(report.id) }} disabled={userData.role == AccountType.Siswa}>
+                  <button className="text-blue-600 hover:text-blue-900 mr-3" onClick={() => { handle_detail(report.id) }}>
                     Detail
                   </button>
                 </td>
@@ -315,53 +315,54 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               </div>
             </div>
 
-              {/* header Laporan */}
-              <div className="flex md:flex-row md:items-center justify-between flex-row bg-[#7FA1C3] md:px-4 md:py-2 px-3 py-2 rounded-xl">
-                <h1 className="font-bold md:text-lg text-sm text-white">{report_data?.message}</h1>
-                <span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
+            {/* header Laporan */}
+            <div className="flex md:flex-row md:items-center justify-between flex-row bg-[#7FA1C3] md:px-4 md:py-2 px-3 py-2 rounded-xl">
+              <h1 className="font-bold md:text-lg text-sm text-white">{report_data?.message}</h1>
+              <span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
+            </div>
+            {report_data?.image != "" ? imageComponent : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
+
+            {/* Isi Laporan */}
+            <div className="md:px-8 px-3 space-y-2">
+              {/* Location */}
+              <div className="flex flex-row justify-between">
+                <div className="flex flex-row gap-2 items-center">
+                  <PlaceIcon />
+                  <h1 className="md:text-lg text-sm">Lokasi</h1>
+                </div>
+                <p className="font-semibold md:text-lg text-sm">{report_data?.location}</p>
               </div>
-              {report_data?.image != "" ? imageComponent : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
 
-              {/* Isi Laporan */}
-              <div className="md:px-8 px-3 space-y-2">
-
-                {/* Location */}
-                <div className="flex flex-row justify-between">
-                  <div className="flex flex-row gap-2 items-center">
-                    <PlaceIcon />
-                    <h1 className="md:text-lg text-sm">Lokasi</h1>
-                  </div>
-                  <p className="font-semibold md:text-lg text-sm">{report_data?.location}</p>
+              {/* Nama PIC */}
+              <div className="flex flex-row justify-between">
+                <div className="flex flex-row gap-2 items-center">
+                  <PersonIcon />
+                  <h1 className="md:text-lg text-sm">Nama PIC</h1>
                 </div>
+                <p className="font-semibold md:text-lg text-sm">{report_data?.pic_name}</p>
+              </div>
 
-                {/* Nama PIC */}
-                <div className="flex flex-row justify-between">
+              {/* Kategori Laporan */}
+              <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <PersonIcon />
-                    <h1 className="md:text-lg text-sm">Nama PIC</h1>
-                  </div>
-                  <p className="font-semibold md:text-lg text-sm">{report_data?.pic_name}</p>
-                </div>
-
-                {/* Kategori Laporan */}
-                <div className="flex flex-row justify-between">
-                  <div className="flex flex-row gap-2 items-center">
-                    <CategoryIcon />
-                    <h1 className="md:text-lg text-sm">Kategori</h1>
+                  <CategoryIcon />
+                  <h1 className="md:text-lg text-sm">Kategori</h1>
                   </div>
                   <p className="font-semibold md:text-lg text-sm">{report_data?.type}</p>
-                </div>
+              </div>
 
-                {/* Follow Up Laporan */}
-                <div className="flex flex-row justify-between">
+              {/* Follow Up Laporan */}
+              <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <AssignmentTurnedInIcon />
-                    <h1 className="md:text-lg text-sm">Follow Up</h1>
+                  <AssignmentTurnedInIcon />
+                  <h1 className="md:text-lg text-sm">Follow Up</h1>
                   </div>
                   <p className="font-semibold md:text-lg text-sm">{report_data?.follow_up}</p>
-                </div>
               </div>
-              <div className={`flex flex-col gap-2 w-full mt-2 ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
+            </div>
+
+            {/* Update or Delete report data */}
+            <div className={`flex flex-col gap-2 w-full mt-2 ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
               <div className="flex flex-col md:flex-row items-center gap-2 w-full space-y-2 md:space-y-0 ">
                 {dropdowns.map((d, index) => (
                   <Dropdown
