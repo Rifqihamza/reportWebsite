@@ -12,6 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ReportIcon from "@mui/icons-material/Report";
+import { PrimeReactProvider } from "primereact/api";
 
 export default function MainPage() {
   const [setVisible, setIsVisible] = useState<boolean>(false);
@@ -56,7 +57,7 @@ export default function MainPage() {
     });
   }, []);
 
-  return <>
+  return <PrimeReactProvider>
     <LogoutButton handle_logout={handle_logout} userData={userData} />
     {/* Desk Navbar */}
     <div className="mb-4 px-4 py-2 bg-white rounded-[50px] hidden md:flex flex-row items-center gap-6 mx-5">
@@ -148,5 +149,5 @@ export default function MainPage() {
         <ApexChart reportData={reportData} />
       </div>
     </div>
-  </>
+  </PrimeReactProvider>
 }
