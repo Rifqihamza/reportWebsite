@@ -13,10 +13,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import CategoryIcon from '@mui/icons-material/Category';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import CloseIcon from '@mui/icons-material/Close';
-import SaveIcon from '@mui/icons-material/Save';
-import TrashIcon from '@mui/icons-material/DeleteForever';
-import ChevronLeft from "@mui/icons-material/chevronLeft";
-import ChevronRight from "@mui/icons-material/chevronRight";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 
 const reportsPerPage = 5;
