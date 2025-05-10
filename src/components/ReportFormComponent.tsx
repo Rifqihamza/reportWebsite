@@ -43,8 +43,6 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
 
     const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
     if(typeof result == "object") {
-      alert("Successfully add the report!");
-
       setReportData([result, ...reportData]);
       toastProgress.current!.clear();
       toastSuccess.current!.show({

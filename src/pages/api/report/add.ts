@@ -80,7 +80,8 @@ export async function POST({ request }: APIContext) {
         const response = await fetch(php_server_url, {
             method: "POST",
             headers: {
-                "Authorization": process.env.PHP_SERVER_AUTHORIZATION!
+                "Authorization": process.env.PHP_SERVER_AUTHORIZATION!,
+                "Cookie": `user_token=${cookies["user_token"]}`
             },
             body: form_data
         });
