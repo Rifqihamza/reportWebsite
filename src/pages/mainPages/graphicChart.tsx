@@ -1,11 +1,15 @@
-import LineChart from "../../components/lineChart";
-import PieChart from "../../components/pieChart"
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown, } from 'primereact/dropdown';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
 import type { ReportData } from "../../types/variables";
 import { ReportType, reporttype_to_string } from '../../types/variables';
+import { Suspense } from "react";
+
+
+
+const LineChart = React.lazy(() => import("../../components/lineChart"));
+const PieChart = React.lazy(() => import("../../components/pieChart"));
 
 
 const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
@@ -115,11 +119,15 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     <div className="w-full flex md:flex-col lg:flex-row xl:flex-row flex-col gap-10 justify-around items-center px-4 py-6 rounded-xl border border-gray-100">
                         <div className="flex flex-col justify-center items-center">
                             <h1 className='font-bold'>Grafik Pie Kategori</h1>
-                            <PieChart reports={pieCategory} />
+                            <Suspense fallback={<>Loading..</>}>
+                                <PieChart reports={pieCategory} />
+                            </Suspense>
                         </div>
                         <div className="flex flex-col justify-center items-center">
                             <h1 className='font-bold'>Grafik Pie Status</h1>
-                            <PieChart reports={pieStatus} />
+                            <Suspense fallback={<>Loading..</>}>
+                                <PieChart reports={pieStatus} />
+                            </Suspense>
                         </div>
                     </div>
                     {/* End Pie Chart */}

@@ -18,7 +18,7 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
+export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
@@ -71,7 +71,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   }
 
   async function handle_delete(id: string) {
-    if(userData.role == AccountType.Siswa && !confirm("Are you sure?")) {
+    if(!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
       return;
     }
     setDeleteDisabled(true);
@@ -368,7 +368,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             </div>
 
             {/* Update or Delete report data */}
-            <div className={`flex flex-col gap-2 w-full mt-2 ${userData.role == AccountType.Guru || userData.role == AccountType.Vendor ? "" : "hidden!"}`}>
+            <div className={`flex flex-col gap-2 w-full mt-2 ${(userData && (userData.role == AccountType.Guru || userData.role == AccountType.Vendor)) ? "" : "hidden!"}`}>
               <div className="flex flex-col md:flex-row items-center gap-2 w-full space-y-2 md:space-y-0 ">
                 {dropdowns.map((d, index) => (
                   <Dropdown
