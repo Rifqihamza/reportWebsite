@@ -19,8 +19,7 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 const reportsPerPage = 5;
 
 export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
-  const [showDetail, setShowDetail] = useState(false);
-  const [detailId, setDetailId] = useState("");
+  const [detailId, setDetailId] = useState("" as string | null);
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | string | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [deleteDisabled, setDeleteDisabled] = useState(false);
@@ -60,14 +59,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   function handle_detail(id: string) {
     const selectedReport = reportData.find(report => report.id === id);
     setDetailId(id);
-    setShowDetail(true);
     setIsChange(true); // default disable saat pertama buka
     setSelectedStatus(selectedReport?.status ?? null);
   }
 
 
   function handle_close() {
-    setShowDetail(false);
+    setDetailId(null);
   }
 
   async function handle_delete(id: string) {
@@ -84,7 +82,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     const result = await deleteReport(id);
 
     if(result == APIResultType.NoError) {
-      setShowDetail(false);
+      setDetailId(null);
       setReportData(reportData.filter((value) => value.id != id));
       showMessage("Success", toastTopRight, 'success', "Data berhasil dihapus!");
     }
@@ -108,7 +106,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     const result = await changeReportStatus(id, typeof selectedStatus == "string" ? string_to_reportstatus(selectedStatus)! : selectedStatus);
 
     if(result == APIResultType.NoError) {
-      setShowDetail(false);
+      setDetailId(null);
       setReportData(reportData.map((value) => value.id == id ? { ...value, status: string_to_reportstatus(selectedStatus)! } : value));
       showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
     }
@@ -292,17 +290,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       </div>
 
       {/*  Modal Element */}
-      <div className={(showDetail
+      <div className={(detailId
         ? "bg-black opacity-50 w-full h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-all z-10"
         : "hidden duration-500 transition-all opacity-0")}>
       </div>
-      <div className={(showDetail ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
+      <div className={(detailId ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
         {(() => {
-          const report_data = reportData.find(value => value.id == detailId) || reportData[0];
-
-          if(!report_data) {
-              return <></>;
-          }
+          const report_data = reportData.find(value => value.id == detailId) || null;
           
           const imageComponent = <>
               <div className="flex flex-col justify-center">
@@ -328,7 +322,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             {/* header Laporan */}
             <div className="flex md:flex-row md:items-center justify-between flex-row bg-[#7FA1C3] md:px-4 md:py-2 px-3 py-2 rounded-xl">
               <h1 className="font-bold md:text-lg text-sm text-white">{report_data?.message}</h1>
-              <span className={`${statusColors[report_data?.status!]} md:text-md md:px-4 md:py-2 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
+              <span className={`${report_data ? statusColors[report_data.status] : ""} md:text-md md:px-4 md:py-2 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
             </div>
             {report_data?.image != "" ? imageComponent : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
 
@@ -358,7 +352,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   <CategoryIcon />
                   <h1 className="md:text-lg text-sm">Kategori</h1>
                   </div>
-                  <p className="font-semibold md:text-lg text-sm">{reporttype_to_string(report_data?.type)}</p>
+                  <p className="font-semibold md:text-lg text-sm">{report_data ? reporttype_to_string(report_data?.type) : ""}</p>
               </div>
 
               {/* Follow Up Laporan */}
@@ -384,13 +378,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     setSelected={setSelectedStatus}
                   />
                 ))}
-                <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled}>
+                <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_delete(report_data.id) : ""} disabled={saveDisabled || deleteDisabled}>
                     {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Hapus
                 </button>
               </div>
               <div className="mt-2">
-                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled || !isChange}>
+                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_save(report_data.id) : ""} disabled={saveDisabled || deleteDisabled || !isChange}>
                     {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Simpan
                 </button>
