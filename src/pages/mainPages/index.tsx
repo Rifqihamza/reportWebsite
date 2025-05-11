@@ -17,20 +17,12 @@ import { PrimeReactProvider } from "primereact/api";
 export default function MainPage() {
   const [setVisible, setIsVisible] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState(0);
-  const [userData, setUserData]: [User, Dispatch<SetStateAction<User>>] = useState({
-    id: "",
-    username: "",
-    email: "",
-    password: "",
-    role: AccountType.Siswa as AccountType,
-    created_at: "",
-  });
-
-  
+  const [userData, setUserData]: [User|null, Dispatch<SetStateAction<User|null>>] = useState(null as User | null);
   const [reportData, setReportData]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([] as ReportData[]);
   
+  
   async function handle_logout() {
-    if(userData.role == AccountType.Siswa) {
+    if(!userData || userData.role == AccountType.Siswa) {
       window.location.href = "/login";
       return;
     }
@@ -67,7 +59,7 @@ export default function MainPage() {
       >
         Report Data
       </button>
-      {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
+      {(userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor)) && (
         <button
           onClick={() => setActiveTab(1)}
           className={`tab-button ${activeTab === 1 ? "active" : ""}`}
@@ -105,7 +97,7 @@ export default function MainPage() {
           Report Data
         </button>
 
-        {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
+        {(userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor)) && (
           <button
             onClick={() => {
               setActiveTab(1);
@@ -131,7 +123,7 @@ export default function MainPage() {
         <button className="w-full justify-center md:hidden block px-4 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300"
         onClick={handle_logout}
         >
-          {userData.role == AccountType.Siswa ? "Login" : "Logout"}
+          {(!userData || userData.role == AccountType.Siswa) ? "Login" : "Logout"}
         </button>
       </div>
     </Sidebar>
@@ -142,7 +134,7 @@ export default function MainPage() {
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
         <ListDataReport userData={userData} reportData={reportData} setReportData={setReportData} />
       </div>
-      <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"} ${(userData.role == AccountType.Guru || userData.role == AccountType.Vendor) ? "" : "opacity-0"}`}>
+      <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"} ${(userData && (userData.role == AccountType.Guru || userData.role == AccountType.Vendor)) ? "" : "opacity-0"}`}>
         <ReportForm reportData={reportData} setReportData={setReportData} />
       </div>
       <div id="graph-section" className={`tab-content ${activeTab == 2 ? "active" : "hidden"}`}>

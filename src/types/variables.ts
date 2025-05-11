@@ -18,10 +18,11 @@ export enum ReportStatus {
 }
 
 export function reporttype_to_string(data: any): string {
-    return data == ReportType.VR ? "5R" : data.toString()
+    return data == "VR" ? "5R" : data.toString()
 }
 
 export function string_to_reporttype(data: string): ReportType|undefined {
+    if(data == "5R") return ReportType.VR;
     return Object.values(ReportType).find(value => value.toString() == data);
 }
 
