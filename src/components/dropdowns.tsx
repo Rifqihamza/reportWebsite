@@ -1,20 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, type Dispatch, type SetStateAction } from "react";
 
 interface DropdownProps {
   id: string;
   label: string;
   items: string[];
-  onChange?: (value: string) => void;
+  selected: string|null;
+  setSelected: Dispatch<SetStateAction<string|null>>;
 }
 
-export default function Dropdown({ id, label, items, onChange }: DropdownProps) {
+export default function Dropdown({ id, label, items, selected, setSelected }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(label);
 
   const handleSelect = (option: string) => {
     setSelected(option);
     setIsOpen(false);
-    if (onChange) onChange(option);
   };
 
   return (
@@ -26,7 +25,7 @@ export default function Dropdown({ id, label, items, onChange }: DropdownProps) 
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <span className="dropdown-label">{selected}</span>
+        <span className="dropdown-label">{selected ? selected : label}</span>
         <svg
           className="w-4 h-4 ml-2"
           viewBox="0 0 10 6"
@@ -60,8 +59,6 @@ export default function Dropdown({ id, label, items, onChange }: DropdownProps) 
           </ul>
         </div>
       )}
-
-      <input type="hidden" name={id} value={selected === label ? "" : selected} />
     </div>
   );
 }

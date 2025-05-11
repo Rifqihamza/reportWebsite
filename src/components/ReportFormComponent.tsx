@@ -20,8 +20,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [pic, setPic] = useState("");
-  const [category, setCategory] = useState(null as ReportType | null);
-  const [followUpType, setFollowUpType] = useState(null as AccountType | null);
+  const [category, setCategory] = useState(null as ReportType | string | null);
+  const [followUpType, setFollowUpType] = useState(null as AccountType | string | null);
   const [followUpName, setFollowUpName] = useState("");
   const [reportDate, setReportDate] = useState("");
   const [reportDueDate, setReportDueDate] = useState("");
@@ -35,7 +35,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     {
       id: "kategori",
       label: "Kategori",
-      items: Object.keys(ReportType).filter(x => x != "NoType"),
+      items: [...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"],
     },
     { id: "followup", label: "Follow Up", items: Object.keys(AccountType).filter(x => x != "NoType") },
   ];
@@ -52,7 +52,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
         summary: "Sedang upload data..."
     });
 
-    const result = await addReport(message, pic, category, followUpType, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
+    const result = await addReport(message, pic, string_to_reporttype(category)!, string_to_accounttype(followUpType)!, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
     if(typeof result == "object") {
       alert("Successfully add the report!");
 
@@ -124,27 +124,16 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             {/* Dropdowns Section */}
             <div className="flex flex-col md:flex-row gap-2 w-full mt-8 md:space-y-4 space-y-3">
             {dropdowns.map((d, index) => {
-              let handler = (value: string) => {
+              let selected = category;
+              let setSelected = setCategory;
 
-              };
-
-              if(d.id == "kategori") {
-                handler = (value: string) => {
-                    if(value == "5R") {
-                        value = "VR";
-                    }
-
-                    setCategory(string_to_reporttype(value)!)
-                };
-
-                d.items = d.items.map(value => value == "VR" ? "5R" : value);
-              }
-              else if(d.id == "followup") {
-                handler = (value: string) => setFollowUpType(string_to_accounttype(value)!);
+              if(d.id == "followup") {
+                selected = followUpType;
+                setSelected = setFollowUpType;
               }
               
               return (
-                <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} onChange={handler} />
+                <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} selected={selected == "VR" ? "5R" : selected} setSelected={setSelected} />
               );
             })}
             </div>

@@ -21,7 +21,7 @@ const reportsPerPage = 5;
 export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | null);
+  const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | string | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [deleteDisabled, setDeleteDisabled] = useState(false);
   const [isChange, setIsChange] = useState(false);
@@ -62,7 +62,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     setDetailId(id);
     setShowDetail(true);
     setIsChange(true); // default disable saat pertama buka
-    setSelectedStatus(null);
+    setSelectedStatus(selectedReport?.status ?? null);
   }
 
 
@@ -76,7 +76,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     }
     setDeleteDisabled(true);
 
-    if (selectedStatus === ReportStatus.InProcess) {
+    if (reportData.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
       alert("Tidak bisa menghapus laporan yang sudah di follow up");
       return;
     }
@@ -102,14 +102,14 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     if(!selectedStatus) {
       return;
     }
-    
+
     setSaveDisabled(true);
 
-    const result = await changeReportStatus(id, selectedStatus);
+    const result = await changeReportStatus(id, typeof selectedStatus == "string" ? string_to_reportstatus(selectedStatus)! : selectedStatus);
 
     if(result == APIResultType.NoError) {
       setShowDetail(false);
-      setReportData(reportData.map((value) => value.id == id ? { ...value, status: selectedStatus } : value));
+      setReportData(reportData.map((value) => value.id == id ? { ...value, status: string_to_reportstatus(selectedStatus)! } : value));
       showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
     }
     else if(result == APIResultType.InternalServerError) {
@@ -139,6 +139,10 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   useEffect(() => {
     setShowedReportData(reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true));
   }, [currentPage, selectedFilter, reportData]);
+
+  useEffect(() => {
+    setIsChange(selectedStatus != reportData.find((data) => data.id === detailId)?.status)
+  }, [selectedStatus])
 
   return (
     <>
@@ -354,7 +358,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   <CategoryIcon />
                   <h1 className="md:text-lg text-sm">Kategori</h1>
                   </div>
-                  <p className="font-semibold md:text-lg text-sm">{report_data?.type}</p>
+                  <p className="font-semibold md:text-lg text-sm">{reporttype_to_string(report_data?.type)}</p>
               </div>
 
               {/* Follow Up Laporan */}
@@ -376,11 +380,8 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     id={d.id}
                     label={d.label}
                     items={d.items}
-                    onChange={(selectedValue) => {
-                      setSelectedStatus(string_to_reportstatus(selectedValue)!);
-                      const currentStatus = report_data?.status;
-                      setIsChange(selectedValue === currentStatus); // disable jika belum berubah
-                    }}
+                    selected={selectedStatus}
+                    setSelected={setSelectedStatus}
                   />
                 ))}
                 <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_delete(report_data.id)} disabled={saveDisabled || deleteDisabled}>
@@ -389,7 +390,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 </button>
               </div>
               <div className="mt-2">
-                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled || isChange}>
+                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => handle_save(report_data.id)} disabled={saveDisabled || deleteDisabled || !isChange}>
                     {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
                     Simpan
                 </button>
