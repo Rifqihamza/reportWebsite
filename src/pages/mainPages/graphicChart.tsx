@@ -7,21 +7,6 @@ import type { DropdownChangeEvent } from 'primereact/dropdown';
 import type { ReportData } from "../../types/variables";
 import { ReportType, reporttype_to_string } from '../../types/variables';
 
-
-// const pieCategory = [
-//     { labels: "5R", value: 8 },
-//     { labels: "Safety", value: 2 },
-//     { labels: "K3", value: 5 },
-//     { labels: "Abnormality", value: 5 },
-// ];
-
-// const pieStatus = [
-//     { labels: "In Process", value: 2 },
-//     { labels: "Complete", value: 5 },
-//     { labels: "Hold", value: 5 },
-//     { labels: "Not Started", value: 5 },
-// ];
-
 const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
 
 type CategoryType = {
@@ -41,10 +26,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [selectedYear, setSelectedYear] = useState<number>(currentYear);
     const [pieCategory, setPieCategory] = useState([] as CategoryType[])
     const [pieStatus, setPieStatus] = useState([] as CategoryType[])
-
     const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
-
-
 
     useEffect(() => {
         let result: LineChartValueType[] = [];
@@ -118,7 +100,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
                 <BarChartIcon fontSize="medium" />
                 {/* Header Title */}
-                <h1 className="font-bold uppercase tracking-[2px] text-md md:text-lg text-black">Data Grafik Laporan</h1>
+                <h1 className="titlepage">Data Grafik Laporan</h1>
             </div>
 
             {/* Container Chart */}

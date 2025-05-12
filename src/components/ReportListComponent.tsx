@@ -12,15 +12,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import CategoryIcon from '@mui/icons-material/Category';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import CloseIcon from '@mui/icons-material/Close';
-import SaveIcon from '@mui/icons-material/Save';
-import TrashIcon from '@mui/icons-material/DeleteForever';
 import ChevronLeft from "@mui/icons-material/chevronLeft";
 import ChevronRight from "@mui/icons-material/chevronRight";
 
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
+export default function ReportListComponent({ userData, reportData, selectedFilter }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState("");
   const [saveDisabled, setSaveDisabled] = useState(false);
@@ -59,7 +57,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   }
 
   function handle_detail(id: string) {
-    const selectedReport = reportData.find(report => report.id === id);
     setDetailId(id);
     setShowDetail(true);
     setSelectedStatus("");
@@ -83,25 +80,25 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     }
 
     setTimeout(() => {
-        showMessage("Success", toastTopRight, 'success', "Data berhasil dihapus!");
-        setDeleteDisabled(false);
+      showMessage("Success", toastTopRight, 'success', "Data berhasil dihapus!");
+      setDeleteDisabled(false);
     }, 1000);
   }
-  
+
   function handle_save() {
-      setSaveDisabled(true);
-      
-      setTimeout(() => {
-          showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
-          setSaveDisabled(false);
-      }, 1000);
+    setSaveDisabled(true);
+
+    setTimeout(() => {
+      showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
+      setSaveDisabled(false);
+    }, 1000);
   }
-  
+
   const showMessage = (label: string, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity'], detail: string) => {
     ref.current?.show({ severity: severity, summary: label, detail: detail, life: 3000 });
   };
 
-  
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPage, setMaxPage] = useState(0);
@@ -162,7 +159,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true).slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+            {reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true).slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
@@ -197,7 +194,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true).slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+        {reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true).slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -236,20 +233,20 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-row justify-between items-center mt-7">
+      <div className="flex flex-row justify-between items-center mt-7 md:absolute md:bottom-0 md:left-0 md:right-0">
         <div className="flex flex-row justify-center gap-4 w-full">
-          <button 
+          <button
             className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
             disabled={currentPage <= 0}
-            onClick={() => setCurrentPage(currentPage-1)}
-          > 
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
             <ChevronLeft fontSize="small" />
             Prev
           </button>
-          <button 
+          <button
             className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
             disabled={currentPage >= (maxPage - 1)}
-            onClick={() => setCurrentPage(currentPage+1)}
+            onClick={() => setCurrentPage(currentPage + 1)}
           >
             Next
             <ChevronRight fontSize="small" />
@@ -346,14 +343,14 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   />
                 ))}
                 <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={handle_delete} disabled={saveDisabled || deleteDisabled}>
-                    {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
-                    Hapus
+                  {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                  Hapus
                 </button>
               </div>
               <div className="mt-2">
                 <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={handle_save} disabled={saveDisabled || deleteDisabled || isChange}>
-                    {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
-                    Simpan
+                  {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                  Simpan
                 </button>
               </div>
             </div>

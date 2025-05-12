@@ -5,13 +5,15 @@
 }
 
 body {
-  margin: auto;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  overflow: auto;
   background-color: #6482ad;
-  animation: gradient 15s ease infinite;
-  background-size: 100%;
-  background-attachment: fixed;
+}
+.titlePage {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .wave {
@@ -84,11 +86,6 @@ body {
   z-index: 10;
 }
 
-/* Preview Image Details */
-.p-image-mask {
-  background-color: rgba(0, 0, 0, 0.85);
-}
-
 .p-image-preview {
   max-width: 70vw;
   max-height: 70vh;
@@ -103,16 +100,15 @@ body {
 .p-tieredmenu {
   border-radius: 12px;
   background-color: #ffffff;
-  padding: 0.5rem;
+  padding: 0.2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: none;
-  min-width: 15rem;
-  font-family: "Inter", sans-serif;
+  min-width: 10rem;
 }
 
 /* Menuitem element */
 .p-menuitem {
-  margin: 0.25rem 0.5rem;
+  padding: 0.2rem;
   border-radius: 8px;
   transition: background-color 0.2s ease;
 }

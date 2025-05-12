@@ -205,7 +205,7 @@ export default function MainPage() {
     {/* End Sidebar Section for mobile */}
 
     {/* Content */}
-    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35em] md:max-h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
+    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
         <ListDataReport userData={userData} reportData={reportData} setReportData={setReportData} />
       </div>
