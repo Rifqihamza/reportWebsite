@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface DropdownProps {
   id: string;
@@ -60,8 +60,6 @@ export default function Dropdown({ id, label, items, onChange }: DropdownProps) 
           </ul>
         </div>
       )}
-
-      <input type="hidden" name={id} value={selected === label ? "" : selected} />
     </div>
   );
 }

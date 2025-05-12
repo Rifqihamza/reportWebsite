@@ -3,7 +3,7 @@ import ListDataReport from "./listDataReport";
 import ApexChart from "./graphicChart";
 
 import { Sidebar } from 'primereact/sidebar';
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { AccountType, type ReportData, type User } from "../../types/variables";
 
 import MenuIcon from '@mui/icons-material/Menu';
@@ -32,7 +32,7 @@ export default function MainPage() {
       pic_name: "Suhaimi",
       type: "Safety",
       follow_up: "Guru",
-      image: "/laporanNew.JPG",
+      image: "/img/laporanNew.JPG",
       status: "NotStarted",
     },
     {
@@ -43,7 +43,7 @@ export default function MainPage() {
       pic_name: "Heas Priyo",
       type: "5R",
       follow_up: "Siswa",
-      image: "/laporanNew.JPG",
+      image: "/img/laporanNew.JPG",
       status: "InProcess",
     },
     {
@@ -54,7 +54,7 @@ export default function MainPage() {
       pic_name: "Amalia",
       type: "5R",
       follow_up: "Siswa",
-      image: "/laporanNew.JPG",
+      image: "/img/laporanNew.JPG",
       status: "Complete",
     },
     {
@@ -65,7 +65,7 @@ export default function MainPage() {
       pic_name: "Munir",
       type: "Safety",
       follow_up: "Vendor",
-      image: "/laporanNew.JPG",
+      image: "/img/laporanNew.JPG",
       status: "Hold",
     },
     {
@@ -76,7 +76,7 @@ export default function MainPage() {
       pic_name: "Tya",
       type: "Abnormality",
       follow_up: "Vendor",
-      image: "/laporanNew.JPG",
+      image: "/img/laporanNew.JPG",
       status: "Complete",
     },
     {
@@ -87,44 +87,44 @@ export default function MainPage() {
       pic_name: "Heas",
       type: "Abnormality",
       follow_up: "Vendor",
-      image: "/laporanNew.JPG",
-      status: "Complete",
+      image: "/img/laporanNew.JPG",
+      status: "NotStarted",
     },
     {
-      id: "6",
+      id: "7",
       created_at: "2024-06-20",
       message: "AC rusak",
       location: "Ruang Teori 4",
       pic_name: "Heas",
       type: "Safety",
       follow_up: "Vendor",
-      image: "/laporanNew.JPG",
-      status: "Complete",
+      image: "/img/laporanNew.JPG",
+      status: "InProcess",
     },
     {
-      id: "6",
+      id: "8",
       created_at: "2024-06-20",
       message: "AC rusak",
       location: "Ruang Teori 4",
       pic_name: "Heas",
       type: "Safety",
       follow_up: "Vendor",
-      image: "/laporanNew.JPG",
+      image: "/img/laporanNew.JPG",
       status: "Complete",
     },
     {
-      id: "6",
+      id: "9",
       created_at: "2024-07-20",
       message: "AC rusak",
       location: "Ruang Teori 4",
       pic_name: "Heas",
       type: "Abnormality",
       follow_up: "Vendor",
-      image: "/laporanNew.JPG",
-      status: "Complete",
+      image: "/img/laporanNew.JPG",
+      status: "Hold",
     },
   ] as ReportData[])
-  
+
   return <PrimeReactProvider>
 
     {/* Desk Navbar */}
@@ -143,12 +143,15 @@ export default function MainPage() {
           Report
         </button>
       )}
-      <button
-        onClick={() => setActiveTab(2)}
-        className={`tab-button ${activeTab === 2 ? "active" : ""}`}
-      >
-        Graphic
-      </button>
+      {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
+        <button
+          onClick={() => setActiveTab(2)}
+          className={`tab-button ${activeTab === 2 ? "active" : ""}`}
+        >
+          Graphic
+        </button>
+      )}
+
     </div>
 
     {/* SideBar Section for Mobile */}
@@ -185,15 +188,18 @@ export default function MainPage() {
           </button>
         )}
 
-        <button
-          onClick={() => {
-            setActiveTab(2);
-            setIsVisible(false);
-          }} className={`w-full text-left px-4 py-2 rounded-lg flex flex-row items-center gap-2 ${activeTab === 2 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
-        >
-          <BarChartIcon fontSize="medium" />
-          Graphic Data
-        </button>
+        {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
+          <button
+            onClick={() => {
+              setActiveTab(2);
+              setIsVisible(false);
+            }} className={`w-full text-left px-4 py-2 rounded-lg flex flex-row items-center gap-2 ${activeTab === 2 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
+          >
+            <BarChartIcon fontSize="medium" />
+            Graphic Data
+          </button>
+        )}
+
       </div>
       <div className="absolute  left-4 right-4 bottom-4">
         <button className="w-full justify-center md:hidden block px-4 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300"
