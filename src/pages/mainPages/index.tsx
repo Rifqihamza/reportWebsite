@@ -15,7 +15,7 @@ import ReportIcon from "@mui/icons-material/Report";
 import { PrimeReactProvider } from "primereact/api";
 
 export default function MainPage() {
-  const [overlayVisible] = useState(false);
+  const [overlayVisible] = useState(true);
   const [setVisible, setIsVisible] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState(0);
   const [userData, setUserData]: [User, Dispatch<SetStateAction<User>>] = useState({
