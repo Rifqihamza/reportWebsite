@@ -31,10 +31,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [selectedYear, setSelectedYear] = useState<number>(currentYear);
     const [pieCategory, setPieCategory] = useState([] as CategoryType[])
     const [pieStatus, setPieStatus] = useState([] as CategoryType[])
-
     const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
-
-
 
     useEffect(() => {
         let result: LineChartValueType[] = [];
@@ -108,7 +105,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
                 <BarChartIcon fontSize="medium" />
                 {/* Header Title */}
-                <h1 className="font-bold uppercase tracking-[2px] text-md md:text-lg text-black">Data Grafik Laporan</h1>
+                <h1 className="titlepage">Data Grafik Laporan</h1>
             </div>
 
             {/* Container Chart */}

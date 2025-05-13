@@ -18,7 +18,7 @@ export default function ListDataReport({ userData, reportData, setReportData }: 
       {/* Header Title */}
       <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
         <AssignmentIcon fontSize="medium" />
-        <h1 className="font-bold uppercase tracking-[2px] text-md md:text-lg text-black">
+        <h1 className="titlePage">
           Data Laporan
         </h1>
       </div>

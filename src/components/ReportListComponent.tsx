@@ -119,12 +119,12 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     
     setSaveDisabled(false);
   }
-  
+
   const showMessage = (label: string, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity'], detail: string) => {
     ref.current?.show({ severity: severity, summary: label, detail: detail, life: 3000 });
   };
 
-  
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPage, setMaxPage] = useState(0);
@@ -268,20 +268,20 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-row justify-between items-center mt-7">
+      <div className="flex flex-row justify-between items-center mt-7 md:absolute md:bottom-0 md:left-0 md:right-0">
         <div className="flex flex-row justify-center gap-4 w-full">
           <button 
             className="disabled:opacity-50 w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
             disabled={currentPage <= 0}
-            onClick={() => setCurrentPage(currentPage-1)}
-          > 
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
             <ChevronLeft fontSize="small" />
             Prev
           </button>
           <button 
             className="disabled:opacity-50 w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
             disabled={currentPage >= (maxPage - 1)}
-            onClick={() => setCurrentPage(currentPage+1)}
+            onClick={() => setCurrentPage(currentPage + 1)}
           >
             Next
             <ChevronRight fontSize="small" />

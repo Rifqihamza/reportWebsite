@@ -15,6 +15,7 @@ import ReportIcon from "@mui/icons-material/Report";
 import { PrimeReactProvider } from "primereact/api";
 
 export default function MainPage() {
+  const [overlayVisible, setOverlayVisible] = useState(true);
   const [setVisible, setIsVisible] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState(0);
   const [userData, setUserData]: [User|null, Dispatch<SetStateAction<User|null>>] = useState(null as User | null);
@@ -49,6 +50,26 @@ export default function MainPage() {
     });
   }, []);
 
+  
+  const btnToLogin = () => {
+    window.location.href = "/login";
+  }
+
+  const overlay = () => {
+    return (
+      <div className="flex flex-col md:flex-row items-center justify-center w-full md:h-full h-fit bg-white space-y-2">
+        <img src="/img/lockedPages.svg" className="w-[15rem] md:w-1/4 " alt="" />
+        <div className="md:w-1/3 w-fit px-6 py-2 space-y-4">
+          <h1 className="md:text-2xl text-xl font-bold tracking-wide">Uppsss..</h1>
+          <p className="text-justify text-lg">Wahh halaman terkunci, Login terlebih dahulu untuk membuka halaman. Klik tombol dibawah</p>
+          <button
+            onClick={btnToLogin}
+            className="w-full bg-[#7FA1C3] text-white uppercase font-bold tracking-wider px-6 py-2 rounded-lg hover:bg-[#6FA9E3] duration-300 cursor-pointer">Login</button>
+        </div>
+      </div>
+    )
+  }
+
   return <PrimeReactProvider>
     <LogoutButton handle_logout={handle_logout} userData={userData} />
     {/* Desk Navbar */}
@@ -59,20 +80,19 @@ export default function MainPage() {
       >
         Report Data
       </button>
-      {(userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor)) && (
-        <button
-          onClick={() => setActiveTab(1)}
-          className={`tab-button ${activeTab === 1 ? "active" : ""}`}
-        >
-          Report
-        </button>
-      )}
+      <button
+        onClick={() => setActiveTab(1)}
+        className={`tab-button ${activeTab === 1 ? "active" : ""}`}
+      >
+        Report
+      </button>
       <button
         onClick={() => setActiveTab(2)}
         className={`tab-button ${activeTab === 2 ? "active" : ""}`}
       >
         Graphic
       </button>
+
     </div>
 
     {/* SideBar Section for Mobile */}
@@ -97,17 +117,15 @@ export default function MainPage() {
           Report Data
         </button>
 
-        {(userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor)) && (
-          <button
-            onClick={() => {
-              setActiveTab(1);
-              setIsVisible(false);
-            }} className={`w-full text-left px-4 py-2 rounded-lg flex flex-row items-center gap-2 ${activeTab === 1 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
-          >
-            <ReportIcon fontSize="medium" />
-            Report
-          </button>
-        )}
+        <button
+          onClick={() => {
+            setActiveTab(1);
+            setIsVisible(false);
+          }} className={`w-full text-left px-4 py-2 rounded-lg flex flex-row items-center gap-2 ${activeTab === 1 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
+        >
+          <ReportIcon fontSize="medium" />
+          Report
+        </button>
 
         <button
           onClick={() => {
@@ -118,6 +136,7 @@ export default function MainPage() {
           <BarChartIcon fontSize="medium" />
           Graphic Data
         </button>
+
       </div>
       <div className="absolute  left-4 right-4 bottom-4">
         <button className="w-full justify-center md:hidden block px-4 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300"
@@ -130,15 +149,39 @@ export default function MainPage() {
     {/* End Sidebar Section for mobile */}
 
     {/* Content */}
-    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35em] md:max-h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
+    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
+
+      {/* Report Data */}
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
         <ListDataReport userData={userData} reportData={reportData} setReportData={setReportData} />
       </div>
-      <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"} ${(userData && (userData.role == AccountType.Guru || userData.role == AccountType.Vendor)) ? "" : "opacity-0"}`}>
-        <ReportForm reportData={reportData} setReportData={setReportData} />
+
+      {/* Report Form */}
+      <div id="form-section" className={`tab-content ${activeTab === 1 ? "active" : "hidden"}`}>
+        {(
+          ((userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor))) ? 
+          <ReportForm reportData={reportData} setReportData={setReportData} />  //? Visible only if user is a teacher or vendor
+          : 
+          (
+          <div className="lg:absolute lg:top-0 lg:bottom-0 lg:left-0 lg:right-0 h-full">
+            {overlay()}
+          </div>
+          )
+        )}
       </div>
-      <div id="graph-section" className={`tab-content ${activeTab == 2 ? "active" : "hidden"}`}>
-        <ApexChart reportData={reportData} />
+
+      {/* Graphic Chart */}
+      <div id="graph-section" className={`tab-content ${activeTab === 2 ? "active" : "hidden"}`}>
+        {(
+          ((userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor))) ? 
+          <ApexChart reportData={reportData} />  //? Visible only if user is a teacher or vendor
+          : 
+          (
+          <div className="lg:absolute lg:top-0 lg:bottom-0 lg:left-0 lg:right-0 h-full">
+            {overlay()}
+          </div>
+          )
+        )}
       </div>
     </div>
   </PrimeReactProvider>
