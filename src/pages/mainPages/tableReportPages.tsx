@@ -1,15 +1,26 @@
+<<<<<<< HEAD:src/pages/mainPages/listDataReport.tsx
 import type { Dispatch, SetStateAction } from "react";
 import ReportListComponent from "../../components/ReportListComponent";
 import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
 import React, { useEffect, useState } from "react";
 import TieredDropDowns from "../../components/TieredMenu";
+=======
+import ReportListComponent from "../../components/TableReport/ReportTableComponent";
+import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
+import { useState, type Dispatch, type SetStateAction } from "react";
+import TieredDropDowns from "../../components/TieredMenu/TieredMenuComponents";
+>>>>>>> FrontEnd-Branch:src/pages/mainPages/tableReportPages.tsx
 
 
 // icon
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SearchIcon from '@mui/icons-material/Search';
 
+<<<<<<< HEAD:src/pages/mainPages/listDataReport.tsx
 export default function ListDataReport({ userData, reportData, setReportData }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
+=======
+export default function TableReportPages({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
+>>>>>>> FrontEnd-Branch:src/pages/mainPages/tableReportPages.tsx
 
   const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
 
@@ -18,9 +29,7 @@ export default function ListDataReport({ userData, reportData, setReportData }: 
       {/* Header Title */}
       <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
         <AssignmentIcon fontSize="medium" />
-        <h1 className="titlePage">
-          Data Laporan
-        </h1>
+        <h1 className="titlePage">Data Laporan</h1>
       </div>
 
       <div className="px-4 space-y-3">

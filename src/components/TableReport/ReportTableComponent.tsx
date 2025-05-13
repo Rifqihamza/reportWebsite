@@ -1,9 +1,13 @@
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../types/variables';
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../../types/variables';
 import { Image } from 'primereact/image'
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
 import Dropdown from "./dropdowns";
 import { APIResultType, changeReportStatus, deleteReport } from "../utils/api_interface";
 
+=======
+import Dropdown from "../Dropdowns/DropdownsComponents";
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 
@@ -24,20 +28,34 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [deleteDisabled, setDeleteDisabled] = useState(false);
   const [isChange, setIsChange] = useState(false);
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
 
   const toastTopRight = useRef<Toast>(null);
 
   const [showedReportData, setShowedReportData] = useState([] as ReportData[]);
 
+=======
+  const [selectedStatus, setSelectedStatus] = useState<ReportStatus | "">("");
+  const toastTopRight = useRef<Toast>(null);
+
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
   const dropdowns = [
     {
       id: "status",
       label: "Edit Status",
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
       items: Object.values(ReportStatus),
+=======
+      items: [
+        " Complete",
+        "In Process",
+        "Hold",
+        "Not Started"
+      ],
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
     },
   ];
 
-  // Status color mapping
   const statusColors = {
     NotStarted: "bg-red-100 text-red-800",
     InProcess: "bg-yellow-100 text-yellow-800",
@@ -45,9 +63,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     Hold: "bg-blue-100 text-blue-800",
   };
 
-  // Format date helper function
   function formatDate(dateStr: string) {
-    // You can use a library like date-fns in a real app
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat("id-ID", {
       year: "numeric",
@@ -59,19 +75,30 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   function handle_detail(id: string) {
     const selectedReport = reportData.find(report => report.id === id);
     setDetailId(id);
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
     setIsChange(true); // default disable saat pertama buka
     setSelectedStatus(selectedReport?.status ?? null);
+=======
+    setShowDetail(true);
+    setSelectedStatus("");
+    setIsChange(true);
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
   }
-
 
   function handle_close() {
     setDetailId(null);
   }
 
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
   async function handle_delete(id: string) {
     if(!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
       return;
     }
+=======
+  function handle_delete() {
+    const isConfirmed = confirm("Apakah Anda yakin ingin menghapus laporan ini?");
+    if (!isConfirmed) return;
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
     setDeleteDisabled(true);
 
     if (reportData.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
@@ -85,6 +112,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       setDetailId(null);
       setReportData(reportData.filter((value) => value.id != id));
       showMessage("Success", toastTopRight, 'success', "Data berhasil dihapus!");
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
     }
     else if(result == APIResultType.InternalServerError) {
       showMessage("Error", toastTopRight, 'error', "Terjadi error di server!");
@@ -100,8 +128,15 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     if(!selectedStatus) {
       return;
     }
+=======
+      setDeleteDisabled(false);
+      setShowDetail(false)
+    }, 1000);
+  }
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
 
     setSaveDisabled(true);
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
 
     const result = await changeReportStatus(id, typeof selectedStatus == "string" ? string_to_reportstatus(selectedStatus)! : selectedStatus);
 
@@ -118,14 +153,19 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     }
     
     setSaveDisabled(false);
+=======
+    setTimeout(() => {
+      showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
+      setSaveDisabled(false);
+      setShowDetail(false)
+    }, 1000);
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
   }
 
   const showMessage = (label: string, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity'], detail: string) => {
     ref.current?.show({ severity: severity, summary: label, detail: detail, life: 3000 });
   };
 
-
-  // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPage, setMaxPage] = useState(0);
 
@@ -145,7 +185,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   return (
     <>
       {/* Table for desktop */}
-      <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl">
+      <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl relative">
         <table className="min-w-full">
           <thead className="bg-[#7FA1C3]">
             <tr>
@@ -267,6 +307,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         ))}
       </div>
 
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
       {/* Pagination */}
       <div className="flex flex-row justify-between items-center mt-7 md:absolute md:bottom-0 md:left-0 md:right-0">
         <div className="flex flex-row justify-center gap-4 w-full">
@@ -289,6 +330,8 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         </div>
       </div>
 
+=======
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
       {/*  Modal Element */}
       <div className={(detailId
         ? "bg-black opacity-50 w-full h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-all z-10"
@@ -374,8 +417,16 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     id={d.id}
                     label={d.label}
                     items={d.items}
+<<<<<<< HEAD:src/components/ReportListComponent.tsx
                     selected={selectedStatus}
                     setSelected={setSelectedStatus}
+=======
+                    onChange={(selectedValue) => {
+                      setSelectedStatus(selectedValue as ReportStatus);
+                      const currentStatus = report_data?.status;
+                      setIsChange(selectedValue === currentStatus);
+                    }}
+>>>>>>> FrontEnd-Branch:src/components/TableReport/ReportTableComponent.tsx
                   />
                 ))}
                 <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_delete(report_data.id) : ""} disabled={saveDisabled || deleteDisabled}>
@@ -394,6 +445,28 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         })()}
       </div>
       <Toast ref={toastTopRight} position="top-right" />
+      {/* Pagination */}
+      <div className="flex flex-row items-center mt-2">
+        <div className="flex flex-row gap-2 w-full">
+          <button
+            className="text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
+            disabled={currentPage <= 0}
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            <ChevronLeft fontSize="small" />
+            Prev
+          </button>
+          <button
+            className="text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
+            disabled={currentPage >= (maxPage - 1)}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+            <ChevronRight fontSize="small" />
+          </button>
+        </div>
+        {/* End Pagination */}
+      </div>
     </>
   );
 }

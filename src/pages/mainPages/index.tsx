@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import ReportForm from "./reportForm";
 import ListDataReport from "./listDataReport";
 import ApexChart from "./graphicChart";
@@ -12,12 +13,22 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ReportIcon from "@mui/icons-material/Report";
+=======
+import ReportForm from "./formReportPages";
+import TableReportPages from "./tableReportPages";
+import ApexChart from "./chartPages";
+import OverlayBlockPages from "../../components/Overlay/BlockOverlayComponents";
+import NavbarComponents from "../../components/Navbar/NavbarComponents";
+
+import { useState, type Dispatch, type SetStateAction } from "react";
+import { AccountType, type ReportData, type User } from "../../types/variables";
+import { tableDataReport } from "../../types/tableDataReport";
+>>>>>>> FrontEnd-Branch
 import { PrimeReactProvider } from "primereact/api";
 
 export default function MainPage() {
-  const [overlayVisible, setOverlayVisible] = useState(true);
-  const [setVisible, setIsVisible] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState(0);
+<<<<<<< HEAD
   const [userData, setUserData]: [User|null, Dispatch<SetStateAction<User|null>>] = useState(null as User | null);
   const [reportData, setReportData]: [ReportData[], Dispatch<SetStateAction<ReportData[]>>] = useState([] as ReportData[]);
   
@@ -147,15 +158,40 @@ export default function MainPage() {
       </div>
     </Sidebar>
     {/* End Sidebar Section for mobile */}
+=======
+  const [userData, setUserData]: [User, Dispatch<SetStateAction<User>>] = useState({
+    id: "",
+    username: "",
+    email: "",
+    password: "",
+    role: AccountType.Guru as AccountType,
+    created_at: "",
+  });
+
+  const [reportData, setReportData] = useState<ReportData[]>(tableDataReport);
+
+  return <PrimeReactProvider>
+
+    {/* Navbar */}
+    <NavbarComponents activeTab={activeTab} setActiveTab={setActiveTab} />
+>>>>>>> FrontEnd-Branch
 
     {/* Content */}
-    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
+    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] md:h-[38rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
 
+<<<<<<< HEAD
       {/* Report Data */}
+=======
+      {/* Table Data Report */}
+>>>>>>> FrontEnd-Branch
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
-        <ListDataReport userData={userData} reportData={reportData} setReportData={setReportData} />
+        <TableReportPages
+          userData={userData}
+          reportData={reportData}
+          setReportData={setReportData} />
       </div>
 
+<<<<<<< HEAD
       {/* Report Form */}
       <div id="form-section" className={`tab-content ${activeTab === 1 ? "active" : "hidden"}`}>
         {(
@@ -183,6 +219,23 @@ export default function MainPage() {
           )
         )}
       </div>
+=======
+      {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) ? (
+        <>
+          {/* Report Form */}
+          <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"}`}>
+            <ReportForm />
+          </div>
+
+          {/* Chart Data Report */}
+          <div id="graph-section" className={`tab-content ${activeTab === 2 ? "active" : "hidden"}`}>
+            <ApexChart reportData={reportData} />
+          </div>
+        </>
+      ) : (
+        <OverlayBlockPages />
+      )}
+>>>>>>> FrontEnd-Branch
     </div>
   </PrimeReactProvider>
 }

@@ -1,4 +1,9 @@
+<<<<<<< HEAD:src/components/dropdowns.tsx
 import React, { useState, type Dispatch, type SetStateAction } from "react";
+=======
+import { useState } from "react";
+import { ExpandMore } from "@mui/icons-material";
+>>>>>>> FrontEnd-Branch:src/components/Dropdowns/DropdownsComponents.tsx
 
 interface DropdownProps {
   id: string;
@@ -25,6 +30,7 @@ export default function Dropdown({ id, label, items, selected, setSelected }: Dr
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}
       >
+<<<<<<< HEAD:src/components/dropdowns.tsx
         <span className="dropdown-label">{selected ? selected : label}</span>
         <svg
           className="w-4 h-4 ml-2"
@@ -40,6 +46,10 @@ export default function Dropdown({ id, label, items, selected, setSelected }: Dr
             strokeLinejoin="round"
           />
         </svg>
+=======
+        <span className="dropdown-label">{selected}</span>
+        <ExpandMore />
+>>>>>>> FrontEnd-Branch:src/components/Dropdowns/DropdownsComponents.tsx
       </button>
 
       {isOpen && (
