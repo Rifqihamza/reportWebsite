@@ -8,7 +8,7 @@ import TieredDropDowns from "../../components/TieredMenu/TieredMenuComponents";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function TableReportPages({ userData, reportData, setReportData }: { userData: User, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
+export default function TableReportPages({ userData, reportData, setReportData }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
   const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
 
   return (

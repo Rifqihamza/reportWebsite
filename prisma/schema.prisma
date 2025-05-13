@@ -1,67 +1,67 @@
 generator client {
-    provider = "prisma-client-js"
-    engineType = "library"
+  provider   = "prisma-client-js"
+  engineType = "library"
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 // Enum
 enum AccountType {
-    Guru
-    Siswa
-    Vendor
+  Guru
+  Siswa
+  Vendor
 }
 
 enum ReportType {
-    VR
-    Safety
-    Abnormality
+  VR
+  Safety
+  Abnormality
 }
 
 enum ReportStatus {
-    NotStarted
-    InProcess
-    Complete
-    Hold
+  NotStarted
+  InProcess
+  Complete
+  Hold
 }
 
 // Database model
 model Users {
-    id       String      @id @default(uuid())
-    email    String      @unique
-    username String      @unique
-    password String
-    role     AccountType
+  id       String      @id @default(uuid())
+  email    String      @unique
+  username String      @unique
+  password String
+  role     AccountType
 
-    created_at DateTime @default(now())
+  created_at DateTime @default(now())
 }
 
 model Registration {
-    id    String @id @default(uuid())
-    email String @unique
-    token String @unique
+  id    String @id @default(uuid())
+  email String @unique
+  token String @unique
 
-    created_at DateTime @default(now())
+  created_at DateTime @default(now())
 }
 
 model Report {
-    id             String       @id @default(uuid())
-    message        String
-    type           ReportType
-    follow_up      AccountType
-    follow_up_name String
-    status         ReportStatus @default(Hold)
-    location       String?
-    image          String
+  id             String       @id @default(uuid())
+  message        String
+  type           ReportType
+  follow_up      AccountType
+  follow_up_name String
+  status         ReportStatus @default(Hold)
+  location       String?
+  image          String
 
-    created_at DateTime @default(now())
+  created_at DateTime @default(now())
 
-    report_date DateTime @default(now())
-    due_date    DateTime @default(now())
+  report_date DateTime @default(now())
+  due_date    DateTime @default(now())
 
-    // Relation
-    pic_name String
+  // Relation
+  pic_name String
 }

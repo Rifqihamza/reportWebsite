@@ -79,7 +79,6 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
                     </button>
                 </div>
             </Sidebar>
-            {/* End Sidebar Section for mobile */}
         </>
     )
 }

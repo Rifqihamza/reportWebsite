@@ -5,11 +5,11 @@ import { prisma } from "./db";
 import { AccountType } from "@prisma/client";
 
 let done_initialization = false;
-export const php_server_url = "https://smkind-mm2100.sch.id/web-report/upload_image.php";
+export const php_server_url = "http://localhost/web-report/upload_image.php";
 
 // First Initialization
 export async function first_initialization() {
-    if(done_initialization) {
+    if (done_initialization) {
         return;
     }
 
@@ -49,8 +49,8 @@ export function create_response_cookie(body: object, cookie: string): Response {
 // Get Cookie
 export function get_cookies_from_request(request: Request): Record<string, string | undefined> | undefined {
     const request_cookie = request.headers.get('cookie');
-    
-    if(!request_cookie) {
+
+    if (!request_cookie) {
         return undefined;
     }
 
@@ -66,10 +66,10 @@ export function generate_user_token(username: string): string {
 export function verify_user_token(token: string): string | undefined {
     try {
         const result = jwt.verify(token, process.env.JWT_SECRET!);
-        if(typeof result == "string") {
+        if (typeof result == "string") {
             return undefined
         }
-    
+
         return result.username;
     }
     catch {
@@ -80,16 +80,16 @@ export function verify_user_token(token: string): string | undefined {
 export async function verify_teacher_token(token: string): Promise<boolean | undefined> {
     const result = verify_user_token(token);
 
-    if(!result) {
+    if (!result) {
         return;
     }
-    
+
     const user_data = await prisma.users.findUnique({
         where: {
             username: result
         }
     })
-    
+
     return user_data?.role === AccountType.Guru;
 }
 

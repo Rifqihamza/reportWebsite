@@ -43,6 +43,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     Hold: "bg-blue-100 text-blue-800",
   };
 
+  // Format date helper function
   function formatDate(dateStr: string) {
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat("id-ID", {

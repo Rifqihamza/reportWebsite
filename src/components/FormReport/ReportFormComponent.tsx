@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import {
   DescriptionOutlined,
   PersonOutline,
@@ -10,9 +10,9 @@ import {
   SendOutlined,
   CloudUploadOutlined,
 } from '@mui/icons-material';
+import Dropdown from "../Dropdowns/DropdownsComponents";
 import { addReport, APIResultType } from '../../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../../types/variables";
-import Dropdown from "../Dropdowns/DropdownsComponents";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 
@@ -28,6 +28,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [image, setImage] = useState(null as File | null);
   const [submitDisabled, setSubmitDisabled] = useState(false);
 
+
   const toastProgress = useRef<Toast>(null);
   const toastSuccess = useRef<Toast>(null);
 
@@ -37,6 +38,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       label: "Kategori",
       items: [...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"],
     },
+    { id: "followup", label: "Follow Up", items: Object.keys(AccountType).filter(x => x != "NoType") },
   ];
 
   const handle_submit = async () => {
@@ -53,8 +55,6 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
 
     const result = await addReport(message, pic, string_to_reporttype(category)!, string_to_accounttype(followUpType)!, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
     if (typeof result == "object") {
-      alert("Successfully add the report!");
-
       setReportData([result, ...reportData]);
       toastSuccess.current!.show({
         summary: "Data berhasil direkam!",
@@ -121,7 +121,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             </div>
 
             {/* Dropdowns Section */}
-            <div className="flex flex-col md:flex-row gap-2 w-full mt-8 md:space-y-4 space-y-3">
+            <div className="flex flex-col md:flex-row gap-2 w-full mt-8 space-y-4">
               {dropdowns.map((d, index) => {
                 let selected = category;
                 let setSelected = setCategory;
