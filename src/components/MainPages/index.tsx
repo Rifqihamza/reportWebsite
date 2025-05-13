@@ -1,15 +1,17 @@
-import ReportForm from "./formReportPages";
-import TableReportPages from "./tableReportPages";
-import ApexChart from "./chartPages";
-import OverlayBlockPages from "../../components/Overlay/BlockOverlayComponents";
-import NavbarComponents from "../../components/Navbar/NavbarComponents";
+import OverlayBlockPages from "../Overlay/BlockOverlayComponents";
+import NavbarComponents from "../Navbar/NavbarComponents";
 
 import { AccountType, type ReportData, type User } from "../../types/variables";
 import { getReport, getUser, userLogout } from "../../utils/api_interface";
-import { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
-import LogoutButton from "../../components/LogoutButton/LogoutButtonComponents";
+import LogoutButton from "../LogoutButton/LogoutButtonComponents";
+
+import TableReportPages from "./tableReportPages";
+import LoadingAnimation from "../Loading/LoadingAnimation";
+const ReportForm = React.lazy(() => import("./formReportPages"));
+const ApexChart  = React.lazy(() => import("./chartPages"));
 
 export default function MainPage() {
   const [activeTab, setActiveTab] = useState(0);
@@ -57,32 +59,36 @@ export default function MainPage() {
       {/* Content */}
       <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] md:h-[38rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
 
-        {/* Tab 0: Table, bebas diakses */}
-        {activeTab === 0 && (
+          {/* Tab 0: Table, bebas diakses */}
+          {activeTab === 0 && (
           <TableReportPages
-            userData={userData}
-            reportData={reportData}
-            setReportData={setReportData}
+              userData={userData}
+              reportData={reportData}
+              setReportData={setReportData}
           />
-        )}
+          )}
 
-        {/* Tab 1: Form Report */}
-        {activeTab === 1 && (
+          {/* Tab 1: Form Report */}
+          {activeTab === 1 && (
           isAuthorized ? (
-            <ReportForm reportData={reportData} setReportData={setReportData} />
+              <Suspense fallback={<LoadingAnimation />}>
+                <ReportForm reportData={reportData} setReportData={setReportData} />
+              </Suspense>
           ) : (
-            <OverlayBlockPages />
+              <OverlayBlockPages />
           )
-        )}
+          )}
 
-        {/* Tab 2: Chart */}
-        {activeTab === 2 && (
+          {/* Tab 2: Chart */}
+          {activeTab === 2 && (
           isAuthorized ? (
-            <ApexChart reportData={reportData} />
+              <Suspense fallback={<LoadingAnimation />}>
+                <ApexChart reportData={reportData} />
+              </Suspense>
           ) : (
-            <OverlayBlockPages />
+              <OverlayBlockPages />
           )
-        )}
+          )}
       </div>
     </PrimeReactProvider>
   );

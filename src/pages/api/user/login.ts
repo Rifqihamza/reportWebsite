@@ -4,8 +4,6 @@ import cookie from 'cookie';
 import { prisma } from "../../../utils/db";
 
 export async function POST({ request }: APIContext) {
-    await first_initialization();
-    
     // Get username and password to check
     const { username, password } = await request.json();
     if(!username || !password) {

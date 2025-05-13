@@ -1,7 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import MainPages from "./mainPages/index.astro";
+import WrapperPage from "../components/MainPages/wrapper";
+
 ---
 <Layout>
-  <MainPages />
+  <section class="h-screen">
+    <div id="container" class="max-w-6xl mx-auto p-4 md:p-10 relative">
+      <WrapperPage client:load />
+    </div>
+  </section>
 </Layout>

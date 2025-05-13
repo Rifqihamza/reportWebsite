@@ -6,13 +6,6 @@ import Dropdown from "../Dropdowns/DropdownsComponents";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 
-// icon
-import PlaceIcon from '@mui/icons-material/Place';
-import PersonIcon from '@mui/icons-material/Person';
-import CategoryIcon from '@mui/icons-material/Category';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import CloseIcon from '@mui/icons-material/Close';
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 
 const reportsPerPage = 5;
@@ -286,7 +279,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             <div className=" flex flex-col gap-4">
               <div className="absolute top-1.5 right-1.5">
                 <button className="cursor-pointer" onClick={handle_close}>
-                  <CloseIcon />
+                  <i className="pi pi-times"></i>
                 </button>
               </div>
             </div>
@@ -303,7 +296,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               {/* Location */}
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-2 items-center">
-                  <PlaceIcon />
+                  <i className="pi pi-map-marker"></i>
                   <h1 className="md:text-lg text-sm">Lokasi</h1>
                 </div>
                 <p className="font-semibold md:text-lg text-sm">{report_data?.location}</p>
@@ -312,7 +305,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               {/* Nama PIC */}
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-2 items-center">
-                  <PersonIcon />
+                  <i className="pi pi-user"></i>
                   <h1 className="md:text-lg text-sm">Nama PIC</h1>
                 </div>
                 <p className="font-semibold md:text-lg text-sm">{report_data?.pic_name}</p>
@@ -321,7 +314,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               {/* Kategori Laporan */}
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-2 items-center">
-                  <CategoryIcon />
+                  <i className="pi pi-box"></i>
                   <h1 className="md:text-lg text-sm">Kategori</h1>
                 </div>
                 <p className="font-semibold md:text-lg text-sm">{report_data ? reporttype_to_string(report_data?.type) : ""}</p>
@@ -330,7 +323,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               {/* Follow Up Laporan */}
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-2 items-center">
-                  <AssignmentTurnedInIcon />
+                  <i className="pi pi-file-check"></i>
                   <h1 className="md:text-lg text-sm">Follow Up</h1>
                 </div>
                 <p className="font-semibold md:text-lg text-sm">{report_data?.follow_up}</p>
@@ -375,7 +368,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             disabled={currentPage <= 0}
             onClick={() => setCurrentPage(currentPage - 1)}
           >
-            <ChevronLeft fontSize="small" />
+            <i className="pi pi-angle-left"></i>
             Prev
           </button>
           <button
@@ -384,7 +377,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             onClick={() => setCurrentPage(currentPage + 1)}
           >
             Next
-            <ChevronRight fontSize="small" />
+            <i className="pi pi-angle-right"></i>
           </button>
         </div>
         {/* End Pagination */}

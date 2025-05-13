@@ -1,6 +1,6 @@
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { MiddlewareHandler } from 'astro';
-import { create_response_status } from "./utils/api_helper";
+import { create_response_status, first_initialization } from "./utils/api_helper";
 
 const rateLimiterMemory = new RateLimiterMemory({
     points: 50, // Max 50 requests
@@ -8,6 +8,8 @@ const rateLimiterMemory = new RateLimiterMemory({
 });
 
 export const onRequest: MiddlewareHandler = async (context, next) => {    
+    await first_initialization();
+
     // Check the rate-limiter
     rateLimiterMemory.consume(context.clientAddress ?? context.request.headers.get('x-forwarded-for') ?? 'unknown').catch(() => {
         return create_response_status(429);

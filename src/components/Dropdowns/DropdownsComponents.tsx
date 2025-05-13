@@ -1,5 +1,4 @@
 import React, { useState, type Dispatch, type SetStateAction } from "react";
-import { ExpandMore } from "@mui/icons-material";
 
 interface DropdownProps {
   id: string;
@@ -27,7 +26,7 @@ export default function Dropdown({ id, label, items, selected, setSelected }: Dr
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <span className="dropdown-label">{selected ? selected : label}</span>
-        <ExpandMore />
+        <i className="pi pi-angle-down" />
       </button >
 
       {isOpen && (
