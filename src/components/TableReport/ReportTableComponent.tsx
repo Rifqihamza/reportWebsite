@@ -80,6 +80,7 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
     setTimeout(() => {
       showMessage("Success", toastTopRight, 'success', "Data berhasil dihapus!");
       setDeleteDisabled(false);
+      setShowDetail(false)
     }, 1000);
   }
 
@@ -88,6 +89,7 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
     setTimeout(() => {
       showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
       setSaveDisabled(false);
+      setShowDetail(false)
     }, 1000);
   }
 

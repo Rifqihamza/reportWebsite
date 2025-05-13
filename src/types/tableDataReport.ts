@@ -3,7 +3,7 @@ import type { ReportData } from "./variables"; // pastikan tipe `ReportData` dii
 export const tableDataReport = [
     {
         id: "1",
-        created_at: "2024-05-01",
+        created_at: "2020-05-01",
         message: "Temuan kebocoran pipa di area workshop",
         location: "Workshop A",
         pic_name: "Suhaimi",
@@ -14,7 +14,7 @@ export const tableDataReport = [
     },
     {
         id: "2",
-        created_at: "2024-04-28",
+        created_at: "2020-04-28",
         message: "Peralatan tidak tertata rapi setelah praktikum",
         location: "Lab Komputer",
         pic_name: "Heas Priyo",
@@ -58,7 +58,7 @@ export const tableDataReport = [
     },
     {
         id: "6",
-        created_at: "2024-05-20",
+        created_at: "2025-05-20",
         message: "AC rusak",
         location: "Ruang Teori 4",
         pic_name: "Heas",
@@ -69,7 +69,7 @@ export const tableDataReport = [
     },
     {
         id: "7",
-        created_at: "2024-06-20",
+        created_at: "2025-06-20",
         message: "AC rusak",
         location: "Ruang Teori 4",
         pic_name: "Heas",
@@ -80,8 +80,8 @@ export const tableDataReport = [
     },
     {
         id: "8",
-        created_at: "2024-06-20",
-        message: "AC rusak",
+        created_at: "2025-06-20",
+        message: "AC terbang",
         location: "Ruang Teori 4",
         pic_name: "Heas",
         type: "Safety",
@@ -91,7 +91,7 @@ export const tableDataReport = [
     },
     {
         id: "9",
-        created_at: "2024-07-20",
+        created_at: "2023-07-20",
         message: "AC rusak",
         location: "Ruang Teori 4",
         pic_name: "Heas",
@@ -102,7 +102,7 @@ export const tableDataReport = [
     },
     {
         id: "10",
-        created_at: "2024-07-20",
+        created_at: "2023-07-20",
         message: "AC rusak",
         location: "Ruang Teori 4",
         pic_name: "Heas",

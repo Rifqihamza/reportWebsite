@@ -18,19 +18,19 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
                     onClick={() => setActiveTab(0)}
                     className={`tab-button ${activeTab === 0 ? "active" : ""}`}
                 >
-                    Report Data
+                    Table Data
                 </button>
                 <button
                     onClick={() => setActiveTab(1)}
                     className={`tab-button ${activeTab === 1 ? "active" : ""}`}
                 >
-                    Report
+                    Report Form
                 </button>
                 <button
                     onClick={() => setActiveTab(2)}
                     className={`tab-button ${activeTab === 2 ? "active" : ""}`}
                 >
-                    Graphic
+                    Chart Data
                 </button>
             </div >
 
@@ -52,7 +52,7 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
                         }}
                         className={`w-full text-left px-4 py-2 rounded-lg ${activeTab === 0 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
                     >
-                        Report Data
+                        Table Data
                     </button>
                     <button
                         onClick={() => {
@@ -60,7 +60,7 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
                             setIsVisible(false);
                         }} className={`w-full text-left px-4 py-2 rounded-lg ${activeTab === 1 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
                     >
-                        Report
+                        Report Form
                     </button>
                     <button
                         onClick={() => {
@@ -68,7 +68,7 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
                             setIsVisible(false);
                         }} className={`w-full text-left px-4 py-2 rounded-lg ${activeTab === 2 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
                     >
-                        Graphic Data
+                        Chart Data
                     </button>
                 </div>
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ExpandMore } from "@mui/icons-material";
 
 interface DropdownProps {
   id: string;
@@ -27,20 +28,7 @@ export default function Dropdown({ id, label, items, onChange }: DropdownProps) 
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <span className="dropdown-label">{selected}</span>
-        <svg
-          className="w-4 h-4 ml-2"
-          viewBox="0 0 10 6"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M1 1L5 5L9 1"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <ExpandMore />
       </button>
 
       {isOpen && (

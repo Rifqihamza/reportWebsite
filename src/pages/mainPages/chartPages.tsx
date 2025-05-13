@@ -99,7 +99,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         <>
             <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
                 <BarChartIcon fontSize="medium" />
-                <h1 className="titlepage">Data Grafik Laporan</h1>
+                <h1 className="titlePage">Data Grafik Laporan</h1>
             </div>
             {/* Container Chart */}
             <div className="flex flex-col items-center md:items-start md:justify-between justify-center w-full gap-16 md:px-8 md:py-10">

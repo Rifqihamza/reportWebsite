@@ -16,7 +16,7 @@ export default function MainPage() {
     username: "",
     email: "",
     password: "",
-    role: AccountType.Siswa as AccountType,
+    role: AccountType.Guru as AccountType,
     created_at: "",
   });
 
@@ -53,7 +53,6 @@ export default function MainPage() {
       ) : (
         <OverlayBlockPages />
       )}
-
     </div>
   </PrimeReactProvider>
 }
