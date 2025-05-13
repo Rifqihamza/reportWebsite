@@ -10,8 +10,8 @@ import {
   SendOutlined,
   CloudUploadOutlined,
 } from '@mui/icons-material';
-import Dropdown from "./dropdowns";
-import { AccountType } from "../types/variables";
+import Dropdown from "../Dropdowns/DropdownsComponents";
+import { AccountType } from "../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 
@@ -26,33 +26,40 @@ export default function ReportFormComponent() {
     {
       id: "kategori",
       label: "Kategori",
-      items: ["5R", "Safety", "SOP"],
+      items: [
+        "5R",
+        "Safety",
+        "SOP"
+      ],
     },
-    { id: "followup", label: "Follow Up", items: Object.keys(AccountType).filter(x => x != "NoType") },
+    {
+      id: "followup",
+      label: "Follow Up",
+      items: Object.keys(AccountType).filter(x => x != "NoType")
+    },
   ];
-  
+
   const handle_submit = async () => {
     setSubmitDisabled(true);
     toastProgress.current!.show({
-        summary: "Sedang upload data..."
+      summary: "Sedang upload data..."
     });
 
-    
     setTimeout(() => {
-        setSubmitDisabled(false);
-        toastProgress.current!.clear();
-        toastSuccess.current!.show({
-            summary: "Data berhasil direkam!",
-            severity: "success",
-            life: 3000
-        });
+      setSubmitDisabled(false);
+      toastProgress.current!.clear();
+      toastSuccess.current!.show({
+        summary: "Data berhasil direkam!",
+        severity: "success",
+        life: 3000
+      });
     }, 5000);
   }
-    
+
   return (
     <>
       <form id="report-form" className="mx-8">
-        <div className={"space-y-6"+(submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
+        <div className={"space-y-6" + (submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
           {/* Laporan Text Area */}
           <div className="flex flex-col gap-2 w-full">
             <label
@@ -167,7 +174,7 @@ export default function ReportFormComponent() {
         </div>
 
         {/* File Upload */}
-        <div className={"space-y-2 mt-4"+(submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
+        <div className={"space-y-2 mt-4" + (submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
           <label
             htmlFor="foto"
             className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
@@ -185,9 +192,9 @@ export default function ReportFormComponent() {
                 <p className={`mb-1 text-sm text-${image ? "black" : "[#7FA1C3]"}`} id="file-name-display">
                   {image ? image.name : "Klik untuk upload foto"}
                 </p>
-                <p className={`text-xs text-${image ? "black" : "[#7FA1C3]"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100)+"MB" : (Math.round(image.size / 10) / 100)+"KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
+                <p className={`text-xs text-${image ? "black" : "[#7FA1C3]"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
               </div>
-              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => {e.target.files ? setImage(e.target.files[0]) : ""}} />
+              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? setImage(e.target.files[0]) : "" }} />
             </label>
           </div>
         </div>
@@ -208,20 +215,20 @@ export default function ReportFormComponent() {
       <Toast
         ref={toastProgress}
         content={({ message }) => (
-            <section className="flex p-3 gap-3 w-full bg-[#fffa] backdrop-blur-xl shadow-2 fadeindown" style={{ borderRadius: '10px' }}>
-                <i className="pi pi-cloud-upload text-primary-500 text-2xl"></i>
-                <div className="flex flex-col gap-3 w-full">
-                    <p className="m-0 font-semibold text-base text-[#7FA1C3]">{message.summary}</p>
-                    <p className="m-0 text-base text-700">{message.detail}</p>
-                    <div className="flex flex-col gap-2">
-                        <ProgressBar mode="indeterminate" showValue={true} style={{ height: "6px" }}></ProgressBar>
-                        <label className="text-right text-xs text-[#7FA1C3]">uploading...</label>
-                    </div>
-                </div>
-            </section>
+          <section className="flex p-3 gap-3 w-full bg-[#fffa] backdrop-blur-xl shadow-2 fadeindown" style={{ borderRadius: '10px' }}>
+            <i className="pi pi-cloud-upload text-primary-500 text-2xl"></i>
+            <div className="flex flex-col gap-3 w-full">
+              <p className="m-0 font-semibold text-base text-[#7FA1C3]">{message.summary}</p>
+              <p className="m-0 text-base text-700">{message.detail}</p>
+              <div className="flex flex-col gap-2">
+                <ProgressBar mode="indeterminate" showValue={true} style={{ height: "6px" }}></ProgressBar>
+                <label className="text-right text-xs text-[#7FA1C3]">uploading...</label>
+              </div>
+            </div>
+          </section>
         )}
-    ></Toast>
-    <Toast ref={toastSuccess} />
+      ></Toast>
+      <Toast ref={toastSuccess} />
     </>
   );
 }

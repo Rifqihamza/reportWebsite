@@ -1,7 +1,7 @@
-import ReportListComponent from "../../components/ReportListComponent";
+import ReportListComponent from "../../components/TableReport/ReportTableComponent";
 import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
-import React, { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import TieredDropDowns from "../../components/TieredMenu";
+import { useState, type Dispatch, type SetStateAction } from "react";
+import TieredDropDowns from "../../components/TieredMenu/TieredMenuComponents";
 
 // icon
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -16,9 +16,7 @@ export default function ListDataReport({ userData, reportData, setReportData }: 
       {/* Header Title */}
       <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
         <AssignmentIcon fontSize="medium" />
-        <h1 className="titlePage">
-          Data Laporan
-        </h1>
+        <h1 className="titlePage">Data Laporan</h1>
       </div>
 
       <div className="px-4 space-y-3">

@@ -24,7 +24,6 @@
     "primereact": "^10.9.5",
     "react": "^19.1.0",
     "react-apexcharts": "^1.7.0",
-    "react-dom": "^19.1.0",
-    "tailwindcss": "^4.1.5"
+    "react-dom": "^19.1.0"
   }
 }

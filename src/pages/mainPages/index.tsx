@@ -1,6 +1,7 @@
-import ReportForm from "./reportForm";
-import ListDataReport from "./listDataReport";
-import ApexChart from "./graphicChart";
+import ReportForm from "./formReportPages";
+import ListDataReport from "./tableReportPages";
+import ApexChart from "./chartPages";
+import OverlayBlockPages from "../../components/Overlay/BlockOverlayComponents";
 
 import { Sidebar } from 'primereact/sidebar';
 import { useState, type Dispatch, type SetStateAction } from "react";
@@ -10,10 +11,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ReportIcon from "@mui/icons-material/Report";
+
 import { PrimeReactProvider } from "primereact/api";
 
 export default function MainPage() {
-  const [overlayVisible, setOverlayVisible] = useState(true);
+  const [overlayVisible] = useState(false);
   const [setVisible, setIsVisible] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState(0);
   const [userData, setUserData]: [User, Dispatch<SetStateAction<User>>] = useState({
@@ -124,26 +126,18 @@ export default function MainPage() {
       image: "/img/laporanNew.JPG",
       status: "Hold",
     },
+    {
+      id: "10",
+      created_at: "2024-07-20",
+      message: "AC rusak",
+      location: "Ruang Teori 4",
+      pic_name: "Heas",
+      type: "Abnormality",
+      follow_up: "Vendor",
+      image: "/img/laporanNew.JPG",
+      status: "Hold",
+    },
   ] as ReportData[])
-
-  const btnToLogin = () => {
-    window.location.href = "/login";
-  }
-
-  const overlay = () => {
-    return (
-      <div className="flex flex-col md:flex-row items-center justify-center w-full md:h-full h-fit bg-white space-y-2">
-        <img src="/img/lockedPages.svg" className="w-[15rem] md:w-1/4 " alt="" />
-        <div className="md:w-1/3 w-fit px-6 py-2 space-y-4">
-          <h1 className="md:text-2xl text-xl font-bold tracking-wide">Uppsss..</h1>
-          <p className="text-justify text-lg">Wahh halaman terkunci, Login terlebih dahulu untuk membuka halaman. Klik tombol dibawah</p>
-          <button
-            onClick={btnToLogin}
-            className="w-full bg-[#7FA1C3] text-white uppercase font-bold tracking-wider px-6 py-2 rounded-lg hover:bg-[#6FA9E3] duration-300 cursor-pointer">Login</button>
-        </div>
-      </div>
-    )
-  }
 
   return <PrimeReactProvider>
 
@@ -212,9 +206,9 @@ export default function MainPage() {
           <BarChartIcon fontSize="medium" />
           Graphic Data
         </button>
-
       </div>
-      <div className="absolute  left-4 right-4 bottom-4">
+
+      <div className="absolute left-4 right-4 bottom-4">
         <button className="w-full justify-center md:hidden block px-4 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300"
         >
           Logout
@@ -224,7 +218,7 @@ export default function MainPage() {
     {/* End Sidebar Section for mobile */}
 
     {/* Content */}
-    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
+    <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] md:h-[38rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
 
       {/* Report Data Form */}
       <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
@@ -235,7 +229,7 @@ export default function MainPage() {
       <div id="form-section" className={`tab-content ${activeTab === 1 ? "active" : "hidden"}`}>
         {overlayVisible ?
           <div className="lg:absolute lg:top-0 lg:bottom-0 lg:left-0 lg:right-0 h-full">
-            {overlay()}
+            <OverlayBlockPages />
           </div>
           :
           (
@@ -247,7 +241,7 @@ export default function MainPage() {
       <div id="graph-section" className={`tab-content ${activeTab === 2 ? "active" : "hidden"}`}>
         {overlayVisible ?
           <div className="lg:absolute lg:top-0 lg:bottom-0 lg:left-0 lg:right-0 h-full">
-            {overlay()}
+            <OverlayBlockPages />
           </div>
           :
           (

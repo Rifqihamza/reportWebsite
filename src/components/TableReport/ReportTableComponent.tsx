@@ -1,8 +1,8 @@
 'use client';
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../types/variables';
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../../types/variables';
 import { Image } from 'primereact/image'
-import Dropdown from "./dropdowns";
+import Dropdown from "../Dropdowns/DropdownsComponents";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 
@@ -25,19 +25,21 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
   const [deleteDisabled, setDeleteDisabled] = useState(false);
   const [isChange, setIsChange] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<ReportStatus | "">("");
-
   const toastTopRight = useRef<Toast>(null);
-
 
   const dropdowns = [
     {
       id: "status",
       label: "Edit Status",
-      items: [" Complete", "In Process", "Hold", "Not Started"],
+      items: [
+        " Complete",
+        "In Process",
+        "Hold",
+        "Not Started"
+      ],
     },
   ];
 
-  // Status color mapping
   const statusColors = {
     NotStarted: "bg-red-100 text-red-800",
     InProcess: "bg-yellow-100 text-yellow-800",
@@ -45,9 +47,7 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
     Hold: "bg-blue-100 text-blue-800",
   };
 
-  // Format date helper function
   function formatDate(dateStr: string) {
-    // You can use a library like date-fns in a real app
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat("id-ID", {
       year: "numeric",
@@ -60,9 +60,8 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
     setDetailId(id);
     setShowDetail(true);
     setSelectedStatus("");
-    setIsChange(true); // default disable saat pertama buka
+    setIsChange(true);
   }
-
 
   function handle_close() {
     setShowDetail(false);
@@ -71,7 +70,6 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
   function handle_delete() {
     const isConfirmed = confirm("Apakah Anda yakin ingin menghapus laporan ini?");
     if (!isConfirmed) return;
-
     setDeleteDisabled(true);
 
     if (selectedStatus === ReportStatus.InProcess) {
@@ -87,7 +85,6 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
 
   function handle_save() {
     setSaveDisabled(true);
-
     setTimeout(() => {
       showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
       setSaveDisabled(false);
@@ -98,8 +95,6 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
     ref.current?.show({ severity: severity, summary: label, detail: detail, life: 3000 });
   };
 
-
-  // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPage, setMaxPage] = useState(0);
 
@@ -110,7 +105,7 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
   return (
     <>
       {/* Table for desktop */}
-      <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl">
+      <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl relative">
         <table className="min-w-full">
           <thead className="bg-[#7FA1C3]">
             <tr>
@@ -232,28 +227,6 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
         ))}
       </div>
 
-      {/* Pagination */}
-      <div className="flex flex-row justify-between items-center mt-7 md:absolute md:bottom-0 md:left-0 md:right-0">
-        <div className="flex flex-row justify-center gap-4 w-full">
-          <button
-            className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
-            disabled={currentPage <= 0}
-            onClick={() => setCurrentPage(currentPage - 1)}
-          >
-            <ChevronLeft fontSize="small" />
-            Prev
-          </button>
-          <button
-            className="w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
-            disabled={currentPage >= (maxPage - 1)}
-            onClick={() => setCurrentPage(currentPage + 1)}
-          >
-            Next
-            <ChevronRight fontSize="small" />
-          </button>
-        </div>
-      </div>
-
       {/*  Modal Element */}
       <div className={(showDetail
         ? "bg-black opacity-50 w-full h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-all z-10"
@@ -338,7 +311,7 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
                     onChange={(selectedValue) => {
                       setSelectedStatus(selectedValue as ReportStatus);
                       const currentStatus = report_data?.status;
-                      setIsChange(selectedValue === currentStatus); // disable jika belum berubah
+                      setIsChange(selectedValue === currentStatus);
                     }}
                   />
                 ))}
@@ -358,6 +331,28 @@ export default function ReportListComponent({ userData, reportData, selectedFilt
         })()}
       </div>
       <Toast ref={toastTopRight} position="top-right" />
+      {/* Pagination */}
+      <div className="flex flex-row items-center mt-2">
+        <div className="flex flex-row gap-2 w-full">
+          <button
+            className="text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
+            disabled={currentPage <= 0}
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            <ChevronLeft fontSize="small" />
+            Prev
+          </button>
+          <button
+            className="text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
+            disabled={currentPage >= (maxPage - 1)}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+            <ChevronRight fontSize="small" />
+          </button>
+        </div>
+        {/* End Pagination */}
+      </div>
     </>
   );
 }

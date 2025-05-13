@@ -1,5 +1,5 @@
-import LineChart from "../../components/lineChart";
-import PieChart from "../../components/pieChart"
+import LineChart from "../../components/ChartLine/LineChartComponents";
+import PieChart from "../../components/ChartPie/PieChartComponents"
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useEffect, useState } from "react";
 import { Dropdown, } from 'primereact/dropdown';
@@ -42,7 +42,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         reportData.filter(value => (new Date(value.created_at).getFullYear() == selectedYear)).forEach(data => {
             let date = new Date(data.created_at);
             let label = monthsShort[date.getMonth()];
-            
+
             let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
             result[index].value += 1;
         })
@@ -51,7 +51,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
 
         setCurrentYearReports(result);
     }, [selectedYear, reportData]);
-    
+
     useEffect(() => {
         // Get the category and status statistics
         let categoryStats: CategoryType[] = [];
@@ -62,7 +62,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
 
         reportData.forEach(data => {
             let index = categoryStats.findIndex(res_data => res_data.labels == data.type.toString());
-            if(index < 0) {
+            if (index < 0) {
                 categoryStats.push({
                     labels: data.type.toString(),
                     value: 1
@@ -73,7 +73,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             }
 
             index = statusStats.findIndex(res_data => res_data.labels == data.status.toString());
-            if(index < 0) {
+            if (index < 0) {
                 statusStats.push({
                     labels: data.status.toString(),
                     value: 1
@@ -86,23 +86,21 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             let year = new Date(data.created_at).getFullYear();
             resultAvailableYears[year] = 0;
         });
-        
+
         setPieCategory(categoryStats);
         setPieStatus(statusStats);
         let resultAvailableYearsKeys = Object.keys(resultAvailableYears);
         setAvailableYears(resultAvailableYearsKeys);
         setSelectedYear(Number.parseInt(resultAvailableYearsKeys[0]));
     }, [reportData]);
-    
-    
+
+
     return (
         <>
             <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
                 <BarChartIcon fontSize="medium" />
-                {/* Header Title */}
                 <h1 className="titlepage">Data Grafik Laporan</h1>
             </div>
-
             {/* Container Chart */}
             <div className="flex flex-col items-center md:items-start md:justify-between justify-center w-full gap-16 md:px-8 md:py-10">
                 {/* Inner Container */}

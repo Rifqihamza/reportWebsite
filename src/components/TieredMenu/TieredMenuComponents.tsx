@@ -1,5 +1,6 @@
 
 import { useRef, type Dispatch, type SetStateAction } from 'react';
+import { ReportType, ReportStatus, reporttype_to_string } from "../../types/variables";
 import { TieredMenu } from 'primereact/tieredmenu';
 import type { MenuItem } from 'primereact/menuitem';
 
@@ -11,8 +12,7 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import ShieldIcon from '@mui/icons-material/Shield';
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import GroupsIcon from '@mui/icons-material/Groups';
-import { ReportType, ReportStatus, reporttype_to_string } from "../types/variables";
+
 interface menuTieredProps {
     label: string;
     selectedFilter: ReportStatus | ReportType | null,
