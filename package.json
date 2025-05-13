@@ -39,6 +39,7 @@
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.11",
-    "prisma": "^6.7.0"
+    "prisma": "^6.7.0",
+    "react-dom": "^19.1.0"
   }
 }

@@ -4,8 +4,6 @@ import { create_response_status, first_initialization, get_cookies_from_request,
 import { type AccountType, Prisma } from "@prisma/client";
 
 export async function POST({ request }: APIContext) {
-    await first_initialization();
-
     // Get the user data
     const { email, username, password, role } = await request.json();
 

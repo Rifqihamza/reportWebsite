@@ -1,24 +1,16 @@
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../types/variables';
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../../types/variables';
 import { Image } from 'primereact/image'
-import Dropdown from "./dropdowns";
-import { APIResultType, changeReportStatus, deleteReport } from "../utils/api_interface";
-
+import { APIResultType, changeReportStatus, deleteReport } from "../../utils/api_interface";
+import Dropdown from "../Dropdowns/DropdownsComponents";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 
-// icon
-import PlaceIcon from '@mui/icons-material/Place';
-import PersonIcon from '@mui/icons-material/Person';
-import CategoryIcon from '@mui/icons-material/Category';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import CloseIcon from '@mui/icons-material/Close';
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
+export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
   const [detailId, setDetailId] = useState("" as string | null);
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | string | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
@@ -37,7 +29,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     },
   ];
 
-  // Status color mapping
   const statusColors = {
     NotStarted: "bg-red-100 text-red-800",
     InProcess: "bg-yellow-100 text-yellow-800",
@@ -47,7 +38,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
   // Format date helper function
   function formatDate(dateStr: string) {
-    // You can use a library like date-fns in a real app
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat("id-ID", {
       year: "numeric",
@@ -63,41 +53,41 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     setSelectedStatus(selectedReport?.status ?? null);
   }
 
-
   function handle_close() {
     setDetailId(null);
   }
 
   async function handle_delete(id: string) {
-    if(!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
+    if (!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
       return;
     }
     setDeleteDisabled(true);
 
     if (reportData.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
       alert("Tidak bisa menghapus laporan yang sudah di follow up");
+      setDeleteDisabled(false);
       return;
     }
-    
+
     const result = await deleteReport(id);
 
-    if(result == APIResultType.NoError) {
+    if (result == APIResultType.NoError) {
       setDetailId(null);
       setReportData(reportData.filter((value) => value.id != id));
       showMessage("Success", toastTopRight, 'success', "Data berhasil dihapus!");
     }
-    else if(result == APIResultType.InternalServerError) {
+    else if (result == APIResultType.InternalServerError) {
       showMessage("Error", toastTopRight, 'error', "Terjadi error di server!");
     }
-    else if(result == APIResultType.Unauthorized) {
+    else if (result == APIResultType.Unauthorized) {
       showMessage("Unauthroized!", toastTopRight, 'error', "Akses tidak dikenal!");
     }
 
     setDeleteDisabled(false);
   }
-  
+
   async function handle_save(id: string) {
-    if(!selectedStatus) {
+    if (!selectedStatus) {
       return;
     }
 
@@ -105,27 +95,25 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
     const result = await changeReportStatus(id, typeof selectedStatus == "string" ? string_to_reportstatus(selectedStatus)! : selectedStatus);
 
-    if(result == APIResultType.NoError) {
+    if (result == APIResultType.NoError) {
       setDetailId(null);
       setReportData(reportData.map((value) => value.id == id ? { ...value, status: string_to_reportstatus(selectedStatus)! } : value));
       showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
     }
-    else if(result == APIResultType.InternalServerError) {
+    else if (result == APIResultType.InternalServerError) {
       alert("There's an error!");
     }
-    else if(result == APIResultType.Unauthorized) {
+    else if (result == APIResultType.Unauthorized) {
       alert("You have no access!");
     }
-    
+
     setSaveDisabled(false);
   }
-  
+
   const showMessage = (label: string, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity'], detail: string) => {
     ref.current?.show({ severity: severity, summary: label, detail: detail, life: 3000 });
   };
 
-  
-  // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPage, setMaxPage] = useState(0);
 
@@ -145,7 +133,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   return (
     <>
       {/* Table for desktop */}
-      <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl">
+      <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl relative">
         <table className="min-w-full">
           <thead className="bg-[#7FA1C3]">
             <tr>
@@ -194,7 +182,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             </tr>
           </thead>
           <tbody className="bg-white/20 backdrop-blur-md">
-            {showedReportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+            {showedReportData.slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
@@ -229,7 +217,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {showedReportData.slice(currentPage*reportsPerPage, (currentPage+1)*reportsPerPage).map((report, index) => (
+        {showedReportData.slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -267,28 +255,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         ))}
       </div>
 
-      {/* Pagination */}
-      <div className="flex flex-row justify-between items-center mt-7">
-        <div className="flex flex-row justify-center gap-4 w-full">
-          <button 
-            className="disabled:opacity-50 w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pr-4 pl-1 py-1 rounded-xl text-white"
-            disabled={currentPage <= 0}
-            onClick={() => setCurrentPage(currentPage-1)}
-          > 
-            <ChevronLeft fontSize="small" />
-            Prev
-          </button>
-          <button 
-            className="disabled:opacity-50 w-fit relative flex flex-row items-center gap-1 justify-center bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 pl-4 pr-1 py-1 rounded-xl text-white"
-            disabled={currentPage >= (maxPage - 1)}
-            onClick={() => setCurrentPage(currentPage+1)}
-          >
-            Next
-            <ChevronRight fontSize="small" />
-          </button>
-        </div>
-      </div>
-
       {/*  Modal Element */}
       <div className={(detailId
         ? "bg-black opacity-50 w-full h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-all z-10"
@@ -297,16 +263,16 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       <div className={(detailId ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-[90vw] max-w-[800px] min-w-[250px] h-fit shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
         {(() => {
           const report_data = reportData.find(value => value.id == detailId) || null;
-          
+
           const imageComponent = <>
-              <div className="flex flex-col justify-center">
-                  <Image
-                  src={report_data?.image}
-                  imageClassName="aspect-[16/9] object-contain rounded-lg w-[500px] md:w-1/2 mx-auto	"
-                  alt="Foto Bukti Laporan"
-                  preview={true}
-                  />
-                  <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
+            <div className="flex flex-col justify-center">
+              <Image
+                src={report_data?.image}
+                imageClassName="aspect-[16/9] object-contain rounded-lg w-[500px] md:w-1/2 mx-auto	"
+                alt="Foto Bukti Laporan"
+                preview={true}
+              />
+              <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
             </div>
           </>;
 
@@ -314,7 +280,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             <div className=" flex flex-col gap-4">
               <div className="absolute top-1.5 right-1.5">
                 <button className="cursor-pointer" onClick={handle_close}>
-                  <CloseIcon />
+                  <i className="pi pi-times"></i>
                 </button>
               </div>
             </div>
@@ -331,7 +297,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               {/* Location */}
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-2 items-center">
-                  <PlaceIcon />
+                  <i className="pi pi-map-marker"></i>
                   <h1 className="md:text-lg text-sm">Lokasi</h1>
                 </div>
                 <p className="font-semibold md:text-lg text-sm">{report_data?.location}</p>
@@ -340,7 +306,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               {/* Nama PIC */}
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row gap-2 items-center">
-                  <PersonIcon />
+                  <i className="pi pi-user"></i>
                   <h1 className="md:text-lg text-sm">Nama PIC</h1>
                 </div>
                 <p className="font-semibold md:text-lg text-sm">{report_data?.pic_name}</p>
@@ -348,20 +314,20 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
               {/* Kategori Laporan */}
               <div className="flex flex-row justify-between">
-                  <div className="flex flex-row gap-2 items-center">
-                  <CategoryIcon />
+                <div className="flex flex-row gap-2 items-center">
+                  <i className="pi pi-box"></i>
                   <h1 className="md:text-lg text-sm">Kategori</h1>
-                  </div>
-                  <p className="font-semibold md:text-lg text-sm">{report_data ? reporttype_to_string(report_data?.type) : ""}</p>
+                </div>
+                <p className="font-semibold md:text-lg text-sm">{report_data ? reporttype_to_string(report_data?.type) : ""}</p>
               </div>
 
               {/* Follow Up Laporan */}
               <div className="flex flex-row justify-between">
-                  <div className="flex flex-row gap-2 items-center">
-                  <AssignmentTurnedInIcon />
+                <div className="flex flex-row gap-2 items-center">
+                  <i className="pi pi-file-check"></i>
                   <h1 className="md:text-lg text-sm">Follow Up</h1>
-                  </div>
-                  <p className="font-semibold md:text-lg text-sm">{report_data?.follow_up}</p>
+                </div>
+                <p className="font-semibold md:text-lg text-sm">{report_data?.follow_up}</p>
               </div>
             </div>
 
@@ -379,14 +345,14 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   />
                 ))}
                 <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_delete(report_data.id) : ""} disabled={saveDisabled || deleteDisabled}>
-                    {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
-                    Hapus
+                  {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                  Hapus
                 </button>
               </div>
               <div className="mt-2">
                 <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_save(report_data.id) : ""} disabled={saveDisabled || deleteDisabled || !isChange}>
-                    {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
-                    Simpan
+                  {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                  Simpan
                 </button>
               </div>
             </div>
@@ -394,6 +360,29 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         })()}
       </div>
       <Toast ref={toastTopRight} position="top-right" />
+
+      {/* Pagination */}
+      <div className="flex flex-row items-center mt-2">
+        <div className="flex flex-row gap-2 w-full">
+          <button
+            className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
+            disabled={currentPage <= 0}
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            <i className="pi pi-angle-left"></i>
+            Prev
+          </button>
+          <button
+            className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
+            disabled={currentPage >= (maxPage - 1)}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+            <i className="pi pi-angle-right"></i>
+          </button>
+        </div>
+        {/* End Pagination */}
+      </div>
     </>
   );
 }

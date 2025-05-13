@@ -13,24 +13,21 @@ interface LineChartProps {
 
 const LineChart: React.FC<LineChartProps> = ({ reports }) => {
 
-    const categories = Array.from(new Set(reports.map(r => r.labels))); // Ambil semua bulan unik
-    const types = Array.from(new Set(reports.map(r => r.type))); // Ambil semua jenis laporan unik
+    const categories = Array.from(new Set(reports.map(r => r.labels))); 
+    const types = Array.from(new Set(reports.map(r => r.type))); 
 
-    // Inisialisasi objek { type: { bulan: nilai } }
     const grouped: Record<string, Record<string, number>> = {};
     types.forEach(type => {
         grouped[type] = {};
         categories.forEach(label => {
-            grouped[type][label] = 0; // Default 0 jika tidak ada data
+            grouped[type][label] = 0; 
         });
     });
 
-    // Isi data
     reports.forEach(report => {
         grouped[report.type][report.labels] += report.value;
     });
 
-    // Buat series sesuai format ApexCharts
     const series = types.map(type => ({
         name: type,
         data: categories.map(label => grouped[type][label]),
@@ -41,7 +38,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
             type: 'line' as const,
         },
         theme: {
-            palette: 'palette7' // upto palette10
+            palette: 'palette7' 
         },
         dataLabels: {
             enabled: true,

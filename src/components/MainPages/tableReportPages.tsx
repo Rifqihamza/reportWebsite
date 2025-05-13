@@ -1,16 +1,18 @@
 import type { Dispatch, SetStateAction } from "react";
-import ReportListComponent from "../../components/ReportListComponent";
 import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
-import React, { useEffect, useState } from "react";
-import TieredDropDowns from "../../components/TieredMenu";
-
+import React, { Suspense, useState } from "react";
+import TieredDropDowns from "../TieredMenu/TieredMenuComponents";
 
 // icon
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SearchIcon from '@mui/icons-material/Search';
+import LoadingAnimation from "../Loading/LoadingAnimation";
 
-export default function ListDataReport({ userData, reportData, setReportData }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
 
+const ReportListComponent = React.lazy(() => import("../TableReport/ReportTableComponent"));
+
+
+export default function TableReportPages({ userData, reportData, setReportData }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
   const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
 
   return (
@@ -18,9 +20,7 @@ export default function ListDataReport({ userData, reportData, setReportData }: 
       {/* Header Title */}
       <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
         <AssignmentIcon fontSize="medium" />
-        <h1 className="font-bold uppercase tracking-[2px] text-md md:text-lg text-black">
-          Data Laporan
-        </h1>
+        <h1 className="titlePage">Data Laporan</h1>
       </div>
 
       <div className="px-4 space-y-3">
@@ -42,7 +42,9 @@ export default function ListDataReport({ userData, reportData, setReportData }: 
           </div>
         </div>
 
-        <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} />
+        <Suspense fallback={<LoadingAnimation />}>
+            <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} />
+        </Suspense>
       </div>
     </>
   );

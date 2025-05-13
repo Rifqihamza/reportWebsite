@@ -1,5 +1,4 @@
 ---
-import "font-awesome/css/font-awesome.min.css";
 import "../styles/global.css";
 import "primereact/resources/themes/lara-light-blue/theme.css"; // atau tema lain
 import "primereact/resources/primereact.min.css"; // komponen core
@@ -17,11 +16,17 @@ import  SpeedInsights  from "@vercel/speed-insights/astro";
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <link rel="icon" type="image/svg+xml" href="/img/logoSekolah.png" />
+    <link rel="icon" href="/img/logoSekolah.png" />
     <meta name="generator" content={Astro.generator} />
     <title>Report Website | SMK Mitra Industri MM2100</title>
   </head>
   <body>
+    <div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+    </div>
+    
     <slot />
 
     <script

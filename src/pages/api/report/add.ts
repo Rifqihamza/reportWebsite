@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, php_server_url, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cookies_from_request, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report } from "@prisma/client";
 import { AccountType, ReportType } from "../../../types/variables";
@@ -77,7 +77,7 @@ export async function POST({ request }: APIContext) {
         form_data.append("image", image);
         form_data.append("test", "test");
 
-        const response = await fetch(php_server_url, {
+        const response = await fetch(process.env.PHP_SERVER_URL!, {
             method: "POST",
             headers: {
                 "Authorization": process.env.PHP_SERVER_AUTHORIZATION!,

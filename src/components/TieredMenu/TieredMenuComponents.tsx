@@ -1,5 +1,6 @@
 
 import { useRef, type Dispatch, type SetStateAction } from 'react';
+import { ReportType, ReportStatus, reporttype_to_string } from "../../types/variables";
 import { TieredMenu } from 'primereact/tieredmenu';
 import type { MenuItem } from 'primereact/menuitem';
 
@@ -11,8 +12,7 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import ShieldIcon from '@mui/icons-material/Shield';
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import GroupsIcon from '@mui/icons-material/Groups';
-import { ReportType, ReportStatus, reporttype_to_string } from "../types/variables";
+
 interface menuTieredProps {
     label: string;
     selectedFilter: ReportStatus | ReportType | null,
@@ -90,7 +90,7 @@ export default function PopupDemo(props: menuTieredProps) {
     return (
         <div className="card flex justify-content-center" >
             <TieredMenu model={items} popup ref={menu} breakpoint='4096px' />
-            <button className='bg-[#7fa1c3] hover:bg-[#6482ad] px-5 py-2 rounded-lg text-white duration-200' onClick={(e) => menu.current?.toggle(e)
+            <button className='bg-[#7fa1c3] hover:bg-[#6482ad] px-4 py-2 rounded-lg text-white duration-200' onClick={(e) => menu.current?.toggle(e)
             }>{props.selectedFilter ? (reporttype_to_string(props.selectedFilter) ?? props.selectedFilter.toString()) : props.label}</button>
         </div>
     )
