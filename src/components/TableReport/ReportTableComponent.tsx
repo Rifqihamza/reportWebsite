@@ -65,6 +65,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
     if (reportData.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
       alert("Tidak bisa menghapus laporan yang sudah di follow up");
+      setDeleteDisabled(false);
       return;
     }
 
