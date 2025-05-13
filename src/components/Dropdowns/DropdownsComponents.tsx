@@ -1,16 +1,12 @@
-<<<<<<< HEAD:src/components/dropdowns.tsx
 import React, { useState, type Dispatch, type SetStateAction } from "react";
-=======
-import { useState } from "react";
 import { ExpandMore } from "@mui/icons-material";
->>>>>>> FrontEnd-Branch:src/components/Dropdowns/DropdownsComponents.tsx
 
 interface DropdownProps {
   id: string;
   label: string;
   items: string[];
-  selected: string|null;
-  setSelected: Dispatch<SetStateAction<string|null>>;
+  selected: string | null;
+  setSelected: Dispatch<SetStateAction<string | null>>;
 }
 
 export default function Dropdown({ id, label, items, selected, setSelected }: DropdownProps) {
@@ -30,27 +26,9 @@ export default function Dropdown({ id, label, items, selected, setSelected }: Dr
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-<<<<<<< HEAD:src/components/dropdowns.tsx
         <span className="dropdown-label">{selected ? selected : label}</span>
-        <svg
-          className="w-4 h-4 ml-2"
-          viewBox="0 0 10 6"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M1 1L5 5L9 1"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-=======
-        <span className="dropdown-label">{selected}</span>
         <ExpandMore />
->>>>>>> FrontEnd-Branch:src/components/Dropdowns/DropdownsComponents.tsx
-      </button>
+      </button >
 
       {isOpen && (
         <div className="absolute z-10 mt-2 w-full bg-white rounded-lg shadow divide-y divide-gray-100 dropdown-menu">
@@ -68,7 +46,8 @@ export default function Dropdown({ id, label, items, selected, setSelected }: Dr
             ))}
           </ul>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }

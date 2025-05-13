@@ -10,14 +10,9 @@ import {
   SendOutlined,
   CloudUploadOutlined,
 } from '@mui/icons-material';
-<<<<<<< HEAD:src/components/ReportFormComponent.tsx
-import Dropdown from "./dropdowns";
-import { addReport, APIResultType } from '../utils/api_interface';
-import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../types/variables";
-=======
+import { addReport, APIResultType } from '../../utils/api_interface';
+import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../../types/variables";
 import Dropdown from "../Dropdowns/DropdownsComponents";
-import { AccountType } from "../../types/variables";
->>>>>>> FrontEnd-Branch:src/components/FormReport/ReportFormComponent.tsx
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 
@@ -40,27 +35,14 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     {
       id: "kategori",
       label: "Kategori",
-<<<<<<< HEAD:src/components/ReportFormComponent.tsx
       items: [...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"],
-=======
-      items: [
-        "5R",
-        "Safety",
-        "SOP"
-      ],
-    },
-    {
-      id: "followup",
-      label: "Follow Up",
-      items: Object.keys(AccountType).filter(x => x != "NoType")
->>>>>>> FrontEnd-Branch:src/components/FormReport/ReportFormComponent.tsx
     },
   ];
 
   const handle_submit = async () => {
-    if(!message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate || !followUpName) {
-        alert("Please complete the form.");
-        return;
+    if (!message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate || !followUpName) {
+      alert("Please complete the form.");
+      return;
     }
 
     setSubmitDisabled(true);
@@ -69,41 +51,29 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       summary: "Sedang upload data..."
     });
 
-<<<<<<< HEAD:src/components/ReportFormComponent.tsx
     const result = await addReport(message, pic, string_to_reporttype(category)!, string_to_accounttype(followUpType)!, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
-    if(typeof result == "object") {
+    if (typeof result == "object") {
       alert("Successfully add the report!");
 
       setReportData([result, ...reportData]);
-      toastSuccess.current!.show({
-          summary: "Data berhasil direkam!",
-          severity: "success",
-          life: 3000
-      });
-    }
-    else if(result == APIResultType.Unauthorized) {
-      window.location.href = "/";
-    }
-    else if(result == APIResultType.InternalServerError) {
-      alert("There's an unexpected error occured in the server side!");
-    }
-    else {
-        console.log(result);
-    }
-
-    toastProgress.current!.clear();
-    setSubmitDisabled(false);
-=======
-    setTimeout(() => {
-      setSubmitDisabled(false);
-      toastProgress.current!.clear();
       toastSuccess.current!.show({
         summary: "Data berhasil direkam!",
         severity: "success",
         life: 3000
       });
-    }, 5000);
->>>>>>> FrontEnd-Branch:src/components/FormReport/ReportFormComponent.tsx
+    }
+    else if (result == APIResultType.Unauthorized) {
+      window.location.href = "/";
+    }
+    else if (result == APIResultType.InternalServerError) {
+      alert("There's an unexpected error occured in the server side!");
+    }
+    else {
+      console.log(result);
+    }
+
+    toastProgress.current!.clear();
+    setSubmitDisabled(false);
   }
 
   return (
@@ -152,19 +122,19 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
 
             {/* Dropdowns Section */}
             <div className="flex flex-col md:flex-row gap-2 w-full mt-8 md:space-y-4 space-y-3">
-            {dropdowns.map((d, index) => {
-              let selected = category;
-              let setSelected = setCategory;
+              {dropdowns.map((d, index) => {
+                let selected = category;
+                let setSelected = setCategory;
 
-              if(d.id == "followup") {
-                selected = followUpType;
-                setSelected = setFollowUpType;
-              }
-              
-              return (
-                <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} selected={selected == "VR" ? "5R" : selected} setSelected={setSelected} />
-              );
-            })}
+                if (d.id == "followup") {
+                  selected = followUpType;
+                  setSelected = setFollowUpType;
+                }
+
+                return (
+                  <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} selected={selected == "VR" ? "5R" : selected} setSelected={setSelected} />
+                );
+              })}
             </div>
 
             {/* Lokasi Section */}
@@ -200,7 +170,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   placeholder="Tanggal temuan"
                   className="px-4 py-3 outline-none border-2 border-[#E2DAD6] rounded-xl resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
                   onChange={(e) => setReportDate(e.target.value)}
-                  required 
+                  required
                 />
               </div>
 

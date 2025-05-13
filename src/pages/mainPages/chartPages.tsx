@@ -1,8 +1,3 @@
-<<<<<<< HEAD:src/pages/mainPages/graphicChart.tsx
-=======
-import LineChart from "../../components/ChartLine/LineChartComponents";
-import PieChart from "../../components/ChartPie/PieChartComponents"
->>>>>>> FrontEnd-Branch:src/pages/mainPages/chartPages.tsx
 import BarChartIcon from '@mui/icons-material/BarChart';
 import React, { useEffect, useState } from "react";
 import { Dropdown, } from 'primereact/dropdown';
@@ -13,8 +8,8 @@ import { Suspense } from "react";
 
 
 
-const LineChart = React.lazy(() => import("../../components/lineChart"));
-const PieChart = React.lazy(() => import("../../components/pieChart"));
+const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponents"));
+const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponents"));
 
 
 const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];

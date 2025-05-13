@@ -1,6 +1,6 @@
 'use client';
 import { useState } from "react";
-import { APIResultType, userLogin } from "../utils/api_interface";
+import { APIResultType, userLogin } from "../../utils/api_interface";
 
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
@@ -12,6 +12,7 @@ export default function LoginFormComponent() {
     
     const result = await userLogin(username, password);
     if(result == APIResultType.NoError) {
+      
         window.location.href = "/";
     }
     else if(result == APIResultType.Unauthorized) {
