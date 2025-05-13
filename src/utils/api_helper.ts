@@ -5,7 +5,6 @@ import { prisma } from "./db";
 import { AccountType } from "@prisma/client";
 
 let done_initialization = false;
-export const php_server_url = "http://localhost/web-report/upload_image.php";
 
 // First Initialization
 export async function first_initialization() {
