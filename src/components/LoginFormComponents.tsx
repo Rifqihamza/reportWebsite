@@ -9,8 +9,6 @@ export default function LoginFormComponent() {
   
   const handleLogin = async () => {
     setLoginDisabled(true);
-    
-    
     setTimeout(() => {
         setLoginDisabled(false);
     }, 1000);

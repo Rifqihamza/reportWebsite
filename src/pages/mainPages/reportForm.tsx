@@ -1,9 +1,7 @@
 import ReportFormComponent from "../../components/ReportFormComponent";
 import ReportIcon from "@mui/icons-material/Report";
 
-
 export default function ReportForm() {
-
   return (
     <>
       {/* Header Title */}
