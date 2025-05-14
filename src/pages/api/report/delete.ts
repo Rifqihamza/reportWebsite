@@ -16,6 +16,38 @@ export async function DELETE({ request }: APIContext) {
         return create_response_status(400);
     }
 
+    // Check report data
+    const report_data = await prisma.report.findUnique({
+        where: {
+            id: report_id
+        }
+    });
+
+    if(!report_data) {
+        return create_response_status(404);
+    }
+
+    // Delete image if exists
+    if(report_data.image) {
+        const form_data = new FormData();
+        form_data.append("image_location", report_data.image);
+    
+        const response = await fetch(`${process.env.PHP_SERVER_URL!}/delete_image.php`, {
+            method: "POST",
+            headers: {
+                "Api-Authorization": process.env.PHP_SERVER_AUTHORIZATION!,
+                "Cookie": `user_token=${cookies["user_token"]}`
+            },
+            body: form_data
+        });
+    
+        if(!response.ok) {
+            console.error(`There's an error when trying to delete image. Error text: ${await response.text()}`);
+            return create_response_status(response.status);
+        }
+    }
+    
+
     // Delete the data
     try {
         await prisma.report.delete({
