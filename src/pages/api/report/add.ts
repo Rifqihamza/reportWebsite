@@ -89,6 +89,7 @@ export async function POST({ request }: APIContext) {
         image_file_path = await response.text();
         
         if(!response.ok) {
+            console.error(`There's an error when trying to upload image. Error Response: ${image_file_path}`);
             return create_response_status(response.status);
         }
         
