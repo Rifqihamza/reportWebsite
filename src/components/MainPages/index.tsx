@@ -54,7 +54,7 @@ export default function MainPage() {
       <LogoutButton handle_logout={handle_logout} userData={userData} />
 
       {/* Navbar */}
-      <NavbarComponents activeTab={activeTab} setActiveTab={setActiveTab} />
+      <NavbarComponents handle_logout={handle_logout} activeTab={activeTab} setActiveTab={setActiveTab} userData={userData} />
 
       {/* Content */}
       <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] md:h-[38rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
