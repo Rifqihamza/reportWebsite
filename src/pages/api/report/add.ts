@@ -77,7 +77,7 @@ export async function POST({ request }: APIContext) {
         form_data.append("image", image);
         form_data.append("test", "test");
 
-        const response = await fetch(`${process.env.PHP_SERVER_URL!}/index.php`, {
+        const response = await fetch(`${process.env.PHP_SERVER_URL!}/upload_image.php`, {
             method: "POST",
             headers: {
                 "Api-Authorization": process.env.PHP_SERVER_AUTHORIZATION!,
