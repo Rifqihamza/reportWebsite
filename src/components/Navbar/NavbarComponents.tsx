@@ -15,16 +15,16 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
             {/* Desk Navbar */}
             <div className="mb-4 px-4 py-2 bg-white rounded-[50px] hidden md:flex flex-row items-center gap-6 mx-5" >
                 <button
-                    onClick={() => setActiveTab(0)}
-                    className={`tab-button ${activeTab === 0 ? "active" : ""}`}
-                >
-                    Table Data
-                </button>
-                <button
                     onClick={() => setActiveTab(1)}
                     className={`tab-button ${activeTab === 1 ? "active" : ""}`}
                 >
                     Report Form
+                </button>
+                <button
+                    onClick={() => setActiveTab(0)}
+                    className={`tab-button ${activeTab === 0 ? "active" : ""}`}
+                >
+                    Table Data
                 </button>
                 <button
                     onClick={() => setActiveTab(2)}
@@ -47,20 +47,20 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
                 <div className="flex flex-col items-start justify-center w-full gap-2">
                     <button
                         onClick={() => {
+                            setActiveTab(1);
+                            setIsVisible(false);
+                        }} className={`w-full text-left px-4 py-2 rounded-lg ${activeTab === 1 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
+                    >
+                        Report Form
+                    </button>
+                    <button
+                        onClick={() => {
                             setActiveTab(0);
                             setIsVisible(false);
                         }}
                         className={`w-full text-left px-4 py-2 rounded-lg ${activeTab === 0 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
                     >
                         Table Data
-                    </button>
-                    <button
-                        onClick={() => {
-                            setActiveTab(1);
-                            setIsVisible(false);
-                        }} className={`w-full text-left px-4 py-2 rounded-lg ${activeTab === 1 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
-                    >
-                        Report Form
                     </button>
                     <button
                         onClick={() => {

@@ -16,7 +16,7 @@ export default function MainPage() {
     username: "",
     email: "",
     password: "",
-    role: AccountType.Guru as AccountType,
+    role: AccountType.Siswa as AccountType,
     created_at: "",
   });
 
@@ -30,19 +30,19 @@ export default function MainPage() {
     {/* Content */}
     <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] md:h-[38rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
 
-      {/* Table Data Report */}
-      <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
-        <TableReportPages
-          userData={userData}
-          reportData={reportData}
-          setReportData={setReportData} />
+      {/* Report Form */}
+      <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"}`}>
+        <ReportForm />
       </div>
 
       {(userData.role === AccountType.Guru || userData.role === AccountType.Vendor) ? (
         <>
-          {/* Report Form */}
-          <div id="form-section" className={`tab-content ${activeTab == 1 ? "active" : "hidden"}`}>
-            <ReportForm />
+          {/* Table Data Report */}
+          <div id="data-section" className={`tab-content ${activeTab == 0 ? "active" : "hidden"}`}>
+            <TableReportPages
+              userData={userData}
+              reportData={reportData}
+              setReportData={setReportData} />
           </div>
 
           {/* Chart Data Report */}
