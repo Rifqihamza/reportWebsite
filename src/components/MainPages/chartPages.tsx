@@ -113,13 +113,13 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     {/* Pie Chart */}
                     <div className="w-full flex md:flex-col lg:flex-row xl:flex-row flex-col gap-10 justify-around items-center px-4 py-6 rounded-xl border border-gray-100">
                         <div className="flex flex-col justify-center items-center">
-                            <h1 className='font-bold'>Grafik Pie Kategori</h1>
+                            <h1 className='font-bold'>Persentase Kategori</h1>
                             <Suspense fallback={<>Loading..</>}>
                                 <PieChart reports={pieCategory} />
                             </Suspense>
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                            <h1 className='font-bold'>Grafik Pie Status</h1>
+                            <h1 className='font-bold'>Persentase Status Temuan</h1>
                             <Suspense fallback={<>Loading..</>}>
                                 <PieChart reports={pieStatus} />
                             </Suspense>

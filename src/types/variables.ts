@@ -1,7 +1,8 @@
 export enum AccountType {
     Guru = "Guru",
     Siswa = "Siswa",
-    Vendor = "Vendor"
+    Vendor = "Vendor",
+    Tukang = "Tukang"
 }
 
 export enum ReportType {
