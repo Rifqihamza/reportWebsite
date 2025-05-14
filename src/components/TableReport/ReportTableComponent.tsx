@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from 
 import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../../types/variables';
 import { Image } from 'primereact/image'
 import { APIResultType, changeReportStatus, deleteReport } from "../../utils/api_interface";
-import Dropdown from "../Dropdowns/DropdownsComponents";
+import Dropdown from "../Dropdown/DropdownComponent";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 

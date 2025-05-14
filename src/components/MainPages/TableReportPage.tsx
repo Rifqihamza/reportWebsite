@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
 import React, { Suspense, useState } from "react";
-import TieredDropDowns from "../TieredMenu/TieredMenuComponents";
+import TieredDropDowns from "../TieredMenu/TieredMenuComponent";
 
 // icon
 import AssignmentIcon from '@mui/icons-material/Assignment';

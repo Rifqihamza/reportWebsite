@@ -1,17 +1,17 @@
-import OverlayBlockPages from "../Overlay/BlockOverlayComponents";
-import NavbarComponents from "../Navbar/NavbarComponents";
+import OverlayBlockPages from "../Overlay/BlockOverlayComponent";
+import NavbarComponents from "../Navbar/NavbarComponent";
 
 import { AccountType, type ReportData, type User } from "../../types/variables";
 import { getReport, getUser, userLogout } from "../../utils/api_interface";
 import React, { Suspense, useEffect, useState } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
-import LogoutButton from "../LogoutButton/LogoutButtonComponents";
+import LogoutButton from "../LogoutButton/LogoutButtonComponent";
 
-import TableReportPages from "./tableReportPages";
+import TableReportPages from "./tableReportPage";
 import LoadingAnimation from "../Loading/LoadingAnimation";
-const ReportForm = React.lazy(() => import("./formReportPages"));
-const ApexChart  = React.lazy(() => import("./chartPages"));
+const ReportForm = React.lazy(() => import("./formReportPage"));
+const ApexChart  = React.lazy(() => import("./chartPage"));
 
 export default function MainPage() {
   const [activeTab, setActiveTab] = useState(0);
