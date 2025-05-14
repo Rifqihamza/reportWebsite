@@ -1,18 +1,17 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
 import React, { Suspense, useState } from "react";
-import TieredDropDowns from "../TieredMenu/TieredMenuComponent";
+import TieredDropDowns from "../../components/TieredMenu/TieredMenuComponent";
 
 // icon
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SearchIcon from '@mui/icons-material/Search';
-import LoadingAnimation from "../Loading/LoadingAnimation";
+import LoadingAnimation from "../../components/Loading/LoadingAnimation";
+
+const ReportListComponent = React.lazy(() => import("../../components/TableReport/ReportTableComponent"));
 
 
-const ReportListComponent = React.lazy(() => import("../TableReport/ReportTableComponent"));
-
-
-export default function TableReportPages({ userData, reportData, setReportData }: { userData: User|null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
+export default function TableReportPages({ userData, reportData, setReportData }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
   const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
 
   return (
@@ -43,7 +42,7 @@ export default function TableReportPages({ userData, reportData, setReportData }
         </div>
 
         <Suspense fallback={<LoadingAnimation />}>
-            <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} />
+          <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} />
         </Suspense>
       </div>
     </>
