@@ -1,62 +1,17 @@
 import type { Dispatch, SetStateAction } from "react";
-import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
-import React, { Suspense, useState } from "react";
-import TieredDropDowns from "../../components/TieredMenu/TieredMenuComponent";
-
-// icon
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import SearchIcon from '@mui/icons-material/Search';
+import type { ReportData, User } from "../../types/variables";
+import React, { Suspense } from "react";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
-import { Calendar } from "primereact/calendar";
-import { FloatLabel } from "primereact/floatlabel";
 
-const ReportListComponent = React.lazy(() => import("../../components/TableReport/ReportTableComponent"));
 
+const ReportTableWrapper = React.lazy(() => import("../../components/TableReport/ReportTableWrapper"));
 
 export default function TableReportPages({ userData, reportData, setReportData }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
-  const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
-  const [dateFilter, setDateFilter] = useState([null, null] as (Date|null)[]);
-
   return (
     <>
-      {/* Header Title */}
-      <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
-        <AssignmentIcon fontSize="medium" />
-        <h1 className="titlePage">Data Laporan</h1>
-      </div>
-
       <div className="px-4 space-y-3">
-        <div className="flex flex-row items-center gap-2">
-          {/* Search Bar */}
-          <div className="relative w-full flex items-center gap-4">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Cari laporan..."
-              className="w-full pl-9 pr-4 py-3 border placeholder:text-md border-gray-300 rounded-lg outline-none"
-            />
-            <div className="flex items-center gap-1">
-                <FloatLabel>
-                    <Calendar inputId="from-date" className="w-fit h-full rounded-lg" value={dateFilter ? dateFilter[0] : null} onChange={(e) => setDateFilter([e.value?.getTime() == dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])} readOnlyInput hideOnRangeSelection />
-                    <label htmlFor="from-date">Dari tanggal</label>
-                </FloatLabel>
-                    -
-                <FloatLabel>
-                    <Calendar inputId="until-date" className="w-fit h-full rounded-lg" value={dateFilter ? dateFilter[1] : null} onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() == dateFilter[1]?.getTime() ? null : e.value ?? null])} readOnlyInput hideOnRangeSelection />
-                    <label htmlFor="until-date" >Sampai tanggal</label>
-                </FloatLabel>
-            </div>
-            <SearchIcon fontSize="small" className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4  text-gray-400" />
-          </div>
-
-          {/* Filter Dropdown */}
-          <div className="w-fit">
-            <TieredDropDowns label="Filter" selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
-          </div>
-        </div>
-
         <Suspense fallback={<LoadingAnimation />}>
-          <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} dateFilter={dateFilter ?? []} />
+            <ReportTableWrapper userData={userData} reportData={reportData} setReportData={setReportData} />
         </Suspense>
       </div>
     </>
