@@ -20,7 +20,7 @@ export default function MainPage() {
 
   async function handle_logout() {
     if (!userData || userData.role === AccountType.Siswa) {
-      window.location.href = "/login";
+      window.location.href = "/loginPage";
       return;
     }
 

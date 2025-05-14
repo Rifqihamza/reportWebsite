@@ -1,6 +1,6 @@
 export default function OverlayBlockPages() {
     const btnToLogin = () => {
-        window.location.href = "/login";
+        window.location.href = "/loginPage";
     }
     return (
         <div className="flex flex-col md:flex-row items-center justify-center w-full md:h-full h-fit bg-white space-y-2">
