@@ -11,6 +11,7 @@ const ReportListComponent = React.lazy(() => import("../../components/TableRepor
 export default function ReportTableWrapper({ userData, reportData, setReportData }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
     const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
     const [dateFilter, setDateFilter] = useState([null, null] as (Date|null)[]);
+    const [searchKeyword, setSearchKeyword] = useState("");
 
     return <>
         {/* Header Title */}
@@ -26,6 +27,7 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
                 id="search-input"
                 placeholder="Cari laporan..."
                 className="w-full pl-9 pr-4 py-3 border placeholder:text-md border-gray-300 rounded-lg outline-none"
+                onChange={(e) => setSearchKeyword(e.target.value)}
             />
             <div className="flex items-center gap-1">
                 <FloatLabel>
@@ -48,7 +50,7 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
         </div>
 
         <Suspense fallback={<LoadingAnimation />}>
-            <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} dateFilter={dateFilter ?? []} />
+            <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} dateFilter={dateFilter ?? []} searchKeyword={searchKeyword} />
         </Suspense>
     </>
 }
