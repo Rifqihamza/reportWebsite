@@ -13,6 +13,7 @@ const rateLimiterMemory = new RateLimiterMemory({
 });
 
 const ReportBodyType = z.object({
+    submitted_by: z.string(),
     message: z.string(),
     pic_name: z.string(),
     report_type: z.nativeEnum(ReportType),
@@ -57,7 +58,18 @@ export async function POST({ request }: APIContext) {
         return create_response_status(400);
     }
 
-    const { message, pic_name, report_type, follow_up, location, report_date, due_date, follow_up_name, image } = parsed_result.data;
+    const {
+        submitted_by,
+        message,
+        pic_name,
+        report_type,
+        follow_up,
+        location,
+        report_date,
+        due_date,
+        follow_up_name,
+        image
+    } = parsed_result.data;
 
 
     // Upload file if image exists
@@ -104,6 +116,7 @@ export async function POST({ request }: APIContext) {
     try {
         report_data = await prisma.report.create({
             data: {
+                submitted_by: submitted_by,
                 message: message,
                 follow_up: follow_up,
                 follow_up_name: follow_up_name,

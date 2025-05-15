@@ -37,6 +37,7 @@ export function string_to_reportstatus(data: string): ReportStatus | undefined {
 // DATABASE MODEL
 export type ReportData = {
     id: string,
+    submitted_by: string,
     message: string,
     type: ReportType,
     follow_up: AccountType,

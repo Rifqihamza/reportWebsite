@@ -1,4 +1,4 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import {
   DescriptionOutlined,
   PersonOutline,
@@ -17,6 +17,7 @@ import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 
 export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
+  const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [pic, setPic] = useState("");
@@ -48,7 +49,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   ];
 
   const handle_submit = async () => {
-    if (!message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate || !followUpName) {
+    if (!submitted_by || !message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate) {
       alert("Please complete the form.");
       return;
     }
@@ -59,7 +60,19 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       summary: "Sedang upload data..."
     });
 
-    const result = await addReport(message, pic, string_to_reporttype(category)!, string_to_accounttype(followUpType)!, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
+    const result = await addReport(
+      submitted_by,
+      message,
+      pic,
+      string_to_reporttype(category)!,
+      string_to_accounttype(followUpType)!,
+      followUpName,
+      location,
+      (new Date(reportDate)).toISOString(),
+      (new Date(reportDueDate)).toISOString(),
+      image || undefined
+    );
+
     if (typeof result == "object") {
       setReportData([result, ...reportData]);
       toastSuccess.current!.show({
@@ -89,21 +102,22 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
         <div className={"space-y-6" + (submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
           <div className="flex lg:flex-row flex-col gap-6">
             <div className="space-y-4 w-full">
+
               {/* Nama Pelapor */}
               <div className="space-y-2">
                 <label
-                  htmlFor="pelapor"
+                  htmlFor="submitted_by"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
                   <PersonOutline />
                   Pelapor
                 </label>
                 <input
-                  name="pelapor"
-                  id="pelapor"
+                  name="submitted_by"
+                  id="submitted_by"
                   placeholder="Nama Pelapor..."
                   className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
-                  onChange={(e) => setPic(e.target.value)}
+                  onChange={(e) => setSubmittedBy(e.target.value)}
                   required
                 />
               </div>

@@ -230,7 +230,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   {formatDate(report.created_at)}
                 </td>
                 <td className="px-2 py-3 text-center text-sm text-gray-600 max-w-[13rem] truncate">
-                  {report.nama_pelapor}
+                  {report.submitted_by}
                 </td>
                 <td className="px-2 py-3 text-center text-sm text-gray-600 max-w-[13rem] truncate">
                   {report.message}
@@ -319,7 +319,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 alt="Foto Bukti Laporan"
                 preview={true}
                 width="800"
-                loading="lazy"
               />
               <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
             </div>
@@ -359,7 +358,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Nama Pelapor */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Pelapor:</h1>
-                      <p>{report_data?.nama_pelapor}</p>
+                      <p>{report_data?.submitted_by}</p>
                     </div>
                     {/* PIC */}
                     <div className="flex flex-row justify-between gap-6">
@@ -432,7 +431,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
       {/* Pagination */}
       <div className="flex flex-row items-center mt-2">
-        <div className="flex flex-row gap-2 w-full">
+        <div className="flex flex-row justify-evenly md:justify-start gap-2 w-full">
           <button
             className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
             disabled={currentPage <= 0}

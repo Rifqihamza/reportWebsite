@@ -19,7 +19,7 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
             <i className="pi pi-clipboard text-2xl!" />
             <h1 className="titlePage">Data Laporan</h1>
         </div>
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex md:flex-row flex-col items-center gap-2">
             {/* Search Bar */}
             <div className="relative w-full flex items-center gap-4">
                 <input
@@ -29,22 +29,18 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
                     className="w-full pl-9 pr-4 py-3 border placeholder:text-md border-gray-300 rounded-lg outline-none"
                     onChange={(e) => setSearchKeyword(e.target.value)}
                 />
-                <div className="flex items-center gap-1">
-                    <FloatLabel className="overflow-x-hidden">
-                        <Calendar inputId="from-date" value={dateFilter ? dateFilter[0] : null} onChange={(e) => setDateFilter([e.value?.getTime() == dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])} readOnlyInput hideOnRangeSelection />
-                        <label htmlFor="from-date" className=" inline-block  overflow-hidden whitespace-nowrap">Dari tanggal</label>
-                    </FloatLabel>
-                    -
-                    <FloatLabel className="overflow-x-hidden">
-                        <Calendar inputId="until-date" value={dateFilter ? dateFilter[1] : null} onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() == dateFilter[1]?.getTime() ? null : e.value ?? null])} readOnlyInput hideOnRangeSelection />
-                        <label htmlFor="until-date" className=" inline-block     overflow-hidden whitespace-nowrap">Sampai tanggal</label>
-                    </FloatLabel>
-                </div>
                 <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4  text-gray-400" />
             </div>
-
-            {/* Filter Dropdown */}
-            <div className="w-fit">
+            <div className="flex items-center gap-2">
+                <FloatLabel className="overflow-x-hidden">
+                    <Calendar inputId="from-date" value={dateFilter ? dateFilter[0] : null} onChange={(e) => setDateFilter([e.value?.getTime() == dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])} readOnlyInput hideOnRangeSelection />
+                    <label htmlFor="from-date" className=" inline-block  overflow-hidden whitespace-nowrap">Dari tanggal</label>
+                </FloatLabel>
+                -
+                <FloatLabel className="overflow-x-hidden">
+                    <Calendar inputId="until-date" value={dateFilter ? dateFilter[1] : null} onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() == dateFilter[1]?.getTime() ? null : e.value ?? null])} readOnlyInput hideOnRangeSelection />
+                    <label htmlFor="until-date" className=" inline-block     overflow-hidden whitespace-nowrap">Sampai tanggal</label>
+                </FloatLabel>
                 <TieredDropDown label="Filter" selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             </div>
         </div>
