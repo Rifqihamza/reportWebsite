@@ -353,8 +353,9 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Description Laporan */}
                     <div className="flex flex-col items-start">
                       <h1 className="text-xl font-bold tracking-wide">Deskripsi Laporan</h1>
-                      <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, esse!</p>
+                      <p className="">{report_data?.message}</p>
                     </div>
+                    <hr />
                     {/* Nama Pelapor */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Pelapor:</h1>
