@@ -68,7 +68,7 @@ body {
 .tab-button {
   color: #000;
   cursor: pointer;
-  border-radius: 18px;
+  border-radius: 50px;
   padding: 0.7rem 1rem;
   transition: all 0.2s ease-in-out;
   font-size: 14px;

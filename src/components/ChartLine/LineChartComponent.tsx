@@ -38,7 +38,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
             type: 'line' as const,
         },
         theme: {
-            palette: 'palette7' 
+            palette: 'palette8' 
         },
         dataLabels: {
             enabled: true,
@@ -53,7 +53,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
             position: 'bottom' as const,
         },
         stroke: {
-            curve: 'smooth' as const,
+            curve: 'straight' as const,
         }
     };
 

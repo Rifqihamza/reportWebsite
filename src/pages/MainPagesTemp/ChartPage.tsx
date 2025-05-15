@@ -26,12 +26,12 @@ type LineChartValueType = {
 }
 
 const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
-    const [availableYears, setAvailableYears] = useState([] as string[]);
     const currentYear = new Date().getFullYear();
+    const [availableYears, setAvailableYears] = useState([] as string[]);
     const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+    const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
     const [pieCategory, setPieCategory] = useState([] as CategoryType[])
     const [pieStatus, setPieStatus] = useState([] as CategoryType[])
-    const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
 
     useEffect(() => {
         let result: LineChartValueType[] = [];
@@ -104,7 +104,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         <>
             <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
                 <BarChartIcon fontSize="medium" />
-                <h1 className="titlePage">Data Grafik Laporan</h1>
+                <h1 className="titlePage">Grafik Laporan</h1>
             </div>
             {/* Container Chart */}
             <div className="flex flex-col items-center md:items-start md:justify-between justify-center w-full gap-16 md:px-8 md:py-10">
@@ -113,13 +113,13 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     {/* Pie Chart */}
                     <div className="w-full flex md:flex-col lg:flex-row xl:flex-row flex-col gap-10 justify-around items-center px-4 py-6 rounded-xl border border-gray-100">
                         <div className="flex flex-col justify-center items-center">
-                            <h1 className='font-bold'>Grafik Pie Kategori</h1>
+                            <h1 className='font-bold'>Persentase Kategori Temuan</h1>
                             <Suspense fallback={<>Loading..</>}>
                                 <PieChart reports={pieCategory} />
                             </Suspense>
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                            <h1 className='font-bold'>Grafik Pie Status</h1>
+                            <h1 className='font-bold'>Persentase Status Temuan</h1>
                             <Suspense fallback={<>Loading..</>}>
                                 <PieChart reports={pieStatus} />
                             </Suspense>
@@ -128,16 +128,35 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     {/* End Pie Chart */}
 
                     {/* Line Chart */}
-                    <div className="w-full mt-6 px-4 py-2 rounded-xl border border-gray-100">
-                        <div className="w-full my-2">
-                            <Dropdown
-                                value={availableYears[0]}
-                                onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                                options={availableYears}
-                                optionLabel="label"
-                                placeholder="Pilih Tahun"
-                                className="w-full "
-                            />
+                    <div className="w-full px-4 py-2 rounded-xl border border-gray-100">
+                        <div className="w-full flex flex-col lg:flex-row items-center justify-between px-2 py-1">
+                            <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
+                            <div className='flex lg:flex-row lg:flex-wrap flex-col items-center gap-4'>
+                                <Dropdown
+                                    value={availableYears[0]}
+                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
+                                    options={availableYears}
+                                    optionLabel="label"
+                                    placeholder="Pilih Tahun"
+                                    className="w-full lg:w-fit"
+                                />
+                                <Dropdown
+                                    value={availableYears[0]}
+                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
+                                    options={availableYears}
+                                    optionLabel="label"
+                                    placeholder="Pilih Bulan"
+                                    className="w-full lg:w-fit"
+                                />
+                                <Dropdown
+                                    value={availableYears[0]}
+                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
+                                    options={availableYears}
+                                    optionLabel="label"
+                                    placeholder="Pilih Tanggal"
+                                    className="w-full lg:w-fit"
+                                />
+                            </div>
                         </div>
                         <LineChart reports={currentYearReports} />
                     </div>
