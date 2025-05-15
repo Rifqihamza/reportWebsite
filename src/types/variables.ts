@@ -21,22 +21,23 @@ export function reporttype_to_string(data: any): string {
     return data == "VR" ? "5R" : data.toString()
 }
 
-export function string_to_reporttype(data: string): ReportType|undefined {
-    if(data == "5R") return ReportType.VR;
+export function string_to_reporttype(data: string): ReportType | undefined {
+    if (data == "5R") return ReportType.VR;
     return Object.values(ReportType).find(value => value.toString() == data);
 }
 
-export function string_to_accounttype(data: string): AccountType|undefined {
+export function string_to_accounttype(data: string): AccountType | undefined {
     return Object.values(AccountType).find(value => value.toString() == data);
 }
 
-export function string_to_reportstatus(data: string): ReportStatus|undefined {
+export function string_to_reportstatus(data: string): ReportStatus | undefined {
     return Object.values(ReportStatus).find(value => value.toString() == data);
 }
 
 // DATABASE MODEL
 export type ReportData = {
     id: string,
+    submitted_by: string,
     message: string,
     type: ReportType,
     follow_up: AccountType,

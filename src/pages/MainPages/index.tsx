@@ -57,8 +57,9 @@ export default function MainPage() {
       <NavbarComponents activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Content */}
-      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] md:h-[38rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
-        {/* Tab 0: Form Report */}
+      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-full max-h-[85vh] overflow-y-scroll bg-white shadow-md shadow-gray-600">
+
+        {/* Tab 0: Table, bebas diakses */}
         {activeTab === 0 && (
           <ReportForm reportData={reportData} setReportData={setReportData} />
         )}
@@ -66,13 +67,13 @@ export default function MainPage() {
         {/* Tab 1: Table, bebas diakses */}
         {activeTab === 1 && (
           isAuthorized ? (
-          <Suspense fallback={<LoadingAnimation />}>
-            <TableReportPages
+            <Suspense fallback={<LoadingAnimation />}>
+              <TableReportPages
                 userData={userData}
                 reportData={reportData}
                 setReportData={setReportData}
-            />
-          </Suspense>
+              />
+            </Suspense>
           ) : (
             <OverlayBlockPages />
           )

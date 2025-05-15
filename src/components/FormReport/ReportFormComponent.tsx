@@ -1,14 +1,14 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import {
   DescriptionOutlined,
   PersonOutline,
   LocationOnOutlined,
   EventNoteOutlined,
   AccessTimeOutlined,
-  AssignmentTurnedInOutlined,
   UploadFileOutlined,
   SendOutlined,
   CloudUploadOutlined,
+  Person4
 } from '@mui/icons-material';
 import Dropdown from "../Dropdown/DropdownComponent";
 import { addReport, APIResultType } from '../../utils/api_interface';
@@ -17,6 +17,7 @@ import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 
 export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
+  const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [pic, setPic] = useState("");
@@ -36,13 +37,19 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     {
       id: "kategori",
       label: "Kategori",
+      Icon: "pi pi-box",
       items: [...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"],
     },
-    { id: "followup", label: "Follow Up", items: Object.keys(AccountType).filter(x => x != "NoType") },
+    {
+      id: "followup",
+      label: "Follow Up",
+      Icon: "pi pi-file-check",
+      items: Object.keys(AccountType).filter(x => x != "NoType")
+    },
   ];
 
   const handle_submit = async () => {
-    if (!message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate || !followUpName) {
+    if (!submitted_by || !message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate) {
       alert("Please complete the form.");
       return;
     }
@@ -53,7 +60,19 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       summary: "Sedang upload data..."
     });
 
-    const result = await addReport(message, pic, string_to_reporttype(category)!, string_to_accounttype(followUpType)!, followUpName, location, (new Date(reportDate)).toISOString(), (new Date(reportDueDate)).toISOString(), image || undefined);
+    const result = await addReport(
+      submitted_by,
+      message,
+      pic,
+      string_to_reporttype(category)!,
+      string_to_accounttype(followUpType)!,
+      followUpName,
+      location,
+      (new Date(reportDate)).toISOString(),
+      (new Date(reportDueDate)).toISOString(),
+      image || undefined
+    );
+
     if (typeof result == "object") {
       setReportData([result, ...reportData]);
       toastSuccess.current!.show({
@@ -79,139 +98,149 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   return (
     <>
       <form id="report-form" className="mx-8">
+        {/* Container Form input */}
         <div className={"space-y-6" + (submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
-          {/* Laporan Text Area */}
-          <div className="flex flex-col gap-2 w-full">
-            <label
-              htmlFor="laporan"
-              className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-            >
-              <DescriptionOutlined />
-              Detail Laporan
-            </label>
-            <textarea
-              rows={3}
-              name="laporan"
-              id="laporan"
-              placeholder="Deskripsikan Temuan Anda..."
-              className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
-              onChange={(e) => setMessage(e.target.value)}
-              required
-            ></textarea>
-          </div>
+          <div className="flex lg:flex-row flex-col gap-6">
+            <div className="space-y-4 w-full">
 
-          {/* PIC Name Section */}
-          <div>
-            <div className="flex flex-col gap-2 w-full">
-              <label
-                htmlFor="pic"
-                className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-              >
-                <PersonOutline />
-                Nama PIC
-              </label>
-              <input
-                name="pic"
-                id="pic"
-                placeholder="Nama PIC..."
-                className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
-                onChange={(e) => setPic(e.target.value)}
-                required
-              />
-            </div>
-
-            {/* Dropdowns Section */}
-            <div className="flex flex-col md:flex-row gap-2 w-full mt-8 space-y-4">
-              {dropdowns.map((d, index) => {
-                let selected = category;
-                let setSelected = setCategory;
-
-                if (d.id == "followup") {
-                  selected = followUpType;
-                  setSelected = setFollowUpType;
-                }
-
-                return (
-                  <Dropdown key={index} id={d.id} label={`Pilih ${d.label}`} items={d.items} selected={selected == "VR" ? "5R" : selected} setSelected={setSelected} />
-                );
-              })}
-            </div>
-
-            {/* Lokasi Section */}
-            <div className="flex flex-col w-full space-y-2 md:mt-0 mt-4">
-              <label
-                htmlFor="lokasi"
-                className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-              >
-                <LocationOnOutlined />
-                Lokasi
-              </label>
-              <input
-                type="text"
-                name="lokasi"
-                id="lokasi"
-                placeholder="Lokasi temuan"
-                className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
-                onChange={(e) => setLocation(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="flex flex-col md:flex-row md:gap-4 gap-0 items-center justify-between w-full">
-              {/* Tanggal Temuan section */}
-              <div className="flex flex-col w-full space-y-2 mt-6">
-                <label htmlFor="tanggal"
+              {/* Nama Pelapor */}
+              <div className="space-y-2">
+                <label
+                  htmlFor="submitted_by"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <EventNoteOutlined />
-                  Tanggal Temuan
+                  <PersonOutline />
+                  Pelapor
                 </label>
-                <input type="datetime-local"
-                  placeholder="Tanggal temuan"
-                  className="px-4 py-3 outline-none border-2 border-[#E2DAD6] rounded-xl resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
-                  onChange={(e) => setReportDate(e.target.value)}
+                <input
+                  name="submitted_by"
+                  id="submitted_by"
+                  placeholder="Nama Pelapor..."
+                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                  onChange={(e) => setSubmittedBy(e.target.value)}
                   required
                 />
               </div>
 
-              {/* Due Date Section */}
-              <div className="flex flex-col w-full space-y-2 mt-6">
-                <label htmlFor="dueDate"
+              {/* Nama PIC */}
+              <div className="space-y-2">
+                <label
+                  htmlFor="pic"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <AccessTimeOutlined />
-                  Due Date</label>
-                <input type="datetime-local"
-                  placeholder="Tenggat Waktu"
-                  className="px-6 py-3 outline-none border-2 border-[#E2DAD6] rounded-[20px] resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
-                  onChange={(e) => setReportDueDate(e.target.value)}
-                  required />
+                  <Person4 />
+                  Nama PIC
+                </label>
+                <input
+                  name="pic"
+                  id="pic"
+                  placeholder="Nama PIC..."
+                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                  onChange={(e) => setPic(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Lokasi Temuan */}
+              <div className="space-y-2">
+                <label
+                  htmlFor="lokasi"
+                  className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
+                >
+                  <LocationOnOutlined />
+                  Lokasi
+                </label>
+                <input
+                  type="text"
+                  name="lokasi"
+                  id="lokasi"
+                  placeholder="Lokasi temuan"
+                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                  onChange={(e) => setLocation(e.target.value)}
+                  required
+                />
               </div>
             </div>
 
-            {/* Follow Up Oleh */}
-            <div className="flex flex-col w-full space-y-2 mt-5">
+            {/* Detail Laporan */}
+            <div className="flex flex-col gap-2 w-full">
               <label
-                htmlFor="followUpOleh"
+                htmlFor="laporan"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <AssignmentTurnedInOutlined />
-                Follow Up Oleh
+                <DescriptionOutlined />
+                Detail Laporan
               </label>
-              <input
-                type="text"
-                name="followUpOleh"
-                id="followUpOleh"
-                placeholder="Nama Follow Up..."
-                className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300  rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
-                onChange={(e) => setFollowUpName(e.target.value)}
+              <textarea
+                rows={10}
+                name="laporan"
+                id="laporan"
+                placeholder="Deskripsikan Temuan Anda..."
+                className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                onChange={(e) => setMessage(e.target.value)}
+                required
+              ></textarea>
+            </div>
+          </div>
+          {/* End  */}
+
+          {/* Tanggal */}
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between w-full">
+            {/* Tanggal Temuan section */}
+            <div className="flex flex-col w-full space-y-2">
+              <label htmlFor="tanggal"
+                className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
+              >
+                <EventNoteOutlined />
+                Tanggal Temuan
+              </label>
+              <input type="datetime-local"
+                placeholder="Tanggal temuan"
+                className="px-4 py-3 outline-none border-2 border-[#E2DAD6] rounded-xl resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                onChange={(e) => setReportDate(e.target.value)}
                 required
               />
             </div>
-          </div>
-        </div>
+            {/* End Tanggal Temuan */}
 
-        {/* File Upload */}
+            {/* Due Date Section */}
+            <div className="flex flex-col w-full space-y-2">
+              <label htmlFor="dueDate"
+                className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
+              >
+                <AccessTimeOutlined />
+                Due Date</label>
+              <input type="datetime-local"
+                placeholder="Tenggat Waktu"
+                className="px-4 py-3 outline-none border-2 border-[#E2DAD6] rounded-xl resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                onChange={(e) => setReportDueDate(e.target.value)}
+                required />
+            </div>
+            {/* End Due Date */}
+          </div>
+          {/* End Tanggal */}
+
+          {/* Dropdowns Section */}
+          <div className="flex flex-col md:flex-row gap-6 w-full">
+            {dropdowns.map((d, index) => {
+              let selected = category;
+              let setSelected = setCategory;
+
+              if (d.id == "followup") {
+                selected = followUpType;
+                setSelected = setFollowUpType;
+              }
+
+              return (
+                <Dropdown key={index} id={d.id} label={d.label} icon={d.Icon} items={d.items} selected={selected == "VR" ? "5R" : selected} setSelected={setSelected} />
+              );
+            })}
+          </div>
+          {/* End Dropdowns */}
+        </div>
+        {/* End Container Form Input */}
+
+        {/* File Image Upload */}
         <div className={"space-y-2 mt-4" + (submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
           <label
             htmlFor="foto"
@@ -236,20 +265,25 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             </label>
           </div>
         </div>
+        {/* End File Image Upload */}
 
         {/* Submit Button */}
         <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
-          <button
-            type="button"
-            className="disabled:opacity-50 rounded-xl flex items-center px-4 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
-            disabled={submitDisabled}
-            onClick={handle_submit}
-          >
-            {submitDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : <SendOutlined className="h-5 w-5 mr-2" />}
-            Kirim Laporan
-          </button>
+          {submitDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> :
+            <button
+              type="button"
+              className="disabled:opacity-50 rounded-xl flex items-center px-4 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+              disabled={submitDisabled}
+              onClick={handle_submit}
+            >
+              <SendOutlined className="h-5 w-5 mr-2" />
+              Kirim Laporan
+            </button>}
         </div>
+        {/* End Submit Button */}
       </form>
+
+      {/* Message Toast */}
       <Toast
         ref={toastProgress}
         content={({ message }) => (
@@ -267,6 +301,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
         )}
       ></Toast>
       <Toast ref={toastSuccess} />
+      {/* End Message Toast */}
+
     </>
   );
 }

@@ -1,6 +1,7 @@
 generator client {
   provider   = "prisma-client-js"
   engineType = "library"
+  output = "/node_modules/prisma"
 }
 
 datasource db {
@@ -49,7 +50,7 @@ model Registration {
 
 model Report {
   id             String       @id @default(uuid())
-  submitted_by   String @default("Ridwan")
+  submitted_by   String
   message        String
   type           ReportType
   follow_up      AccountType

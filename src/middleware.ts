@@ -7,15 +7,17 @@ const rateLimiterMemory = new RateLimiterMemory({
     duration: 3600, // Per 1 hour
 });
 
-export const onRequest: MiddlewareHandler = async (context, next) => {    
+export const onRequest: MiddlewareHandler = async (context, next) => {
     await first_initialization();
 
-    // Check the rate-limiter
-    rateLimiterMemory.consume(context.clientAddress ?? context.request.headers.get('x-forwarded-for') ?? 'unknown').catch(() => {
-        return create_response_status(429);
-    })
+    try {
+        await rateLimiterMemory.consume(
+            context.clientAddress ?? context.request.headers.get('x-forwarded-for') ?? 'unknown'
+        );
+    } catch {
+        return create_response_status(429); // stop here
+    }
 
-    
     // Add security layer for response headers
     const response = await next();
 

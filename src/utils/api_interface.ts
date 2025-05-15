@@ -28,10 +28,10 @@ export async function userLogin(username: string, password: string): Promise<API
     });
 
     // Check the response
-    if(response.ok) {
+    if (response.ok) {
         return APIResultType.NoError;
     }
-    else if(response.status == 500) {
+    else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
     else {
@@ -39,24 +39,25 @@ export async function userLogin(username: string, password: string): Promise<API
     }
 }
 
-export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string, image?: File): Promise<APIResultType|ReportData> {
+export async function addReport(submitted_by: string, message: string, pic_name: string, report_type: ReportType, follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string, image?: File): Promise<APIResultType | ReportData> {
     // Setting up Form Data
     const form_data = new FormData();
+    form_data.append("submitted_by", submitted_by)
     form_data.append("message", message);
     form_data.append("pic_name", pic_name);
     form_data.append("report_type", report_type);
     form_data.append("follow_up", follow_up);
 
-    if(location) {
+    if (location) {
         form_data.append("location", location);
     }
-    if(report_date) {
+    if (report_date) {
         form_data.append("report_date", report_date);
     }
-    if(due_date) {
+    if (due_date) {
         form_data.append("due_date", due_date);
     }
-    if(image) {
+    if (image) {
         const compressed_image = await imageCompression(image, {
             maxSizeMB: 1,
             maxWidthOrHeight: 1024,
@@ -65,21 +66,21 @@ export async function addReport(message: string, pic_name: string, report_type: 
 
         form_data.append("image", compressed_image);
     }
-    
+
     form_data.append("follow_up_name", follow_up_name);
-    
+
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
         credentials: "include",
-        body: form_data
+        body: form_data,
     });
 
     // Check the response
-    if(response.ok) {
+    if (response.ok) {
         return (await response.json()) as ReportData;
     }
-    else if(response.status == 401) {
+    else if (response.status == 401) {
         return APIResultType.Unauthorized;
     }
     else {
@@ -87,7 +88,7 @@ export async function addReport(message: string, pic_name: string, report_type: 
     }
 }
 
-export async function getReport(): Promise<ReportData[]|APIResultType> {
+export async function getReport(): Promise<ReportData[] | APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/get", {
         method: "GET",
@@ -95,13 +96,13 @@ export async function getReport(): Promise<ReportData[]|APIResultType> {
     });
 
     // Check the response
-    if(response.ok) {
+    if (response.ok) {
         // Sorting report data by date
         let result = (await response.json()) as ReportData[];
         result = result.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
         return result;
     }
-    else if(response.status == 500) {
+    else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
     else {
@@ -124,10 +125,10 @@ export async function changeReportStatus(report_id: string, report_status: Repor
     });
 
     // Check the response
-    if(response.ok) {
+    if (response.ok) {
         return APIResultType.NoError;
     }
-    else if(response.status == 500) {
+    else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
     else {
@@ -149,10 +150,10 @@ export async function deleteReport(report_id: string): Promise<APIResultType> {
     });
 
     // Check the response
-    if(response.ok) {
+    if (response.ok) {
         return APIResultType.NoError;
     }
-    else if(response.status == 500) {
+    else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
     else {
@@ -160,7 +161,7 @@ export async function deleteReport(report_id: string): Promise<APIResultType> {
     }
 }
 
-export async function getPIC(): Promise<User[]|APIResultType> {
+export async function getPIC(): Promise<User[] | APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/pic/get", {
         method: "GET",
@@ -168,10 +169,10 @@ export async function getPIC(): Promise<User[]|APIResultType> {
     });
 
     // Check the response
-    if(response.ok) {
+    if (response.ok) {
         return (await response.json()) as User[];
     }
-    else if(response.status == 500) {
+    else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
     else {
@@ -191,33 +192,33 @@ export async function userLogout(): Promise<boolean> {
 }
 
 
-export async function getUser(): Promise<User|APIResultType> {
+export async function getUser(): Promise<User | APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/get", {
         method: "GET",
         credentials: "include",
     });
 
-    if(response.ok) {
+    if (response.ok) {
         return (await response.json()) as User;
     }
     else if (response.status == 401) {
         return APIResultType.Unauthorized;
     }
- 
+
     return APIResultType.InternalServerError;
 }
 
 
 
-export function string_to_reporttype(data: string): ReportType|undefined {
+export function string_to_reporttype(data: string): ReportType | undefined {
     return Object.values(ReportType).find(value => value.toString() == data);
 }
 
-export function string_to_accounttype(data: string): AccountType|undefined {
+export function string_to_accounttype(data: string): AccountType | undefined {
     return Object.values(AccountType).find(value => value.toString() == data);
 }
 
-export function string_to_reportstatus(data: string): ReportStatus|undefined {
+export function string_to_reportstatus(data: string): ReportStatus | undefined {
     return Object.values(ReportStatus).find(value => value.toString() == data);
 }
