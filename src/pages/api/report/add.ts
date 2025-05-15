@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report } from "@prisma/client";
 import { AccountType, ReportType } from "../../../types/variables";
@@ -14,6 +14,7 @@ const rateLimiterMemory = new RateLimiterMemory({
 
 const ReportBodyType = z.object({
     message: z.string(),
+    submitted_by: z.string(),
     pic_name: z.string(),
     report_type: z.nativeEnum(ReportType),
     follow_up: z.nativeEnum(AccountType),
@@ -21,20 +22,14 @@ const ReportBodyType = z.object({
     report_date: z.string(),
     due_date: z.string(),
     follow_up_name: z.string(),
-    image: z.instanceof(File).optional()
+    image: z.instanceof(File).optional(),
 });
 
 export async function POST({ request }: APIContext) {
-
-    // Verify teacher token
-    const cookies = get_cookies_from_request(request);
-    if (!cookies || !cookies["user_token"] || !verify_teacher_token(cookies["user_token"])) {
-        return create_response_status(401);
-    }
-
-
     // Check the rate-limiter
-    rateLimiterMemory.consume(cookies["user_token"]).catch(() => {
+    const forwarded = request.headers.get('x-forwarded-for');
+    const ip = forwarded ? forwarded.split(',')[0] : 'Unknown';
+    rateLimiterMemory.consume(ip).catch(() => {
         return create_response_status(429);
     })
 
@@ -57,7 +52,7 @@ export async function POST({ request }: APIContext) {
         return create_response_status(400);
     }
 
-    const { message, pic_name, report_type, follow_up, location, report_date, due_date, follow_up_name, image } = parsed_result.data;
+    const { message, pic_name, report_type, follow_up, location, report_date, due_date, follow_up_name, image, submitted_by } = parsed_result.data;
 
 
     // Upload file if image exists
@@ -65,7 +60,7 @@ export async function POST({ request }: APIContext) {
 
     if (image) {
         console.log("Sending Image...");
-        if (image.size > 10 * 1024 * 1024) {
+        if (image.size > 5 * 1024 * 1024) {
             return create_response_status(413);
         }
 
@@ -77,11 +72,15 @@ export async function POST({ request }: APIContext) {
         form_data.append("image", image);
         form_data.append("test", "test");
 
+        const report_num = (await prisma.report.findMany()).length;
+        const server_token = process_server_token(report_num);
+
+
         const response = await fetch(`${process.env.PHP_SERVER_URL!}/upload_image.php`, {
             method: "POST",
             headers: {
                 "Api-Authorization": process.env.PHP_SERVER_AUTHORIZATION!,
-                "Cookie": `user_token=${cookies["user_token"]}`
+                "Cookie": `server_token=${server_token}`
             },
             body: form_data
         });
@@ -89,6 +88,7 @@ export async function POST({ request }: APIContext) {
         image_file_path = await response.text();
 
         if (!response.ok) {
+            console.error(`ERROR : ${server_token}`);
             return create_response_status(response.status);
         }
 
@@ -105,6 +105,7 @@ export async function POST({ request }: APIContext) {
         report_data = await prisma.report.create({
             data: {
                 message: message,
+                submitted_by: submitted_by,
                 follow_up: follow_up,
                 follow_up_name: follow_up_name,
                 pic_name: pic_name,
