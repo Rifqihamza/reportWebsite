@@ -169,49 +169,55 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   return (
     <>
       {/* Table for desktop */}
-      <div className="hidden md:block overflow-scroll relative">
-        <table className="w-full ">
+      <div className="hidden md:block overflow-scroll relative border border-gray-300 rounded-xl">
+        <table className="w-full">
           <thead>
             <tr>
               <th
                 scope="col"
-                className="rounded-tl-xl px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
+                className="rounded-tl-xl px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider truncate"
               >
                 Tanggal
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider truncate"
+              >
+                Nama Pelapor
+              </th>
+              <th
+                scope="col"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider truncate"
               >
                 Laporan
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider truncate"
               >
                 Lokasi
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider truncate"
               >
                 PIC
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider truncate"
               >
                 Kategori
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider truncate"
               >
                 Status
               </th>
               <th
                 scope="col"
-                className="rounded-tr-xl px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
+                className="rounded-tr-xl px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider truncate"
               >
                 Action
               </th>
@@ -222,6 +228,9 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
+                </td>
+                <td className="px-2 py-3 text-center text-sm text-gray-600 max-w-[13rem] truncate">
+                  {report.nama_pelapor}
                 </td>
                 <td className="px-2 py-3 text-center text-sm text-gray-600 max-w-[13rem] truncate">
                   {report.message}
@@ -341,49 +350,49 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
                 {/* Container Details Laporan */}
                 <div className="w-full">
-                  <div className="px-4 space-y-2">
+                  <div className="px-0 md:px-4 space-y-2">
                     {/* Description Laporan */}
                     <div className="flex flex-col items-start">
                       <h1 className="text-xl font-bold tracking-wide">Deskripsi Laporan</h1>
                       <p className="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, esse!</p>
                     </div>
                     {/* Nama Pelapor */}
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Pelapor:</h1>
-                      {/* <p>{report_data?.pelapor}</p> */}
+                      <p>{report_data?.nama_pelapor}</p>
                     </div>
                     {/* PIC */}
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">PIC:</h1>
                       <p>{report_data?.pic_name}</p>
                     </div>
                     {/* Lokasi Temuan */}
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Lokasi:</h1>
                       <p>{report_data?.location}</p>
                     </div>
                     {/* Kategori Temuan */}
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Kategori:</h1>
                       <p>{report_data?.type}</p>
                     </div>
                     {/* Follow Up Temuan */}
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Follow Up:</h1>
                       <p>{report_data?.follow_up}</p>
                     </div>
                     {/* Nama PIC */}
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Nama PIC:</h1>
                       <p>{report_data?.pic_name}</p>
                     </div>
                     {/* Tanggal Temuan */}
-                    <div className="flex flex-row justify-between">
-                      <h1 className="font-semibold tracking-wide">Tanggal Temuan:</h1>
-                      <p>{report_data?.report_date ? formatDate(report_data.report_date) : "N/A"}</p>
+                    <div className="flex flex-row justify-between gap-6">
+                      <h1 className="font-semibold tracking-wide ">Tanggal Temuan:</h1>
+                      <p>{report_data?.report_date ? formatDate(report_data.report_date) : 'N/A'}</p>
                     </div>
                     {/* Tanggal Dilakukan Temuan */}
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Due Date:</h1>
                       <p>{report_data?.due_date ? formatDate(report_data.report_date) : "N/A"}</p>
                     </div>

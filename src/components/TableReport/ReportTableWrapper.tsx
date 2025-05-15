@@ -10,7 +10,7 @@ const ReportListComponent = React.lazy(() => import("../../components/TableRepor
 
 export default function ReportTableWrapper({ userData, reportData, setReportData }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
     const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
-    const [dateFilter, setDateFilter] = useState([null, null] as (Date|null)[]);
+    const [dateFilter, setDateFilter] = useState([null, null] as (Date | null)[]);
     const [searchKeyword, setSearchKeyword] = useState("");
 
     return <>
@@ -22,24 +22,24 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
         <div className="flex flex-row items-center gap-2">
             {/* Search Bar */}
             <div className="relative w-full flex items-center gap-4">
-            <input
-                type="text"
-                id="search-input"
-                placeholder="Cari laporan..."
-                className="w-full pl-9 pr-4 py-3 border placeholder:text-md border-gray-300 rounded-lg outline-none"
-                onChange={(e) => setSearchKeyword(e.target.value)}
-            />
-            <div className="flex items-center gap-1">
-                <FloatLabel>
-                    <Calendar inputId="from-date" className="w-fit h-full rounded-lg" value={dateFilter ? dateFilter[0] : null} onChange={(e) => setDateFilter([e.value?.getTime() == dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])} readOnlyInput hideOnRangeSelection />
-                    <label htmlFor="from-date">Dari tanggal</label>
-                </FloatLabel>
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Cari laporan..."
+                    className="w-full pl-9 pr-4 py-3 border placeholder:text-md border-gray-300 rounded-lg outline-none"
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                />
+                <div className="flex items-center gap-1">
+                    <FloatLabel className="overflow-x-hidden">
+                        <Calendar inputId="from-date" value={dateFilter ? dateFilter[0] : null} onChange={(e) => setDateFilter([e.value?.getTime() == dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])} readOnlyInput hideOnRangeSelection />
+                        <label htmlFor="from-date" className=" inline-block  overflow-hidden whitespace-nowrap">Dari tanggal</label>
+                    </FloatLabel>
                     -
-                <FloatLabel>
-                    <Calendar inputId="until-date" className="w-fit h-full rounded-lg" value={dateFilter ? dateFilter[1] : null} onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() == dateFilter[1]?.getTime() ? null : e.value ?? null])} readOnlyInput hideOnRangeSelection />
-                    <label htmlFor="until-date" >Sampai tanggal</label>
-                </FloatLabel>
-            </div>
+                    <FloatLabel className="overflow-x-hidden">
+                        <Calendar inputId="until-date" value={dateFilter ? dateFilter[1] : null} onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() == dateFilter[1]?.getTime() ? null : e.value ?? null])} readOnlyInput hideOnRangeSelection />
+                        <label htmlFor="until-date" className=" inline-block     overflow-hidden whitespace-nowrap">Sampai tanggal</label>
+                    </FloatLabel>
+                </div>
                 <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4  text-gray-400" />
             </div>
 
