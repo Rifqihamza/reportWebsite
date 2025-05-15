@@ -265,7 +265,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               disabled={submitDisabled}
               onClick={handle_submit}
             >
-              <i className="pi pi-send" />
+              <i className="pi pi-send mr-2" />
               Kirim Laporan
             </button>}
         </div>

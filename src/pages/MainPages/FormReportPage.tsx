@@ -7,7 +7,7 @@ export default function ReportForm({ reportData, setReportData }: { reportData: 
   return (
     <>
       <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
-        <i className="pi pi-exclamation-circle" />
+        <i className="pi pi-exclamation-circle text-2xl!" />
         <h1 className="titlePage">Laporkan Temuanmu</h1>
       </div>
       {/* End Header Title */}
