@@ -1,5 +1,6 @@
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
 import type { ReportData, User } from "../types/variables";
+import imageCompression from 'browser-image-compression';
 
 const base_url_endpoint: string = "http://localhost:4321";
 
@@ -56,7 +57,13 @@ export async function addReport(message: string, pic_name: string, report_type: 
         form_data.append("due_date", due_date);
     }
     if(image) {
-        form_data.append("image", image);
+        const compressed_image = await imageCompression(image, {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1024,
+            useWebWorker: true,
+        });
+
+        form_data.append("image", compressed_image);
     }
     
     form_data.append("follow_up_name", follow_up_name);

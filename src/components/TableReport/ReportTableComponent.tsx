@@ -10,7 +10,7 @@ import type { ToastMessage } from 'primereact/toast';
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter, dateFilter, searchKeyword }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus, dateFilter: (Date | null)[], searchKeyword: string }) {
+export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
   const [detailId, setDetailId] = useState("" as string | null);
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | string | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
@@ -36,8 +36,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     Hold: "bg-blue-100 text-blue-800",
   };
 
-
-  //? ==========> Functions <========== ?//
+  // Format date helper function
   function formatDate(dateStr: string) {
     const date = new Date(dateStr);
 
@@ -137,29 +136,8 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   }, [showedReportData]);
 
   useEffect(() => {
-    // Filter Categories and Status
-    let result_data = reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true);
-
-    // Filter Date
-    if (dateFilter && (dateFilter[0] || dateFilter[1])) {
-      const max = dateFilter[1] ? dateFilter[1].getTime() + 1000 * 60 * 60 * 24 : null;
-      const min = dateFilter[0] ? dateFilter[0].getTime() : null;
-      result_data = result_data.filter((value) => {
-        const current = new Date(value.created_at).getTime();
-        return (max ? current <= max : true) && (min ? current >= min : true);
-      });
-    }
-
-    // Filter Keyword
-    if (searchKeyword) {
-      result_data = result_data.filter((value) => {
-        const search_data = (value.pic_name + ":" + value.message + ":" + value.location).toLowerCase();
-        return search_data.includes(searchKeyword.toLowerCase());
-      });
-    }
-
-    setShowedReportData(result_data);
-  }, [currentPage, selectedFilter, reportData, dateFilter, searchKeyword]);
+    setShowedReportData(reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true));
+  }, [currentPage, selectedFilter, reportData]);
 
   useEffect(() => {
     setIsChange(selectedStatus != reportData.find((data) => data.id === detailId)?.status)
