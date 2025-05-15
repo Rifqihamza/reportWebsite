@@ -10,7 +10,7 @@ import type { ToastMessage } from 'primereact/toast';
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter, dateFilter, searchKeyword }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus, dateFilter: (Date|null)[], searchKeyword: string }) {
+export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter, dateFilter, searchKeyword }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus, dateFilter: (Date | null)[], searchKeyword: string }) {
   const [detailId, setDetailId] = useState("" as string | null);
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | string | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
@@ -36,7 +36,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     Hold: "bg-blue-100 text-blue-800",
   };
 
-  
+
   //? ==========> Functions <========== ?//
   function formatDate(dateStr: string) {
     const date = new Date(dateStr);
@@ -139,23 +139,23 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   useEffect(() => {
     // Filter Categories and Status
     let result_data = reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true);
-    
+
     // Filter Date
-    if(dateFilter && (dateFilter[0] || dateFilter[1])) {
-        const max = dateFilter[1] ? dateFilter[1].getTime() + 1000*60*60*24 : null;
-        const min = dateFilter[0] ? dateFilter[0].getTime() : null;
-        result_data = result_data.filter((value) => {
-            const current = new Date(value.created_at).getTime();
-            return (max ? current <= max : true) && (min ? current >= min : true);
-        });
+    if (dateFilter && (dateFilter[0] || dateFilter[1])) {
+      const max = dateFilter[1] ? dateFilter[1].getTime() + 1000 * 60 * 60 * 24 : null;
+      const min = dateFilter[0] ? dateFilter[0].getTime() : null;
+      result_data = result_data.filter((value) => {
+        const current = new Date(value.created_at).getTime();
+        return (max ? current <= max : true) && (min ? current >= min : true);
+      });
     }
 
     // Filter Keyword
-    if(searchKeyword) {
-        result_data = result_data.filter((value) => {
-            const search_data = (value.pic_name+":"+value.message+":"+value.location).toLowerCase();
-            return search_data.includes(searchKeyword.toLowerCase());
-        });
+    if (searchKeyword) {
+      result_data = result_data.filter((value) => {
+        const search_data = (value.pic_name + ":" + value.message + ":" + value.location).toLowerCase();
+        return search_data.includes(searchKeyword.toLowerCase());
+      });
     }
 
     setShowedReportData(result_data);
@@ -169,55 +169,55 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   return (
     <>
       {/* Table for desktop */}
-      <div className="hidden md:block overflow-scroll border border-gray-300 rounded-xl relative">
-        <table className="min-w-full">
-          <thead className="bg-[#7FA1C3]">
+      <div className="hidden md:block overflow-scroll relative">
+        <table className="w-full ">
+          <thead>
             <tr>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                className="rounded-tl-xl px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
               >
                 Tanggal
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
               >
                 Laporan
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
               >
                 Lokasi
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
               >
                 PIC
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
               >
                 Kategori
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                className="px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
               >
                 Status
               </th>
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider"
+                className="rounded-tr-xl px-2 py-3 text-center text-sm font-semibold text-white bg-[#7FA1C3] uppercase tracking-wider"
               >
                 Action
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white/20 backdrop-blur-md">
+          <tbody className="border-b border-gray-300">
             {showedReportData.slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
@@ -297,7 +297,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         : "hidden duration-500 transition-all opacity-0")}>
       </div>
 
-      <div className={(detailId ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[95vw] h-full max-h-[95vh] shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
+      <div className={(detailId ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[75vw] h-fit max-h-[95vh] shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
 
         {(() => {
           const report_data = reportData.find(value => value.id == detailId) || null;
