@@ -62,17 +62,17 @@ export default function MainPage() {
         {activeTab === 0 && (
           <ReportForm reportData={reportData} setReportData={setReportData} />
         )}
-
+        
         {/* Tab 1: Table, bebas diakses */}
         {activeTab === 1 && (
           isAuthorized ? (
-            <Suspense fallback={<LoadingAnimation />}>
+          <Suspense fallback={<LoadingAnimation />}>
             <TableReportPages
                 userData={userData}
                 reportData={reportData}
                 setReportData={setReportData}
             />
-            </Suspense>
+          </Suspense>
           ) : (
             <OverlayBlockPages />
           )
