@@ -1,6 +1,7 @@
 generator client {
   provider   = "prisma-client-js"
   engineType = "library"
+  output = "/node_modules/prisma"
 }
 
 datasource db {
@@ -8,59 +9,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model registration {
-  id         String   @id
-  email      String   @unique(map: "Registration_email_key")
-  token      String   @unique(map: "Registration_token_key")
-  created_at DateTime @default(now())
+// Enum
+enum AccountType {
+  Guru
+  Siswa
+  Vendor
 }
 
-model report {
-  id             String           @id
-  submitted_by   String
-  message        String
-  type           report_type
-  follow_up      report_follow_up
-  follow_up_name String
-  status         report_status    @default(Hold)
-  location       String?
-  image          String
-  created_at     DateTime         @default(now())
-  report_date    DateTime         @default(now())
-  due_date       DateTime         @default(now())
-  pic_name       String
-}
-
-model users {
-  id         String     @id
-  email      String     @unique(map: "Users_email_key")
-  username   String     @unique(map: "Users_username_key")
-  password   String
-  role       users_role
-  created_at DateTime   @default(now())
-}
-
-enum report_type {
+enum ReportType {
   VR
   Safety
   Abnormality
 }
 
-enum report_follow_up {
-  Guru
-  Siswa
-  Vendor
-}
-
-enum users_role {
-  Guru
-  Siswa
-  Vendor
-}
-
-enum report_status {
+enum ReportStatus {
   NotStarted
   InProcess
   Complete
   Hold
+}
+
+// Database model
+model Users {
+  id       String      @id @default(uuid())
+  email    String      @unique
+  username String      @unique
+  password String
+  role     AccountType
+
+  created_at DateTime @default(now())
+}
+
+model Registration {
+  id    String @id @default(uuid())
+  email String @unique
+  token String @unique
+
+  created_at DateTime @default(now())
+}
+
+model Report {
+  id             String       @id @default(uuid())
+  submitted_by   String
+  message        String
+  type           ReportType
+  follow_up      AccountType
+  follow_up_name String
+  status         ReportStatus @default(Hold)
+  location       String?
+  image          String
+
+  created_at DateTime @default(now())
+
+  report_date DateTime @default(now())
+  due_date    DateTime @default(now())
+
+  // Relation
+  pic_name String
 }

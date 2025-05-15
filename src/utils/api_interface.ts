@@ -73,7 +73,7 @@ export async function addReport(submitted_by: string, message: string, pic_name:
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
         credentials: "include",
-        body: form_data
+        body: form_data,
     });
 
     // Check the response
