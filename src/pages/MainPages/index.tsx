@@ -8,9 +8,9 @@ import React, { Suspense, useEffect, useState } from "react";
 import { PrimeReactProvider } from "primereact/api";
 import LogoutButton from "../../components/LogoutButton/LogoutButtonComponent";
 
-import TableReportPages from "./TableReportPage";
+import ReportForm from "./FormReportPage";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
-const ReportForm = React.lazy(() => import("./FormReportPage"));
+const TableReportPages = React.lazy(() => import("./TableReportPage"));
 const ApexChart = React.lazy(() => import("./ChartPage"));
 
 export default function MainPage() {
@@ -58,21 +58,20 @@ export default function MainPage() {
 
       {/* Content */}
       <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 max-h-[35rem] md:h-[38rem] lg:h-[38rem] relative overflow-y-scroll bg-white shadow-md shadow-gray-600">
-
-        {/* Tab 0: Table, bebas diakses */}
+        {/* Tab 0: Form Report */}
         {activeTab === 0 && (
-          <TableReportPages
-            userData={userData}
-            reportData={reportData}
-            setReportData={setReportData}
-          />
+          <ReportForm reportData={reportData} setReportData={setReportData} />
         )}
 
-        {/* Tab 1: Form Report */}
+        {/* Tab 1: Table, bebas diakses */}
         {activeTab === 1 && (
           isAuthorized ? (
             <Suspense fallback={<LoadingAnimation />}>
-              <ReportForm reportData={reportData} setReportData={setReportData} />
+            <TableReportPages
+                userData={userData}
+                reportData={reportData}
+                setReportData={setReportData}
+            />
             </Suspense>
           ) : (
             <OverlayBlockPages />

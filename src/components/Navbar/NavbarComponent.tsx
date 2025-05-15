@@ -15,14 +15,14 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
             {/* Desk Navbar */}
             <div className="mb-4 px-4 py-2 bg-white rounded-[50px] hidden md:flex flex-row items-center gap-6 mx-5" >
                 <button
-                    onClick={() => setActiveTab(1)}
-                    className={`tab-button ${activeTab === 1 ? "active" : ""}`}
+                    onClick={() => setActiveTab(0)}
+                    className={`tab-button ${activeTab === 0 ? "active" : ""}`}
                 >
                     Report Form
                 </button>
                 <button
-                    onClick={() => setActiveTab(0)}
-                    className={`tab-button ${activeTab === 0 ? "active" : ""}`}
+                    onClick={() => setActiveTab(1)}
+                    className={`tab-button ${activeTab === 1 ? "active" : ""}`}
                 >
                     Table Data
                 </button>
