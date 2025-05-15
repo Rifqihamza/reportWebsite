@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_cookie, first_initialization } from "../../../utils/api_helper";
+import { create_response_cookie } from "../../../utils/api_helper";
 import cookie from 'cookie';
 
 export async function POST({}: APIContext) {

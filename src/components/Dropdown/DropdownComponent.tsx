@@ -1,14 +1,15 @@
-import React, { useState, type Dispatch, type SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 interface DropdownProps {
   id: string;
-  label: string;
+  label?: string;
+  icon?: string;
   items: string[];
   selected: string | null;
   setSelected: Dispatch<SetStateAction<string | null>>;
 }
 
-export default function Dropdown({ id, label, items, selected, setSelected }: DropdownProps) {
+export default function Dropdown({ id, label, icon, items, selected, setSelected }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = (option: string) => {
@@ -18,9 +19,13 @@ export default function Dropdown({ id, label, items, selected, setSelected }: Dr
 
   return (
     <div className="relative text-left w-full dropdown-container" data-dropdown-id={id}>
+      <span className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center mb-3">
+        <i className={icon}></i>
+        <h1>{label}</h1>
+      </span>
       <button
         type="button"
-        className="dropdown-trigger flex flex-row items-center justify-between w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 "
+        className="dropdown-trigger flex flex-row items-center justify-between w-full px-4 py-3 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 "
         aria-expanded={isOpen}
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}

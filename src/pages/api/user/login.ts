@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_cookie, create_response_status, first_initialization, generate_user_token } from "../../../utils/api_helper";
+import { create_response_cookie, create_response_status, generate_user_token } from "../../../utils/api_helper";
 import cookie from 'cookie';
 import { prisma } from "../../../utils/db";
 
