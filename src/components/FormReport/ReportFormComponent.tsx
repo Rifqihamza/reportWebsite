@@ -10,7 +10,7 @@ import {
   SendOutlined,
   CloudUploadOutlined,
 } from '@mui/icons-material';
-import Dropdown from "../Dropdowns/DropdownsComponents";
+import Dropdown from "../Dropdown/DropdownComponent";
 import { addReport, APIResultType } from '../../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../../types/variables";
 import { Toast } from "primereact/toast";

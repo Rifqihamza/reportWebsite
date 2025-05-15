@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from 
 import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../../types/variables';
 import { Image } from 'primereact/image'
 import { APIResultType, changeReportStatus, deleteReport } from "../../utils/api_interface";
-import Dropdown from "../Dropdowns/DropdownsComponents";
+import Dropdown from "../Dropdown/DropdownComponent";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 
@@ -10,7 +10,7 @@ import type { ToastMessage } from 'primereact/toast';
 
 const reportsPerPage = 5;
 
-export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus }) {
+export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter, dateFilter, searchKeyword }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus, dateFilter: (Date|null)[], searchKeyword: string }) {
   const [detailId, setDetailId] = useState("" as string | null);
   const [selectedStatus, setSelectedStatus] = useState(null as ReportStatus | string | null);
   const [saveDisabled, setSaveDisabled] = useState(false);
@@ -36,7 +36,8 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     Hold: "bg-blue-100 text-blue-800",
   };
 
-  // Format date helper function
+  
+  //? ==========> Functions <========== ?//
   function formatDate(dateStr: string) {
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat("id-ID", {
@@ -117,18 +118,41 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPage, setMaxPage] = useState(0);
 
+
+  //? ==========> Use Effects <========== ?//
   useEffect(() => {
-    console.log(showedReportData);
     setMaxPage(Math.ceil(showedReportData.length / reportsPerPage));
   }, [showedReportData]);
 
   useEffect(() => {
-    setShowedReportData(reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true));
-  }, [currentPage, selectedFilter, reportData]);
+    // Filter Categories and Status
+    let result_data = reportData.filter((value) => selectedFilter ? (string_to_reportstatus(selectedFilter) ? value.status == selectedFilter : value.type == selectedFilter) : true);
+    
+    // Filter Date
+    if(dateFilter && (dateFilter[0] || dateFilter[1])) {
+        const max = dateFilter[1] ? dateFilter[1].getTime() + 1000*60*60*24 : null;
+        const min = dateFilter[0] ? dateFilter[0].getTime() : null;
+        result_data = result_data.filter((value) => {
+            const current = new Date(value.created_at).getTime();
+            return (max ? current <= max : true) && (min ? current >= min : true);
+        });
+    }
+
+    // Filter Keyword
+    if(searchKeyword) {
+        result_data = result_data.filter((value) => {
+            const search_data = (value.pic_name+":"+value.message+":"+value.location).toLowerCase();
+            return search_data.includes(searchKeyword.toLowerCase());
+        });
+    }
+
+    setShowedReportData(result_data);
+  }, [currentPage, selectedFilter, reportData, dateFilter, searchKeyword]);
 
   useEffect(() => {
     setIsChange(selectedStatus != reportData.find((data) => data.id === detailId)?.status)
-  }, [selectedStatus])
+  }, [selectedStatus]);
+
 
   return (
     <>

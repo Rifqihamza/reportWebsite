@@ -34,7 +34,7 @@ export default function PopupDemo(props: menuTieredProps) {
                 return {
                     label: status.toString(),
                     template: () => (
-                        <div className="flex align-items-center gap-2">
+                        <div className={"flex align-items-center gap-2" + (props.selectedFilter == status ? " text-[#1d4ed8]" : "")}>
                             {(() => {
                                 switch (status) {
                                     case ReportStatus.Complete:
@@ -63,7 +63,7 @@ export default function PopupDemo(props: menuTieredProps) {
                 return {
                     label: reporttype_to_string(type),
                     template: () => (
-                        <div className="flex align-items-center gap-2">
+                        <div className={"flex align-items-center gap-2" + (props.selectedFilter == type ? " text-[#1d4ed8]" : "")}>
                             {(() => {
                                 switch (type) {
                                     case ReportType.Abnormality:
@@ -90,7 +90,7 @@ export default function PopupDemo(props: menuTieredProps) {
     return (
         <div className="card flex justify-content-center" >
             <TieredMenu model={items} popup ref={menu} breakpoint='4096px' />
-            <button className='bg-[#7fa1c3] hover:bg-[#6482ad] px-4 py-2 rounded-lg text-white duration-200' onClick={(e) => menu.current?.toggle(e)
+            <button className='bg-[#7fa1c3] hover:bg-[#6482ad] px-4 py-3 rounded-lg text-white duration-200' onClick={(e) => menu.current?.toggle(e)
             }>{props.selectedFilter ? (reporttype_to_string(props.selectedFilter) ?? props.selectedFilter.toString()) : props.label}</button>
         </div>
     )

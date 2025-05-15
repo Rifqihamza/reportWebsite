@@ -8,8 +8,8 @@ import { Suspense } from "react";
 
 
 
-const LineChart = React.lazy(() => import("../ChartLine/LineChartComponents"));
-const PieChart = React.lazy(() => import("../ChartPie/PieChartComponents"));
+const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
+const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
 
 
 const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];

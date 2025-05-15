@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import ReportFormComponent from "../FormReport/ReportFormComponent";
+import ReportFormComponent from "../../components/FormReport/ReportFormComponent";
 import type { ReportData } from "../../types/variables";
 import ReportIcon from '@mui/icons-material/Report';
 

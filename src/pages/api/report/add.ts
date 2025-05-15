@@ -25,10 +25,10 @@ const ReportBodyType = z.object({
 });
 
 export async function POST({ request }: APIContext) {
-    
+
     // Verify teacher token
     const cookies = get_cookies_from_request(request);
-    if(!cookies || !cookies["user_token"] || !verify_teacher_token(cookies["user_token"])) {
+    if (!cookies || !cookies["user_token"] || !verify_teacher_token(cookies["user_token"])) {
         return create_response_status(401);
     }
 
@@ -44,31 +44,31 @@ export async function POST({ request }: APIContext) {
         [key: string]: string | object | File
     } = {};
     for (const [key, value] of (await request.formData()).entries()) {
-        if(key == "image" && value instanceof File) {
+        if (key == "image" && value instanceof File) {
             result[key] = value;
             continue;
         }
-        
+
         result[key] = value.valueOf();
     }
-    
+
     const parsed_result = ReportBodyType.safeParse(result);
-    if(!parsed_result.success) {
+    if (!parsed_result.success) {
         return create_response_status(400);
     }
 
     const { message, pic_name, report_type, follow_up, location, report_date, due_date, follow_up_name, image } = parsed_result.data;
 
-    
+
     // Upload file if image exists
     let image_file_path = "";
 
-    if(image) {
+    if (image) {
         console.log("Sending Image...");
-        if(image.size > 10 * 1024 * 1024) {
+        if (image.size > 10 * 1024 * 1024) {
             return create_response_status(413);
         }
-        
+
         if (!image.type.startsWith('image/')) {
             return create_response_status(415);
         }
@@ -92,16 +92,16 @@ export async function POST({ request }: APIContext) {
             console.error(`There's an error when trying to upload image. Error Response: ${image_file_path}`);
             return create_response_status(response.status);
         }
-        
-        if(typeof image_file_path != "string") {
+
+        if (typeof image_file_path != "string") {
             console.error(`The file path that php server gave is not a string!`);
             return create_response_status(500);
         }
     }
-    
+
 
     // Create new report data
-    let report_data: Report|null;
+    let report_data: Report | null;
     try {
         report_data = await prisma.report.create({
             data: {
@@ -117,15 +117,15 @@ export async function POST({ request }: APIContext) {
             }
         })
     }
-    catch(err) {
-        if(err instanceof Prisma.PrismaClientValidationError) {
+    catch (err) {
+        if (err instanceof Prisma.PrismaClientValidationError) {
             return create_response_status(400);
         }
-        
+
         console.error(`There's an error when trying to add report data. Error: ${err}`);
         return create_response_status(500);
     }
-    
+
 
     // Return OK
     // return create_response_status(200);
