@@ -14,11 +14,6 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
     const [searchKeyword, setSearchKeyword] = useState("");
 
     return <>
-        {/* Header Title */}
-        <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
-            <i className="pi pi-clipboard text-2xl!" />
-            <h1 className="titlePage">Data Laporan</h1>
-        </div>
         <div className="flex md:flex-row flex-col items-center gap-2">
             {/* Search Bar */}
             <div className="relative w-full flex items-center gap-4">
