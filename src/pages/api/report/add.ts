@@ -99,7 +99,8 @@ export async function POST({ request }: APIContext) {
         image_file_path = await response.text();
 
         if (!response.ok) {
-            console.error(`ERROR : ${server_token}`);
+            console.error(`Server Token: ${server_token}`);
+            console.error(`ERROR : ${image_file_path}`);
             return create_response_status(response.status);
         }
 

@@ -3,6 +3,7 @@ import "../styles/global.css";
 import "primereact/resources/themes/lara-light-blue/theme.css"; // atau tema lain
 import "primereact/resources/primereact.min.css"; // komponen core
 import "primeicons/primeicons.css"; // icon
+
 ---
 
 <!doctype html>
@@ -26,5 +27,10 @@ import "primeicons/primeicons.css"; // icon
     </div>
     
     <slot />
+
+    <script
+      is:inline
+      src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"
+    ></script>
   </body>
 </html>
