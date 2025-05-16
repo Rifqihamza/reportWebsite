@@ -1,6 +1,6 @@
 import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
-import { create_response_status, get_cookies_from_request, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
 
 export async function DELETE({ request }: APIContext) {
     // Verify user_token
@@ -31,12 +31,15 @@ export async function DELETE({ request }: APIContext) {
     if(report_data.image) {
         const form_data = new FormData();
         form_data.append("image_location", report_data.image);
-    
+
+        const report_num = (await prisma.report.findMany()).length;
+        const server_token = process_server_token(report_num);
+
         const response = await fetch(`${process.env.PHP_SERVER_URL!}/delete_image.php`, {
             method: "POST",
             headers: {
                 "Api-Authorization": process.env.PHP_SERVER_AUTHORIZATION!,
-                "Cookie": `user_token=${cookies["user_token"]}`
+                "Cookie": `server_token=${server_token}`
             },
             body: form_data
         });
