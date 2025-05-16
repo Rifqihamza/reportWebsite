@@ -33,11 +33,13 @@
     "react": "^19.1.0",
     "react-apexcharts": "^1.7.0",
     "react-dom": "^19.1.0",
+    "strftime": "^0.10.3",
     "zod": "^3.24.4"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.11",
+    "@types/strftime": "^0.9.8",
     "prisma": "^6.7.0",
     "react-dom": "^19.1.0"
   }
