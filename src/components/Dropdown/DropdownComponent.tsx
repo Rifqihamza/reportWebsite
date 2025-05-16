@@ -5,8 +5,8 @@ interface DropdownProps<T extends { toString(): string }> {
   label?: string;
   icon?: string;
   items: T[];
-  selected: T;
-  setSelected: Dispatch<SetStateAction<T>>;
+  selected: T|null;
+  setSelected: Dispatch<SetStateAction<T|null>>;
 }
 
 export default function Dropdown<T extends { toString(): string }>({ id, label, icon, items, selected, setSelected }: DropdownProps<T>) {

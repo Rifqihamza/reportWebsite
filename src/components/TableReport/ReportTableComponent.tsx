@@ -153,7 +153,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     // Filter Keyword
     if (searchKeyword) {
       result_data = result_data.filter((value) => {
-        const search_data = (value.pic_name + ":" + value.message + ":" + value.location).toLowerCase();
+        const search_data = (value.submitted_by + ":" + value.pic_name + ":" + value.message + ":" + value.location).toLowerCase();
         return search_data.includes(searchKeyword.toLowerCase());
       });
     }

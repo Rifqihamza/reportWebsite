@@ -39,7 +39,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
     const [pieCategory, setPieCategory] = useState([] as CategoryType[]);
     const [pieStatus, setPieStatus] = useState([] as CategoryType[]);
-    const [chartFilter, setChartFilter] = useState(LineChartFilterOption.Year);
+    const [chartFilter, setChartFilter] = useState(LineChartFilterOption.Year as LineChartFilterOption | null);
 
     useEffect(() => {
         let result: LineChartValueType[] = [];
