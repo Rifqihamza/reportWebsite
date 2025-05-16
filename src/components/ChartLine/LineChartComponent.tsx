@@ -13,14 +13,14 @@ interface LineChartProps {
 
 const LineChart: React.FC<LineChartProps> = ({ reports }) => {
 
-    const categories = Array.from(new Set(reports.map(r => r.labels))); 
-    const types = Array.from(new Set(reports.map(r => r.type))); 
+    const categories = Array.from(new Set(reports.map(r => r.labels)));
+    const types = Array.from(new Set(reports.map(r => r.type)));
 
     const grouped: Record<string, Record<string, number>> = {};
     types.forEach(type => {
         grouped[type] = {};
         categories.forEach(label => {
-            grouped[type][label] = 0; 
+            grouped[type][label] = 0;
         });
     });
 
@@ -38,7 +38,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
             type: 'line' as const,
         },
         theme: {
-            palette: 'palette8' 
+            palette: 'palette8'
         },
         dataLabels: {
             enabled: true,
@@ -53,19 +53,12 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
             position: 'bottom' as const,
         },
         stroke: {
-            curve: 'straight' as const,
+            curve: 'smooth' as const,
         }
     };
 
     return (
-        <>
-            <div className='hidden md:block'>
-                <ReactApexChart options={options} series={series} type="line" height={350} />
-            </div>
-            <div className='block md:hidden'>
-                <ReactApexChart options={options} series={series} type="line" height={400} />
-            </div>
-        </>
+        <ReactApexChart options={options} series={series} type="line" height={300} />
     );
 };
 

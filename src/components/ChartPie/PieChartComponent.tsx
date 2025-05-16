@@ -11,6 +11,16 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({ reports }) => {
+    const statusColorHex: Record<string, string> = {
+        NotStarted: "#fca5a5", // Tailwind bg-red-300
+        InProcess: "#fde047",  // Tailwind bg-yellow-300
+        Complete: "#86efac",   // Tailwind bg-green-300
+        Hold: "#93c5fd",       // Tailwind bg-blue-300
+        Abnormality: "#f3d262",
+        "5R": "#7750a5",
+        Safety: "#ea8557"
+    };
+
     // Hitung jumlah masing-masing jenis laporan
     const reportByCategory = reports.reduce((acc, report) => {
         report.labels = (report.labels == "VR" ? "5R" : report.labels);
@@ -24,6 +34,7 @@ const PieChart: React.FC<PieChartProps> = ({ reports }) => {
 
     const labels = Object.keys(reportByCategory);
     const series = Object.values(reportByCategory);
+    const colors = labels.map(label => statusColorHex[label] || '#E0E0E0'); // default gray if not matched
 
     const options = {
         chart: {
@@ -31,8 +42,11 @@ const PieChart: React.FC<PieChartProps> = ({ reports }) => {
             data: series,
         },
         labels,
+        colors,
         theme: {
-            palette: 'palette1' // upto palette10
+            monochrome: {
+                enabled: false
+            }
         },
         plotOptions: {
             pie: {
@@ -58,21 +72,14 @@ const PieChart: React.FC<PieChartProps> = ({ reports }) => {
             }
         },
         legend: {
-            show: true,
+            show: false,
             position: 'bottom' as 'bottom',
             flexWrap: 'wrap' as 'wrap',
         },
     };
 
     return (
-        <>
-            <div id="chart" className='hidden md:flex flex-col items-center justify-center'>
-                <ReactApexChart options={options} series={series} type="pie" width="350" />
-            </div>
-            <div id="chart" className='flex md:hidden flex-col flex-wrap items-center justify-center'>
-                <ReactApexChart options={options} series={series} type="pie" width="300" />
-            </div>
-        </>
+        <ReactApexChart options={options} series={series} type="pie" width="200" />
     );
 };
 

@@ -244,7 +244,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               className="flex flex-col items-center justify-center w-full h-32 border-2 border-[#7FA1C3] border-dashed rounded-xl cursor-pointer bg-[#E2DAD6] hover:bg-[#F5EDED] duration-400"
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <i className="pi pi-cloud" />
+                <i className="pi pi-cloud text-[#7FA1C3]" />
                 <p className={`mb-1 text-sm text-${image ? "black" : "[#7FA1C3]"}`} id="file-name-display">
                   {image ? image.name : "Klik untuk upload foto"}
                 </p>

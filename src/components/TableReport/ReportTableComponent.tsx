@@ -272,7 +272,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
               <h3 className="font-bold text-lg lg:text-2xl text-gray-900 truncate">Details Laporan</h3>
               <p className="font-semibold text-xs lg:text-md truncate">{formatDate(new Date(report.created_at).toISOString())}</p>
             </div>
-            <div className="text-sm text-gray-500 space-y-2">
+            <div className="text-sm text-gray-500 space-y-2 break-all">
               <p>
                 <span className="font-semibold">Nama Pelapor: </span> {report.submitted_by}
               </p>
@@ -358,9 +358,9 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <div className="w-full">
                   <div className="px-0 md:px-4 space-y-2">
                     {/* Description Laporan */}
-                    <div className="flex flex-col items-start">
+                    <div className="flex flex-col items-start ">
                       <h1 className="text-xl font-bold tracking-wide">Deskripsi Laporan</h1>
-                      <p className="">{report_data?.message}</p>
+                      <p className="break-all">{report_data?.message}</p>
                     </div>
                     <hr />
                     {/* Nama Pelapor */}

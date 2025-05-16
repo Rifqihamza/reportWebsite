@@ -1,104 +1,99 @@
 import BarChartIcon from '@mui/icons-material/BarChart';
-import React, { useEffect, useState } from "react";
-import { Dropdown, } from 'primereact/dropdown';
+import React, { useEffect, useMemo, useState, Suspense } from "react";
+import { Dropdown } from 'primereact/dropdown';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
 import type { ReportData } from "../../types/variables";
 import { ReportType, reporttype_to_string } from '../../types/variables';
-import { Suspense } from "react";
-
-
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
-
+const PercenComp = React.lazy(() => import("../../components/PercenContainer/PercenContComponent"));
 
 const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
 
 type CategoryType = {
-    labels: string,
-    value: number
-}
+    labels: string;
+    value: number;
+};
 
 type LineChartValueType = {
     labels: string;
     type: ReportType | string;
     value: number;
-}
+};
 
 const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const currentYear = new Date().getFullYear();
-    const [availableYears, setAvailableYears] = useState([] as string[]);
+    const [availableYears, setAvailableYears] = useState<number[]>([]);
     const [selectedYear, setSelectedYear] = useState<number>(currentYear);
-    const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
-    const [pieCategory, setPieCategory] = useState([] as CategoryType[])
-    const [pieStatus, setPieStatus] = useState([] as CategoryType[])
-
+    const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
+    const [pieCategory, setPieCategory] = useState<CategoryType[]>([]);
+    const [pieStatus, setPieStatus] = useState<CategoryType[]>([]);
+    const [percenCategory, setPercenCategory] = useState<CategoryType[]>([]);
+    const [statusCategory, setStatusCategory] = useState<CategoryType[]>([]);
     useEffect(() => {
+        // Generate line chart data
         let result: LineChartValueType[] = [];
-        monthsShort.forEach(value => {
-            Object.values(ReportType).map(reportType => {
+        monthsShort.forEach(month => {
+            Object.values(ReportType).forEach(reportType => {
                 result.push({
-                    labels: value,
+                    labels: month,
                     type: reporttype_to_string(reportType),
-                    value: 0
+                    value: 0,
                 });
             });
         });
-        reportData.filter(value => (new Date(value.created_at).getFullYear() == selectedYear)).forEach(data => {
-            let date = new Date(data.created_at);
-            let label = monthsShort[date.getMonth()];
 
-            let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
-            result[index].value += 1;
-        })
+        reportData
+            .filter(report => new Date(report.created_at).getFullYear() === selectedYear)
+            .forEach(report => {
+                const date = new Date(report.created_at);
+                const label = monthsShort[date.getMonth()];
+                const typeLabel = reporttype_to_string(report.type);
+
+                const index = result.findIndex(
+                    r => r.labels === label && r.type === typeLabel
+                );
+                if (index !== -1) {
+                    result[index].value += 1;
+                }
+            });
 
         result.sort((a, b) => monthsShort.indexOf(a.labels) - monthsShort.indexOf(b.labels));
-
         setCurrentYearReports(result);
     }, [selectedYear, reportData]);
 
     useEffect(() => {
-        // Get the category and status statistics
-        let categoryStats: CategoryType[] = [];
-        let statusStats: CategoryType[] = [];
-        let resultAvailableYears: {
-            [key: number]: number
-        } = {};
+        const categoryStats: Record<string, number> = {};
+        const statusStats: Record<string, number> = {};
+        const percenStats: Record<string, number> = {};
+        const yearSet = new Set<number>();
 
-        reportData.forEach(data => {
-            let index = categoryStats.findIndex(res_data => res_data.labels == data.type.toString());
-            if (index < 0) {
-                categoryStats.push({
-                    labels: data.type.toString(),
-                    value: 1
-                });
-            }
-            else {
-                categoryStats[index].value += 1;
-            }
+        reportData.forEach(report => {
+            const year = new Date(report.created_at).getFullYear();
+            yearSet.add(year);
 
-            index = statusStats.findIndex(res_data => res_data.labels == data.status.toString());
-            if (index < 0) {
-                statusStats.push({
-                    labels: data.status.toString(),
-                    value: 1
-                });
-            }
-            else {
-                statusStats[index].value += 1;
-            }
+            const typeLabel = reporttype_to_string(report.type);
+            categoryStats[typeLabel] = (categoryStats[typeLabel] || 0) + 1;
 
-            let year = new Date(data.created_at).getFullYear();
-            resultAvailableYears[year] = 0;
+            const statusLabel = report.status.toString();
+            statusStats[statusLabel] = (statusStats[statusLabel] || 0) + 1;
+
+            const percenLabel = reporttype_to_string(report.type);
+            percenStats[percenLabel] = (percenStats[percenLabel] || 0) + 1;
         });
 
-        setPieCategory(categoryStats);
-        setPieStatus(statusStats);
-        let resultAvailableYearsKeys = Object.keys(resultAvailableYears);
-        setAvailableYears(resultAvailableYearsKeys);
-        setSelectedYear(Number.parseInt(resultAvailableYearsKeys[0]));
-    }, [reportData]);
+        const formattedCategory = Object.entries(categoryStats).map(([labels, value]) => ({ labels, value: value as number }));
+        const formattedCategoryPercen = Object.entries(percenStats).map(([labels, value]) => ({ labels, value: value as number }));
+        const formattedStatus = Object.entries(statusStats).map(([labels, value]) => ({ labels, value: value as number }));
 
+        setPieCategory(formattedCategory);
+        setPieStatus(formattedStatus);
+        setPercenCategory(formattedCategoryPercen);
+        setStatusCategory(formattedStatus)
+        setAvailableYears(Array.from(yearSet).sort((a, b) => b - a));
+        setSelectedYear(current => (yearSet.has(current) ? current : Array.from(yearSet)[0]));
+    }, [reportData]);
 
     return (
         <>
@@ -106,67 +101,60 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 <BarChartIcon fontSize="medium" />
                 <h1 className="titlePage">Grafik Laporan</h1>
             </div>
-            {/* Container Chart */}
-            <div className="flex flex-col items-center md:items-start md:justify-between justify-center w-full gap-16 md:px-8 md:py-10">
-                {/* Inner Container */}
-                <div className="flex flex-col md:gap-15 gap-5 w-full justify-around items-center px-4 py-2">
-                    {/* Pie Chart */}
-                    <div className="w-full flex md:flex-col lg:flex-row xl:flex-row flex-col gap-10 justify-around items-center px-4 py-6 rounded-xl border border-gray-100">
-                        <div className="flex flex-col justify-center items-center">
-                            <h1 className='font-bold'>Persentase Kategori Temuan</h1>
-                            <Suspense fallback={<>Loading..</>}>
-                                <PieChart reports={pieCategory} />
-                            </Suspense>
-                        </div>
-                        <div className="flex flex-col justify-center items-center">
-                            <h1 className='font-bold'>Persentase Status Temuan</h1>
-                            <Suspense fallback={<>Loading..</>}>
-                                <PieChart reports={pieStatus} />
-                            </Suspense>
-                        </div>
+            <div className='flex flex-col gap-4'>
+                {/* Line Chart */}
+                <div className="w-full px-3 py-4 rounded-2xl border border-gray-300 bg-white">
+                    <div className="w-full flex flex-col lg:flex-row items-center justify-between px-2 py-1">
+                        <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
+                        <Dropdown
+                            value={selectedYear}
+                            onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
+                            options={availableYears}
+                            placeholder="Pilih Tahun"
+                            className="w-full lg:w-fit"
+                        />
                     </div>
-                    {/* End Pie Chart */}
-
-                    {/* Line Chart */}
-                    <div className="w-full px-4 py-2 rounded-xl border border-gray-100">
-                        <div className="w-full flex flex-col lg:flex-row items-center justify-between px-2 py-1">
-                            <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
-                            <div className='flex lg:flex-row lg:flex-wrap flex-col items-center gap-4'>
-                                <Dropdown
-                                    value={availableYears[0]}
-                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                                    options={availableYears}
-                                    optionLabel="label"
-                                    placeholder="Pilih Tahun"
-                                    className="w-full lg:w-fit"
-                                />
-                                <Dropdown
-                                    value={availableYears[0]}
-                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                                    options={availableYears}
-                                    optionLabel="label"
-                                    placeholder="Pilih Bulan"
-                                    className="w-full lg:w-fit"
-                                />
-                                <Dropdown
-                                    value={availableYears[0]}
-                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                                    options={availableYears}
-                                    optionLabel="label"
-                                    placeholder="Pilih Tanggal"
-                                    className="w-full lg:w-fit"
-                                />
-                            </div>
-                        </div>
+                    <Suspense fallback={<>Loading..</>}>
                         <LineChart reports={currentYearReports} />
-                    </div>
-                    {/* End Line Chart */}
+                    </Suspense>
                 </div>
-                {/* End Inner Container */}
-            </div>
-            {/* End Container Chart */}
+
+                <div className="w-full flex flex-col lg:flex-row gap-4 space-y-3 md:space-y-0 justify-center md:justify-between">
+                    {/* Pie Chart Kategori */}
+                    <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
+                        <h1 className='font-bold'>Persentase Kategori Temuan</h1>
+                        <Suspense fallback={<>Loading..</>}>
+                            <PieChart reports={pieCategory} />
+                        </Suspense>
+                    </div>
+
+                    {/* Pie Chart Status */}
+                    <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
+                        <h1 className='font-bold'>Persentase Status Temuan</h1>
+                        <Suspense fallback={<>Loading..</>}>
+                            <PieChart reports={pieStatus} />
+                        </Suspense>
+                    </div>
+                    {/* Percentage Status */}
+                    <Suspense fallback={<>Loading..</>}>
+                        <PercenComp
+                            reports={statusCategory}
+                            label='Status'
+                            icon='pi pi-exclamation-triangle'
+                        />
+                    </Suspense>
+                    {/* Percentage Category */}
+                    <Suspense fallback={<>Loading..</>}>
+                        <PercenComp
+                            reports={percenCategory}
+                            label='Kategori'
+                            icon='pi pi-exclamation-triangle'
+                        />
+                    </Suspense>
+                </div>
+            </div >
         </>
-    )
-}
+    );
+};
 
 export default GraphicChart;

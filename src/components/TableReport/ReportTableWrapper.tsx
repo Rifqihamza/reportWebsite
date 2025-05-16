@@ -29,12 +29,12 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
             <div className="flex items-center gap-2">
                 <FloatLabel className="overflow-x-hidden">
                     <Calendar inputId="from-date" value={dateFilter ? dateFilter[0] : null} onChange={(e) => setDateFilter([e.value?.getTime() == dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])} readOnlyInput hideOnRangeSelection />
-                    <label htmlFor="from-date" className=" inline-block  overflow-hidden whitespace-nowrap">Dari tanggal</label>
+                    <label htmlFor="from-date" className="whitespace-nowrap">Dari tanggal</label>
                 </FloatLabel>
                 -
                 <FloatLabel className="overflow-x-hidden">
                     <Calendar inputId="until-date" value={dateFilter ? dateFilter[1] : null} onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() == dateFilter[1]?.getTime() ? null : e.value ?? null])} readOnlyInput hideOnRangeSelection />
-                    <label htmlFor="until-date" className=" inline-block     overflow-hidden whitespace-nowrap">Sampai tanggal</label>
+                    <label htmlFor="until-date" className="whitespace-nowrap">Sampai tanggal</label>
                 </FloatLabel>
                 <TieredDropDown label="Filter" selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             </div>
