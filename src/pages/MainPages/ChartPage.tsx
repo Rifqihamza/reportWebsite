@@ -95,7 +95,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             let result_format = "";
 
             if(chartFilter == LineChartFilterOption.Today) {
-                result_format += "%H%d%m";
+                result_format += "%d%m";
             }
             else if(chartFilter == LineChartFilterOption.Month) {
                 result_format += "%m";
