@@ -8,9 +8,9 @@ import React, { Suspense, useEffect, useState } from "react";
 import { PrimeReactProvider } from "primereact/api";
 import LogoutButton from "../../components/LogoutButton/LogoutButtonComponent";
 
-import TableReportPages from "./TableReportPage";
+import ReportForm from "./FormReportPage";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
-const ReportForm = React.lazy(() => import("./FormReportPage"));
+const TableReportPages = React.lazy(() => import("./TableReportPage"));
 const ApexChart = React.lazy(() => import("./ChartPage"));
 
 export default function MainPage() {
@@ -63,8 +63,8 @@ export default function MainPage() {
         {activeTab === 0 && (
           <ReportForm reportData={reportData} setReportData={setReportData} />
         )}
-
-        {/* Tab 1: Form Report */}
+        
+        {/* Tab 1: Table, bebas diakses */}
         {activeTab === 1 && (
           isAuthorized ? (
             <Suspense fallback={<LoadingAnimation />}>

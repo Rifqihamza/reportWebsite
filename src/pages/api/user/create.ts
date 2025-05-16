@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
-import { create_response_status, first_initialization, get_cookies_from_request, verify_admin_token } from "../../../utils/api_helper";
-import { type AccountType, Prisma } from "@prisma/client";
+import { create_response_status, get_cookies_from_request, verify_admin_token } from "../../../utils/api_helper";
+import { Prisma } from "@prisma/client";
 
 export async function POST({ request }: APIContext) {
     // Get the user data

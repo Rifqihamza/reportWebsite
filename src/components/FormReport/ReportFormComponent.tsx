@@ -1,15 +1,4 @@
 import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
-import {
-  DescriptionOutlined,
-  PersonOutline,
-  LocationOnOutlined,
-  EventNoteOutlined,
-  AccessTimeOutlined,
-  UploadFileOutlined,
-  SendOutlined,
-  CloudUploadOutlined,
-  Person4
-} from '@mui/icons-material';
 import Dropdown from "../Dropdown/DropdownComponent";
 import { addReport, APIResultType } from '../../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../../types/variables";
@@ -109,7 +98,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   htmlFor="submitted_by"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <PersonOutline />
+                  <i className="pi pi-address-book" />
                   Pelapor
                 </label>
                 <input
@@ -128,7 +117,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   htmlFor="pic"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <Person4 />
+                  <i className="pi pi-user" />
                   Nama PIC
                 </label>
                 <input
@@ -147,7 +136,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   htmlFor="lokasi"
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
-                  <LocationOnOutlined />
+                  <i className="pi pi-map-marker" />
                   Lokasi
                 </label>
                 <input
@@ -168,7 +157,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 htmlFor="laporan"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <DescriptionOutlined />
+                <i className="pi pi-file" />
                 Detail Laporan
               </label>
               <textarea
@@ -191,7 +180,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               <label htmlFor="tanggal"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <EventNoteOutlined />
+                <i className="pi pi-calendar" />
                 Tanggal Temuan
               </label>
               <input type="datetime-local"
@@ -208,7 +197,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               <label htmlFor="dueDate"
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
-                <AccessTimeOutlined />
+                <i className="pi pi-clock" />
                 Due Date</label>
               <input type="datetime-local"
                 placeholder="Tenggat Waktu"
@@ -246,7 +235,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             htmlFor="foto"
             className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
           >
-            <UploadFileOutlined />
+            <i className="pi pi-file" />
             Foto Bukti
           </label>
           <div className="flex items-center justify-center w-full">
@@ -255,7 +244,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               className="flex flex-col items-center justify-center w-full h-32 border-2 border-[#7FA1C3] border-dashed rounded-xl cursor-pointer bg-[#E2DAD6] hover:bg-[#F5EDED] duration-400"
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <CloudUploadOutlined className="w-8 h-8 mb-3" />
+                <i className="pi pi-cloud" />
                 <p className={`mb-1 text-sm text-${image ? "black" : "[#7FA1C3]"}`} id="file-name-display">
                   {image ? image.name : "Klik untuk upload foto"}
                 </p>
@@ -276,7 +265,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               disabled={submitDisabled}
               onClick={handle_submit}
             >
-              <SendOutlined className="h-5 w-5 mr-2" />
+              <i className="pi pi-send mr-2" />
               Kirim Laporan
             </button>}
         </div>
