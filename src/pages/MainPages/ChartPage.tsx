@@ -1,10 +1,11 @@
 import BarChartIcon from '@mui/icons-material/BarChart';
 import React, { useEffect, useState } from "react";
-import { Dropdown, } from 'primereact/dropdown';
-import type { DropdownChangeEvent } from 'primereact/dropdown';
 import type { ReportData } from "../../types/variables";
 import { ReportType, reporttype_to_string } from '../../types/variables';
 import { Suspense } from "react";
+import { Calendar } from "primereact/calendar";
+import strftime from "strftime";
+import Dropdown from "../../components/Dropdown/DropdownComponent";
 
 
 
@@ -12,7 +13,9 @@ const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartC
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
 
 
-const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
+const listOfMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
+const listOfNumOfDates = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
+const listOfDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type CategoryType = {
     labels: string,
@@ -25,45 +28,114 @@ type LineChartValueType = {
     value: number;
 }
 
+enum LineChartFilterOption {
+    Year = "This Year",
+    Month = "This Month",
+    Week = "This Week",
+    Today = "Today"
+}
+
 const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
-    const currentYear = new Date().getFullYear();
-    const [availableYears, setAvailableYears] = useState([] as string[]);
-    const [selectedYear, setSelectedYear] = useState<number>(currentYear);
     const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
-    const [pieCategory, setPieCategory] = useState([] as CategoryType[])
-    const [pieStatus, setPieStatus] = useState([] as CategoryType[])
+    const [pieCategory, setPieCategory] = useState([] as CategoryType[]);
+    const [pieStatus, setPieStatus] = useState([] as CategoryType[]);
+    const [chartFilter, setChartFilter] = useState(LineChartFilterOption.Year as LineChartFilterOption | null);
 
     useEffect(() => {
         let result: LineChartValueType[] = [];
-        monthsShort.forEach(value => {
-            Object.values(ReportType).map(reportType => {
-                result.push({
-                    labels: value,
-                    type: reporttype_to_string(reportType),
-                    value: 0
+        const currentDate = new Date();
+
+        if(chartFilter == LineChartFilterOption.Year) {
+            listOfMonths.forEach(value => {
+                Object.values(ReportType).map(reportType => {
+                    result.push({
+                        labels: value,
+                        type: reporttype_to_string(reportType),
+                        value: 0
+                    });
                 });
             });
-        });
-        reportData.filter(value => (new Date(value.created_at).getFullYear() == selectedYear)).forEach(data => {
+        }
+        else if(chartFilter == LineChartFilterOption.Month) {
+            for (let index = 1; index <= listOfNumOfDates[currentDate.getMonth()]; index++) {
+                Object.values(ReportType).map(reportType => {
+                    result.push({
+                        labels: index.toString(),
+                        type: reporttype_to_string(reportType),
+                        value: 0
+                    });
+                });
+            }
+        }
+        else if(chartFilter == LineChartFilterOption.Week) {
+            listOfDay.forEach(day => {
+                Object.values(ReportType).map(reportType => {
+                    result.push({
+                        labels: day,
+                        type: reporttype_to_string(reportType),
+                        value: 0
+                    });
+                });
+            });
+        }
+        else if(chartFilter == LineChartFilterOption.Today) {
+            for (let hour = 1; hour <= 24; hour++) {
+                Object.values(ReportType).map(reportType => {
+                    result.push({
+                        labels: hour.toString(),
+                        type: reporttype_to_string(reportType),
+                        value: 0
+                    });
+                });
+            }
+        }
+        
+        reportData.filter(value => {
+            const reportDate = new Date(value.created_at);
+            let result_format = "";
+
+            if(chartFilter == LineChartFilterOption.Today) {
+                result_format += "%d%m";
+            }
+            else if(chartFilter == LineChartFilterOption.Month) {
+                result_format += "%m";
+            }
+            else if(chartFilter == LineChartFilterOption.Week) {
+                result_format = "%W";
+            }
+
+            result_format += "%y";
+
+            return strftime(result_format, reportDate) == strftime(result_format, currentDate);
+        }).forEach(data => {
             let date = new Date(data.created_at);
-            let label = monthsShort[date.getMonth()];
+            let label = "";
+            if(chartFilter == LineChartFilterOption.Year) {
+                label = listOfMonths[date.getMonth()];
+            }
+            else if(chartFilter == LineChartFilterOption.Month) {
+                label = date.getDate().toString();
+            }
+            else if(chartFilter == LineChartFilterOption.Week) {
+                label = strftime("%a", date);
+            }
+            else if(chartFilter == LineChartFilterOption.Today) {
+                label = strftime("%k", date);
+            }
 
             let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
             result[index].value += 1;
         })
 
-        result.sort((a, b) => monthsShort.indexOf(a.labels) - monthsShort.indexOf(b.labels));
+        result.sort((a, b) => listOfMonths.indexOf(a.labels) - listOfMonths.indexOf(b.labels));
 
         setCurrentYearReports(result);
-    }, [selectedYear, reportData]);
+    }, [reportData, chartFilter]);
 
     useEffect(() => {
         // Get the category and status statistics
         let categoryStats: CategoryType[] = [];
         let statusStats: CategoryType[] = [];
-        let resultAvailableYears: {
-            [key: number]: number
-        } = {};
 
         reportData.forEach(data => {
             let index = categoryStats.findIndex(res_data => res_data.labels == data.type.toString());
@@ -87,16 +159,10 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             else {
                 statusStats[index].value += 1;
             }
-
-            let year = new Date(data.created_at).getFullYear();
-            resultAvailableYears[year] = 0;
         });
 
         setPieCategory(categoryStats);
         setPieStatus(statusStats);
-        let resultAvailableYearsKeys = Object.keys(resultAvailableYears);
-        setAvailableYears(resultAvailableYearsKeys);
-        setSelectedYear(Number.parseInt(resultAvailableYearsKeys[0]));
     }, [reportData]);
 
 
@@ -131,30 +197,12 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     <div className="w-full px-4 py-2 rounded-xl border border-gray-100">
                         <div className="w-full flex flex-col lg:flex-row items-center justify-between px-2 py-1">
                             <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
-                            <div className='flex lg:flex-row lg:flex-wrap flex-col items-center gap-4'>
+                            <div className='flex lg:flex-row lg:flex-wrap flex-col items-center gap-4 z-4'>
                                 <Dropdown
-                                    value={availableYears[0]}
-                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                                    options={availableYears}
-                                    optionLabel="label"
-                                    placeholder="Pilih Tahun"
-                                    className="w-full lg:w-fit"
-                                />
-                                <Dropdown
-                                    value={availableYears[0]}
-                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                                    options={availableYears}
-                                    optionLabel="label"
-                                    placeholder="Pilih Bulan"
-                                    className="w-full lg:w-fit"
-                                />
-                                <Dropdown
-                                    value={availableYears[0]}
-                                    onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                                    options={availableYears}
-                                    optionLabel="label"
-                                    placeholder="Pilih Tanggal"
-                                    className="w-full lg:w-fit"
+                                    id="chartFilter"
+                                    items={Object.values(LineChartFilterOption)}
+                                    selected={chartFilter}
+                                    setSelected={setChartFilter}
                                 />
                             </div>
                         </div>

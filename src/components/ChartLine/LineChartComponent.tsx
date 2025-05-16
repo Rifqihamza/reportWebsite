@@ -53,7 +53,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
             position: 'bottom' as const,
         },
         stroke: {
-            curve: 'straight' as const,
+            curve: 'smooth' as const,
         }
     };
 
