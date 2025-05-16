@@ -11,7 +11,6 @@ export enum APIResultType {
     InternalServerError = "Internal Server Error"
 }
 
-
 // Backend Functionalities
 export async function userLogin(username: string, password: string): Promise<APIResultType> {
     // Fetch to API
@@ -39,7 +38,18 @@ export async function userLogin(username: string, password: string): Promise<API
     }
 }
 
-export async function addReport(submitted_by: string, message: string, pic_name: string, report_type: ReportType, follow_up: AccountType, follow_up_name: string, location?: string, report_date?: string, due_date?: string, image?: File): Promise<APIResultType | ReportData> {
+export async function addReport(
+    submitted_by: string,
+    message: string,
+    pic_name: string,
+    report_type: ReportType,
+    follow_up: AccountType,
+    follow_up_name: string,
+    location?: string,
+    report_date?: string,
+    due_date?: string,
+    image?: File
+): Promise<APIResultType | ReportData> {
     // Setting up Form Data
     const form_data = new FormData();
     form_data.append("submitted_by", submitted_by)
@@ -47,6 +57,7 @@ export async function addReport(submitted_by: string, message: string, pic_name:
     form_data.append("pic_name", pic_name);
     form_data.append("report_type", report_type);
     form_data.append("follow_up", follow_up);
+    form_data.append("follow_up_name", follow_up_name)
 
     if (location) {
         form_data.append("location", location);
@@ -67,8 +78,6 @@ export async function addReport(submitted_by: string, message: string, pic_name:
         form_data.append("image", compressed_image);
     }
 
-    form_data.append("follow_up_name", follow_up_name);
-
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/add", {
         method: "POST",
@@ -87,6 +96,7 @@ export async function addReport(submitted_by: string, message: string, pic_name:
         return APIResultType.InternalServerError;
     }
 }
+
 
 export async function getReport(): Promise<ReportData[] | APIResultType> {
     // Fetch to API
@@ -109,7 +119,6 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
         return APIResultType.Unauthorized;
     }
 }
-
 export async function changeReportStatus(report_id: string, report_status: ReportStatus): Promise<APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/change_status", {
@@ -135,6 +144,7 @@ export async function changeReportStatus(report_id: string, report_status: Repor
         return APIResultType.Unauthorized;
     }
 }
+
 
 export async function deleteReport(report_id: string): Promise<APIResultType> {
     // Fetch to API
@@ -191,7 +201,6 @@ export async function userLogout(): Promise<boolean> {
     return response.ok;
 }
 
-
 export async function getUser(): Promise<User | APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/get", {
@@ -209,8 +218,6 @@ export async function getUser(): Promise<User | APIResultType> {
     return APIResultType.InternalServerError;
 }
 
-
-
 export function string_to_reporttype(data: string): ReportType | undefined {
     return Object.values(ReportType).find(value => value.toString() == data);
 }
@@ -222,3 +229,7 @@ export function string_to_accounttype(data: string): AccountType | undefined {
 export function string_to_reportstatus(data: string): ReportStatus | undefined {
     return Object.values(ReportStatus).find(value => value.toString() == data);
 }
+
+// export function reportTypeToString(type: ReportType): string {
+//     return ReportType[type];
+// }

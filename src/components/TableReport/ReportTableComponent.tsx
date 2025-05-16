@@ -268,31 +268,38 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
             data-report-id={report.id}
           >
-            <div className="flex justify-between items-start mb-2">
-              <h3 className="font-medium text-gray-900 truncate">{report.message}</h3>
-              <span
-                className={`px-2 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]
-                  }`}
-              >
-                {report.status}
-              </span>
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="font-bold text-lg lg:text-2xl text-gray-900 truncate">Details Laporan</h3>
+              <p className="font-semibold text-xs lg:text-md truncate">{formatDate(new Date(report.created_at).toISOString())}</p>
             </div>
-            <div className="text-sm text-gray-500 space-y-1">
+            <div className="text-sm text-gray-500 space-y-2">
               <p>
-                <span className="font-medium">Tanggal:</span> {formatDate(new Date(report.created_at).toISOString())}
+                <span className="font-semibold">Nama Pelapor: </span> {report.submitted_by}
               </p>
               <p>
-                <span className="font-medium">Lokasi:</span> {report.location}
+                <span className="font-semibold">Laporan: </span>{report.message}
               </p>
               <p>
-                <span className="font-medium">PIC:</span> {report.pic_name}
+                <span className="font-semibold">Lokasi:</span> {report.location}
               </p>
               <p>
-                <span className="font-medium">Kategori:</span> {reporttype_to_string(report.type)}
+                <span className="font-semibold">PIC:</span> {report.pic_name}
+              </p>
+              <p>
+                <span className="font-semibold">Kategori:</span> {reporttype_to_string(report.type)}
+              </p>
+              <p>
+                <span className="font-semibold">Tanggal Temuan:</span> {formatDate(new Date(report.report_date).toISOString())}
+              </p>
+              <p>
+                <span className="font-semibold">Due Date:</span> {formatDate(new Date(report.due_date).toISOString())}
+              </p>
+              <p>
+                Status Laporan: <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}> {report.status}</span>
               </p>
             </div>
             <div className="mt-3 flex justify-end">
-              <button className="mobile-detail-button text-white bg-[#7FA1C3] px-2 py-1 rounded-xl text-sm font-medium" onClick={() => { handle_detail(report.id) }}>
+              <button className="mobile-detail-button text-white bg-[#7FA1C3] px-3 py-2 rounded-xl text-sm font-medium" onClick={() => { handle_detail(report.id) }}>
                 Lihat Detail
               </button>
             </div>
@@ -340,7 +347,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             {/* End header laporan */}
 
             <div className="overflow-y-scroll lg:mx-8 mx-0">
-              <div className="flex lg:flex-row flex-col justify-between items-center lg:gap-10 gap-4 lg:mt-6">
+              <div className="flex lg:flex-row flex-col justify-between lg:gap-10 gap-4 lg:mt-6">
                 {/* Image render */}
                 <div >
                   {report_data?.image != "" ? imageComponent : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
