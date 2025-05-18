@@ -55,7 +55,7 @@ model Report {
   type           ReportType
   follow_up      AccountType
   follow_up_name String
-  status         ReportStatus @default(Hold)
+  status         ReportStatus @default(NotStarted)
   location       String?
   image          String
 
