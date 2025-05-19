@@ -17,11 +17,11 @@ const ReportBodyType = z.object({
     message: z.string(),
     pic_name: z.string(),
     report_type: z.nativeEnum(ReportType),
-    follow_up: z.nativeEnum(AccountType),
+    follow_up: z.nativeEnum(AccountType).optional(),
     location: z.string(),
     report_date: z.string(),
-    due_date: z.string(),
-    follow_up_name: z.string(),
+    due_date: z.string().optional(),
+    follow_up_name: z.string().optional(),
     image: z.instanceof(File).optional(),
 });
 
@@ -52,6 +52,7 @@ export async function POST({ request }: APIContext) {
         return create_response_status(400);
     }
 
+    // Verify the body data
     const {
         submitted_by,
         message,
@@ -65,6 +66,14 @@ export async function POST({ request }: APIContext) {
         image
     } = parsed_result.data;
 
+    // Check if user is teacher if it includes due date and follow up data
+    if(follow_up || follow_up_name || due_date) {
+        const user_token = get_cookies_from_request(request)!["user_token"];
+        
+        if(!user_token || !(await verify_teacher_token(user_token))) {
+            return create_response_status(401);
+        }
+    }
 
     // Upload file if image exists
     let image_file_path = "";
