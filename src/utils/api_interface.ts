@@ -233,7 +233,3 @@ export function string_to_accounttype(data: string): AccountType | undefined {
 export function string_to_reportstatus(data: string): ReportStatus | undefined {
     return Object.values(ReportStatus).find(value => value.toString() == data);
 }
-
-// export function reportTypeToString(type: ReportType): string {
-//     return ReportType[type];
-// }

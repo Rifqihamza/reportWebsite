@@ -308,13 +308,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       </div>
 
       {/*  Modal Element */}
+
+
       <div className={(detailId
-        ? "bg-black opacity-50 w-full h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-all z-10"
-        : "hidden duration-500 transition-all opacity-0")}>
+        ? "bg-black/50 z-10 h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-opacity "
+        : "duration-1000 transition-opacity hidden")}>
       </div>
-
-      <div className={(detailId ? "visible pointer-events-auto top-4" : "invisible pointer-events-none top-[50rem] opacity-0") + " left-1/2 translate-y-[0.1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[75vw] h-fit max-h-[95vh] shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-xl"}>
-
+      <div className={(detailId ? "bottom-0" : "-bottom-[50rem]") + " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-fit lg:max-h-[90vh] max-h-[90vh] shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-t-[50px]"}>
         {(() => {
           const report_data = reportData.find(value => value.id == detailId) || null;
 
@@ -333,16 +333,17 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
           return <>
             {/* Close Button Modal */}
-            <div className="absolute top-3 right-4">
-              <button className="cursor-pointer" onClick={handle_close}>
-                <i className="pi pi-times"></i>
+            <div className="absolute top-7 right-7">
+              <button className="cursor-pointer border rounded-full" onClick={handle_close}>
+                <i className="pi pi-times p-2"></i>
               </button>
             </div>
 
             {/* header Laporan */}
-            <div className="bg-[#7FA1C3] rounded-xl flex flex-row items-center justify-between px-6 py-2">
-              <h1 className="font-bold md:text-2xl text-sm text-white tracking-wide">Details Temuan</h1>
-              <span className={`${report_data ? statusColors[report_data.status] : ""} md:text-md md:px-4 md:py-2 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
+            <div className="flex flex-col px-6 py-2">
+              <h1 className="font-bold md:text-2xl text-sm text-black tracking-wide">Details Temuan</h1>
+              <p>Status: <span className={`${report_data ? statusColors[report_data.status] : ""} md:text-md md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
+              </p>
             </div>
             {/* End header laporan */}
 
@@ -386,10 +387,10 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Follow Up Temuan */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Follow Up:</h1>
-                      {report_data?.follow_up ? 
-                      <p>{report_data.follow_up}</p>
-                      :
-                      <p className="opacity-50">Belum ditentukan</p>
+                      {report_data?.follow_up ?
+                        <p>{report_data.follow_up}</p>
+                        :
+                        <p className="opacity-50">Belum ditentukan</p>
                       }
                     </div>
                     {/* Nama PIC */}
@@ -405,10 +406,10 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Tanggal Dilakukan Temuan */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Due Date:</h1>
-                      {report_data?.due_date ? 
-                      <p>{formatDate(report_data.due_date)}</p>
-                      :
-                      <p className="opacity-50">Belum ditentukan</p>
+                      {report_data?.due_date ?
+                        <p>{formatDate(report_data.due_date)}</p>
+                        :
+                        <p className="opacity-50">Belum ditentukan</p>
                       }
                     </div>
                   </div>
