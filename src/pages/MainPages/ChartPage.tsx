@@ -80,7 +80,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             });
         }
         else if(chartFilter == LineChartFilterOption.Today) {
-            for (let hour = 1; hour <= 24; hour++) {
+            for (let hour = 0; hour < 24; hour++) {
                 Object.values(ReportType).map(reportType => {
                     result.push({
                         labels: hour.toString(),
@@ -121,7 +121,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 label = strftime("%a", date);
             }
             else if(chartFilter == LineChartFilterOption.Today) {
-                label = (Number.parseInt(strftime("%k", date)) + 1).toString();
+                label = strftime("%k", date);
             }
 
             let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
