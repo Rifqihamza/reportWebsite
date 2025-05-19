@@ -313,7 +313,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         ? "bg-black/50 z-10 h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-opacity "
         : "duration-1000 transition-opacity hidden")}>
       </div>
-      <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") + " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-[90vh] lg:max-h-[100vh] max-h-[90vh] p-8 rounded-t-[50px] z-10 flex flex-col justify-between"}>
+      <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") + " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-[90vh] lg:max-h-[100vh] max-h-[90vh] p-8 rounded-t-3xl z-10 flex flex-col justify-between"}>
         {(() => {
           const report_data = reportData.find(value => value.id == detailId) || null;
 
@@ -348,6 +348,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
             <div className="overflow-y-scroll lg:mx-8 mx-0">
               <div className="flex lg:flex-row flex-col justify-between lg:gap-10 gap-4 lg:mt-6">
+
                 {/* Image render */}
                 <div >
                   {report_data?.image != "" ? imageComponent : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
@@ -413,9 +414,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     </div>
                   </div>
                   {/* End Details Laporan */}
+
                 </div>
               </div>
             </div>
+
             {/* Action Button for Data */}
             <div className={`grid grid-cols-2 gap-2 w-full ${(userData && (userData.role == AccountType.Guru || userData.role == AccountType.Vendor)) ? "" : "hidden!"}`}>
               {dropdowns.map((d, index) => (
@@ -456,6 +459,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         setVisible={setDialogVisible}
       />
       {/* End Dialog Components */}
+
       <Toast ref={toastTopRight} position="top-right" />
 
       {/* Pagination */}
