@@ -34,7 +34,7 @@ export async function POST({ request }: APIContext) {
         httpOnly: true,
         path: '/',
         sameSite: 'strict',
-        maxAge: 60 * 60 * 24, // 1 day
+        maxAge: 60 * 60 * 2, // 2 hours
     });
 
     // Return OK

@@ -121,11 +121,13 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 label = strftime("%a", date);
             }
             else if(chartFilter == LineChartFilterOption.Today) {
-                label = strftime("%k", date);
+                label = (Number.parseInt(strftime("%k", date)) + 1).toString();
             }
 
             let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
-            result[index].value += 1;
+            if(index != -1) {
+                result[index].value += 1;
+            }
         })
 
         result.sort((a, b) => listOfMonths.indexOf(a.labels) - listOfMonths.indexOf(b.labels));

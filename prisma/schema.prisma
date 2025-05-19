@@ -1,7 +1,6 @@
 generator client {
   provider   = "prisma-client-js"
   engineType = "library"
-  output     = "/node_modules/prisma"
 }
 
 datasource db {
@@ -54,16 +53,16 @@ model Report {
   submitted_by   String
   message        String
   type           ReportType
-  follow_up      AccountType
-  follow_up_name String
-  status         ReportStatus @default(Hold)
+  follow_up      AccountType?
+  follow_up_name String?
+  status         ReportStatus @default(NotStarted)
   location       String?
   image          String
 
   created_at DateTime @default(now())
 
   report_date DateTime @default(now())
-  due_date    DateTime @default(now())
+  due_date    DateTime?
 
   // Relation
   pic_name String
