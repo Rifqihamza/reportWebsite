@@ -41,7 +41,7 @@ export default function Dropdown<T extends { toString(): string }>({ id, label, 
               <li key={index}>
                 <button
                   type="button"
-                  className="dropdown-item block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  className={"dropdown-item block w-full text-left px-4 py-2 hover:bg-gray-100" + (selected == item ? " bg-gray-100" : "")}
                   onClick={() => handleSelect(item)}
                 >
                   {item.toString()}

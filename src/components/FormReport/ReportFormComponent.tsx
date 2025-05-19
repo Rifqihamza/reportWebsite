@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
-import Dropdown from "../Dropdown/DropdownComponent";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { addReport, APIResultType } from '../../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
+import { Dropdown } from "primereact/dropdown";
 
 export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
   const [submitted_by, setSubmittedBy] = useState("");
@@ -38,7 +38,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   ];
 
   const handle_submit = async () => {
-    if (!submitted_by || !message || !pic || !category || !followUpType || !location || !reportDate || !reportDueDate) {
+    if (!submitted_by || !message || !pic || !category || !location || !reportDate) {
       alert("Please complete the form.");
       return;
     }
@@ -54,8 +54,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       message,
       pic,
       string_to_reporttype(category)!,
-      string_to_accounttype(followUpType)!,
-      followUpName,
+      string_to_accounttype(followUpType || undefined) || undefined,
+      followUpName || undefined,
       location,
       (new Date(reportDate)).toISOString(),
       (new Date(reportDueDate)).toISOString(),
@@ -220,8 +220,18 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 setSelected = setFollowUpType;
               }
 
+              /* <Dropdown key={index} id={d.id} label={d.label} icon={d.Icon} items={d.items} selected={selected == "VR" ? "5R" : selected} setSelected={(val) => val == selected ? setSelected(null) : setSelected(val)} /> */
               return (
-                <Dropdown key={index} id={d.id} label={d.label} icon={d.Icon} items={d.items} selected={selected == "VR" ? "5R" : selected} setSelected={setSelected} />
+                <div className="relative text-left w-full dropdown-container">
+                  <span className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center mb-3 justify-between">
+                    <div className="flex flex-row items-center gap-2">
+                      <i className={d.Icon}></i>
+                      <h1>{d.label}</h1>
+                    </div>
+                    <button type="button" className="cursor-pointer hover:text-[#7FA1C3] disabled:opacity-0 disabled:pointer-events-none" disabled={selected == null} onClick={() => setSelected(null)}>Clear</button>
+                  </span>
+                  <Dropdown value={selected} onChange={(e) => setSelected(e.value)} options={d.items} optionLabel="name" placeholder={d.label} className="w-full bg-[#7FA1C3]! *:text-white!" />
+                </div>
               );
             })}
           </div>

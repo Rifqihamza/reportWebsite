@@ -43,8 +43,8 @@ export async function addReport(
     message: string,
     pic_name: string,
     report_type: ReportType,
-    follow_up: AccountType,
-    follow_up_name: string,
+    follow_up?: AccountType,
+    follow_up_name?: string,
     location?: string,
     report_date?: string,
     due_date?: string,
@@ -56,9 +56,13 @@ export async function addReport(
     form_data.append("message", message);
     form_data.append("pic_name", pic_name);
     form_data.append("report_type", report_type);
-    form_data.append("follow_up", follow_up);
-    form_data.append("follow_up_name", follow_up_name)
-
+    
+    if (follow_up) {
+        form_data.append("follow_up", follow_up || "");
+    }
+    if (follow_up_name) {
+        form_data.append("follow_up_name", follow_up_name);
+    }
     if (location) {
         form_data.append("location", location);
     }
