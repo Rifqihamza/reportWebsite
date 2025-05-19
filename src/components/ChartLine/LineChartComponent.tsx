@@ -46,6 +46,9 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
         xaxis: {
             categories,
         },
+        yaxis: {
+            max: reports.length > 0 ? (5 * Math.ceil((reports.sort((a, b) => b.value - a.value)[0].value / 5) + 0.2)) : 0
+        },
         markers: {
             size: 3,
         },

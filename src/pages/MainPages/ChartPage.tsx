@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import type { ReportData } from "../../types/variables";
 import { ReportType, reporttype_to_string } from '../../types/variables';
 import { Suspense } from "react";
-import { Calendar } from "primereact/calendar";
 import strftime from "strftime";
 import Dropdown from "../../components/Dropdown/DropdownComponent";
 
