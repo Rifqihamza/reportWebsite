@@ -38,7 +38,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   ];
 
   const handle_submit = async () => {
-    if (!submitted_by || !message || !pic || !category || !location || !reportDate) {
+    if (!submitted_by || !message || !category || !location || !reportDate) {
       alert("Please complete the form.");
       return;
     }
@@ -52,8 +52,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     const result = await addReport(
       submitted_by,
       message,
-      pic,
       string_to_reporttype(category)!,
+      pic,
       string_to_accounttype(followUpType || undefined) || undefined,
       followUpName || undefined,
       location,

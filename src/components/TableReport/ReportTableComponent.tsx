@@ -238,7 +238,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
                   {report.location}
                 </td>
-                <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">{report.pic_name}</td>
+                <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">{report.pic_name || "Belum ditentukan"}</td>
                 <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
                   {reporttype_to_string(report.type)}
                 </td>
@@ -283,7 +283,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <span className="font-semibold">Lokasi:</span> {report.location}
               </p>
               <p>
-                <span className="font-semibold">PIC:</span> {report.pic_name}
+                <span className="font-semibold">PIC:</span> {report.pic_name || "Belum ditentukan"}
               </p>
               <p>
                 <span className="font-semibold">Kategori:</span> {reporttype_to_string(report.type)}
@@ -370,7 +370,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* PIC */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">PIC:</h1>
-                      <p>{report_data?.pic_name}</p>
+                      <p>{report_data?.pic_name || "Belum ditentukan"}</p>
                     </div>
                     {/* Lokasi Temuan */}
                     <div className="flex flex-row justify-between gap-6">
@@ -385,16 +385,12 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Follow Up Temuan */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Follow Up:</h1>
-                      {report_data?.follow_up ?
-                        <p>{report_data.follow_up}</p>
-                        :
-                        <p className="opacity-50">Belum ditentukan</p>
-                      }
+                      <p className={report_data?.follow_up ? "" : "opacity-50"}>{report_data?.follow_up || "Belum ditentukan"}</p>
                     </div>
                     {/* Nama PIC */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Nama PIC:</h1>
-                      <p>{report_data?.pic_name}</p>
+                      <p>{report_data?.pic_name || "Belum ditentukan"}</p>
                     </div>
                     {/* Tanggal Temuan */}
                     <div className="flex flex-row justify-between gap-6">
@@ -404,6 +400,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Tanggal Dilakukan Temuan */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Due Date:</h1>
+                      <p className={report_data?.due_date ? "" : "opacity-50"}>{report_data?.follow_up || "Belum ditentukan"}</p>
                       {report_data?.due_date ?
                         <p>{formatDate(report_data.due_date)}</p>
                         :
