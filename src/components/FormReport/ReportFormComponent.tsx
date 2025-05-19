@@ -221,7 +221,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               }
 
               return (
-                <div className="relative text-left w-full dropdown-container">
+                <div className="relative text-left w-full dropdown-container" key={index}>
                   <span className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center mb-3 justify-between">
                     <div className="flex flex-row items-center gap-2">
                       <i className={d.Icon}></i>
@@ -229,7 +229,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                     </div>
                     <button type="button" className="cursor-pointer hover:text-[#7FA1C3] disabled:opacity-0 disabled:pointer-events-none" disabled={selected == null} onClick={() => setSelected(null)}>Clear</button>
                   </span>
-                  <Dropdown value={selected} onChange={(e) => setSelected(e.value)} options={d.items} optionLabel="name" placeholder={d.label} className="w-full bg-[#7FA1C3]! *:text-white!" />
+                  <Dropdown value={selected} onChange={(e) => setSelected(e.value)} options={d.items} optionLabel="name" placeholder={d.label} className="w-full rounded-xl! bg-[#7FA1C3]! border-2! border-[#E2DAD6]! *:text-white!" />
                 </div>
               );
             })}

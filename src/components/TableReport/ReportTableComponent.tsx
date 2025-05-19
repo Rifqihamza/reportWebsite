@@ -1,11 +1,11 @@
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../../types/variables';
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, string_to_reporttype, type ReportData, type User } from '../../types/variables';
 import { Image } from 'primereact/image'
 import { APIResultType, changeReportStatus, deleteReport } from "../../utils/api_interface";
-import Dropdown from "../Dropdown/DropdownComponent";
+// import Dropdown from "../Dropdown/DropdownComponent";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
-
+import { Dropdown } from "primereact/dropdown";
 
 
 const reportsPerPage = 5;
@@ -308,13 +308,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
       </div>
 
       {/*  Modal Element */}
-
-
       <div className={(detailId
         ? "bg-black/50 z-10 h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-opacity "
         : "duration-1000 transition-opacity hidden")}>
       </div>
-      <div className={(detailId ? "bottom-0" : "-bottom-[50rem]") + " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-fit lg:max-h-[90vh] max-h-[90vh] shadow-lg shadow-gray-600 p-8 box-border flex flex-col gap-4 z-10 rounded-t-[50px]"}>
+      <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") + " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-fit lg:max-h-[100vh] max-h-[90vh] p-8 rounded-t-[50px] z-10"}>
         {(() => {
           const report_data = reportData.find(value => value.id == detailId) || null;
 
@@ -333,7 +331,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
           return <>
             {/* Close Button Modal */}
-            <div className="absolute top-7 right-7">
+            <div className="absolute top-4 right-4 md:top-7 md:right-7">
               <button className="cursor-pointer border rounded-full" onClick={handle_close}>
                 <i className="pi pi-times p-2"></i>
               </button>
@@ -341,7 +339,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
             {/* header Laporan */}
             <div className="flex flex-col px-6 py-2">
-              <h1 className="font-bold md:text-2xl text-sm text-black tracking-wide">Details Temuan</h1>
+              <h1 className="font-bold lg:text-2xl text-lg text-black tracking-wide">Details Temuan</h1>
               <p>Status: <span className={`${report_data ? statusColors[report_data.status] : ""} md:text-md md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
               </p>
             </div>
@@ -382,7 +380,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Kategori Temuan */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Kategori:</h1>
-                      <p>{report_data?.type}</p>
+                      <p>{report_data ? reporttype_to_string(report_data.type) : "N/A"}</p>
                     </div>
                     {/* Follow Up Temuan */}
                     <div className="flex flex-row justify-between gap-6">
@@ -423,10 +421,10 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <Dropdown
                   key={index}
                   id={d.id}
-                  label={undefined}
-                  items={d.items}
-                  selected={selectedStatus}
-                  setSelected={setSelectedStatus}
+                  options={d.items}
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.value)}
+                  className="w-full rounded-xl! bg-[#7FA1C3]! *:text-white!"
                 />
               ))}
               <div className="mt-2 flex flex-row w-full gap-4">
