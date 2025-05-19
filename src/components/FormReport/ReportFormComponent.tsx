@@ -57,8 +57,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       string_to_accounttype(followUpType || undefined) || undefined,
       followUpName || undefined,
       location,
-      (new Date(reportDate)).toISOString(),
-      (new Date(reportDueDate)).toISOString(),
+      reportDate ? (new Date(reportDate)).toISOString() : undefined,
+      reportDueDate ? (new Date(reportDueDate)).toISOString() : undefined,
       image || undefined
     );
 
@@ -71,7 +71,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       });
     }
     else if (result == APIResultType.Unauthorized) {
-      window.location.href = "/";
+      alert("Unauthroized report detected!");
     }
     else if (result == APIResultType.InternalServerError) {
       alert("There's an unexpected error occured in the server side!");
@@ -220,7 +220,6 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 setSelected = setFollowUpType;
               }
 
-              /* <Dropdown key={index} id={d.id} label={d.label} icon={d.Icon} items={d.items} selected={selected == "VR" ? "5R" : selected} setSelected={(val) => val == selected ? setSelected(null) : setSelected(val)} /> */
               return (
                 <div className="relative text-left w-full dropdown-container">
                   <span className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center mb-3 justify-between">

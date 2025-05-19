@@ -4,13 +4,7 @@ import { prisma } from "../../../utils/db";
 import { Prisma, type Report } from "@prisma/client";
 import { AccountType, ReportType } from "../../../types/variables";
 import { z } from 'zod';
-import { RateLimiterMemory } from "rate-limiter-flexible";
 
-
-const rateLimiterMemory = new RateLimiterMemory({
-    points: 10, // Max 10 requests
-    duration: 3600 * 24, // Per day
-});
 
 const ReportBodyType = z.object({
     submitted_by: z.string(),
@@ -26,14 +20,6 @@ const ReportBodyType = z.object({
 });
 
 export async function POST({ request }: APIContext) {
-    // Check the rate-limiter
-    const forwarded = request.headers.get('x-forwarded-for');
-    const ip = forwarded ? forwarded.split(',')[0] : 'Unknown';
-    rateLimiterMemory.consume(ip).catch(() => {
-        return create_response_status(429);
-    })
-
-
     // Get the required data
     let result: {
         [key: string]: string | object | File
@@ -68,9 +54,9 @@ export async function POST({ request }: APIContext) {
 
     // Check if user is teacher if it includes due date and follow up data
     if(follow_up || follow_up_name || due_date) {
-        const user_token = get_cookies_from_request(request)!["user_token"];
+        const cookies = get_cookies_from_request(request);
         
-        if(!user_token || !(await verify_teacher_token(user_token))) {
+        if(!cookies || !cookies["user_token"] || !(await verify_teacher_token(cookies["user_token"]))) {
             return create_response_status(401);
         }
     }
