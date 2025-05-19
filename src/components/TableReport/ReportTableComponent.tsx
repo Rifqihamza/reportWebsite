@@ -1,11 +1,11 @@
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, string_to_reporttype, type ReportData, type User } from '../../types/variables';
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../../types/variables';
 import { Image } from 'primereact/image'
 import { APIResultType, changeReportStatus, deleteReport } from "../../utils/api_interface";
-// import Dropdown from "../Dropdown/DropdownComponent";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
 import { Dropdown } from "primereact/dropdown";
+import DialogComponent from "../DialogPopUp/DialogComponent";
 
 
 const reportsPerPage = 5;
@@ -16,6 +16,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [deleteDisabled, setDeleteDisabled] = useState(false);
   const [isChange, setIsChange] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   const toastTopRight = useRef<Toast>(null);
 
@@ -312,7 +313,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         ? "bg-black/50 z-10 h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-opacity "
         : "duration-1000 transition-opacity hidden")}>
       </div>
-      <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") + " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-fit lg:max-h-[100vh] max-h-[90vh] p-8 rounded-t-[50px] z-10"}>
+      <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") + " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-[90vh] lg:max-h-[100vh] max-h-[90vh] p-8 rounded-t-[50px] z-10 flex flex-col justify-between"}>
         {(() => {
           const report_data = reportData.find(value => value.id == detailId) || null;
 
@@ -332,13 +333,13 @@ export default function ReportListComponent({ userData, reportData, setReportDat
           return <>
             {/* Close Button Modal */}
             <div className="absolute top-4 right-4 md:top-7 md:right-7">
-              <button className="cursor-pointer border rounded-full" onClick={handle_close}>
+              <button className="cursor-pointer" onClick={handle_close}>
                 <i className="pi pi-times p-2"></i>
               </button>
             </div>
 
             {/* header Laporan */}
-            <div className="flex flex-col px-6 py-2">
+            <div className="flex flex-col px-0 py-0 lg:px-6 lg:py-2">
               <h1 className="font-bold lg:text-2xl text-lg text-black tracking-wide">Details Temuan</h1>
               <p>Status: <span className={`${report_data ? statusColors[report_data.status] : ""} md:text-md md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>{report_data?.status}</span>
               </p>
@@ -363,27 +364,27 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     </div>
                     <hr />
                     {/* Nama Pelapor */}
-                    <div className="flex flex-row justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Pelapor:</h1>
                       <p>{report_data?.submitted_by}</p>
                     </div>
                     {/* PIC */}
-                    <div className="flex flex-row justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">PIC:</h1>
                       <p>{report_data?.pic_name}</p>
                     </div>
                     {/* Lokasi Temuan */}
-                    <div className="flex flex-row justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Lokasi:</h1>
                       <p>{report_data?.location}</p>
                     </div>
                     {/* Kategori Temuan */}
-                    <div className="flex flex-row justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Kategori:</h1>
                       <p>{report_data ? reporttype_to_string(report_data.type) : "N/A"}</p>
                     </div>
                     {/* Follow Up Temuan */}
-                    <div className="flex flex-row justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Follow Up:</h1>
                       {report_data?.follow_up ?
                         <p>{report_data.follow_up}</p>
@@ -392,17 +393,17 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                       }
                     </div>
                     {/* Nama PIC */}
-                    <div className="flex flex-row justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Nama PIC:</h1>
                       <p>{report_data?.pic_name}</p>
                     </div>
                     {/* Tanggal Temuan */}
-                    <div className="flex flex-row justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide ">Tanggal Temuan:</h1>
                       <p>{report_data?.report_date ? formatDate(report_data.report_date) : 'N/A'}</p>
                     </div>
                     {/* Tanggal Dilakukan Temuan */}
-                    <div className="flex flex-row justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Due Date:</h1>
                       {report_data?.due_date ?
                         <p>{formatDate(report_data.due_date)}</p>
@@ -415,8 +416,8 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 </div>
               </div>
             </div>
-            {/* Update or Delete report data */}
-            <div className={`flex flex-col gap-2 w-full mt-2 ${(userData && (userData.role == AccountType.Guru || userData.role == AccountType.Vendor)) ? "" : "hidden!"}`}>
+            {/* Action Button for Data */}
+            <div className={`grid grid-cols-2 gap-2 w-full ${(userData && (userData.role == AccountType.Guru || userData.role == AccountType.Vendor)) ? "" : "hidden!"}`}>
               {dropdowns.map((d, index) => (
                 <Dropdown
                   key={index}
@@ -427,21 +428,34 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   className="w-full rounded-xl! bg-[#7FA1C3]! *:text-white!"
                 />
               ))}
-              <div className="mt-2 flex flex-row w-full gap-4">
-                <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_delete(report_data.id) : ""} disabled={saveDisabled || deleteDisabled}>
-                  {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
-                  Hapus
-                </button>
-                <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_save(report_data.id) : ""} disabled={saveDisabled || deleteDisabled || !isChange}>
-                  {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
-                  Simpan
-                </button>
-              </div>
-            </div>
+              <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => setDialogVisible(true)}>
+                Edit
+              </button>
+              <button className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-6 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_delete(report_data.id) : ""} disabled={saveDisabled || deleteDisabled}>
+                {deleteDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                Hapus
+              </button>
+              <button className="disabled:opacity-50  rounded-xl flex items-center justify-center gap-1 px-6 py-2 w-full tracking-wide text-black bg-[#E2DAD6] hover:bg-[#e8d6cd] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed" onClick={() => report_data ? handle_save(report_data.id) : ""} disabled={saveDisabled || deleteDisabled || !isChange}>
+                {saveDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> : ""}
+                Simpan
+              </button>
+            </div >
           </>;
         })()}
-      </div>
+      </div >
 
+      {/* Dialog Components */}
+      <DialogComponent
+        userData={userData}
+        reportData={reportData}
+        setReportData={setReportData}
+        dateFilter={dateFilter}
+        searchKeyword={searchKeyword}
+        detailId={detailId}
+        visible={dialogVisible}
+        setVisible={setDialogVisible}
+      />
+      {/* End Dialog Components */}
       <Toast ref={toastTopRight} position="top-right" />
 
       {/* Pagination */}
