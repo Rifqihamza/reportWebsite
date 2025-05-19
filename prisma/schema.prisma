@@ -14,6 +14,7 @@ enum AccountType {
   Guru
   Siswa
   Vendor
+  Tukang
 }
 
 enum ReportType {

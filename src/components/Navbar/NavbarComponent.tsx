@@ -2,13 +2,16 @@
 import { Sidebar } from 'primereact/sidebar';
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import { AccountType, type User } from "../../types/variables";
 
 interface NavbarProps {
     activeTab: number;
     setActiveTab: (tabIndex: number) => void;
+    handle_logout: () => Promise<void>;
+    userData: User | null
 }
 
-const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
+const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: NavbarProps) => {
     const [setVisible, setIsVisible] = useState<boolean>(false);
     return (
         <>
@@ -74,8 +77,9 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
 
                 <div className="absolute left-4 right-4 bottom-4">
                     <button className="w-full justify-center md:hidden block px-4 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300"
+                    onClick={handle_logout}
                     >
-                        Logout
+                        {(!userData || userData.role == AccountType.Siswa) ? "Login" : "Logout"}
                     </button>
                 </div>
             </Sidebar>

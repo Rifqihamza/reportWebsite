@@ -1,18 +1,18 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 
-interface DropdownProps {
+interface DropdownProps<T extends { toString(): string }> {
   id: string;
   label?: string;
   icon?: string;
-  items: string[];
-  selected: string | null;
-  setSelected: Dispatch<SetStateAction<string | null>>;
+  items: T[];
+  selected: T|null;
+  setSelected: Dispatch<SetStateAction<T|null>>;
 }
 
-export default function Dropdown({ id, label, icon, items, selected, setSelected }: DropdownProps) {
+export default function Dropdown<T extends { toString(): string }>({ id, label, icon, items, selected, setSelected }: DropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSelect = (option: string) => {
+  const handleSelect = (option: T) => {
     setSelected(option);
     setIsOpen(false);
   };
@@ -30,7 +30,7 @@ export default function Dropdown({ id, label, icon, items, selected, setSelected
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <span className="dropdown-label">{selected ? selected : label}</span>
+        <span className="dropdown-label">{selected ? selected.toString() : label}</span>
         <i className="pi pi-angle-down" />
       </button >
 
@@ -44,7 +44,7 @@ export default function Dropdown({ id, label, icon, items, selected, setSelected
                   className="dropdown-item block w-full text-left px-4 py-2 hover:bg-gray-100"
                   onClick={() => handleSelect(item)}
                 >
-                  {item}
+                  {item.toString()}
                 </button>
               </li>
             ))}
