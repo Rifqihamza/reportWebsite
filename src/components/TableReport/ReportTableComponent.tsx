@@ -386,7 +386,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Follow Up Temuan */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Follow Up:</h1>
-                      <p>{report_data?.follow_up}</p>
+                      {report_data?.follow_up ? 
+                      <p>{report_data.follow_up}</p>
+                      :
+                      <p className="opacity-50">Belum ditentukan</p>
+                      }
                     </div>
                     {/* Nama PIC */}
                     <div className="flex flex-row justify-between gap-6">
@@ -401,7 +405,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Tanggal Dilakukan Temuan */}
                     <div className="flex flex-row justify-between gap-6">
                       <h1 className="font-semibold tracking-wide">Due Date:</h1>
-                      <p>{report_data?.due_date ? formatDate(report_data.report_date) : "N/A"}</p>
+                      {report_data?.due_date ? 
+                      <p>{formatDate(report_data.due_date)}</p>
+                      :
+                      <p className="opacity-50">Belum ditentukan</p>
+                      }
                     </div>
                   </div>
                   {/* End Details Laporan */}
