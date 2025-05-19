@@ -420,7 +420,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             </div>
 
             {/* Action Button for Data */}
-            <div className={`grid grid-cols-2 gap-2 w-full ${(userData && (userData.role == AccountType.Guru || userData.role == AccountType.Vendor)) ? "" : "hidden!"}`}>
+            <div className={`grid grid-cols-2 gap-4 w-full ${(userData && (userData.role == AccountType.Guru || userData.role == AccountType.Vendor)) ? "" : "hidden!"}`}>
               {dropdowns.map((d, index) => (
                 <Dropdown
                   key={index}
