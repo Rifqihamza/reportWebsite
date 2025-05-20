@@ -59,3 +59,14 @@ export type User = {
     role: AccountType,
     created_at: string
 }
+
+
+export const statusColorHex: Record<string, string> = {
+    NotStarted: "#fca5a5", // Tailwind bg-red-300
+    InProcess: "#fde047",  // Tailwind bg-yellow-300
+    Complete: "#86efac",   // Tailwind bg-green-300
+    Hold: "#93c5fd",       // Tailwind bg-blue-300
+    Abnormality: "#f3d262",
+    "5R": "#7750a5",
+    Safety: "#ea8557"
+};

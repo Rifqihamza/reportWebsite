@@ -2,7 +2,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import strftime from "strftime";
 import Dropdown from "../../components/Dropdown/DropdownComponent";
 import type { ReportData } from "../../types/variables";
-import { ReportType, reporttype_to_string } from "../../types/variables";
+import { ReportType, reporttype_to_string, statusColorHex } from '../../types/variables';
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
@@ -37,14 +37,16 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [chartFilter, setChartFilter] = useState<LineChartFilterOption | null>(LineChartFilterOption.Year);
     const [percenCategory, setPercenCategory] = useState<CategoryType[]>([]);
     const [statusCategory, setStatusCategory] = useState<CategoryType[]>([]);
+    const [chartCategoryFilter, setChartCategoryFilter] = useState<ReportType|null>(null);
 
     useEffect(() => {
         const result: LineChartValueType[] = [];
         const currentDate = new Date();
+        const showedReportType = chartCategoryFilter ? [chartCategoryFilter] : Object.values(ReportType);
 
         if (chartFilter === LineChartFilterOption.Year) {
             listOfMonths.forEach(month => {
-                Object.values(ReportType).forEach(type => {
+                showedReportType.forEach(type => {
                     result.push({
                         labels: month,
                         type: reporttype_to_string(type),
@@ -54,7 +56,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             });
         } else if (chartFilter === LineChartFilterOption.Month) {
             for (let i = 1; i <= listOfNumOfDates[currentDate.getMonth()]; i++) {
-                Object.values(ReportType).forEach(type => {
+                showedReportType.forEach(type => {
                     result.push({
                         labels: i.toString(),
                         type: reporttype_to_string(type),
@@ -64,7 +66,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             }
         } else if (chartFilter === LineChartFilterOption.Week) {
             listOfDay.forEach(day => {
-                Object.values(ReportType).forEach(type => {
+                showedReportType.forEach(type => {
                     result.push({
                         labels: day,
                         type: reporttype_to_string(type),
@@ -74,7 +76,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             });
         } else if (chartFilter === LineChartFilterOption.Today) {
             for (let hour = 0; hour < 24; hour++) {
-                Object.values(ReportType).forEach(type => {
+                showedReportType.forEach(type => {
                     result.push({
                         labels: hour.toString(),
                         type: reporttype_to_string(type),
@@ -85,6 +87,10 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         }
 
         const filtered = reportData.filter(value => {
+            if(chartCategoryFilter && value.type !== chartCategoryFilter) {
+                return;
+            }
+
             const reportDate = new Date(value.created_at);
             let format = "";
 
@@ -117,7 +123,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         }
 
         setCurrentYearReports(result);
-    }, [reportData, chartFilter]);
+    }, [reportData, chartFilter, chartCategoryFilter]);
 
     useEffect(() => {
         const categoryStats: CategoryType[] = [];
@@ -162,7 +168,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     />
                 </div>
                 <Suspense fallback={<>Loading..</>}>
-                    <LineChart reports={currentYearReports} />
+                    <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
                 </Suspense>
             </div>
 
@@ -172,7 +178,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
                     <h1 className='font-bold'>Kategori</h1>
                     <Suspense fallback={<>Loading..</>}>
-                        <PieChart reports={pieCategory} />
+                        <PieChart reports={pieCategory} setReportType={setChartCategoryFilter} reportType={chartCategoryFilter} />
                     </Suspense>
                 </div>
 

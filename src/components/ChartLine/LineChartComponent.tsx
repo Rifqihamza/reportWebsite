@@ -9,9 +9,10 @@ interface Report {
 
 interface LineChartProps {
     reports: Report[];
+    colors: string[]
 }
 
-const LineChart: React.FC<LineChartProps> = ({ reports }) => {
+const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
 
     const categories = Array.from(new Set(reports.map(r => r.labels)));
     const types = Array.from(new Set(reports.map(r => r.type)));
@@ -40,6 +41,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports }) => {
         theme: {
             palette: 'palette8'
         },
+        colors: colors,
         dataLabels: {
             enabled: true,
         },

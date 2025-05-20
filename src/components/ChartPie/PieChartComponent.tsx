@@ -1,5 +1,12 @@
-import React from 'react';
+import React, { type Dispatch, type SetStateAction } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { statusColorHex, string_to_reporttype, type ReportType } from "../../types/variables";
+interface ApexInternalConfig {
+  config: {
+    labels: string[];
+    series: number[];
+  };
+}
 
 interface Report {
     labels: string;
@@ -8,18 +15,11 @@ interface Report {
 
 interface PieChartProps {
     reports: Report[];
+    setReportType?: Dispatch<SetStateAction<ReportType|null>>;
+    reportType?: ReportType|null
 }
 
-const PieChart: React.FC<PieChartProps> = ({ reports }) => {
-    const statusColorHex: Record<string, string> = {
-        NotStarted: "#fca5a5", // Tailwind bg-red-300
-        InProcess: "#fde047",  // Tailwind bg-yellow-300
-        Complete: "#86efac",   // Tailwind bg-green-300
-        Hold: "#93c5fd",       // Tailwind bg-blue-300
-        Abnormality: "#f3d262",
-        "5R": "#7750a5",
-        Safety: "#ea8557"
-    };
+const PieChart: React.FC<PieChartProps> = ({ reports, setReportType, reportType }) => {
 
     // Hitung jumlah masing-masing jenis laporan
     const reportByCategory = reports.reduce((acc, report) => {
@@ -40,6 +40,21 @@ const PieChart: React.FC<PieChartProps> = ({ reports }) => {
         chart: {
             type: 'pie' as const,
             data: series,
+            events: {
+                dataPointSelection: function(event: MouseEvent, chartContext: ApexCharts, config: {
+                    seriesIndex: number;
+                    dataPointIndex: number;
+                    selectedDataPoints: number[][];
+                    w: ApexInternalConfig;
+                }) {
+                    if(setReportType) {
+                        const selectedIndex = config.dataPointIndex;
+                        const selectedLabel = string_to_reporttype(config.w.config.labels[selectedIndex]);
+
+                        setReportType((selectedLabel && selectedLabel != reportType) ? selectedLabel : null);
+                    }
+                }
+            },
         },
         labels,
         colors,
