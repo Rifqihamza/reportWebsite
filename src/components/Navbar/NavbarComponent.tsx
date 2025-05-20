@@ -21,19 +21,19 @@ const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: 
                     onClick={() => setActiveTab(0)}
                     className={`tab-button ${activeTab === 0 ? "active" : ""}`}
                 >
-                    Report Form
+                    Form Laporan
                 </button>
                 <button
                     onClick={() => setActiveTab(1)}
                     className={`tab-button ${activeTab === 1 ? "active" : ""}`}
                 >
-                    Table Data
+                    Data Laporan
                 </button>
                 <button
                     onClick={() => setActiveTab(2)}
                     className={`tab-button ${activeTab === 2 ? "active" : ""}`}
                 >
-                    Grafik Data
+                    Grafik Laporan
                 </button>
             </div >
 
@@ -54,7 +54,7 @@ const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: 
                             setIsVisible(false);
                         }} className={`w-full text-left px-4 py-2 rounded-lg ${activeTab === 0 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
                     >
-                        Report Form
+                        Form Laporan
                     </button>
                     <button
                         onClick={() => {
@@ -63,7 +63,7 @@ const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: 
                         }}
                         className={`w-full text-left px-4 py-2 rounded-lg ${activeTab === 1 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"}`}
                     >
-                        Table Data
+                        Data Laporan
                     </button>
                     <button
                         onClick={() => {

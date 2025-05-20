@@ -99,7 +99,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
                   <i className="pi pi-address-book" />
-                  Pelapor
+                  Nama
                 </label>
                 <input
                   name="submitted_by"
@@ -118,7 +118,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                 >
                   <i className="pi pi-user" />
-                  Nama PIC
+                  PIC
                 </label>
                 <input
                   name="pic"
