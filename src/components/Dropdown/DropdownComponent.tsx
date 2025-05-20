@@ -25,7 +25,7 @@ export default function Dropdown<T extends { toString(): string }>({ id, label, 
       </span>
       <button
         type="button"
-        className="dropdown-trigger flex flex-row items-center justify-between w-full px-4 py-2 gap-4 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 "
+        className="dropdown-trigger flex flex-row items-center justify-between w-full px-4 py-2 gap-4 text-white rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 "
         aria-expanded={isOpen}
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -35,7 +35,7 @@ export default function Dropdown<T extends { toString(): string }>({ id, label, 
       </button >
 
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-full bg-white rounded-lg shadow divide-y divide-gray-100 dropdown-menu">
+        <div className="absolute z-20 mt-1 w-full bg-white rounded-lg shadow divide-y divide-gray-100 dropdown-menu">
           <ul className="py-2 text-sm text-gray-700">
             {items.map((item, index) => (
               <li key={index}>

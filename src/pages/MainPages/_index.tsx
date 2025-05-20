@@ -57,18 +57,14 @@ export default function MainPage() {
       <NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Content */}
-      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-full max-h-[85vh] overflow-y-scroll bg-gray-100 shadow-md shadow-gray-600">
+      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-[90vh] max-h-[85vh] overflow-y-scroll bg-white shadow-md shadow-gray-600">
 
         {/* Tab 0: Form, bebas diakses */}
         {activeTab === 0 && (<>
-            <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
-              <i className="pi pi-exclamation-circle text-2xl!" />
-              <h1 className="titlePage">Laporkan Temuanmu</h1>
-            </div>
-            <ReportForm reportData={reportData} setReportData={setReportData} />
-          </>
+          <ReportForm reportData={reportData} setReportData={setReportData} />
+        </>
         )}
-        
+
         {/* Tab 1: Table */}
         {activeTab === 1 && (
           isAuthorized ? (

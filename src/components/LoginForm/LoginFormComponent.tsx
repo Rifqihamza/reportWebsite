@@ -41,6 +41,7 @@ export default function LoginFormComponent() {
           autoComplete="off"
           className="mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black"
           onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={(e) => e.key == "Enter" ? handleLogin() : ""}
           required
         />
       </div>
@@ -57,6 +58,7 @@ export default function LoginFormComponent() {
           placeholder="Password..."
           className="mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black"
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => e.key == "Enter" ? handleLogin() : ""}
           required
         />
       </div>

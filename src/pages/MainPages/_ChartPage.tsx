@@ -37,7 +37,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [chartFilter, setChartFilter] = useState<LineChartFilterOption | null>(LineChartFilterOption.Year);
     const [percenCategory, setPercenCategory] = useState<CategoryType[]>([]);
     const [statusCategory, setStatusCategory] = useState<CategoryType[]>([]);
-    const [chartCategoryFilter, setChartCategoryFilter] = useState<ReportType|null>(null);
+    const [chartCategoryFilter, setChartCategoryFilter] = useState<ReportType | null>(null);
 
     useEffect(() => {
         const result: LineChartValueType[] = [];
@@ -87,7 +87,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         }
 
         const filtered = reportData.filter(value => {
-            if(chartCategoryFilter && value.type !== chartCategoryFilter) {
+            if (chartCategoryFilter && value.type !== chartCategoryFilter) {
                 return;
             }
 
@@ -157,7 +157,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     return (
         <div className='flex flex-col gap-4'>
             {/* Line Chart */}
-            <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white">
+            <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
                 <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
                     <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
                     <Dropdown
@@ -175,7 +175,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             {/* Pie Charts and Percentage Boxes */}
             <div className="w-full flex flex-col lg:flex-row gap-4 space-y-3 md:space-y-0 justify-center md:justify-between">
                 {/* Pie Chart Kategori */}
-                <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
+                <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100 flex flex-col items-center">
                     <h1 className='font-bold'>Kategori</h1>
                     <Suspense fallback={<>Loading..</>}>
                         <PieChart reports={pieCategory} setReportType={setChartCategoryFilter} reportType={chartCategoryFilter} />
@@ -183,7 +183,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 </div>
 
                 {/* Pie Chart Status */}
-                <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
+                <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100 flex flex-col items-center">
                     <h1 className='font-bold'>Status</h1>
                     <Suspense fallback={<>Loading..</>}>
                         <PieChart reports={pieStatus} />
