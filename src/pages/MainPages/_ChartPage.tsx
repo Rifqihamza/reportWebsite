@@ -1,3 +1,7 @@
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
+=======
+import BarChartIcon from '@mui/icons-material/BarChart';
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
 import React, { useEffect, useState } from "react";
 import type { ReportData } from "../../types/variables";
 import { ReportType, reporttype_to_string } from '../../types/variables';
@@ -40,13 +44,21 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [chartFilter, setChartFilter] = useState(LineChartFilterOption.Year as LineChartFilterOption | null);
     const [percenCategory, setPercenCategory] = useState<CategoryType[]>([]);
     const [statusCategory, setStatusCategory] = useState<CategoryType[]>([]);
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
 
+=======
+    
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
     useEffect(() => {
         // Generate line chart data
         let result: LineChartValueType[] = [];
         const currentDate = new Date();
 
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
         if (chartFilter == LineChartFilterOption.Year) {
+=======
+        if(chartFilter == LineChartFilterOption.Year) {
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
             listOfMonths.forEach(value => {
                 Object.values(ReportType).map(reportType => {
                     result.push({
@@ -57,7 +69,11 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 });
             });
         }
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
         else if (chartFilter == LineChartFilterOption.Month) {
+=======
+        else if(chartFilter == LineChartFilterOption.Month) {
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
             for (let index = 1; index <= listOfNumOfDates[currentDate.getMonth()]; index++) {
                 Object.values(ReportType).map(reportType => {
                     result.push({
@@ -68,7 +84,11 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 });
             }
         }
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
         else if (chartFilter == LineChartFilterOption.Week) {
+=======
+        else if(chartFilter == LineChartFilterOption.Week) {
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
             listOfDay.forEach(day => {
                 Object.values(ReportType).map(reportType => {
                     result.push({
@@ -79,7 +99,11 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 });
             });
         }
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
         else if (chartFilter == LineChartFilterOption.Today) {
+=======
+        else if(chartFilter == LineChartFilterOption.Today) {
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
             for (let hour = 0; hour < 24; hour++) {
                 Object.values(ReportType).map(reportType => {
                     result.push({
@@ -90,11 +114,16 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 });
             }
         }
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
 
+=======
+        
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
         reportData.filter(value => {
             const reportDate = new Date(value.created_at);
             let result_format = "";
 
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
             if (chartFilter == LineChartFilterOption.Today) {
                 result_format += "%d%m";
             }
@@ -102,6 +131,15 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 result_format += "%m";
             }
             else if (chartFilter == LineChartFilterOption.Week) {
+=======
+            if(chartFilter == LineChartFilterOption.Today) {
+                result_format += "%d%m";
+            }
+            else if(chartFilter == LineChartFilterOption.Month) {
+                result_format += "%m";
+            }
+            else if(chartFilter == LineChartFilterOption.Week) {
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
                 result_format = "%W";
             }
 
@@ -111,6 +149,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         }).forEach(data => {
             let date = new Date(data.created_at);
             let label = "";
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
             if (chartFilter == LineChartFilterOption.Year) {
                 label = listOfMonths[date.getMonth()];
             }
@@ -121,11 +160,27 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 label = strftime("%a", date);
             }
             else if (chartFilter == LineChartFilterOption.Today) {
+=======
+            if(chartFilter == LineChartFilterOption.Year) {
+                label = listOfMonths[date.getMonth()];
+            }
+            else if(chartFilter == LineChartFilterOption.Month) {
+                label = date.getDate().toString();
+            }
+            else if(chartFilter == LineChartFilterOption.Week) {
+                label = strftime("%a", date);
+            }
+            else if(chartFilter == LineChartFilterOption.Today) {
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
                 label = strftime("%k", date);
             }
 
             let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
             if (index != -1) {
+=======
+            if(index != -1) {
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
                 result[index].value += 1;
             }
         })
@@ -172,9 +227,13 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         const formattedCategoryPercen = Object.entries(percenStats).map(([labels, value]) => ({ labels, value: value as number }));
 
         setPercenCategory(formattedCategoryPercen);
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
         setStatusCategory(statusStats);
         setPieCategory(categoryStats);
         setPieStatus(statusStats);
+=======
+        setStatusCategory(formattedStatus)
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
     }, [reportData]);
     return (
         <>
@@ -188,7 +247,10 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                             items={Object.values(LineChartFilterOption)}
                             selected={chartFilter}
                             setSelected={setChartFilter}
+<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
 
+=======
+>>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
                         />
                     </div>
                     <Suspense fallback={<>Loading..</>}>

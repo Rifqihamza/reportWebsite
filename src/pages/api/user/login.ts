@@ -2,6 +2,7 @@ import type { APIContext } from "astro";
 import { create_response_cookie, create_response_status, generate_user_token } from "../../../utils/api_helper";
 import cookie from 'cookie';
 import { prisma } from "../../../utils/db";
+import sha3 from "js-sha3";
 
 export async function POST({ request }: APIContext) {
     // Get username and password to check
@@ -24,7 +25,7 @@ export async function POST({ request }: APIContext) {
     }
 
     // Verify password
-    if(user.password != password) {
+    if(user.password != sha3.sha3_256(password)) {
         return create_response_status(401);
     }
 
