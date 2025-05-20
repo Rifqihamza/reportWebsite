@@ -220,6 +220,32 @@ export async function getUser(): Promise<User | APIResultType> {
     return APIResultType.InternalServerError;
 }
 
+export async function updateReport(report_id: string, report_data: ReportData) {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/report/update", {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "report_id": report_id,
+            "report_data": report_data
+        })
+    });
+
+    // Check the response
+    if (response.ok) {
+        return APIResultType.NoError;
+    }
+    else if (response.status == 500) {
+        return APIResultType.InternalServerError;
+    }
+    else {
+        return APIResultType.Unauthorized;
+    }
+}
+
 export function string_to_reporttype(data: string): ReportType | undefined {
     return Object.values(ReportType).find(value => value.toString() == data);
 }

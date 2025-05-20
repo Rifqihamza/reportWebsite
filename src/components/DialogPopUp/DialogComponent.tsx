@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ReportType, reporttype_to_string, type ReportData, type User, } from '../../types/variables';
 import { AccountType } from "@prisma/client";
 import { InputTextarea } from "primereact/inputtextarea";
+import { APIResultType, updateReport } from '../../utils/api_interface';
 
 const reportTypeOptions = [
     ...Object.keys(ReportType)
@@ -33,7 +34,10 @@ export default function DialogComponent({
     detailId,
     visible,
     setVisible,
-    setReportData
+    setReportData,
+    onSuccess,
+    onUnauthorized,
+    onError
 }: {
     userData: User | null,
     reportData: ReportData[],
@@ -42,7 +46,10 @@ export default function DialogComponent({
     searchKeyword: string,
     detailId: string | number | null,
     visible: boolean,
-    setVisible: (val: boolean) => void
+    setVisible: (val: boolean) => void,
+    onSuccess: () => void,
+    onUnauthorized: () => void,
+    onError: () => void,
 }) {
     const report = reportData.find(value => value.id === detailId) || null;
 
@@ -53,11 +60,11 @@ export default function DialogComponent({
         location: "",
         type: "" as ReportType,
         follow_up: "" as AccountType,
-        report_date: null as Date | null,
-        due_date: null as Date | null,
+        report_date: "",
+        due_date: "",
         follow_up_name: "",
-
     });
+    const [disableSave, setDisableSave] = useState(false);
 
     useEffect(() => {
         if (report) {
@@ -68,26 +75,45 @@ export default function DialogComponent({
                 location: report.location || "",
                 type: report.type,
                 follow_up: report.follow_up || "" as AccountType, // Make sure to cast if necessary
-                report_date: report.report_date ? new Date(report.report_date) : null,
-                due_date: report.due_date ? new Date(report.due_date) : null,
+                report_date: report.report_date,
+                due_date: report.due_date || "",
                 follow_up_name: report.follow_up_name || "",
-
             });
         }
     }, [report]);
 
     const updateField = (field: keyof typeof formState, value: any) => {
+        if(field == "due_date" || field == "report_date") {
+            value = (new Date(value)).toISOString()
+        }
         setFormState(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         // Simpan perubahan ke state reportData
         if (!report) return;
+        setDisableSave(true);
+        
         const updated: any = reportData.map(item =>
             item.id === report.id ? { ...item, ...formState } : item
         );
         setReportData(updated);
-        setVisible(false);
+        const result = await updateReport(report.id, {
+            ...report,
+            ...formState
+        } as ReportData);
+        setDisableSave(false);
+
+        if(result === APIResultType.NoError) {
+            setVisible(false)
+            onSuccess();
+        }
+        else if(result === APIResultType.Unauthorized) {
+            onUnauthorized();
+        }
+        else if(result === APIResultType.InternalServerError) {
+            onError();
+        }
     };
 
     return (
@@ -101,7 +127,7 @@ export default function DialogComponent({
             footer={
                 <div className="flex justify-end gap-2">
                     <button onClick={() => setVisible(false)} className="p-button p-button-text">Batal</button>
-                    <button onClick={handleSave} className="p-button p-button-primary">Simpan</button>
+                    <button onClick={handleSave} className="p-button p-button-primary disabled:opacity-50 disabled:pointer-events-none" disabled={disableSave}>Simpan</button>
                 </div>
             }
         >
@@ -127,8 +153,8 @@ export default function DialogComponent({
                         onChange={(e) => updateField("follow_up", e.value as AccountType)} // Cast the value to AccountType
                     />
                     <InputField label="Follow Up Oleh" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} />
-                    <CalendarField label="Tanggal Temuan" value={formState.report_date} onChange={(e) => updateField("report_date", e.value)} />
-                    <CalendarField label="Due Date" value={formState.due_date} onChange={(e) => updateField("due_date", e.value)} />
+                    <CalendarField label="Tanggal Temuan" value={new Date(formState.report_date)} onChange={(e) => updateField("report_date", e.value)} />
+                    <CalendarField label="Due Date" value={new Date(formState.due_date)} onChange={(e) => updateField("due_date", e.value)} />
                 </div>
             </div>
         </Dialog>

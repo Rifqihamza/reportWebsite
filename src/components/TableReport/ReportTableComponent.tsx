@@ -293,7 +293,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 <span className="font-semibold">Tanggal Temuan:</span> {formatDate(new Date(report.report_date).toISOString())}
               </p>
               <p>
-                <span className="font-semibold">Due Date:</span> {formatDate(new Date(report.due_date).toISOString())}
+                <span className="font-semibold">Due Date:</span> {report.due_date ? formatDate(new Date(report.due_date).toISOString()) : "Belum ditentukan"}
               </p>
               <p>
                 Status Laporan: <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}> {report.status}</span>
@@ -369,11 +369,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                       <h1 className="font-semibold tracking-wide">Pelapor:</h1>
                       <p>{report_data?.submitted_by}</p>
                     </div>
-                    {/* PIC */}
-                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
-                      <h1 className="font-semibold tracking-wide">PIC:</h1>
-                      <p>{report_data?.pic_name || "Belum ditentukan"}</p>
-                    </div>
                     {/* Lokasi Temuan */}
                     <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Lokasi:</h1>
@@ -392,7 +387,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Nama PIC */}
                     <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Nama PIC:</h1>
-                      <p>{report_data?.pic_name || "Belum ditentukan"}</p>
+                      {report_data?.pic_name ?
+                        <p>{report_data.pic_name}</p>
+                        :
+                        <p className="opacity-50">Belum ditentukan</p>
+                      }
                     </div>
                     {/* Tanggal Temuan */}
                     <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
@@ -412,7 +411,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Follow up oleh */}
                     <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide ">Follow Up Oleh:</h1>
-                      <p>{report_data?.follow_up_name || "Belum ditentukan"}</p>
+                      {report_data?.follow_up_name ?
+                        <p>{report_data.follow_up_name}</p>
+                        :
+                        <p className="opacity-50">Belum ditentukan</p>
+                      }
                     </div>
                   </div>
                   {/* End Details Laporan */}
@@ -459,6 +462,9 @@ export default function ReportListComponent({ userData, reportData, setReportDat
         detailId={detailId}
         visible={dialogVisible}
         setVisible={setDialogVisible}
+        onSuccess={() => { showMessage("Success", toastTopRight, "success", "Successfully update data!"); }}
+        onUnauthorized={() => { showMessage("Unauthorized", toastTopRight, "error", "Unauthorized attempt detected!"); }}
+        onError={() => { showMessage("Error", toastTopRight, "error", "There's an error!"); }}
       />
       {/* End Dialog Components */}
 

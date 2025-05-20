@@ -1,6 +1,7 @@
 import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
 import { create_response_status, get_cookies_from_request, verify_teacher_token } from "../../../utils/api_helper";
+import type { ReportStatus } from "../../../types/variables";
 
 export async function PUT({ request }: APIContext) {
     // Verify user_token
@@ -11,7 +12,7 @@ export async function PUT({ request }: APIContext) {
     
     
     // Get the required data
-    const { report_id, report_status } = await request.json();
+    const { report_id, report_status }: { report_id: string, report_status: ReportStatus } = await request.json();
     if(!report_id || !report_status) {
         return create_response_status(400);
     }
