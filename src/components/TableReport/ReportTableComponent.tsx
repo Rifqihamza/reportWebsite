@@ -347,7 +347,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             {/* End header laporan */}
 
             <div className="overflow-y-scroll lg:mx-8 mx-0">
-              <div className="flex lg:flex-row flex-col justify-between lg:gap-10 gap-4 lg:mt-6">
+              <div className="flex lg:flex-row flex-col justify-between items-center lg:gap-10 gap-4 lg:mt-6">
 
                 {/* Image render */}
                 <div >
@@ -402,12 +402,17 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                     {/* Tanggal Dilakukan Temuan */}
                     <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
                       <h1 className="font-semibold tracking-wide">Due Date:</h1>
-                      <p className={report_data?.due_date ? "" : "opacity-50"}>{report_data?.follow_up || "Belum ditentukan"}</p>
+                      <p className={report_data?.due_date ? "" : "opacity-50"}></p>
                       {report_data?.due_date ?
                         <p>{formatDate(report_data.due_date)}</p>
                         :
                         <p className="opacity-50">Belum ditentukan</p>
                       }
+                    </div>
+                    {/* Follow up oleh */}
+                    <div className="flex flex-col lg:flex-row justify-baseline lg:justify-between">
+                      <h1 className="font-semibold tracking-wide ">Follow Up Oleh:</h1>
+                      <p>{report_data?.follow_up_name || "Belum ditentukan"}</p>
                     </div>
                   </div>
                   {/* End Details Laporan */}

@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { string_to_reportstatus, string_to_reporttype } from '../../types/variables';
 
 interface Report {
     labels: string;

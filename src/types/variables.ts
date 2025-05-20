@@ -42,6 +42,7 @@ export type ReportData = {
     message: string,
     type: ReportType,
     follow_up: AccountType,
+    follow_up_name?: AccountType,
     status: ReportStatus,
     location: string,
     pic_name: string,
