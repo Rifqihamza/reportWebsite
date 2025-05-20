@@ -1,9 +1,10 @@
-import BarChartIcon from '@mui/icons-material/BarChart';
-import React, { useEffect, useMemo, useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import type { DropdownChangeEvent } from 'primereact/dropdown';
 import type { ReportData } from "../../types/variables";
 import { ReportType, reporttype_to_string } from '../../types/variables';
+
+
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));

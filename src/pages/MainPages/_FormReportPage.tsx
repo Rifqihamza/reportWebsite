@@ -6,7 +6,6 @@ export default function ReportForm({ reportData, setReportData }: { reportData: 
 
   return (
     <>
-
       {/* End Header Title */}
       <ReportFormComponent reportData={reportData} setReportData={setReportData} />
     </>

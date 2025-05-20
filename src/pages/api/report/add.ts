@@ -9,7 +9,7 @@ import { z } from 'zod';
 const ReportBodyType = z.object({
     submitted_by: z.string(),
     message: z.string(),
-    pic_name: z.string(),
+    pic_name: z.string().optional(),
     report_type: z.nativeEnum(ReportType),
     follow_up: z.nativeEnum(AccountType).optional(),
     location: z.string(),

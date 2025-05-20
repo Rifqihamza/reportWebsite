@@ -38,11 +38,17 @@ export async function userLogin(username: string, password: string): Promise<API
     }
 }
 
+function add_to_formdata(formData: FormData, key: string, value?: string) {
+    if(value) {
+        formData.append(key, value);
+    }
+}
+
 export async function addReport(
     submitted_by: string,
     message: string,
-    pic_name: string,
     report_type: ReportType,
+    pic_name?: string,
     follow_up?: AccountType,
     follow_up_name?: string,
     location?: string,
@@ -52,26 +58,17 @@ export async function addReport(
 ): Promise<APIResultType | ReportData> {
     // Setting up Form Data
     const form_data = new FormData();
-    form_data.append("submitted_by", submitted_by)
-    form_data.append("message", message);
-    form_data.append("pic_name", pic_name);
-    form_data.append("report_type", report_type);
     
-    if (follow_up) {
-        form_data.append("follow_up", follow_up || "");
-    }
-    if (follow_up_name) {
-        form_data.append("follow_up_name", follow_up_name);
-    }
-    if (location) {
-        form_data.append("location", location);
-    }
-    if (report_date) {
-        form_data.append("report_date", report_date);
-    }
-    if (due_date) {
-        form_data.append("due_date", due_date);
-    }
+    add_to_formdata(form_data, "submitted_by", submitted_by)
+    add_to_formdata(form_data, "message", message);
+    add_to_formdata(form_data, "report_type", report_type);
+    add_to_formdata(form_data, "pic_name", pic_name)
+    add_to_formdata(form_data, "follow_up", follow_up);
+    add_to_formdata(form_data, "follow_up_name", follow_up_name);
+    add_to_formdata(form_data, "location", location);
+    add_to_formdata(form_data, "report_date", report_date);
+    add_to_formdata(form_data, "due_date", due_date);
+
     if (image) {
         const compressed_image = await imageCompression(image, {
             maxSizeMB: 1,
@@ -123,6 +120,7 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
         return APIResultType.Unauthorized;
     }
 }
+
 export async function changeReportStatus(report_id: string, report_status: ReportStatus): Promise<APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/change_status", {
