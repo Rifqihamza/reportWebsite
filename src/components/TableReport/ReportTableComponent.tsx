@@ -384,7 +384,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Follow up oleh */}
                 <div className="flex flex-col md:flex-row justify-baseline md:justify-between">
                   <h1 className="font-semibold tracking-wide ">Follow Up Oleh:</h1>
-                  <p>{report_data?.follow_up_name || "Belum ditentukan"}</p>
+                  {report_data?.follow_up_name ?
+                    <p>{formatDate(report_data.follow_up_name)}</p>
+                    :
+                    <p className="opacity-50">Belum ditentukan</p>
+                  }
                 </div>
               </div>
               {/* End Details */}
