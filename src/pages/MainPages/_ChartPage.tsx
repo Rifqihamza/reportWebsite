@@ -1,15 +1,8 @@
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
-=======
-import BarChartIcon from '@mui/icons-material/BarChart';
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
-import React, { useEffect, useState } from "react";
-import type { ReportData } from "../../types/variables";
-import { ReportType, reporttype_to_string } from '../../types/variables';
-import { Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import strftime from "strftime";
 import Dropdown from "../../components/Dropdown/DropdownComponent";
-
-
+import type { ReportData } from "../../types/variables";
+import { ReportType, reporttype_to_string } from "../../types/variables";
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
@@ -28,7 +21,7 @@ type LineChartValueType = {
     labels: string;
     type: ReportType | string;
     value: number;
-}
+};
 
 enum LineChartFilterOption {
     Year = "This Year",
@@ -38,261 +31,178 @@ enum LineChartFilterOption {
 }
 
 const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
-    const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
-    const [pieCategory, setPieCategory] = useState([] as CategoryType[]);
-    const [pieStatus, setPieStatus] = useState([] as CategoryType[]);
-    const [chartFilter, setChartFilter] = useState(LineChartFilterOption.Year as LineChartFilterOption | null);
+    const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
+    const [pieCategory, setPieCategory] = useState<CategoryType[]>([]);
+    const [pieStatus, setPieStatus] = useState<CategoryType[]>([]);
+    const [chartFilter, setChartFilter] = useState<LineChartFilterOption | null>(LineChartFilterOption.Year);
     const [percenCategory, setPercenCategory] = useState<CategoryType[]>([]);
     const [statusCategory, setStatusCategory] = useState<CategoryType[]>([]);
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
 
-=======
-    
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
     useEffect(() => {
-        // Generate line chart data
-        let result: LineChartValueType[] = [];
+        const result: LineChartValueType[] = [];
         const currentDate = new Date();
 
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
-        if (chartFilter == LineChartFilterOption.Year) {
-=======
-        if(chartFilter == LineChartFilterOption.Year) {
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
-            listOfMonths.forEach(value => {
-                Object.values(ReportType).map(reportType => {
+        if (chartFilter === LineChartFilterOption.Year) {
+            listOfMonths.forEach(month => {
+                Object.values(ReportType).forEach(type => {
                     result.push({
-                        labels: value,
-                        type: reporttype_to_string(reportType),
+                        labels: month,
+                        type: reporttype_to_string(type),
                         value: 0
                     });
                 });
             });
-        }
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
-        else if (chartFilter == LineChartFilterOption.Month) {
-=======
-        else if(chartFilter == LineChartFilterOption.Month) {
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
-            for (let index = 1; index <= listOfNumOfDates[currentDate.getMonth()]; index++) {
-                Object.values(ReportType).map(reportType => {
+        } else if (chartFilter === LineChartFilterOption.Month) {
+            for (let i = 1; i <= listOfNumOfDates[currentDate.getMonth()]; i++) {
+                Object.values(ReportType).forEach(type => {
                     result.push({
-                        labels: index.toString(),
-                        type: reporttype_to_string(reportType),
+                        labels: i.toString(),
+                        type: reporttype_to_string(type),
                         value: 0
                     });
                 });
             }
-        }
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
-        else if (chartFilter == LineChartFilterOption.Week) {
-=======
-        else if(chartFilter == LineChartFilterOption.Week) {
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
+        } else if (chartFilter === LineChartFilterOption.Week) {
             listOfDay.forEach(day => {
-                Object.values(ReportType).map(reportType => {
+                Object.values(ReportType).forEach(type => {
                     result.push({
                         labels: day,
-                        type: reporttype_to_string(reportType),
+                        type: reporttype_to_string(type),
                         value: 0
                     });
                 });
             });
-        }
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
-        else if (chartFilter == LineChartFilterOption.Today) {
-=======
-        else if(chartFilter == LineChartFilterOption.Today) {
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
+        } else if (chartFilter === LineChartFilterOption.Today) {
             for (let hour = 0; hour < 24; hour++) {
-                Object.values(ReportType).map(reportType => {
+                Object.values(ReportType).forEach(type => {
                     result.push({
                         labels: hour.toString(),
-                        type: reporttype_to_string(reportType),
+                        type: reporttype_to_string(type),
                         value: 0
                     });
                 });
             }
         }
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
 
-=======
-        
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
-        reportData.filter(value => {
+        const filtered = reportData.filter(value => {
             const reportDate = new Date(value.created_at);
-            let result_format = "";
+            let format = "";
 
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
-            if (chartFilter == LineChartFilterOption.Today) {
-                result_format += "%d%m";
-            }
-            else if (chartFilter == LineChartFilterOption.Month) {
-                result_format += "%m";
-            }
-            else if (chartFilter == LineChartFilterOption.Week) {
-=======
-            if(chartFilter == LineChartFilterOption.Today) {
-                result_format += "%d%m";
-            }
-            else if(chartFilter == LineChartFilterOption.Month) {
-                result_format += "%m";
-            }
-            else if(chartFilter == LineChartFilterOption.Week) {
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
-                result_format = "%W";
-            }
+            if (chartFilter === LineChartFilterOption.Today) format = "%d%m";
+            else if (chartFilter === LineChartFilterOption.Month) format = "%m";
+            else if (chartFilter === LineChartFilterOption.Week) format = "%W";
 
-            result_format += "%y";
+            format += "%y";
 
-            return strftime(result_format, reportDate) == strftime(result_format, currentDate);
-        }).forEach(data => {
-            let date = new Date(data.created_at);
+            return strftime(format, reportDate) === strftime(format, currentDate);
+        });
+
+        filtered.forEach(data => {
+            const date = new Date(data.created_at);
             let label = "";
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
-            if (chartFilter == LineChartFilterOption.Year) {
-                label = listOfMonths[date.getMonth()];
-            }
-            else if (chartFilter == LineChartFilterOption.Month) {
-                label = date.getDate().toString();
-            }
-            else if (chartFilter == LineChartFilterOption.Week) {
-                label = strftime("%a", date);
-            }
-            else if (chartFilter == LineChartFilterOption.Today) {
-=======
-            if(chartFilter == LineChartFilterOption.Year) {
-                label = listOfMonths[date.getMonth()];
-            }
-            else if(chartFilter == LineChartFilterOption.Month) {
-                label = date.getDate().toString();
-            }
-            else if(chartFilter == LineChartFilterOption.Week) {
-                label = strftime("%a", date);
-            }
-            else if(chartFilter == LineChartFilterOption.Today) {
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
-                label = strftime("%k", date);
-            }
 
-            let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
-            if (index != -1) {
-=======
-            if(index != -1) {
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
-                result[index].value += 1;
-            }
-        })
+            if (chartFilter === LineChartFilterOption.Year) label = listOfMonths[date.getMonth()];
+            else if (chartFilter === LineChartFilterOption.Month) label = date.getDate().toString();
+            else if (chartFilter === LineChartFilterOption.Week) label = strftime("%a", date);
+            else if (chartFilter === LineChartFilterOption.Today) label = strftime("%k", date);
 
-        result.sort((a, b) => listOfMonths.indexOf(a.labels) - listOfMonths.indexOf(b.labels));
+            const index = result.findIndex(
+                r => r.labels === label && r.type === reporttype_to_string(data.type)
+            );
+            if (index !== -1) result[index].value += 1;
+        });
+
+        if (chartFilter === LineChartFilterOption.Year) {
+            result.sort((a, b) => listOfMonths.indexOf(a.labels) - listOfMonths.indexOf(b.labels));
+        }
 
         setCurrentYearReports(result);
     }, [reportData, chartFilter]);
 
     useEffect(() => {
-        // Get the category and status statistics
-        let categoryStats: CategoryType[] = [];
-        let statusStats: CategoryType[] = [];
-        let percenStats: Record<string, number> = {};
+        const categoryStats: CategoryType[] = [];
+        const statusStats: CategoryType[] = [];
+        const percenStats: Record<string, number> = {};
 
         reportData.forEach(data => {
-            let index = categoryStats.findIndex(res_data => res_data.labels == data.type.toString());
-            if (index < 0) {
-                categoryStats.push({
-                    labels: data.type.toString(),
-                    value: 1
-                });
-            }
-            else {
-                categoryStats[index].value += 1;
-            }
-
-            index = statusStats.findIndex(res_data => res_data.labels == data.status.toString());
-            if (index < 0) {
-                statusStats.push({
-                    labels: data.status.toString(),
-                    value: 1
-                });
-            }
-            else {
-                statusStats[index].value += 1;
-            }
-
+            const catLabel = data.type.toString();
+            const statLabel = data.status.toString();
             const percenLabel = reporttype_to_string(data.type);
-            percenStats[percenLabel] = (percenStats[percenLabel] || 0) + 1;
 
+            const catIdx = categoryStats.findIndex(r => r.labels === catLabel);
+            if (catIdx >= 0) categoryStats[catIdx].value += 1;
+            else categoryStats.push({ labels: catLabel, value: 1 });
+
+            const statIdx = statusStats.findIndex(r => r.labels === statLabel);
+            if (statIdx >= 0) statusStats[statIdx].value += 1;
+            else statusStats.push({ labels: statLabel, value: 1 });
+
+            percenStats[percenLabel] = (percenStats[percenLabel] || 0) + 1;
         });
 
-        const formattedCategoryPercen = Object.entries(percenStats).map(([labels, value]) => ({ labels, value: value as number }));
+        const formattedPercen = Object.entries(percenStats).map(([labels, value]) => ({ labels, value }));
 
-        setPercenCategory(formattedCategoryPercen);
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
+        setPercenCategory(formattedPercen);
         setStatusCategory(statusStats);
         setPieCategory(categoryStats);
         setPieStatus(statusStats);
-=======
-        setStatusCategory(formattedStatus)
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
     }, [reportData]);
+
     return (
-        <>
-            <div className='flex flex-col gap-4'>
-                {/* Line Chart */}
-                <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white">
-                    <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
-                        <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
-                        <Dropdown
-                            id="chartFilter"
-                            items={Object.values(LineChartFilterOption)}
-                            selected={chartFilter}
-                            setSelected={setChartFilter}
-<<<<<<< HEAD:src/pages/MainPages/ChartPage.tsx
+        <div className='flex flex-col gap-4'>
+            {/* Line Chart */}
+            <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white">
+                <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
+                    <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
+                    <Dropdown
+                        id="chartFilter"
+                        items={Object.values(LineChartFilterOption)}
+                        selected={chartFilter}
+                        setSelected={setChartFilter}
+                    />
+                </div>
+                <Suspense fallback={<>Loading..</>}>
+                    <LineChart reports={currentYearReports} />
+                </Suspense>
+            </div>
 
-=======
->>>>>>> 5ffd7a0dd3a3a666c602cf3f4ae4e7d9a7fa51d8:src/pages/MainPages/_ChartPage.tsx
-                        />
-                    </div>
+            {/* Pie Charts and Percentage Boxes */}
+            <div className="w-full flex flex-col lg:flex-row gap-4 space-y-3 md:space-y-0 justify-center md:justify-between">
+                {/* Pie Chart Kategori */}
+                <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
+                    <h1 className='font-bold'>Kategori</h1>
                     <Suspense fallback={<>Loading..</>}>
-                        <LineChart reports={currentYearReports} />
+                        <PieChart reports={pieCategory} />
                     </Suspense>
                 </div>
 
-                <div className="w-full flex flex-col lg:flex-row gap-4 space-y-3 md:space-y-0 justify-center md:justify-between">
-                    {/* Pie Chart Kategori */}
-                    <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
-                        <h1 className='font-bold'>Kategory</h1>
-                        <Suspense fallback={<>Loading..</>}>
-                            <PieChart reports={pieCategory} />
-                        </Suspense>
-                    </div>
-
-                    {/* Pie Chart Status */}
-                    <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
-                        <h1 className='font-bold'>Status</h1>
-                        <Suspense fallback={<>Loading..</>}>
-                            <PieChart reports={pieStatus} />
-                        </Suspense>
-                    </div>
-                    {/* Percentage Status */}
+                {/* Pie Chart Status */}
+                <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
+                    <h1 className='font-bold'>Status</h1>
                     <Suspense fallback={<>Loading..</>}>
-                        <PercenComp
-                            reports={statusCategory}
-                            label='Status'
-                            icon='pi pi-exclamation-triangle'
-                        />
-                    </Suspense>
-                    {/* Percentage Category */}
-                    <Suspense fallback={<>Loading..</>}>
-                        <PercenComp
-                            reports={percenCategory}
-                            label='Kategori'
-                            icon='pi pi-exclamation-triangle'
-                        />
+                        <PieChart reports={pieStatus} />
                     </Suspense>
                 </div>
-            </div >
-        </>
+
+                {/* Percentage Status */}
+                <Suspense fallback={<>Loading..</>}>
+                    <PercenComp
+                        reports={statusCategory}
+                        label='Status'
+                        icon='pi pi-exclamation-triangle'
+                    />
+                </Suspense>
+
+                {/* Percentage Category */}
+                <Suspense fallback={<>Loading..</>}>
+                    <PercenComp
+                        reports={percenCategory}
+                        label='Kategori'
+                        icon='pi pi-exclamation-triangle'
+                    />
+                </Suspense>
+            </div>
+        </div>
     );
 };
 
