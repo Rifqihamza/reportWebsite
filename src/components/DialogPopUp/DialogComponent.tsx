@@ -66,6 +66,7 @@ export default function DialogComponent({
 
     });
     const [disableSave, setDisableSave] = useState(false);
+    const [isChange, setIsChange] = useState(false);
 
     useEffect(() => {
         if (report) {
@@ -83,6 +84,7 @@ export default function DialogComponent({
 
             });
         }
+        setIsChange(false);
     }, [report]);
 
     const updateField = (field: keyof typeof formState, value: any) => {
@@ -93,10 +95,11 @@ export default function DialogComponent({
             value = string_to_reporttype(value);
         }
         setFormState(prev => ({ ...prev, [field]: value }));
+        setIsChange(true);
     };
 
     const handleSave = async () => {
-        if (!report) return;
+        if (disableSave || !report || !isChange) return;
         setDisableSave(true);
 
         const updated: any = reportData.map(item =>
@@ -108,7 +111,7 @@ export default function DialogComponent({
             ...formState // formState now includes the updated status
         } as ReportData);
         setDisableSave(false);
-
+        
         if (result === APIResultType.NoError) {
             setVisible(false)
             onSuccess();
@@ -131,7 +134,7 @@ export default function DialogComponent({
             footer={
                 <div className="flex justify-end gap-2">
                     <button onClick={() => setVisible(false)} className="text-gray-800 hover:text-gray-200">Batal</button>
-                    <button onClick={handleSave} disabled={disableSave} className="text-blue-400 hover:text-gray-600">Simpan</button>
+                    <button onClick={handleSave} disabled={disableSave||!isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"><span className={disableSave ? "" : "hidden"}><i className="pi pi-spinner pi-spin"></i></span> Simpan</button>
                 </div>
             }
         >
