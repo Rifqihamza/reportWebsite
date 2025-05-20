@@ -51,7 +51,7 @@ const PieChart: React.FC<PieChartProps> = ({ reports }) => {
         plotOptions: {
             pie: {
                 dataLabels: {
-                    offset: -25,
+                    offset: -20,
                 },
             },
         },
@@ -65,21 +65,21 @@ const PieChart: React.FC<PieChartProps> = ({ reports }) => {
         },
         dataLabels: {
             enabled: true,
-            offsetY: -30,
+            offsetY: -20,
             style: {
                 fontSize: '10px',
                 colors: ["#fff"]
             }
         },
         legend: {
-            show: false,
+            show: true,
             position: 'bottom' as 'bottom',
             flexWrap: 'wrap' as 'wrap',
         },
     };
 
     return (
-        <ReactApexChart options={options} series={series} type="pie" width="200" />
+        <ReactApexChart options={options} series={series} type="pie" width="250" />
     );
 };
 

@@ -1,15 +1,19 @@
-import BarChartIcon from '@mui/icons-material/BarChart';
-import React, { useEffect, useMemo, useState, Suspense } from "react";
-import { Dropdown } from 'primereact/dropdown';
-import type { DropdownChangeEvent } from 'primereact/dropdown';
+import React, { useEffect, useState } from "react";
 import type { ReportData } from "../../types/variables";
 import { ReportType, reporttype_to_string } from '../../types/variables';
+import { Suspense } from "react";
+import strftime from "strftime";
+import Dropdown from "../../components/Dropdown/DropdownComponent";
+
+
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
 const PercenComp = React.lazy(() => import("../../components/PercenContainer/PercenContComponent"));
 
-const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
+const listOfMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
+const listOfNumOfDates = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
+const listOfDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 type CategoryType = {
     labels: string;
@@ -20,94 +24,171 @@ type LineChartValueType = {
     labels: string;
     type: ReportType | string;
     value: number;
-};
+}
+
+enum LineChartFilterOption {
+    Year = "This Year",
+    Month = "This Month",
+    Week = "This Week",
+    Today = "Today"
+}
 
 const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
-    const currentYear = new Date().getFullYear();
-    const [availableYears, setAvailableYears] = useState<number[]>([]);
-    const [selectedYear, setSelectedYear] = useState<number>(currentYear);
-    const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
-    const [pieCategory, setPieCategory] = useState<CategoryType[]>([]);
-    const [pieStatus, setPieStatus] = useState<CategoryType[]>([]);
+    const [currentYearReports, setCurrentYearReports] = useState([] as LineChartValueType[]);
+    const [pieCategory, setPieCategory] = useState([] as CategoryType[]);
+    const [pieStatus, setPieStatus] = useState([] as CategoryType[]);
+    const [chartFilter, setChartFilter] = useState(LineChartFilterOption.Year as LineChartFilterOption | null);
     const [percenCategory, setPercenCategory] = useState<CategoryType[]>([]);
     const [statusCategory, setStatusCategory] = useState<CategoryType[]>([]);
+
     useEffect(() => {
         // Generate line chart data
         let result: LineChartValueType[] = [];
-        monthsShort.forEach(month => {
-            Object.values(ReportType).forEach(reportType => {
-                result.push({
-                    labels: month,
-                    type: reporttype_to_string(reportType),
-                    value: 0,
+        const currentDate = new Date();
+
+        if (chartFilter == LineChartFilterOption.Year) {
+            listOfMonths.forEach(value => {
+                Object.values(ReportType).map(reportType => {
+                    result.push({
+                        labels: value,
+                        type: reporttype_to_string(reportType),
+                        value: 0
+                    });
                 });
             });
-        });
-
-        reportData
-            .filter(report => new Date(report.created_at).getFullYear() === selectedYear)
-            .forEach(report => {
-                const date = new Date(report.created_at);
-                const label = monthsShort[date.getMonth()];
-                const typeLabel = reporttype_to_string(report.type);
-
-                const index = result.findIndex(
-                    r => r.labels === label && r.type === typeLabel
-                );
-                if (index !== -1) {
-                    result[index].value += 1;
-                }
+        }
+        else if (chartFilter == LineChartFilterOption.Month) {
+            for (let index = 1; index <= listOfNumOfDates[currentDate.getMonth()]; index++) {
+                Object.values(ReportType).map(reportType => {
+                    result.push({
+                        labels: index.toString(),
+                        type: reporttype_to_string(reportType),
+                        value: 0
+                    });
+                });
+            }
+        }
+        else if (chartFilter == LineChartFilterOption.Week) {
+            listOfDay.forEach(day => {
+                Object.values(ReportType).map(reportType => {
+                    result.push({
+                        labels: day,
+                        type: reporttype_to_string(reportType),
+                        value: 0
+                    });
+                });
             });
+        }
+        else if (chartFilter == LineChartFilterOption.Today) {
+            for (let hour = 0; hour < 24; hour++) {
+                Object.values(ReportType).map(reportType => {
+                    result.push({
+                        labels: hour.toString(),
+                        type: reporttype_to_string(reportType),
+                        value: 0
+                    });
+                });
+            }
+        }
 
-        result.sort((a, b) => monthsShort.indexOf(a.labels) - monthsShort.indexOf(b.labels));
+        reportData.filter(value => {
+            const reportDate = new Date(value.created_at);
+            let result_format = "";
+
+            if (chartFilter == LineChartFilterOption.Today) {
+                result_format += "%d%m";
+            }
+            else if (chartFilter == LineChartFilterOption.Month) {
+                result_format += "%m";
+            }
+            else if (chartFilter == LineChartFilterOption.Week) {
+                result_format = "%W";
+            }
+
+            result_format += "%y";
+
+            return strftime(result_format, reportDate) == strftime(result_format, currentDate);
+        }).forEach(data => {
+            let date = new Date(data.created_at);
+            let label = "";
+            if (chartFilter == LineChartFilterOption.Year) {
+                label = listOfMonths[date.getMonth()];
+            }
+            else if (chartFilter == LineChartFilterOption.Month) {
+                label = date.getDate().toString();
+            }
+            else if (chartFilter == LineChartFilterOption.Week) {
+                label = strftime("%a", date);
+            }
+            else if (chartFilter == LineChartFilterOption.Today) {
+                label = strftime("%k", date);
+            }
+
+            let index = result.findIndex(value => value.labels == label && value.type == reporttype_to_string(data.type));
+            if (index != -1) {
+                result[index].value += 1;
+            }
+        })
+
+        result.sort((a, b) => listOfMonths.indexOf(a.labels) - listOfMonths.indexOf(b.labels));
+
         setCurrentYearReports(result);
-    }, [selectedYear, reportData]);
+    }, [reportData, chartFilter]);
 
     useEffect(() => {
-        const categoryStats: Record<string, number> = {};
-        const statusStats: Record<string, number> = {};
-        const percenStats: Record<string, number> = {};
-        const yearSet = new Set<number>();
+        // Get the category and status statistics
+        let categoryStats: CategoryType[] = [];
+        let statusStats: CategoryType[] = [];
+        let percenStats: Record<string, number> = {};
 
-        reportData.forEach(report => {
-            const year = new Date(report.created_at).getFullYear();
-            yearSet.add(year);
+        reportData.forEach(data => {
+            let index = categoryStats.findIndex(res_data => res_data.labels == data.type.toString());
+            if (index < 0) {
+                categoryStats.push({
+                    labels: data.type.toString(),
+                    value: 1
+                });
+            }
+            else {
+                categoryStats[index].value += 1;
+            }
 
-            const typeLabel = reporttype_to_string(report.type);
-            categoryStats[typeLabel] = (categoryStats[typeLabel] || 0) + 1;
+            index = statusStats.findIndex(res_data => res_data.labels == data.status.toString());
+            if (index < 0) {
+                statusStats.push({
+                    labels: data.status.toString(),
+                    value: 1
+                });
+            }
+            else {
+                statusStats[index].value += 1;
+            }
 
-            const statusLabel = report.status.toString();
-            statusStats[statusLabel] = (statusStats[statusLabel] || 0) + 1;
-
-            const percenLabel = reporttype_to_string(report.type);
+            const percenLabel = reporttype_to_string(data.type);
             percenStats[percenLabel] = (percenStats[percenLabel] || 0) + 1;
+
         });
 
-        const formattedCategory = Object.entries(categoryStats).map(([labels, value]) => ({ labels, value: value as number }));
         const formattedCategoryPercen = Object.entries(percenStats).map(([labels, value]) => ({ labels, value: value as number }));
-        const formattedStatus = Object.entries(statusStats).map(([labels, value]) => ({ labels, value: value as number }));
 
-        setPieCategory(formattedCategory);
-        setPieStatus(formattedStatus);
         setPercenCategory(formattedCategoryPercen);
-        setStatusCategory(formattedStatus)
-        setAvailableYears(Array.from(yearSet).sort((a, b) => b - a));
-        setSelectedYear(current => (yearSet.has(current) ? current : Array.from(yearSet)[0]));
+        setStatusCategory(statusStats);
+        setPieCategory(categoryStats);
+        setPieStatus(statusStats);
     }, [reportData]);
-
     return (
         <>
             <div className='flex flex-col gap-4'>
                 {/* Line Chart */}
-                <div className="w-full px-3 py-4 rounded-2xl border border-gray-300 bg-white">
-                    <div className="w-full flex flex-col lg:flex-row items-center justify-between px-2 py-1">
+                <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white">
+                    <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
                         <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
                         <Dropdown
-                            value={selectedYear}
-                            onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
-                            options={availableYears}
-                            placeholder="Pilih Tahun"
-                            className="w-full lg:w-fit"
+                            id="chartFilter"
+                            items={Object.values(LineChartFilterOption)}
+                            selected={chartFilter}
+                            setSelected={setChartFilter}
+
                         />
                     </div>
                     <Suspense fallback={<>Loading..</>}>
@@ -118,7 +199,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 <div className="w-full flex flex-col lg:flex-row gap-4 space-y-3 md:space-y-0 justify-center md:justify-between">
                     {/* Pie Chart Kategori */}
                     <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
-                        <h1 className='font-bold'>Persentase Kategori Temuan</h1>
+                        <h1 className='font-bold'>Kategory</h1>
                         <Suspense fallback={<>Loading..</>}>
                             <PieChart reports={pieCategory} />
                         </Suspense>
@@ -126,7 +207,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
 
                     {/* Pie Chart Status */}
                     <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white flex flex-col items-center">
-                        <h1 className='font-bold'>Persentase Status Temuan</h1>
+                        <h1 className='font-bold'>Status</h1>
                         <Suspense fallback={<>Loading..</>}>
                             <PieChart reports={pieStatus} />
                         </Suspense>

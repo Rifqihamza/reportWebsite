@@ -18,14 +18,14 @@ export default function Dropdown<T extends { toString(): string }>({ id, label, 
   };
 
   return (
-    <div className="relative text-left w-full dropdown-container" data-dropdown-id={id}>
+    <div className="relative text-left w-fit dropdown-container" data-dropdown-id={id}>
       <span className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center mb-3">
         <i className={icon}></i>
         <h1>{label}</h1>
       </span>
       <button
         type="button"
-        className="dropdown-trigger flex flex-row items-center justify-between w-full px-4 py-3 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 "
+        className="dropdown-trigger flex flex-row items-center justify-between w-full px-4 py-2 gap-4 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 "
         aria-expanded={isOpen}
         aria-haspopup="true"
         onClick={() => setIsOpen((prev) => !prev)}
