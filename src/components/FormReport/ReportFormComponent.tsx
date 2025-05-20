@@ -105,7 +105,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   name="submitted_by"
                   id="submitted_by"
                   placeholder="Nama Pelapor..."
-                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black"
                   onChange={(e) => setSubmittedBy(e.target.value)}
                   required
                 />
@@ -124,7 +124,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   name="pic"
                   id="pic"
                   placeholder="Nama PIC..."
-                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black"
                   onChange={(e) => setPic(e.target.value)}
                   required
                 />
@@ -144,7 +144,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   name="lokasi"
                   id="lokasi"
                   placeholder="Lokasi temuan"
-                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black"
                   onChange={(e) => setLocation(e.target.value)}
                   required
                 />
@@ -165,7 +165,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 name="laporan"
                 id="laporan"
                 placeholder="Deskripsikan Temuan Anda..."
-                className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black placeholder:text-md"
+                className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black"
                 onChange={(e) => setMessage(e.target.value)}
                 required
               ></textarea>
@@ -185,7 +185,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               </label>
               <input type="datetime-local"
                 placeholder="Tanggal temuan"
-                className="px-4 py-3 outline-none border-2 border-[#E2DAD6] rounded-xl resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black"
                 onChange={(e) => setReportDate(e.target.value)}
                 required
               />
@@ -201,7 +201,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 Due Date</label>
               <input type="datetime-local"
                 placeholder="Tenggat Waktu"
-                className="px-4 py-3 outline-none border-2 border-[#E2DAD6] rounded-xl resize-none w-full bg-[#7FA1C3] placeholder-white text-white placeholder:text-md"
+                className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black"
                 onChange={(e) => setReportDueDate(e.target.value)}
                 required />
             </div>
@@ -229,7 +229,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                     </div>
                     <button type="button" className="cursor-pointer hover:text-[#7FA1C3] disabled:opacity-0 disabled:pointer-events-none" disabled={selected == null} onClick={() => setSelected(null)}>Clear</button>
                   </span>
-                  <Dropdown value={selected} onChange={(e) => setSelected(e.value)} options={d.items} optionLabel="name" placeholder={d.label} className="w-full rounded-xl! bg-[#7FA1C3]! border-2! border-[#E2DAD6]! *:text-white!" />
+                  <Dropdown value={selected} onChange={(e) => setSelected(e.value)} options={d.items} optionLabel="name" placeholder={d.label} className="w-full rounded-xl! bg-[#E2DAD6]! *:text-gray-500!" />
                 </div>
               );
             })}
@@ -270,7 +270,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
           {submitDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> :
             <button
               type="button"
-              className="disabled:opacity-50 rounded-xl flex items-center px-4 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
+              className="w-full justify-center disabled:opacity-50 rounded-xl flex items-center px-4 py-3 text-white bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px]"
               disabled={submitDisabled}
               onClick={handle_submit}
             >
