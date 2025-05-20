@@ -43,6 +43,16 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
       return;
     }
 
+    setSubmittedBy("");
+    setPic("");
+    setFollowUpType(null);
+    setMessage("");
+    setCategory(null)
+    setLocation("");
+    setReportDate("");
+    setReportDueDate("");
+    setImage(null);
+    
     setSubmitDisabled(true);
     toastSuccess.current!.clear();
     toastProgress.current!.show({
@@ -107,6 +117,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   placeholder="Nama Pelapor..."
                   className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black"
                   onChange={(e) => setSubmittedBy(e.target.value)}
+                  value={submitted_by}
+                  maxLength={191}
                   required
                 />
               </div>
@@ -126,6 +138,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   placeholder="Nama PIC..."
                   className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black"
                   onChange={(e) => setPic(e.target.value)}
+                  value={pic}
+                  maxLength={191}
                   required
                 />
               </div>
@@ -146,6 +160,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                   placeholder="Lokasi temuan"
                   className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#E2DAD6] placeholder-black text-black"
                   onChange={(e) => setLocation(e.target.value)}
+                  value={location}
+                  maxLength={191}
                   required
                 />
               </div>
@@ -167,6 +183,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 placeholder="Deskripsikan Temuan Anda..."
                 className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black"
                 onChange={(e) => setMessage(e.target.value)}
+                value={message}
+                maxLength={191}
                 required
               ></textarea>
             </div>
@@ -187,6 +205,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 placeholder="Tanggal temuan"
                 className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black"
                 onChange={(e) => setReportDate(e.target.value)}
+                value={reportDate}
                 required
               />
             </div>
@@ -203,6 +222,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 placeholder="Tenggat Waktu"
                 className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#E2DAD6] placeholder-black text-black"
                 onChange={(e) => setReportDueDate(e.target.value)}
+                value={reportDueDate}
                 required />
             </div>
             {/* End Due Date */}
