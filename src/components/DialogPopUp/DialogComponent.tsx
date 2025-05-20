@@ -146,7 +146,7 @@ export default function DialogComponent({
                     <DropdownField
                         label="Kategori"
                         options={reportTypeOptions}
-                        value={formState.type}
+                        value={reporttype_to_string(formState.type)}
                         onChange={(e) => updateField("type", e.value)}
                     />
                     <DropdownField
