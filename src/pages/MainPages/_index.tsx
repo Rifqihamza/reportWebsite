@@ -8,10 +8,10 @@ import React, { Suspense, useEffect, useState } from "react";
 import { PrimeReactProvider } from "primereact/api";
 import LogoutButton from "../../components/LogoutButton/LogoutButtonComponent";
 
-import ReportForm from "./FormReportPage";
+import ReportForm from "./_FormReportPage";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
-const TableReportPages = React.lazy(() => import("./TableReportPage"));
-const ApexChart = React.lazy(() => import("./ChartPage"));
+const TableReportPages = React.lazy(() => import("./_TableReportPage"));
+const ApexChart = React.lazy(() => import("./_ChartPage"));
 
 export default function MainPage() {
   const [activeTab, setActiveTab] = useState(0);
@@ -59,12 +59,17 @@ export default function MainPage() {
       {/* Content */}
       <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-full max-h-[85vh] overflow-y-scroll bg-gray-100 shadow-md shadow-gray-600">
 
-        {/* Tab 0: Table, bebas diakses */}
-        {activeTab === 0 && (
-          <ReportForm reportData={reportData} setReportData={setReportData} />
+        {/* Tab 0: Form, bebas diakses */}
+        {activeTab === 0 && (<>
+            <div className="flex flex-row gap-2 justify-center items-center mb-4 md:justify-normal">
+              <i className="pi pi-exclamation-circle text-2xl!" />
+              <h1 className="titlePage">Laporkan Temuanmu</h1>
+            </div>
+            <ReportForm reportData={reportData} setReportData={setReportData} />
+          </>
         )}
         
-        {/* Tab 1: Table, bebas diakses */}
+        {/* Tab 1: Table */}
         {activeTab === 1 && (
           isAuthorized ? (
             <Suspense fallback={<LoadingAnimation />}>

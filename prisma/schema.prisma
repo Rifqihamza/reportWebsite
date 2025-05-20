@@ -64,8 +64,7 @@ model Report {
   report_date DateTime @default(now())
   due_date    DateTime?
 
-  // Relation
-  pic_name String
+  pic_name String?
 }
 
 model ReportToken {
