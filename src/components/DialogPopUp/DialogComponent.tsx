@@ -4,7 +4,7 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { FloatLabel } from "primereact/floatlabel";
 import { useEffect, useState } from "react";
-import { ReportType, reporttype_to_string, type ReportData, type User, } from '../../types/variables';
+import { ReportType, reporttype_to_string, string_to_reporttype, type ReportData, type User, } from '../../types/variables';
 import { AccountType } from "@prisma/client";
 import { InputTextarea } from "primereact/inputtextarea";
 import { APIResultType, updateReport } from '../../utils/api_interface';
@@ -85,6 +85,9 @@ export default function DialogComponent({
     const updateField = (field: keyof typeof formState, value: any) => {
         if(field == "due_date" || field == "report_date") {
             value = (new Date(value)).toISOString()
+        }
+        else if(field == "type") {
+            value = string_to_reporttype(value);
         }
         setFormState(prev => ({ ...prev, [field]: value }));
     };
