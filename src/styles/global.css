@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: helloFont;
+  src: url("/public/helloFont/Hello.ttf");
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -64,28 +69,6 @@ body {
   }
 }
 
-/* Tab Navigation Bar */
-.tab-button {
-  color: #000;
-  cursor: pointer;
-  border-radius: 50px;
-  padding: 0.7rem 1rem;
-  transition: all 0.2s ease-in-out;
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  background-color: transparent;
-  width: 100%;
-}
-
-.tab-button.active {
-  width: 100%;
-  background-color: #6482ad;
-  color: #fff;
-  z-index: 10;
-}
-
 .p-image-preview {
   max-width: 70vw;
   max-height: 70vh;
@@ -124,4 +107,9 @@ body {
 .p-menuitem > .p-menuitem-content:hover {
   background-color: #f0f4f8;
   cursor: pointer;
+}
+
+.welcomeTitle h1 {
+  font-family: helloFont;
+  font-size: 100px;
 }

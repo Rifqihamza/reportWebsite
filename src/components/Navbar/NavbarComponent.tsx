@@ -16,26 +16,25 @@ const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: 
     return (
         <>
             {/* Desk Navbar */}
-            <div className="mb-4 px-3 py-2 bg-white rounded-full hidden md:flex flex-row items-center gap-6 mx-5 " >
-                <button
-                    onClick={() => setActiveTab(0)}
-                    className={`tab-button ${activeTab === 0 ? "active" : ""}`}
-                >
-                    Form Laporan
-                </button>
-                <button
-                    onClick={() => setActiveTab(1)}
-                    className={`tab-button ${activeTab === 1 ? "active" : ""}`}
-                >
-                    Data Laporan
-                </button>
-                <button
-                    onClick={() => setActiveTab(2)}
-                    className={`tab-button ${activeTab === 2 ? "active" : ""}`}
-                >
-                    Grafik Laporan
-                </button>
-            </div >
+            <div className="mb-4 px-3 py-2 bg-white rounded-xl hidden md:flex flex-row items-center justify-around gap-6 mx-5 relative">
+                {["Form Laporan", "Data Laporan", "Grafik Laporan"].map((label, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setActiveTab(index)}
+                        className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${activeTab === index ? "text-gray-5800" : "text-gray-600"
+                            }`}
+                    >
+                        {label}
+                        <span
+                            className={`absolute bottom-0 right-0 h-1 bg-[#7FA1C3] rounded-full transition-all duration-500 ${activeTab === index
+                                    ? "w-full"
+                                    : "w-0 group-hover:w-full group-hover:left-0"
+                                }`}
+                        ></span>
+                    </button>
+                ))}
+            </div>
+
 
             {/* SideBar Section for Mobile */}
             <div className="md:hidden flex flex-row items-center justify-between px-6 py-2 bg-white rounded-xl mb-4" >
@@ -77,7 +76,7 @@ const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: 
 
                 <div className="absolute left-4 right-4 bottom-4">
                     <button className="w-full justify-center md:hidden block px-4 py-2 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300"
-                    onClick={handle_logout}
+                        onClick={handle_logout}
                     >
                         {(!userData || userData.role == AccountType.Siswa) ? "Login" : "Logout"}
                     </button>
