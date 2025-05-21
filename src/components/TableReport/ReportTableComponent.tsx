@@ -110,7 +110,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
   //? ==========> Use Effects <========== ?//
   useEffect(() => {
-    setMaxPage(Math.ceil(showedReportData.length / reportsPerPage));
+    const newMaxPage = Math.ceil(showedReportData.length / reportsPerPage);
+    setMaxPage(newMaxPage);
+    if(currentPage >= newMaxPage) {
+      setCurrentPage(0);
+    }
   }, [showedReportData]);
 
   useEffect(() => {
