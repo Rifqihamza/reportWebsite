@@ -168,6 +168,7 @@ export const useReportDeletion = (
         if (result == APIResultType.NoError) {
             setReportData(reportData.filter((value) => value.id != id));
             showMessage("Success", toastRef, 'success', "Data berhasil dihapus!");
+            setDeleteDisabled(false);
             return true;
         }
         else if (result == APIResultType.InternalServerError) {
