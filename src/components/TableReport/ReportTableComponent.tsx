@@ -100,30 +100,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     setDeleteDisabled(false);
   }
 
-  async function handle_save(id: string) {
-    if (!selectedStatus) {
-      return;
-    }
-
-    setSaveDisabled(true);
-
-    const result = await changeReportStatus(id, typeof selectedStatus == "string" ? string_to_reportstatus(selectedStatus)! : selectedStatus);
-
-    if (result == APIResultType.NoError) {
-      setDetailId(null);
-      setReportData(reportData.map((value) => value.id == id ? { ...value, status: string_to_reportstatus(selectedStatus)! } : value));
-      showMessage("Success", toastTopRight, 'success', "Yeay!, Data Berhasil Disimpan!");
-    }
-    else if (result == APIResultType.InternalServerError) {
-      alert("There's an error!");
-    }
-    else if (result == APIResultType.Unauthorized) {
-      alert("You have no access!");
-    }
-
-    setSaveDisabled(false);
-  }
-
   const showMessage = (label: string, ref: React.RefObject<Toast | null>, severity: ToastMessage['severity'], detail: string) => {
     ref.current?.show({ severity: severity, summary: label, detail: detail, life: 3000 });
   };
@@ -225,7 +201,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
             </tr>
           </thead>
           <tbody className="border-b border-gray-300">
-            {showedReportData.slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
+            {showedReportData.length == 0 ? <tr><td className="w-fit" colSpan={8}><h1 className="p-2 opacity-75 text-center">Tidak ada laporan...</h1></td></tr> : showedReportData.slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
               <tr key={index} className="report-row" data-report-id={report.id}>
                 <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
                   {formatDate(report.created_at)}
@@ -263,7 +239,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
 
       {/* Cards for mobile */}
       <div className="md:hidden space-y-4">
-        {showedReportData.slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
+        {showedReportData.length == 0 ? <h1 className="opacity-75">Tidak ada laporan..</h1> : showedReportData.slice(currentPage * reportsPerPage, (currentPage + 1) * reportsPerPage).map((report, index) => (
           <div
             key={index}
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
@@ -408,7 +384,11 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Follow up oleh */}
                 <div className="flex flex-col md:flex-row justify-baseline md:justify-between">
                   <h1 className="font-semibold tracking-wide ">Follow Up Oleh:</h1>
-                  <p>{report_data?.follow_up_name || "Belum ditentukan"}</p>
+                  {report_data?.follow_up_name ?
+                    <p>{formatDate(report_data.follow_up_name)}</p>
+                    :
+                    <p className="opacity-50">Belum ditentukan</p>
+                  }
                 </div>
               </div>
               {/* End Details */}
