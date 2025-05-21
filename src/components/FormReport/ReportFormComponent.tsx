@@ -217,7 +217,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
               >
                 <i className="pi pi-clock" />
-                Due Date</label>
+                Tenggat Waktu</label>
               <input type="datetime-local"
                 placeholder="Tenggat Waktu"
                 className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#e2dad6] placeholder-black text-black"
