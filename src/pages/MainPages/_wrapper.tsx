@@ -7,9 +7,8 @@ export default function WrapperPage() {
 
     return (
         <>
-            {/* {!showMain && <WelcomeComponent onFinish={() => setShowMain(true)} />}
-            {showMain && <MainPage />} */}
-            <MainPage />
+            {!showMain && <WelcomeComponent onFinish={() => setShowMain(true)} />}
+            {showMain && <MainPage />}
         </>
     );
 }
