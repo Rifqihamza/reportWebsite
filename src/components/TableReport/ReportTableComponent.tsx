@@ -341,11 +341,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                   <h1 className="font-semibold tracking-wide">Pelapor:</h1>
                   <p>{report_data?.submitted_by}</p>
                 </div>
-                {/* PIC */}
-                <div className="flex flex-col md:flex-row justify-baseline md:justify-between">
-                  <h1 className="font-semibold tracking-wide">PIC:</h1>
-                  <p>{report_data?.pic_name || "Belum ditentukan"}</p>
-                </div>
                 {/* Lokasi Temuan */}
                 <div className="flex flex-col md:flex-row justify-baseline md:justify-between">
                   <h1 className="font-semibold tracking-wide">Lokasi:</h1>
@@ -364,7 +359,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Nama PIC */}
                 <div className="flex flex-col md:flex-row justify-baseline md:justify-between">
                   <h1 className="font-semibold tracking-wide">Nama PIC:</h1>
-                  <p>{report_data?.pic_name || "Belum ditentukan"}</p>
+                  <p className={report_data?.pic_name ? "" : "opacity-50"}>{report_data?.pic_name || "Belum ditentukan"}</p>
                 </div>
                 {/* Tanggal Temuan */}
                 <div className="flex flex-col md:flex-row justify-baseline md:justify-between">
@@ -374,21 +369,12 @@ export default function ReportListComponent({ userData, reportData, setReportDat
                 {/* Tanggal Dilakukan Temuan */}
                 <div className="flex flex-col md:flex-row justify-baseline md:justify-between">
                   <h1 className="font-semibold tracking-wide">Due Date:</h1>
-                  <p className={report_data?.due_date ? "" : "opacity-50"}></p>
-                  {report_data?.due_date ?
-                    <p>{formatDate(report_data.due_date)}</p>
-                    :
-                    <p className="opacity-50">Belum ditentukan</p>
-                  }
+                  <p className={report_data?.due_date ? "" : "opacity-50"}>{report_data?.due_date || "Belum ditentukan"}</p>
                 </div>
                 {/* Follow up oleh */}
                 <div className="flex flex-col md:flex-row justify-baseline md:justify-between">
                   <h1 className="font-semibold tracking-wide ">Follow Up Oleh:</h1>
-                  {report_data?.follow_up_name ?
-                    <p>{formatDate(report_data.follow_up_name)}</p>
-                    :
-                    <p className="opacity-50">Belum ditentukan</p>
-                  }
+                  <p className={report_data?.follow_up_name ? "" : "opacity-50"}>{report_data?.follow_up_name || "Belum ditentukan"}</p>
                 </div>
               </div>
               {/* End Details */}
