@@ -7,7 +7,7 @@ import type { ToastMessage } from 'primereact/toast';
 import DialogComponent from "../DialogPopUp/DialogComponent";
 
 
-const reportsPerPage = 10;
+const reportsPerPage = 7;
 
 export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter, dateFilter, searchKeyword }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus, dateFilter: (Date | null)[], searchKeyword: string }) {
   const [detailId, setDetailId] = useState("" as string | null);
@@ -142,7 +142,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     <>
       {/* Table for desktop */}
       <div className="hidden md:block overflow-scroll relative border border-gray-300 rounded-xl">
-        <table className="w-full h-full min-h-[65vh]">
+        <table className="w-full h-[70vh] max-h-[65vh]">
           <thead>
             <tr>
               <th
