@@ -155,7 +155,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     }, [reportData]);
 
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 mx-4'>
             {/* Line Chart */}
             <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
                 <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
@@ -173,41 +173,55 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             </div>
 
             {/* Pie Charts and Percentage Boxes */}
-            <div className="w-full flex flex-col lg:flex-row gap-4 space-y-3 md:space-y-0 justify-center md:justify-between">
-                {/* Pie Chart Kategori */}
-                <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100 flex flex-col items-center">
-                    <h1 className='font-bold'>Kategori</h1>
-                    <Suspense fallback={<>Loading..</>}>
-                        <PieChart reports={pieCategory} setReportType={setChartCategoryFilter} reportType={chartCategoryFilter} />
-                    </Suspense>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+                {/* Kiri: Pie Chart Kategori dan Status */}
+                <div className="flex flex-col gap-4">
+                    {/* Pie Chart Kategori */}
+                    <div className="w-full h-full px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100 flex flex-col items-center">
+                        <h1 className='font-bold'>Kategori</h1>
+                        <Suspense fallback={<>Loading..</>}>
+                            <PieChart reports={pieCategory} setReportType={setChartCategoryFilter} reportType={chartCategoryFilter} />
+                        </Suspense>
+                    </div>
+
+                    {/* Pie Chart Status */}
+                    <div className="w-full px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100 flex flex-col items-center">
+                        <h1 className='font-bold'>Status</h1>
+                        <Suspense fallback={<>Loading..</>}>
+                            <PieChart reports={pieStatus} />
+                        </Suspense>
+                    </div>
                 </div>
 
-                {/* Pie Chart Status */}
-                <div className="px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100 flex flex-col items-center">
-                    <h1 className='font-bold'>Status</h1>
-                    <Suspense fallback={<>Loading..</>}>
-                        <PieChart reports={pieStatus} />
-                    </Suspense>
+                {/* Kanan: Persen Components + Container Baru */}
+                <div className="flex flex-col gap-4 w-full">
+                    {/* Grid untuk 2 PersenComp */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Suspense fallback={<>Loading..</>}>
+                            <PercenComp
+                                reports={statusCategory}
+                                label='Status'
+                                icon='pi pi-exclamation-triangle'
+                            />
+                        </Suspense>
+                        <Suspense fallback={<>Loading..</>}>
+                            <PercenComp
+                                reports={percenCategory}
+                                label='Kategori'
+                                icon='pi pi-exclamation-triangle'
+                            />
+                        </Suspense>
+                    </div>
+
+                    {/* Container Baru di bawahnya */}
+                    <div className="w-full px-4 py-6 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
+                        <h2 className="font-semibold text-lg mb-2">Container Baru</h2>
+                        {/* Konten di sini */}
+                        <p className="text-gray-600">Konten tambahan bisa diletakkan di sini.</p>
+                    </div>
                 </div>
-
-                {/* Percentage Status */}
-                <Suspense fallback={<>Loading..</>}>
-                    <PercenComp
-                        reports={statusCategory}
-                        label='Status'
-                        icon='pi pi-exclamation-triangle'
-                    />
-                </Suspense>
-
-                {/* Percentage Category */}
-                <Suspense fallback={<>Loading..</>}>
-                    <PercenComp
-                        reports={percenCategory}
-                        label='Kategori'
-                        icon='pi pi-exclamation-triangle'
-                    />
-                </Suspense>
             </div>
+
         </div>
     );
 };

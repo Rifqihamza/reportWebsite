@@ -88,13 +88,12 @@ const PieChart: React.FC<PieChartProps> = ({ reports, setReportType, reportType 
         },
         legend: {
             show: true,
-            position: 'bottom' as 'bottom',
-            flexWrap: 'wrap' as 'wrap',
+            position: 'bottom' as 'bottom'
         },
     };
 
     return (
-        <ReactApexChart options={options} series={series} type="pie" width="250" />
+        <ReactApexChart options={options} series={series} type="pie" width="300" />
     );
 };
 
