@@ -1,5 +1,15 @@
-import MainPage from "./_index";
+import { useState } from 'react';
+import MainPage from './_index';
+import WelcomeComponent from '../../components/WelcomeOverlay/WelcomeComponent';
 
 export default function WrapperPage() {
-    return <MainPage />
+    const [showMain, setShowMain] = useState(false);
+
+    return (
+        <>
+            {/* {!showMain && <WelcomeComponent onFinish={() => setShowMain(true)} />}
+            {showMain && <MainPage />} */}
+            <MainPage />
+        </>
+    );
 }
