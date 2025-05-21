@@ -1,14 +1,13 @@
 import { useRef, useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reportstatus, type ReportData, type User } from '../../types/variables';
 import { Image } from 'primereact/image'
-import { APIResultType, changeReportStatus, deleteReport } from "../../utils/api_interface";
+import { APIResultType, deleteReport } from "../../utils/api_interface";
 import { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
-import { Dropdown } from "primereact/dropdown";
 import DialogComponent from "../DialogPopUp/DialogComponent";
 
 
-const reportsPerPage = 5;
+const reportsPerPage = 10;
 
 export default function ReportListComponent({ userData, reportData, setReportData, selectedFilter, dateFilter, searchKeyword }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>>, selectedFilter: null | ReportType | ReportStatus, dateFilter: (Date | null)[], searchKeyword: string }) {
   const [detailId, setDetailId] = useState("" as string | null);
@@ -21,14 +20,6 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   const toastTopRight = useRef<Toast>(null);
 
   const [showedReportData, setShowedReportData] = useState([] as ReportData[]);
-
-  const dropdowns = [
-    {
-      id: "status",
-      label: "Edit Status",
-      items: Object.values(ReportStatus),
-    },
-  ];
 
   const statusColors = {
     NotStarted: "bg-red-100 text-red-800",
@@ -112,7 +103,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
   useEffect(() => {
     const newMaxPage = Math.ceil(showedReportData.length / reportsPerPage);
     setMaxPage(newMaxPage);
-    if(currentPage >= newMaxPage) {
+    if (currentPage >= newMaxPage) {
       setCurrentPage(0);
     }
   }, [showedReportData]);
@@ -151,7 +142,7 @@ export default function ReportListComponent({ userData, reportData, setReportDat
     <>
       {/* Table for desktop */}
       <div className="hidden md:block overflow-scroll relative border border-gray-300 rounded-xl">
-        <table className="w-full">
+        <table className="w-full h-full min-h-[65vh]">
           <thead>
             <tr>
               <th
