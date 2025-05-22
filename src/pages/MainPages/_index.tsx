@@ -57,7 +57,7 @@ export default function MainPage() {
       <NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Content */}
-      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-[90vh] max-h-[85vh] overflow-y-scroll bg-white shadow-md shadow-gray-600">
+      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-fit min-h-[80vh] overflow-y-scroll bg-white shadow-md shadow-gray-600">
 
         {/* Tab 0: Form, bebas diakses */}
         {activeTab === 0 && (<>
