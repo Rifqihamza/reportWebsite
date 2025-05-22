@@ -105,17 +105,17 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
 
             result.totalReportPerCategory[data.type]! += 1;
             result.totalReportPerStatus[data.status]! += 1;
-            result.totalReportPerDay[listOfHari[new Date(data.created_at).getDay()]] += 1;
+            result.totalReportPerDay[listOfHari[new Date(data.created_at).getDay()-1]] += 1;
         });
 
         result.betterThanLastMonth = result.totalReportThisMonth < result.totalReportLastMonth;
         
         result.highestOccuranceCategory = string_to_reporttype(Object.entries(result.totalReportPerCategory).sort((category_a, category_b) => {
-            return category_a[1] - category_b[1];
+            return category_b[1] - category_a[1];
         })[0][0]) ?? null;
 
         result.highestOccuranceDay = Object.entries(result.totalReportPerDay).sort((day_a, day_b) => {
-            return day_a[1] - day_b[1];
+            return day_b[1] - day_a[1];
         })[0][0];
 
         setInsight(result);
