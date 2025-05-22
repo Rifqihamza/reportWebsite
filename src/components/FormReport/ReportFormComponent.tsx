@@ -1,11 +1,11 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { addReport, APIResultType } from '../../utils/api_interface';
-import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData } from "../../types/variables";
+import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData, type User } from "../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 import { Dropdown } from "primereact/dropdown";
 
-export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
+export default function ReportFormComponent({ setReportData, reportData, isAuthorized }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[], isAuthorized: boolean }) {
   const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
@@ -17,8 +17,6 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [reportDueDate, setReportDueDate] = useState("");
   const [image, setImage] = useState(null as File | null);
   const [submitDisabled, setSubmitDisabled] = useState(false);
-
-
   const toastProgress = useRef<Toast>(null);
   const toastSuccess = useRef<Toast>(null);
 
@@ -52,7 +50,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
     setReportDate("");
     setReportDueDate("");
     setImage(null);
-    
+
     setSubmitDisabled(true);
     toastSuccess.current!.clear();
     toastProgress.current!.show({
@@ -102,6 +100,29 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
           <div className="flex lg:flex-row flex-col gap-6">
             <div className="space-y-4 w-full">
 
+              {/* Detail Laporan */}
+              <div className="flex flex-col gap-2 w-full">
+                <label
+                  htmlFor="laporan"
+                  className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
+                >
+                  <i className="pi pi-file" />
+                  Detail Laporan
+                </label>
+                <textarea
+                  rows={10}
+                  name="laporan"
+                  id="laporan"
+                  placeholder="Deskripsikan Temuan Anda..."
+                  className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#e2dad6] placeholder-black text-black"
+                  onChange={(e) => setMessage(e.target.value)}
+                  value={message}
+                  maxLength={191}
+                  required
+                ></textarea>
+              </div>
+              {/* End  */}
+
               {/* Nama Pelapor */}
               <div className="space-y-2">
                 <label
@@ -123,26 +144,28 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 />
               </div>
 
-              {/* Nama PIC */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="pic"
-                  className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-                >
-                  <i className="pi pi-user" />
-                  PIC
-                </label>
-                <input
-                  name="pic"
-                  id="pic"
-                  placeholder="Nama PIC..."
-                  className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#e2dad6] placeholder-black text-black"
-                  onChange={(e) => setPic(e.target.value)}
-                  value={pic}
-                  maxLength={191}
-                  required
-                />
-              </div>
+              {/* Nama PIC - Hanya untuk role Guru/Vendor */}
+              {isAuthorized &&
+                (
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="pic"
+                      className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
+                    >
+                      <i className="pi pi-user" />
+                      PIC
+                    </label>
+                    <input
+                      name="pic"
+                      id="pic"
+                      placeholder="Nama PIC..."
+                      className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#e2dad6] placeholder-black text-black"
+                      onChange={(e) => setPic(e.target.value)}
+                      value={pic}
+                      maxLength={191}
+                    />
+                  </div>
+                )}
 
               {/* Lokasi Temuan */}
               <div className="space-y-2">
@@ -166,30 +189,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
                 />
               </div>
             </div>
-
-            {/* Detail Laporan */}
-            <div className="flex flex-col gap-2 w-full">
-              <label
-                htmlFor="laporan"
-                className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-              >
-                <i className="pi pi-file" />
-                Detail Laporan
-              </label>
-              <textarea
-                rows={10}
-                name="laporan"
-                id="laporan"
-                placeholder="Deskripsikan Temuan Anda..."
-                className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#e2dad6] placeholder-black text-black"
-                onChange={(e) => setMessage(e.target.value)}
-                value={message}
-                maxLength={191}
-                required
-              ></textarea>
-            </div>
           </div>
-          {/* End  */}
 
           {/* Tanggal */}
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between w-full">
@@ -211,20 +211,22 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             </div>
             {/* End Tanggal Temuan */}
 
-            {/* Due Date Section */}
-            <div className="flex flex-col w-full space-y-2">
-              <label htmlFor="dueDate"
-                className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
-              >
-                <i className="pi pi-clock" />
-                Tenggat Waktu</label>
-              <input type="datetime-local"
-                placeholder="Tenggat Waktu"
-                className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#e2dad6] placeholder-black text-black"
-                onChange={(e) => setReportDueDate(e.target.value)}
-                value={reportDueDate}
-                required />
-            </div>
+            {/* Due Date Section - Hanya untuk role Guru/Vendor */}
+            {isAuthorized &&
+              (
+                <div className="flex flex-col w-full space-y-2">
+                  <label htmlFor="dueDate"
+                    className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
+                  >
+                    <i className="pi pi-clock" />
+                    Tenggat Waktu</label>
+                  <input type="datetime-local"
+                    placeholder="Tenggat Waktu"
+                    className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#e2dad6] placeholder-black text-black"
+                    onChange={(e) => setReportDueDate(e.target.value)}
+                    value={reportDueDate} />
+                </div>
+              )}
             {/* End Due Date */}
           </div>
           {/* End Tanggal */}
@@ -232,6 +234,11 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
           {/* Dropdowns Section */}
           <div className="flex flex-col md:flex-row gap-6 w-full">
             {dropdowns.map((d, index) => {
+              // Hanya tampilkan dropdown follow up untuk role Guru/Vendor
+              if (d.id === "followup" && !isAuthorized) {
+                return null;
+              }
+
               let selected = category;
               let setSelected = setCategory;
 
@@ -299,7 +306,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             </button>}
         </div>
         {/* End Submit Button */}
-      </form>
+      </form >
 
       {/* Message Toast */}
       <Toast
@@ -316,7 +323,8 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               </div>
             </div>
           </section>
-        )}
+        )
+        }
       ></Toast>
       <Toast ref={toastSuccess} />
       {/* End Message Toast */}

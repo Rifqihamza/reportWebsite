@@ -10,6 +10,7 @@ import LogoutButton from "../../components/LogoutButton/LogoutButtonComponent";
 
 import ReportForm from "./_FormReportPage";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
+import FooterComponent from "../../components/Footer/FooterComponent";
 const TableReportPages = React.lazy(() => import("./_TableReportPage"));
 const ApexChart = React.lazy(() => import("./_ChartPage"));
 
@@ -57,11 +58,11 @@ export default function MainPage() {
       <NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Content */}
-      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-[90vh] max-h-[85vh] overflow-y-scroll bg-white shadow-md shadow-gray-600">
+      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-fit md:max-h-[85vh] max-h-[75vh] overflow-y-scroll bg-white shadow-md shadow-gray-600">
 
         {/* Tab 0: Form, bebas diakses */}
         {activeTab === 0 && (<>
-          <ReportForm reportData={reportData} setReportData={setReportData} />
+          <ReportForm reportData={reportData} setReportData={setReportData} isAuthorized={isAuthorized ? true : false} />
         </>
         )}
 
@@ -91,6 +92,7 @@ export default function MainPage() {
           )
         )}
       </div>
+      <FooterComponent />
     </PrimeReactProvider>
   );
 }
