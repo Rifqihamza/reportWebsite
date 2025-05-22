@@ -84,10 +84,10 @@ const ReportDesktopTable: React.FC<ReportDesktopTableProps> = ({ reports, onDeta
                                 <td className="px-2 py-3 text-center text-sm text-gray-600 max-w-[13rem] truncate">
                                     {report.message}
                                 </td>
-                                <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
+                                <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600 truncate">
                                     {report.location}
                                 </td>
-                                <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
+                                <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600 truncate">
                                     {report.pic_name || "Belum ditentukan"}
                                 </td>
                                 <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
