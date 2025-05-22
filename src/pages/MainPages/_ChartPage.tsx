@@ -2,7 +2,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import strftime from "strftime";
 import Dropdown from "../../components/Dropdown/DropdownComponent";
 import type { ReportData } from "../../types/variables";
-import { ReportType, reporttype_to_string, statusColorHex } from '../../types/variables';
+import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
@@ -11,6 +11,7 @@ const PercenComp = React.lazy(() => import("../../components/PercenContainer/Per
 const listOfMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
 const listOfNumOfDates = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
 const listOfDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const listOfHari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 
 type CategoryType = {
     labels: string;
@@ -21,6 +22,24 @@ type LineChartValueType = {
     labels: string;
     type: ReportType | string;
     value: number;
+};
+
+type InsightDataType = {
+    totalReportAllTime: number,
+    totalReportLastMonth: number,
+    totalReportThisMonth: number,
+    totalReportPerCategory: {
+        [key in ReportType]?: number
+    },
+    totalReportPerStatus: {
+        [key in ReportStatus]?: number
+    },
+    totalReportPerDay: {
+        [key: string]: number
+    },
+    betterThanLastMonth: boolean|null,
+    highestOccuranceCategory: ReportType|null,
+    highestOccuranceDay: string
 };
 
 enum LineChartFilterOption {
@@ -38,7 +57,70 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [percenCategory, setPercenCategory] = useState<CategoryType[]>([]);
     const [statusCategory, setStatusCategory] = useState<CategoryType[]>([]);
     const [chartCategoryFilter, setChartCategoryFilter] = useState<ReportType | null>(null);
-    const [insight, setInsight] = useState<string>("");
+    const [insight, setInsight] = useState<InsightDataType | null>(null);
+
+    useEffect(() => {
+        const result: InsightDataType = {
+            totalReportAllTime: reportData.length,
+            totalReportLastMonth: 0,
+            totalReportThisMonth: 0,
+            totalReportPerCategory: {},
+            totalReportPerStatus: {},
+            totalReportPerDay: {},
+            betterThanLastMonth: null,
+            highestOccuranceCategory: null,
+            highestOccuranceDay: ""
+        };
+
+        
+        // Preparing for the result
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+
+        Object.values(ReportType).forEach(type => {
+            result.totalReportPerCategory[type] = 0;
+        });
+        
+        Object.values(ReportStatus).forEach(status => {
+            result.totalReportPerStatus[status] = 0;
+        });
+
+        listOfHari.forEach(day => {
+            result.totalReportPerDay[day] = 0;
+        });
+        
+        
+        // Calculate the result
+        reportData.forEach(data => {
+            const report_date = new Date(data.created_at);
+            
+            // Report happened today
+            if(report_date.getMonth() == currentMonth && report_date.getFullYear() == currentYear) {
+                result.totalReportThisMonth += 1;
+            }
+
+            if(report_date.getMonth() == (currentMonth - 1)) {
+                result.totalReportLastMonth += 1;
+            }
+
+            result.totalReportPerCategory[data.type]! += 1;
+            result.totalReportPerStatus[data.status]! += 1;
+            result.totalReportPerDay[listOfHari[new Date(data.created_at).getDay()]] += 1;
+        });
+
+        result.betterThanLastMonth = result.totalReportThisMonth < result.totalReportLastMonth;
+        
+        result.highestOccuranceCategory = string_to_reporttype(Object.entries(result.totalReportPerCategory).sort((category_a, category_b) => {
+            return category_a[1] - category_b[1];
+        })[0][0]) ?? null;
+
+        result.highestOccuranceDay = Object.entries(result.totalReportPerDay).sort((day_a, day_b) => {
+            return day_a[1] - day_b[1];
+        })[0][0];
+
+        setInsight(result);
+    }, [reportData]);
+    
     useEffect(() => {
         const result: LineChartValueType[] = [];
         const currentDate = new Date();
@@ -217,7 +299,14 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     <div className="w-full h-full px-4 py-6 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
                         <h2 className="font-semibold text-lg mb-2">Insights</h2>
                         {/* Konten di sini */}
-                        <p className="text-gray-600">{insight || "Insights masih dalam pengerjaan"}</p>
+                        <div className="text-gray-600">{!insight ? "Insights masih dalam pengerjaan" : 
+                            <ol className="list-decimal m-4">
+                                <li>Terdapat <b>{insight.totalReportAllTime} temuan selama ini</b> dan <b>{insight.totalReportThisMonth} diantara nya terjadi pada bulan ini.</b></li>
+                                <li>Grafik menunjukkan bahwa <b>laporan temuan bulan ini {insight.betterThanLastMonth ? "lebih sedikit" : "lebih banyak"} dari bulan sebelumnya.</b></li>
+                                <li>Selama ini, <b>Kategori {reporttype_to_string(insight.highestOccuranceCategory)} paling sering muncul</b> dibandingkan dengan kategori yang lain.</li>
+                                <li><b>Hari yang sering terjadi temuan adalah hari {insight.highestOccuranceDay}</b>.</li>
+                            </ol>}
+                        </div>
                     </div>
                 </div>
             </div>
