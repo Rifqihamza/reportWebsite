@@ -46,10 +46,12 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
   }
 
   function handle_recaptcha() {
+    setDisableVerify(true);
+
     if(!readyCaptcha) {
+      setDisableVerify(false);
       return;
     }
-    setDisableVerify(true);
 
     window.grecaptcha.ready(() => {
       window.grecaptcha
@@ -60,9 +62,11 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
         .catch(() => {
           handleError();
         })
+        .finally(() => {
+          setDisableVerify(false);
+        })
     });
 
-    setDisableVerify(false);
   }
   
   function handleLoaded() {
