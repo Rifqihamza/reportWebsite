@@ -3,8 +3,7 @@ import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
-import { ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData, type User, } from '../../types/variables';
-import { AccountType } from "@prisma/client";
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData, type User, } from '../../types/variables';
 import { InputTextarea } from "primereact/inputtextarea";
 import { APIResultType, updateReport } from '../../utils/api_interface';
 

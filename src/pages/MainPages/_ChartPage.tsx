@@ -38,7 +38,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     const [percenCategory, setPercenCategory] = useState<CategoryType[]>([]);
     const [statusCategory, setStatusCategory] = useState<CategoryType[]>([]);
     const [chartCategoryFilter, setChartCategoryFilter] = useState<ReportType | null>(null);
-
+    const [insight, setInsight] = useState<string>("");
     useEffect(() => {
         const result: LineChartValueType[] = [];
         const currentDate = new Date();
@@ -214,10 +214,10 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     </div>
 
                     {/* Container Baru di bawahnya */}
-                    <div className="w-full px-4 py-6 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
-                        <h2 className="font-semibold text-lg mb-2">Container Baru</h2>
+                    <div className="w-full h-full px-4 py-6 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
+                        <h2 className="font-semibold text-lg mb-2">Insights</h2>
                         {/* Konten di sini */}
-                        <p className="text-gray-600">Konten tambahan bisa diletakkan di sini.</p>
+                        <p className="text-gray-600">{insight || "Insights masih dalam pengerjaan"}</p>
                     </div>
                 </div>
             </div>
