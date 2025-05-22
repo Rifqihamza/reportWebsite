@@ -39,7 +39,8 @@ type InsightDataType = {
     },
     betterThanLastMonth: boolean|null,
     highestOccuranceCategory: ReportType|null,
-    highestOccuranceDay: string
+    highestOccuranceDay: string,
+    notCompletedReportPreviousMonth: number
 };
 
 enum LineChartFilterOption {
@@ -69,13 +70,15 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             totalReportPerDay: {},
             betterThanLastMonth: null,
             highestOccuranceCategory: null,
-            highestOccuranceDay: ""
+            highestOccuranceDay: "",
+            notCompletedReportPreviousMonth: 0
         };
 
         
         // Preparing for the result
-        const currentMonth = new Date().getMonth();
-        const currentYear = new Date().getFullYear();
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
 
         Object.values(ReportType).forEach(type => {
             result.totalReportPerCategory[type] = 0;
@@ -99,10 +102,14 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 result.totalReportThisMonth += 1;
             }
 
-            if(report_date.getMonth() == (currentMonth - 1)) {
+            if((currentMonth > 1 && report_date.getMonth() == (currentMonth - 1)) || (currentMonth <= 1 && report_date.getFullYear() == currentYear - 1 && report_date.getDate() == 12)) {
                 result.totalReportLastMonth += 1;
             }
 
+            if(data.status != ReportStatus.Complete && (report_date.getMonth() < currentMonth || report_date.getFullYear() < currentYear)) {
+                result.notCompletedReportPreviousMonth += 1;
+            }
+            
             result.totalReportPerCategory[data.type]! += 1;
             result.totalReportPerStatus[data.status]! += 1;
             result.totalReportPerDay[listOfHari[new Date(data.created_at).getDay()-1]] += 1;
@@ -117,6 +124,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         result.highestOccuranceDay = Object.entries(result.totalReportPerDay).sort((day_a, day_b) => {
             return day_b[1] - day_a[1];
         })[0][0];
+
 
         setInsight(result);
     }, [reportData]);
@@ -305,6 +313,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                                 <li>Grafik menunjukkan bahwa <b>laporan temuan bulan ini {insight.betterThanLastMonth ? "lebih sedikit" : "lebih banyak"} dari bulan sebelumnya.</b></li>
                                 <li>Selama ini, <b>Kategori {reporttype_to_string(insight.highestOccuranceCategory)} paling sering muncul</b> dibandingkan dengan kategori yang lain.</li>
                                 <li><b>Hari yang sering terjadi temuan adalah hari {insight.highestOccuranceDay}</b>.</li>
+                                <li>Ada <b>{insight.notCompletedReportPreviousMonth} temuan yang belum terselesaikan di bulan lalu</b>.</li>
                             </ol>}
                         </div>
                     </div>

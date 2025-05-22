@@ -11,7 +11,7 @@ const ReportDesktopTable: React.FC<ReportDesktopTableProps> = ({ reports, onDeta
     const { formatDate } = useFormatDate();
 
     return (
-        <div className="hidden md:block overflow-scroll relative border border-gray-300 rounded-xl">
+        <div className="hidden md:block overflow-auto relative border border-gray-300 rounded-xl">
             <table className="w-full h-[70vh] max-h-[65vh]">
                 <thead>
                     <tr>
