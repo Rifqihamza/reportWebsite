@@ -5,7 +5,7 @@ import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 import { Dropdown } from "primereact/dropdown";
 
-export default function ReportFormComponent({ setReportData, reportData }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[] }) {
+export default function ReportFormComponent({ setReportData, reportData, isAuthorized }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[], isAuthorized: boolean }) {
   const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
@@ -17,7 +17,6 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
   const [reportDueDate, setReportDueDate] = useState("");
   const [image, setImage] = useState(null as File | null);
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const [userData, setUserData] = useState<User | null>(null);
   const toastProgress = useRef<Toast>(null);
   const toastSuccess = useRef<Toast>(null);
 
@@ -146,7 +145,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
               </div>
 
               {/* Nama PIC - Hanya untuk role Guru/Vendor */}
-              {userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor) &&
+              {isAuthorized &&
                 (
                   <div className="space-y-2">
                     <label
@@ -213,7 +212,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
             {/* End Tanggal Temuan */}
 
             {/* Due Date Section - Hanya untuk role Guru/Vendor */}
-            {userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor) &&
+            {isAuthorized &&
               (
                 <div className="flex flex-col w-full space-y-2">
                   <label htmlFor="dueDate"
@@ -236,7 +235,7 @@ export default function ReportFormComponent({ setReportData, reportData }: { set
           <div className="flex flex-col md:flex-row gap-6 w-full">
             {dropdowns.map((d, index) => {
               // Hanya tampilkan dropdown follow up untuk role Guru/Vendor
-              if (d.id === "followup" && !(userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor))) {
+              if (d.id === "followup" && !isAuthorized) {
                 return null;
               }
 
