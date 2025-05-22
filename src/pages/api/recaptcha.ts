@@ -32,7 +32,7 @@ export async function POST({ request }: APIContext) {
 
   const responseData = await response.json();
 
-  if (!responseData.success) {
+  if (responseData.score < 0.3) {
     console.log(responseData);
     return create_response_status(401);
   }
