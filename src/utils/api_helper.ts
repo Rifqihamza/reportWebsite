@@ -35,9 +35,9 @@ export function create_response_status(status: number): Response {
     });
 }
 
-export function create_response_cookie(body: object, cookie: string): Response {
+export function create_response_cookie(body: object, cookie: string, status?: number): Response {
     return new Response(JSON.stringify(body), {
-        status: 200,
+        status: status || 200,
         headers: {
             "Set-Cookie": cookie,
             "Content-Type": JSON.stringify(body) != "{}" ? "application/json" : "text/plain"
@@ -110,6 +110,21 @@ export async function verify_recaptcha_token(token: string): Promise<boolean> {
         });
 
         if(!result) {
+            return false;
+        }
+
+        if(result.expire_at <= new Date()) {
+            try {
+                await prisma.verifiedCaptcha.delete({
+                    where: {
+                        token: token
+                    }
+                });
+            }
+            catch(err) {
+                console.error(`There's an error when trying to delete verified captcha of expire date. Error: ${err}`);
+            }
+
             return false;
         }
 

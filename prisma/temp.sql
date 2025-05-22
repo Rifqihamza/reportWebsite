@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `verifiedcaptcha` ADD COLUMN `expire_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
+
