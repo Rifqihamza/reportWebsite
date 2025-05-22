@@ -116,6 +116,10 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
+    else if (response.status == 511) {
+        window.location.reload();
+        return APIResultType.Unauthorized;
+    }
     else {
         return APIResultType.Unauthorized;
     }

@@ -1,6 +1,7 @@
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { MiddlewareHandler } from 'astro';
-import { create_response_status, first_initialization, verify_recaptcha_token } from "./utils/api_helper";
+import { create_response_cookie, create_response_status, first_initialization, verify_recaptcha_token } from "./utils/api_helper";
+import cookie from 'cookie';
 
 const rateLimiterMemory = new RateLimiterMemory({
     points: 50, // Max 50 requests
@@ -22,7 +23,13 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
         // Verify the captcha token
         const result = await verify_recaptcha_token(recaptcha_token);
         if(!result) {
-            return create_response_status(401);
+            const recaptcha_cookie = cookie.serialize("recaptcha_token", "", {
+                expires: new Date(),
+                path: '/',
+                sameSite: 'strict',
+                httpOnly: false,
+            });
+            return create_response_cookie({}, recaptcha_cookie, 511);
         }
 
         // Use ratelimiter to the captcha
