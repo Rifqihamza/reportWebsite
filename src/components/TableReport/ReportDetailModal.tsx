@@ -27,8 +27,6 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
     const { formatDate } = useFormatDate();
     const report_data = reportData.find(value => value.id === detailId) || null;
 
-    if (!detailId) return null;
-
     const ImageComponent = () => (
         <div className="flex flex-col justify-center items-center w-fit h-fit">
             <Image
