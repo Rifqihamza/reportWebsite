@@ -24,7 +24,7 @@ export default function WelcomeComponent({ onFinish }: WelcomeComponentProps) {
                 {step === 0 && (
                     <motion.img
                         key="logo"
-                        src="/public/img/logoSekolah.png"
+                        src="/img/logoSekolah.png"
                         alt="Logo"
                         className="md:w-1/4 w-1/2 h-auto"
                         initial={{ opacity: 0, scale: 0.95 }}
