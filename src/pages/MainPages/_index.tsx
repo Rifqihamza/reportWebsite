@@ -62,7 +62,7 @@ export default function MainPage() {
 
         {/* Tab 0: Form, bebas diakses */}
         {activeTab === 0 && (<>
-          <ReportForm reportData={reportData} setReportData={setReportData} />
+          <ReportForm reportData={reportData} setReportData={setReportData} isAuthorized={isAuthorized ? true : false} />
         </>
         )}
 

@@ -32,23 +32,23 @@ CREATE TABLE `Report` (
     `type` ENUM('VR', 'Safety', 'Abnormality') NOT NULL,
     `follow_up` ENUM('Guru', 'Siswa', 'Vendor', 'Tukang') NULL,
     `follow_up_name` VARCHAR(191) NULL,
-    `status` ENUM('NotStarted', 'InProcess', 'Complete', 'Hold') NOT NULL DEFAULT 'Hold',
+    `status` ENUM('NotStarted', 'InProcess', 'Complete', 'Hold') NOT NULL DEFAULT 'NotStarted',
     `location` VARCHAR(191) NULL,
     `image` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `report_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `due_date` DATETIME(3) NULL,
-    `pic_name` VARCHAR(191) NOT NULL,
+    `pic_name` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `ReportToken` (
+CREATE TABLE `VerifiedCaptcha` (
     `id` VARCHAR(191) NOT NULL,
-    `report_token` VARCHAR(191) NOT NULL,
-    `whatsapp_number` INTEGER NOT NULL,
+    `token` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `VerifiedCaptcha_token_key`(`token`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

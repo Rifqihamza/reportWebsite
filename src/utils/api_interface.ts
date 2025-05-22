@@ -173,25 +173,6 @@ export async function deleteReport(report_id: string): Promise<APIResultType> {
     }
 }
 
-export async function getPIC(): Promise<User[] | APIResultType> {
-    // Fetch to API
-    const response = await fetch(base_url_endpoint + "/api/pic/get", {
-        method: "GET",
-        credentials: "include",
-    });
-
-    // Check the response
-    if (response.ok) {
-        return (await response.json()) as User[];
-    }
-    else if (response.status == 500) {
-        return APIResultType.InternalServerError;
-    }
-    else {
-        return APIResultType.Unauthorized;
-    }
-}
-
 export async function userLogout(): Promise<boolean> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/logout", {

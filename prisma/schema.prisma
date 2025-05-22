@@ -61,14 +61,13 @@ model Report {
 
   created_at DateTime @default(now())
 
-  report_date DateTime @default(now())
+  report_date DateTime  @default(now())
   due_date    DateTime?
 
   pic_name String?
 }
 
-model ReportToken {
-  id              String @id @default(uuid())
-  report_token    String
-  whatsapp_number Int
+model VerifiedCaptcha {
+  id    String @id @default(uuid())
+  token String @unique
 }

@@ -5,6 +5,7 @@ import { prisma } from "./db";
 import { AccountType } from "@prisma/client";
 
 let done_initialization = false;
+const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 // First Initialization
 export async function first_initialization() {
@@ -97,5 +98,33 @@ export function verify_admin_token(token?: string): boolean {
 }
 
 export function process_server_token(report_num: number): string {
-  return jwt.sign({ report_num: report_num }, process.env.JWT_SECRET!);
+    return jwt.sign({ report_num: report_num }, process.env.JWT_SECRET!);
+}
+
+export async function verify_recaptcha_token(token: string): Promise<boolean> {
+    try {
+        const result = await prisma.verifiedCaptcha.findUnique({
+            where: {
+                token: token
+            }
+        });
+
+        if(!result) {
+            return false;
+        }
+
+        return true;
+    }
+    catch {
+        return false;
+    }
+}
+
+export function generate_captcha_token(): string {
+    let result = "";
+    for(let i = 0; i < 100; i++) {
+        result += alphabets[Math.floor(Math.random() * alphabets.length)];
+    }
+
+    return result;
 }
