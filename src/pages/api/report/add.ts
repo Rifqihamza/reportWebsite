@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_recaptcha_token, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report } from "@prisma/client";
 import { AccountType, ReportType } from "../../../types/variables";

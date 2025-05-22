@@ -28,6 +28,7 @@
     "dotenv": "^16.5.0",
     "font-awesome": "^4.7.0",
     "framer-motion": "^12.12.1",
+    "js-cookie": "^3.0.5",
     "js-sha3": "^0.9.3",
     "jsonwebtoken": "^9.0.2",
     "primeicons": "^7.0.0",
@@ -36,12 +37,15 @@
     "react": "^19.1.0",
     "react-apexcharts": "^1.7.0",
     "react-dom": "^19.1.0",
+    "react-google-recaptcha": "^3.1.0",
     "strftime": "^0.10.3",
     "zod": "^3.24.4"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.11",
+    "@types/react-google-recaptcha": "^2.1.9",
     "@types/strftime": "^0.9.8",
     "prisma": "^6.8.2",
     "react-dom": "^19.1.0"
