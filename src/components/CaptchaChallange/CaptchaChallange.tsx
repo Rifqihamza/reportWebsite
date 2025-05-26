@@ -1,3 +1,4 @@
+import { ProgressBar } from "primereact/progressbar";
 import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -18,6 +19,7 @@ declare global {
 export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Props) {
   const [readyCaptcha, setReadyCaptcha] = useState(false);
   const [disableVerify, setDisableVerify] = useState(false);
+  const [progressValue, setProgressValue] = useState(0);
 
   function handleChange(token: string | null) {
     if(token) {
@@ -28,10 +30,15 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
-          onSuccess ? onSuccess(token) : "";
+          setTimeout(() => {
+            onSuccess ? onSuccess(token) : "";
+          }, 1000);
         } else {
           onError ? onError() : "";
         }
+      })
+      .finally(() => {
+        setDisableVerify(false);
       })
     }
     else {
@@ -47,26 +54,35 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
 
   function handle_recaptcha() {
     setDisableVerify(true);
-
+    setProgressValue(20);
+    
     if(!readyCaptcha) {
       setDisableVerify(false);
       return;
     }
 
+    const progressTimeout = setTimeout(() => {
+      setProgressValue(50);
+    }, 1500);
+
     window.grecaptcha.ready(() => {
       window.grecaptcha
         .execute(PUBLIC_SITE_KEY, { action: "homepage" })
         .then((token: string) => {
-          handleChange(token);
+          setTimeout(() => {
+            clearTimeout(progressTimeout);
+            setProgressValue(100);
+            handleChange(token);
+            setTimeout(() => {
+              setProgressValue(0);
+            }, 1000);
+          }, 5000);
         })
         .catch(() => {
+          setDisableVerify(false);
           handleError();
         })
-        .finally(() => {
-          setDisableVerify(false);
-        })
     });
-
   }
   
   function handleLoaded() {
@@ -90,7 +106,8 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
         data-size="invisible"
       ></div>
       <h1 className="text-gray-100 text-xl">Please, Verify CAPTCHA first before continue:</h1>
-      <button className="disabled:opacity-50 disabled:pointer-events-none w-full tracking-[1px] font-bold px-6 py-4 bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-full" disabled={disableVerify} onClick={handle_recaptcha}>Verify</button>
+      <button className="disabled:opacity-50 disabled:pointer-events-none w-full tracking-[1px] font-bold px-6 py-4 bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-full" disabled={disableVerify} onClick={handle_recaptcha}><i className={disableVerify ? "pi pi-spin pi-spinner" : ""}></i> Verify</button>
+      <ProgressBar value={progressValue} displayValueTemplate={(val) => null} className={"h-2! w-full"+(progressValue == 0 ? " opacity-0" : "")} />
     </div>
   </>
 }

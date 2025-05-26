@@ -105,11 +105,19 @@ export default function DialogComponent({
             item.id === report.id ? { ...item, ...formState } : item
         );
         setReportData(updated);
-        const result = await updateReport(report.id, {
-            ...report,
-            ...formState // formState now includes the updated status
-        } as ReportData);
-        setDisableSave(false);
+        let result: APIResultType|null;
+        try {
+            result = await updateReport(report.id, {
+                ...report,
+                ...formState // formState now includes the updated status
+            } as ReportData);
+        }
+        catch {
+            return;
+        }
+        finally {
+            setDisableSave(false);
+        }
         
         if (result === APIResultType.NoError) {
             setVisible(false)
