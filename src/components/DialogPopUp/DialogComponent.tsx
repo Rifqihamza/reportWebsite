@@ -209,23 +209,24 @@ function DropdownField({ label, options, value, onChange }: {
     );
 }
 
-// Komponen calendar
-function CalendarField({ label, value, onChange }: {
+function CalendarField({
+    label,
+    value,
+    onChange,
+}: {
     label: string;
-    value: Date | null;
-    onChange: (e: any) => void;
+    value: string | null;
+    onChange: (value: string | null) => void;
 }) {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Calendar
-                value={value}
-                onChange={onChange}
-                className="w-full"
-                showTime
-                hourFormat="24"
-                showButtonBar // <-- Ini untuk tombol Today & Clear
-                onClearButtonClick={() => onChange({ value: null })} // <-- Handle clear button click
+            <input
+                type="datetime-local"
+                placeholder="Tenggat Waktu"
+                className="px-4 py-2 outline-none border-2 border-transparent focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#e2dad6] placeholder-black text-black"
+                onChange={(e) => onChange(e.target.value || null)}
+                value={value ?? ""}
             />
         </div>
     );
