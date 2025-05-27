@@ -225,7 +225,7 @@ function CalendarField({ label, value, onChange }: {
                 showTime
                 hourFormat="24"
                 showButtonBar // <-- Ini untuk tombol Today & Clear
-                onClearButtonClick={() => onChange(null)} // <-- Handle clear button click
+                onClearButtonClick={() => onChange({ value: null })} // <-- Handle clear button click
             />
         </div>
     );
