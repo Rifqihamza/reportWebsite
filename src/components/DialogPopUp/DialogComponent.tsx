@@ -169,8 +169,18 @@ export default function DialogComponent({
                     onChange={(e) => updateField("status", e.value)}
                 />
                 <InputField label="Follow Up Oleh" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} />
-                <CalendarField label="Tanggal Temuan" value={new Date(formState.report_date)} onChange={(e) => updateField("report_date", e.value)} />
-                <CalendarField label="Due Date" value={formState.due_date ? new Date(formState.due_date) : null} onChange={(e) => updateField("due_date", e.value)} />
+<CalendarField
+    label="Tanggal Temuan"
+    value={new Date(formState.report_date)}
+    onChange={(e) => updateField("report_date", e.value)}
+    onClear={() => updateField("report_date", null)}
+/>
+<CalendarField
+    label="Due Date"
+    value={formState.due_date ? new Date(formState.due_date) : null}
+    onChange={(e) => updateField("due_date", e.value)}
+    onClear={() => updateField("due_date", null)}
+/>
             </div>
         </Dialog >
     );
@@ -201,16 +211,39 @@ function DropdownField({ label, options, value, onChange }: {
     );
 }
 
-// Komponen calendar
-function CalendarField({ label, value, onChange }: {
+function CalendarField({
+    label,
+    value,
+    onChange,
+    onClear,
+}: {
     label: string;
     value: Date | null;
     onChange: (e: any) => void;
+    onClear?: () => void;
 }) {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Calendar value={value} onChange={onChange} className="w-full" showTime showButtonBar hourFormat="24" />
+            <div className="flex gap-2 items-center">
+                <Calendar
+                    value={value}
+                    onChange={onChange}
+                    className="w-full"
+                    showTime
+                    hourFormat="24"
+                    showButtonBar
+                />
+                {onClear && (
+                    <button
+                        type="button"
+                        onClick={onClear}
+                        className="text-red-500 text-sm border border-red-400 px-2 py-1 rounded hover:bg-red-100"
+                    >
+                        Clear
+                    </button>
+                )}
+            </div>
         </div>
     );
 }
