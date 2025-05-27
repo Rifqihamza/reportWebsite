@@ -32,17 +32,22 @@ export async function POST({ request }: APIContext) {
 
   const responseData = await response.json();
 
-  if (!responseData.success) {
-    console.log(responseData);
+  console.log(`ReCAPTCHA response data:`);
+  console.log(responseData);
+  if (!responseData.score || responseData.score < 0.3) {
     return create_response_status(401);
   }
 
   // Generate and store the generated captcha token to database
+  const captcha_expire_date = new Date();
+  captcha_expire_date.setHours(captcha_expire_date.getHours() + 1);
+
   const generated_captcha_token = generate_captcha_token();
   try {
     await prisma.verifiedCaptcha.create({
       data: {
-        token: generated_captcha_token
+        token: generated_captcha_token,
+        expire_at: captcha_expire_date
       }
     });
   }
@@ -52,11 +57,8 @@ export async function POST({ request }: APIContext) {
   }
 
   // Creating cookie for the user
-  const cookie_expire_date = new Date();
-  cookie_expire_date.setDate(cookie_expire_date.getDate() + 1);
-  
   const recaptcha_cookie = cookie.serialize("recaptcha_token", generated_captcha_token, {
-    expires: cookie_expire_date,
+    expires: captcha_expire_date,
     path: '/',
     sameSite: 'strict',
     httpOnly: false,

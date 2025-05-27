@@ -70,4 +70,5 @@ model Report {
 model VerifiedCaptcha {
   id    String @id @default(uuid())
   token String @unique
+  expire_at DateTime @default(now())
 }
