@@ -177,8 +177,8 @@ export default function DialogComponent({
                     onChange={(e) => updateField("status", e.value)}
                 />
                 <InputField label="Follow Up Oleh" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} />
-                <CalendarField label="Tanggal Temuan" value={new Date(formState.report_date)} onChange={(e) => updateField("report_date", e.value)} />
-                <CalendarField label="Due Date" value={formState.due_date ? new Date(formState.due_date) : null} onChange={(e) => updateField("due_date", e.value)} />
+                <CalendarField label="Tanggal Temuan" value={formState.report_date} onChange={(e) => updateField("report_date", new Date(e.value))} />
+                <CalendarField label="Due Date" value={formState.due_date ? formState.due_date : null} onChange={(e) => updateField("due_date", new Date(e.value))} />
             </div>
         </Dialog >
     );
