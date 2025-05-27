@@ -218,7 +218,16 @@ function CalendarField({ label, value, onChange }: {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Calendar value={value} onChange={onChange} className="w-full" showTime showButtonBar hourFormat="24" />
+            <Calendar
+                value={value}
+                onChange={onChange}
+                className="w-full"
+                showTime
+                hourFormat="24"
+                showButtonBar // <-- Ini untuk tombol Today & Clear
+                onClearButtonClick={() => onChange(null)} // <-- Handle clear button click
+            />
         </div>
     );
 }
+
