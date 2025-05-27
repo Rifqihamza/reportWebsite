@@ -16,8 +16,6 @@ declare global {
 }
 
 export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Props) {
-  const [readyCaptcha, setReadyCaptcha] = useState(false);
-
   function handleVerification(token: string, ekey: string) {
     if(token) {
       fetch("/api/recaptcha", {
@@ -41,20 +39,16 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
     }
   }
 
-  function handleError() {
-    console.log("ERROR");
+  function handleError(event: string) {
+    console.log("ERROR : " + event);
     onError ? onError() : "";
   }
 
-  function handle_recaptcha() {
-
-  }
-  
 
   return <>
     <div className="flex flex-col gap-6 justify-center items-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <h1 className="text-gray-100 text-xl">Please, Verify CAPTCHA first before continue:</h1>
-      <HCaptcha sitekey={PUBLIC_SITE_KEY} onVerify={handleVerification} />
+      <HCaptcha sitekey={PUBLIC_SITE_KEY} onVerify={handleVerification} onError={handleError} />
     </div>
   </>
 }
