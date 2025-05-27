@@ -88,6 +88,9 @@ export default function DialogComponent({
 
     const updateField = (field: keyof typeof formState, value: any) => {
         if (field == "due_date" || field == "report_date") {
+            if(value === null || value === undefined || value === "") {
+                value = "";
+            }
             value = (new Date(value)).toISOString()
         }
         else if (field == "type") {
@@ -110,7 +113,7 @@ export default function DialogComponent({
             ...formState // formState now includes the updated status
         } as ReportData);
         setDisableSave(false);
-        
+
         if (result === APIResultType.NoError) {
             setVisible(false)
             onSuccess();
@@ -133,7 +136,7 @@ export default function DialogComponent({
             footer={
                 <div className="flex justify-end gap-2">
                     <button onClick={() => setVisible(false)} className="text-gray-800 hover:text-gray-200">Batal</button>
-                    <button onClick={handleSave} disabled={disableSave||!isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"><span className={disableSave ? "" : "hidden"}><i className="pi pi-spinner pi-spin"></i></span> Simpan</button>
+                    <button onClick={handleSave} disabled={disableSave || !isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"><span className={disableSave ? "" : "hidden"}><i className="pi pi-spinner pi-spin"></i></span> Simpan</button>
                 </div>
             }
         >
@@ -169,8 +172,17 @@ export default function DialogComponent({
                     onChange={(e) => updateField("status", e.value)}
                 />
                 <InputField label="Follow Up Oleh" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} />
-                <CalendarField label="Tanggal Temuan" value={new Date(formState.report_date)} onChange={(e) => updateField("report_date", e.value)} />
-                <CalendarField label="Due Date" value={formState.due_date ? new Date(formState.due_date) : null} onChange={(e) => updateField("due_date", e.value)} />
+                <CalendarField
+                    label="Tanggal Temuan"
+                    value={new Date(formState.report_date)}
+                    onChange={(e) => updateField("report_date", new Date(e.target.value))}
+                />
+
+                <CalendarField
+                    label="Due Date"
+                    value={formState.due_date ? new Date(formState.due_date) : null}
+                    onChange={(e) => updateField("due_date", new Date(e.target.value))}
+                />
             </div>
         </Dialog >
     );
@@ -201,16 +213,24 @@ function DropdownField({ label, options, value, onChange }: {
     );
 }
 
-// Komponen calendar
 function CalendarField({ label, value, onChange }: {
     label: string;
     value: Date | null;
-    onChange: (e: any) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
+    const inputValue = value
+        ? new Date(value).toISOString().slice(0, 16) // format for datetime-local
+        : "";
+
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Calendar value={value} onChange={onChange} className="w-full" showTime hourFormat="24" />
+            <input
+                type="datetime-local"
+                value={inputValue}
+                onChange={onChange}
+                className="p-inputtext p-component w-full"
+            />
         </div>
     );
 }
