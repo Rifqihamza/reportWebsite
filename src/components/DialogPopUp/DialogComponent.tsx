@@ -88,6 +88,9 @@ export default function DialogComponent({
 
     const updateField = (field: keyof typeof formState, value: any) => {
         if (field == "due_date" || field == "report_date") {
+            if(value === null || value === undefined || value === "") {
+                value = "";
+            }
             value = (new Date(value)).toISOString()
         }
         else if (field == "type") {
