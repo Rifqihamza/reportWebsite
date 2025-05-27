@@ -18,7 +18,7 @@ export async function POST({ request }: APIContext) {
   });
 
   // Verify recaptcha token by asking it to google
-  const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+  const response = await fetch('https://api.hcaptcha.com/siteverify', {
     method: "POST",
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -34,6 +34,9 @@ export async function POST({ request }: APIContext) {
 
   console.log(`ReCAPTCHA response data:`);
   console.log(responseData);
+  if (!responseData.success) {
+    return create_response_status(401);
+  }
 
   // Generate and store the generated captcha token to database
   const captcha_expire_date = new Date();
