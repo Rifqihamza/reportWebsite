@@ -169,18 +169,17 @@ export default function DialogComponent({
                     onChange={(e) => updateField("status", e.value)}
                 />
                 <InputField label="Follow Up Oleh" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} />
-<CalendarField
-    label="Tanggal Temuan"
-    value={new Date(formState.report_date)}
-    onChange={(e) => updateField("report_date", e.value)}
-    onClear={() => updateField("report_date", null)}
-/>
-<CalendarField
-    label="Due Date"
-    value={formState.due_date ? new Date(formState.due_date) : null}
-    onChange={(e) => updateField("due_date", e.value)}
-    onClear={() => updateField("due_date", null)}
-/>
+                <CalendarField
+                    label="Tanggal Temuan"
+                    value={new Date(formState.report_date)}
+                    onChange={(e) => updateField("report_date", new Date(e.target.value))}
+                />
+
+                <CalendarField
+                    label="Due Date"
+                    value={formState.due_date ? new Date(formState.due_date) : null}
+                    onChange={(e) => updateField("due_date", new Date(e.target.value))}
+                />
             </div>
         </Dialog >
     );
@@ -211,39 +210,24 @@ function DropdownField({ label, options, value, onChange }: {
     );
 }
 
-function CalendarField({
-    label,
-    value,
-    onChange,
-    onClear,
-}: {
+function CalendarField({ label, value, onChange }: {
     label: string;
     value: Date | null;
-    onChange: (e: any) => void;
-    onClear?: () => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
+    const inputValue = value
+        ? new Date(value).toISOString().slice(0, 16) // format for datetime-local
+        : "";
+
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <div className="flex gap-2 items-center">
-                <Calendar
-                    value={value}
-                    onChange={onChange}
-                    className="w-full"
-                    showTime
-                    hourFormat="24"
-                    showButtonBar
-                />
-                {onClear && (
-                    <button
-                        type="button"
-                        onClick={onClear}
-                        className="text-red-500 text-sm border border-red-400 px-2 py-1 rounded hover:bg-red-100"
-                    >
-                        Clear
-                    </button>
-                )}
-            </div>
+            <input
+                type="datetime-local"
+                value={inputValue}
+                onChange={onChange}
+                className="p-inputtext p-component w-full"
+            />
         </div>
     );
 }
