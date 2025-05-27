@@ -105,20 +105,12 @@ export default function DialogComponent({
             item.id === report.id ? { ...item, ...formState } : item
         );
         setReportData(updated);
-        let result: APIResultType|null;
-        try {
-            result = await updateReport(report.id, {
-                ...report,
-                ...formState // formState now includes the updated status
-            } as ReportData);
-        }
-        catch {
-            return;
-        }
-        finally {
-            setDisableSave(false);
-        }
-        
+        const result = await updateReport(report.id, {
+            ...report,
+            ...formState // formState now includes the updated status
+        } as ReportData);
+        setDisableSave(false);
+
         if (result === APIResultType.NoError) {
             setVisible(false)
             onSuccess();
@@ -141,7 +133,7 @@ export default function DialogComponent({
             footer={
                 <div className="flex justify-end gap-2">
                     <button onClick={() => setVisible(false)} className="text-gray-800 hover:text-gray-200">Batal</button>
-                    <button onClick={handleSave} disabled={disableSave||!isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"><span className={disableSave ? "" : "hidden"}><i className="pi pi-spinner pi-spin"></i></span> Simpan</button>
+                    <button onClick={handleSave} disabled={disableSave || !isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"><span className={disableSave ? "" : "hidden"}><i className="pi pi-spinner pi-spin"></i></span> Simpan</button>
                 </div>
             }
         >
@@ -177,8 +169,8 @@ export default function DialogComponent({
                     onChange={(e) => updateField("status", e.value)}
                 />
                 <InputField label="Follow Up Oleh" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} />
-                <CalendarField label="Tanggal Temuan" value={formState.report_date} onChange={(value) => updateField("report_date", new Date(value)} />
-                <CalendarField label="Due Date" value={formState.due_date ? formState.due_date : null} onChange={(value) => updateField("due_date", new Date(value))} />
+                <CalendarField label="Tanggal Temuan" value={new Date(formState.report_date)} onChange={(e) => updateField("report_date", e.value)} />
+                <CalendarField label="Due Date" value={formState.due_date ? new Date(formState.due_date) : null} onChange={(e) => updateField("due_date", e.value)} />
             </div>
         </Dialog >
     );
@@ -209,26 +201,16 @@ function DropdownField({ label, options, value, onChange }: {
     );
 }
 
-function CalendarField({
-    label,
-    value,
-    onChange,
-}: {
+// Komponen calendar
+function CalendarField({ label, value, onChange }: {
     label: string;
-    value: string | null;
-    onChange: (value: string | null) => void;
+    value: Date | null;
+    onChange: (e: any) => void;
 }) {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <input
-                type="datetime-local"
-                placeholder="Tenggat Waktu"
-                className="px-4 py-2 outline-none border-2 border-transparent focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#e2dad6] placeholder-black text-black"
-                onChange={(e) => onChange(e.target.value || null)}
-                value={value ?? ""}
-            />
+            <Calendar value={value} onChange={onChange} className="w-full" showTime showButtonBar hourFormat="24" />
         </div>
     );
 }
-
