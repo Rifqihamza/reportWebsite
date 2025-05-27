@@ -34,9 +34,6 @@ export async function POST({ request }: APIContext) {
 
   console.log(`ReCAPTCHA response data:`);
   console.log(responseData);
-  if (!responseData.score || responseData.score < 0.3) {
-    return create_response_status(401);
-  }
 
   // Generate and store the generated captcha token to database
   const captcha_expire_date = new Date();
