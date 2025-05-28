@@ -3,6 +3,7 @@ import { Sidebar } from 'primereact/sidebar';
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountType, type User } from "../../types/variables";
+import LogoutButton from '../LogoutButton/LogoutButtonComponent';
 interface NavbarProps {
     activeTab: number;
     setActiveTab: (tabIndex: number) => void;
@@ -16,7 +17,6 @@ const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: 
     return (
         <>
             {/* Desk Navbar */}
-
             <div className="hidden md:flex flex-row items-center justify-evenly px-6 py-2" >
                 {["Form Laporan", "Data Laporan", "Grafik Laporan"].map((label, index) => (
                     <button
@@ -34,14 +34,10 @@ const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: 
                         ></span>
                     </button>
                 ))}
-
-                <button
-                    className='relative bottom-0 left-0 h-10 bg-transparent text-white font-semibold py-2 px-4 uppercase tracking-wider overflow-hidden group'
-                    onClick={handle_logout}>
-                    {(!userData || userData.role == AccountType.Siswa) ? "Login" : "Logout"}
-                    <span className='absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 w-0 group-hover:w-full'></span>
-                </button>
             </div >
+            {/* Desk Navbar */}
+
+            <LogoutButton handle_logout={handle_logout} userData={userData} />
 
             {/* SideBar Section for Mobile */}
             <div className="md:hidden flex flex-row items-center justify-between px-6 py-2 bg-white mb-4" >
@@ -89,6 +85,7 @@ const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: 
                     </button>
                 </div>
             </Sidebar>
+            {/* End Mobile Sidebar */}
         </>
     )
 }
