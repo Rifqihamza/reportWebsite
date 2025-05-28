@@ -41,7 +41,7 @@ export type ReportData = {
     submitted_by: string,
     message: string,
     type: ReportType,
-    follow_up: AccountType,
+    follow_up?: AccountType,
     follow_up_name?: AccountType,
     status: ReportStatus,
     location: string,
