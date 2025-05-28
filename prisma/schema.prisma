@@ -38,6 +38,8 @@ model Users {
   role     AccountType
 
   created_at DateTime @default(now())
+
+  // Relation
 }
 
 model Registration {
@@ -48,6 +50,26 @@ model Registration {
   created_at DateTime @default(now())
 }
 
+model Report_PIC {
+  id   String @id @default(uuid())
+  name String @unique
+  
+  created_at DateTime @default(now())
+
+  // Relation
+  reports Report[]
+}
+
+model Report_Location {
+  id       String @id @default(uuid())
+  location String @unique
+  
+  created_at DateTime @default(now())
+
+  // Relation
+  reports Report[]
+}
+
 model Report {
   id             String       @id @default(uuid())
   submitted_by   String
@@ -56,19 +78,23 @@ model Report {
   follow_up      AccountType?
   follow_up_name String?
   status         ReportStatus @default(NotStarted)
-  location       String?
-  image          String
+  image          String?
 
   created_at DateTime @default(now())
 
   report_date DateTime  @default(now())
   due_date    DateTime?
 
-  pic_name String?
+  // Relations
+  responsible_pic Report_PIC?  @relation(references: [name], fields: [pic_name], onDelete: SetNull)
+  pic_name        String?
+
+  report_location Report_Location? @relation(references: [location], fields: [location], onDelete: SetNull)
+  location String?
 }
 
 model VerifiedCaptcha {
-  id    String @id @default(uuid())
-  token String @unique
+  id        String   @id @default(uuid())
+  token     String   @unique
   expire_at DateTime @default(now())
 }
