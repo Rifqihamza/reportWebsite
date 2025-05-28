@@ -47,6 +47,7 @@ CREATE TABLE `Report` (
 CREATE TABLE `VerifiedCaptcha` (
     `id` VARCHAR(191) NOT NULL,
     `token` VARCHAR(191) NOT NULL,
+    `expire_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `VerifiedCaptcha_token_key`(`token`),
     PRIMARY KEY (`id`)
