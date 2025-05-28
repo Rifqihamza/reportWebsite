@@ -1,8 +1,8 @@
 import React, { useEffect, useState, Suspense } from "react";
 import strftime from "strftime";
-import Dropdown from "../../components/Dropdown/DropdownComponent";
 import type { ReportData } from "../../types/variables";
 import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
+import { Dropdown } from "primereact/dropdown";
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
@@ -250,12 +250,13 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
                 <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
                     <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
-                    <Dropdown
+                    {/* <Dropdown
                         id="chartFilter"
                         items={Object.values(LineChartFilterOption)}
                         selected={chartFilter}
                         setSelected={setChartFilter}
-                    />
+                    /> */}
+                    <Dropdown value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)}  />
                 </div>
                 <Suspense fallback={<>Loading..</>}>
                     <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
