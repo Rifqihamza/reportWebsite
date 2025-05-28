@@ -3,9 +3,10 @@ import { addReport, APIResultType } from '../../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData, type User } from "../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
-import { Dropdown } from "primereact/dropdown";
+import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
 
 export default function ReportFormComponent({ setReportData, reportData, isAuthorized }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[], isAuthorized: boolean }) {
+  // Report Form State
   const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
@@ -16,24 +17,15 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
   const [reportDate, setReportDate] = useState("");
   const [reportDueDate, setReportDueDate] = useState("");
   const [image, setImage] = useState(null as File | null);
+  
+  // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [picNames, setPicNames] = useState([] as string[]);
+  const [locationOptions, setLocationOptions] = useState([] as string[]);
+  
   const toastProgress = useRef<Toast>(null);
   const toastSuccess = useRef<Toast>(null);
 
-  const dropdowns = [
-    {
-      id: "kategori",
-      label: "Kategori",
-      Icon: "pi pi-box",
-      items: [...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"],
-    },
-    {
-      id: "followup",
-      label: "Follow Up",
-      Icon: "pi pi-file-check",
-      items: Object.keys(AccountType).filter(x => x != "NoType")
-    },
-  ];
 
   const handle_submit = async () => {
     if (!submitted_by || !message || !category || !location || !reportDate) {
@@ -131,7 +123,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
                 className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
               >
                 <i className="pi pi-address-book" />
-                Nama
+                Nama Pelapor
               </label>
             </div>
             <input
@@ -148,26 +140,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
 
           {/* Lokasi Temuan */}
           <div className="flex flex-col gap-2 w-full">
-            <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
-              <label
-                htmlFor="lokasi"
-                className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
-              >
-                <i className="pi pi-map-marker" />
-                Lokasi
-              </label>
-            </div>
-            <input
-              type="text"
-              name="lokasi"
-              id="lokasi"
-              placeholder="Lokasi temuan"
-              className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
-              onChange={(e) => setLocation(e.target.value)}
-              value={location}
-              maxLength={191}
-              required
-            />
+            <ReportFormDropdown placeholder={locationOptions.length == 0 ? "Loading Data Lokasi.." : "Pilih Lokasi"} label="Location" items={locationOptions} onSelect={(value) => setLocation(value || "")} selected={location} disabled={locationOptions.length == 0} icon="pi pi-map-marker" />
           </div>
 
           {/* Tanggal Temuan section */}
@@ -214,26 +187,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
           {/* Nama PIC - Hanya untuk role Guru/Vendor */}
           {isAuthorized &&
             (
-              <div className="flex flex-col gap-2 w-full">
-                <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
-                  <label
-                    htmlFor="pic"
-                    className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
-                  >
-                    <i className="pi pi-user" />
-                    PIC <span className="opacity-50">(opsional)</span>
-                  </label>
-                </div>
-                <input
-                  name="pic"
-                  id="pic"
-                  placeholder="Nama PIC..."
-                  className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
-                  onChange={(e) => setPic(e.target.value)}
-                  value={pic}
-                  maxLength={191}
-                />
-              </div>
+              <ReportFormDropdown placeholder={picNames.length === 0 ? "Loading PIC Data.." : "Pilih PIC"} label="Nama PIC" items={picNames} selected={pic} onSelect={(value) => { setPic(value || ""); }} icon="pi pi-user" disabled={picNames.length === 0} />
             )}
           {/* End Nama PIC */}
 
@@ -266,36 +220,8 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
 
           {/* Dropdowns Section */}
           <div className="flex flex-col md:flex-row gap-6">
-            {dropdowns.map((d, index) => {
-              // Hanya tampilkan dropdown follow up untuk role Guru/Vendor
-              if (d.id === "followup" && !isAuthorized) {
-                return null;
-              }
-
-              let selected = category;
-              let setSelected = setCategory;
-
-              if (d.id == "followup") {
-                selected = followUpType;
-                setSelected = setFollowUpType;
-              }
-
-              return (
-                <div className="bg-[#93BFCF] rounded-2xl translate-y-[1.5rem] w-full" key={index}>
-                  <div className="flex flex-row justify-between items-center px-4 py-3">
-                    <div className="md:text-lg font-semibold text-xs text-white flex flex-row gap-2 items-center">
-                      <i className={d.Icon}></i>
-                      <h1>{d.label} {d.id == "followup" ?  <span className="opacity-50">(opsional)</span> : ""}</h1>
-                    </div>
-                    <button type="button" className="cursor-pointer hover:text-[#7FA1C3] disabled:opacity-0 disabled:pointer-events-none" disabled={selected == null} onClick={() => setSelected(null)}>Clear</button>
-                  </div>
-
-                  <div className="outline-none px-6 py-1 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]">
-                    <Dropdown value={selected} onChange={(e) => setSelected(e.value)} options={d.items} optionLabel="name" placeholder={d.label} className="!rounded-2xl !bg-amber-50 !border-none w-full !focus:outline-none" />
-                  </div>
-                </div>
-              );
-            })}
+              <ReportFormDropdown label="Pilih Kategori" placeholder="Kategori" optional items={[...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"]} onSelect={(value) => { setCategory(value) }} selected={category} icon={"pi pi-box"} />
+              <ReportFormDropdown label="Follow Up" placeholder="Follow Up" optional items={Object.keys(AccountType).filter(x => x != "NoType")} onSelect={(value) => { setFollowUpType(value) }} selected={followUpType} icon={"pi pi-file-check"} />
           </div>
           
           {/* End Dropdowns */}
