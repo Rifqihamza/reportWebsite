@@ -3,7 +3,6 @@ import { Sidebar } from 'primereact/sidebar';
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountType, type User } from "../../types/variables";
-
 interface NavbarProps {
     activeTab: number;
     setActiveTab: (tabIndex: number) => void;
@@ -13,31 +12,39 @@ interface NavbarProps {
 
 const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: NavbarProps) => {
     const [setVisible, setIsVisible] = useState<boolean>(false);
+
     return (
         <>
             {/* Desk Navbar */}
-            <div className="mb-4 px-3 py-2 bg-white rounded-xl hidden md:flex flex-row items-center justify-around gap-6 mx-5 relative">
+
+            <div className="hidden md:flex flex-row items-center justify-evenly px-6 py-2" >
                 {["Form Laporan", "Data Laporan", "Grafik Laporan"].map((label, index) => (
                     <button
                         key={index}
                         onClick={() => setActiveTab(index)}
-                        className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${activeTab === index ? "text-gray-5800" : "text-gray-600"
+                        className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${activeTab === index ? "text-white" : "text-white/80"
                             }`}
                     >
                         {label}
                         <span
-                            className={`absolute bottom-0 right-0 h-1 bg-[#7FA1C3] rounded-full transition-all duration-500 ${activeTab === index
-                                    ? "w-full"
-                                    : "w-0 group-hover:w-full group-hover:left-0"
+                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${activeTab === index
+                                ? "w-full"
+                                : "w-0 group-hover:w-full group-hover:left-0"
                                 }`}
                         ></span>
                     </button>
                 ))}
-            </div>
 
+                <button
+                    className='relative bottom-0 left-0 h-10 bg-transparent text-white font-semibold py-2 px-4 uppercase tracking-wider overflow-hidden group'
+                    onClick={handle_logout}>
+                    {(!userData || userData.role == AccountType.Siswa) ? "Login" : "Logout"}
+                    <span className='absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 w-0 group-hover:w-full'></span>
+                </button>
+            </div >
 
             {/* SideBar Section for Mobile */}
-            <div className="md:hidden flex flex-row items-center justify-between px-6 py-2 bg-white rounded-xl mb-4" >
+            <div className="md:hidden flex flex-row items-center justify-between px-6 py-2 bg-white mb-4" >
                 <button onClick={() => { setIsVisible(true) }}>
                     <MenuIcon />
                 </button>

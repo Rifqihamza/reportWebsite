@@ -245,7 +245,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     }, [reportData]);
 
     return (
-        <div className='flex flex-col gap-4 mx-4'>
+        <div className='flex flex-col gap-4'>
             {/* Line Chart */}
             <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
                 <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
