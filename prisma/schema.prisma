@@ -45,7 +45,7 @@ model Users {
 model Report_PIC {
   id   String @id @default(uuid())
   name String @unique
-  
+
   created_at DateTime @default(now())
 
   // Relation
@@ -55,7 +55,7 @@ model Report_PIC {
 model Report_Location {
   id       String @id @default(uuid())
   location String @unique
-  
+
   created_at DateTime @default(now())
 
   // Relation
@@ -63,14 +63,15 @@ model Report_Location {
 }
 
 model Report {
-  id             String       @id @default(uuid())
-  submitted_by   String
-  message        String
-  type           ReportType
-  follow_up      AccountType?
-  follow_up_name String?
-  status         ReportStatus @default(NotStarted)
-  image          String?
+  id              String       @id @default(uuid())
+  submitted_by    String
+  message         String
+  type            ReportType
+  follow_up       AccountType?
+  follow_up_name  String?
+  status          ReportStatus @default(NotStarted)
+  image           String?
+  detail_location String?
 
   created_at DateTime @default(now())
 
@@ -78,11 +79,11 @@ model Report {
   due_date    DateTime?
 
   // Relations
-  responsible_pic Report_PIC?  @relation(references: [name], fields: [pic_name], onDelete: SetNull)
+  responsible_pic Report_PIC? @relation(references: [name], fields: [pic_name], onDelete: SetNull)
   pic_name        String?
 
   report_location Report_Location? @relation(references: [location], fields: [location], onDelete: SetNull)
-  location String?
+  location        String?
 }
 
 model VerifiedCaptcha {

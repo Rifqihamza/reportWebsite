@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_recaptcha_token, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report } from "@prisma/client";
 import { AccountType, ReportType } from "../../../types/variables";
@@ -13,6 +13,7 @@ const ReportBodyType = z.object({
     report_type: z.nativeEnum(ReportType),
     follow_up: z.nativeEnum(AccountType).optional(),
     location: z.string(),
+    detail_location: z.string(),
     report_date: z.string(),
     due_date: z.string().optional(),
     follow_up_name: z.string().optional(),
@@ -50,7 +51,8 @@ export async function POST({ request }: APIContext) {
         report_date,
         due_date,
         follow_up_name,
-        image
+        image,
+        detail_location
     } = parsed_result.data;
 
     // Check if user is teacher if it includes due date and follow up data
@@ -160,7 +162,8 @@ export async function POST({ request }: APIContext) {
                 type: report_type,
                 report_date: report_date,
                 due_date: due_date,
-                image: image_file_path
+                image: image_file_path,
+                detail_location: detail_location
             }
         })
     }
