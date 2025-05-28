@@ -153,7 +153,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
                       className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                     >
                       <i className="pi pi-user" />
-                      PIC
+                      PIC <span className="opacity-50">(opsional)</span>
                     </label>
                     <input
                       name="pic"
@@ -219,7 +219,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
                     className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
                   >
                     <i className="pi pi-clock" />
-                    Tenggat Waktu</label>
+                    Tenggat Waktu <span className="opacity-50">(opsional)</span></label>
                   <input type="datetime-local"
                     placeholder="Tenggat Waktu"
                     className="px-4 py-2 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl resize-none w-full bg-[#e2dad6] placeholder-black text-black"
@@ -252,7 +252,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
                   <span className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center mb-3 justify-between">
                     <div className="flex flex-row items-center gap-2">
                       <i className={d.Icon}></i>
-                      <h1>{d.label}</h1>
+                      <h1>{d.label} {d.id == "followup" ?  <span className="opacity-50">(opsional)</span> : ""}</h1>
                     </div>
                     <button type="button" className="cursor-pointer hover:text-[#7FA1C3] disabled:opacity-0 disabled:pointer-events-none" disabled={selected == null} onClick={() => setSelected(null)}>Clear</button>
                   </span>
@@ -261,7 +261,30 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
               );
             })}
           </div>
+          
           {/* End Dropdowns */}
+          {isAuthorized &&
+              (
+                <div className="space-y-2">
+                  <label
+                    htmlFor="submitted_by"
+                    className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
+                  >
+                    <i className="pi pi-address-book" />
+                    Nama Follow Up <span className="opacity-50">(opsional)</span>
+                  </label>
+                  <input
+                    name="submitted_by"
+                    id="submitted_by"
+                    placeholder="Nama Follow Up..."
+                    className="px-4 py-3 outline-none border-2 border-transparent focus:border-2 focus:border-[#7FA1C3] duration-300 rounded-xl w-full bg-[#e2dad6] placeholder-black text-black"
+                    onChange={(e) => setSubmittedBy(e.target.value)}
+                    value={submitted_by}
+                    maxLength={191}
+                    required
+                  />
+                </div>
+              )}
         </div>
         {/* End Container Form Input */}
 
@@ -272,7 +295,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
             className="md:text-lg font-semibold text-xs text-gray-600 ml-2 flex flex-row gap-2 items-center"
           >
             <i className="pi pi-file" />
-            Foto Bukti
+            Foto Bukti <span className="opacity-50">(opsional)</span>
           </label>
           <div className="flex items-center justify-center w-full">
             <label
