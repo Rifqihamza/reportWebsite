@@ -1,5 +1,5 @@
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
-import type { ReportData, User } from "../types/variables";
+import type { Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
 const base_url_endpoint: string = "http://localhost:4321";
@@ -229,6 +229,28 @@ export async function updateReport(report_id: string, report_data: ReportData) {
     else {
         return APIResultType.Unauthorized;
     }
+}
+
+export type formConfigurationResponse = {
+    pic_data: Report_PIC[],
+    location_data: Report_Location[]
+}
+
+export async function getFormConfiguration() {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/report_form/configuration/", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (response.ok) {
+        return (await response.json()) as formConfigurationResponse;
+    }
+    else if (response.status == 401) {
+        return APIResultType.Unauthorized;
+    }
+
+    return APIResultType.InternalServerError;
 }
 
 export function string_to_reporttype(data: string): ReportType | undefined {

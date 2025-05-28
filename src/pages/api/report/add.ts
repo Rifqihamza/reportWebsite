@@ -147,11 +147,11 @@ export async function POST({ request }: APIContext) {
                 message: message,
                 follow_up: follow_up,
                 follow_up_name: follow_up_name,
-                responsible_pic: {
+                responsible_pic: pic_name ? {
                     connect: {
                         name: pic_name
-                    }
-                },
+                    },
+                } : undefined,
                 report_location: {
                     connect: {
                         location: location

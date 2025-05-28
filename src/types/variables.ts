@@ -61,6 +61,18 @@ export type User = {
     created_at: string
 }
 
+export type Report_PIC = {
+    id: string,
+    name: string,
+    created_at: string
+}
+
+export type Report_Location = {
+    id: string,
+    location: string,
+    created_at: string
+}
+
 export const statusColorHex: Record<string, string> = {
     NotStarted: "#fca5a5", // Tailwind bg-red-300
     InProcess: "#fde047",  // Tailwind bg-yellow-300

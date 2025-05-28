@@ -1,5 +1,5 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
-import { addReport, APIResultType } from '../../utils/api_interface';
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { addReport, APIResultType, getFormConfiguration, type formConfigurationResponse } from '../../utils/api_interface';
 import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData, type User } from "../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
@@ -27,21 +27,21 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
   const toastSuccess = useRef<Toast>(null);
 
 
+  const reset_form = () => {
+    setSubmittedBy(""); setPic(""); setFollowUpType(null);
+    setMessage(""); setCategory(null); setLocation("");
+    setReportDate(""); setReportDueDate(""); setImage(null);
+  }
+  
   const handle_submit = async () => {
+    console.log(location);
+    
     if (!submitted_by || !message || !category || !location || !reportDate) {
       alert("Please complete the form.");
       return;
     }
 
-    setSubmittedBy("");
-    setPic("");
-    setFollowUpType(null);
-    setMessage("");
-    setCategory(null)
-    setLocation("");
-    setReportDate("");
-    setReportDueDate("");
-    setImage(null);
+    reset_form();
 
     setSubmitDisabled(true);
     toastSuccess.current!.clear();
@@ -83,6 +83,20 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
     toastProgress.current!.clear();
     setSubmitDisabled(false);
   }
+
+  // Get the location and PIC data
+  useEffect(() => {
+    getFormConfiguration().then(result => {
+      if((result as formConfigurationResponse).pic_data !== undefined) {
+        result = result as formConfigurationResponse;
+        setPicNames(result.pic_data.map(value => value.name));
+        setLocationOptions(result.location_data.map(value => value.location));
+      }
+      else if(result === APIResultType.Unauthorized) {
+        window.location.href = "/loginPage";
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -187,7 +201,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
           {/* Nama PIC - Hanya untuk role Guru/Vendor */}
           {isAuthorized &&
             (
-              <ReportFormDropdown placeholder={picNames.length === 0 ? "Loading PIC Data.." : "Pilih PIC"} label="Nama PIC" items={picNames} selected={pic} onSelect={(value) => { setPic(value || ""); }} icon="pi pi-user" disabled={picNames.length === 0} />
+              <ReportFormDropdown optional placeholder={picNames.length === 0 ? "Loading PIC Data.." : "Pilih PIC"} label="Nama PIC" items={picNames} selected={pic} onSelect={(value) => { setPic(value || ""); }} icon="pi pi-user" disabled={picNames.length === 0} />
             )}
           {/* End Nama PIC */}
 
@@ -220,7 +234,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
 
           {/* Dropdowns Section */}
           <div className="flex flex-col md:flex-row gap-6">
-              <ReportFormDropdown label="Pilih Kategori" placeholder="Kategori" optional items={[...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"]} onSelect={(value) => { setCategory(value) }} selected={category} icon={"pi pi-box"} />
+              <ReportFormDropdown label="Pilih Kategori" placeholder="Kategori" items={[...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"]} onSelect={(value) => { setCategory(value) }} selected={category} icon={"pi pi-box"} />
               <ReportFormDropdown label="Follow Up" placeholder="Follow Up" optional items={Object.keys(AccountType).filter(x => x != "NoType")} onSelect={(value) => { setFollowUpType(value) }} selected={followUpType} icon={"pi pi-file-check"} />
           </div>
           

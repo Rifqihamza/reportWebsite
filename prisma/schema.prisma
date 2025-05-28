@@ -42,14 +42,6 @@ model Users {
   // Relation
 }
 
-model Registration {
-  id    String @id @default(uuid())
-  email String @unique
-  token String @unique
-
-  created_at DateTime @default(now())
-}
-
 model Report_PIC {
   id   String @id @default(uuid())
   name String @unique
