@@ -251,12 +251,12 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
               </div>
               <input
                 type="text"
-                name="lokasi"
-                id="lokasi"
-                placeholder="Lokasi temuan"
+                name="followup_name"
+                id="followup_name"
+                placeholder="Nama follow up"
                 className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
-                onChange={(e) => setLocation(e.target.value)}
-                value={location}
+                onChange={(e) => setFollowUpName(e.target.value)}
+                value={followUpName}
                 maxLength={191}
                 required
               />
