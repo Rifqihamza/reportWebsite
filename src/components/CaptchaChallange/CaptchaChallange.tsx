@@ -1,6 +1,4 @@
-import { ProgressBar } from "primereact/progressbar";
-import { useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useState } from "react";
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 const PUBLIC_SITE_KEY = "9d404a42-7eee-446a-94ae-e5c8c8dc7050";
