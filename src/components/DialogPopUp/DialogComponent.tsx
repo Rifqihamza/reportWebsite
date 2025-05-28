@@ -88,10 +88,12 @@ export default function DialogComponent({
 
     const updateField = (field: keyof typeof formState, value: any) => {
         if (field == "due_date" || field == "report_date") {
-            if(value === null || value === undefined || value === "") {
+            if(value == null || value == undefined || value == "") {
                 value = "";
             }
-            value = (new Date(value)).toISOString()
+            else {
+                value = (new Date(value)).toISOString()
+            }
         }
         else if (field == "type") {
             value = string_to_reporttype(value);
@@ -104,17 +106,30 @@ export default function DialogComponent({
         if (disableSave || !report || !isChange) return;
         setDisableSave(true);
 
-        const updated: any = reportData.map(item =>
-            item.id === report.id ? { ...item, ...formState } : item
-        );
-        setReportData(updated);
-        const result = await updateReport(report.id, {
-            ...report,
-            ...formState // formState now includes the updated status
-        } as ReportData);
-        setDisableSave(false);
+
+        let result: APIResultType | null;
+        try {
+            result = await updateReport(report.id, {
+                ...report,
+                ...formState // formState now includes the updated status
+            } as ReportData); 
+        }
+        catch {
+            onError();
+            return;
+        }
+        finally {
+            setDisableSave(false);
+        }
 
         if (result === APIResultType.NoError) {
+            // Update current report data information
+            const updated: any = reportData.map(item =>
+                item.id === report.id ? { ...item, ...formState } : item
+            );
+            setReportData(updated);
+
+            // Close the dialog component and trigger success function
             setVisible(false)
             onSuccess();
         }
@@ -176,12 +191,13 @@ export default function DialogComponent({
                     label="Tanggal Temuan"
                     value={new Date(formState.report_date)}
                     onChange={(e) => updateField("report_date", new Date(e.target.value))}
+                    required={true}
                 />
 
                 <CalendarField
                     label="Due Date"
-                    value={formState.due_date ? new Date(formState.due_date) : null}
-                    onChange={(e) => updateField("due_date", new Date(e.target.value))}
+                    value={(formState.due_date != "") ? new Date(formState.due_date) : null}
+                    onChange={(e) => updateField("due_date", e.target.value ? new Date(e.target.value) : "")}
                 />
             </div>
         </Dialog >
@@ -213,10 +229,11 @@ function DropdownField({ label, options, value, onChange }: {
     );
 }
 
-function CalendarField({ label, value, onChange }: {
+function CalendarField({ label, value, onChange, required = false }: {
     label: string;
     value: Date | null;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    required?: boolean
 }) {
     const inputValue = value
         ? new Date(value).toISOString().slice(0, 16) // format for datetime-local
@@ -230,6 +247,7 @@ function CalendarField({ label, value, onChange }: {
                 value={inputValue}
                 onChange={onChange}
                 className="p-inputtext p-component w-full"
+                required={true}
             />
         </div>
     );

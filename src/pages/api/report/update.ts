@@ -23,16 +23,16 @@ export async function PUT({ request }: APIContext) {
                 id: report_id
             },
             data: {
-                submitted_by: new_report_data.submitted_by || undefined,
-                message: new_report_data.message || undefined,
-                pic_name: new_report_data.pic_name || undefined,
-                type: new_report_data.type || undefined,
-                status: new_report_data.status || undefined,
-                location: new_report_data.location || undefined,
+                submitted_by: new_report_data.submitted_by ?? undefined,
+                message: new_report_data.message ?? undefined,
+                pic_name: new_report_data.pic_name ?? undefined,
+                type: new_report_data.type ?? undefined,
+                status: new_report_data.status ?? undefined,
+                location: new_report_data.location ?? undefined,
                 follow_up: new_report_data.follow_up || undefined,
-                follow_up_name: new_report_data.follow_up_name || undefined,
-                report_date: new_report_data.report_date || undefined,
-                due_date: new_report_data.due_date || undefined,
+                follow_up_name: new_report_data.follow_up_name ?? undefined,
+                report_date: new_report_data.report_date ?? undefined,
+                due_date: new_report_data.due_date === "" ? null : (new_report_data.due_date || undefined),
             }
         });
     }
