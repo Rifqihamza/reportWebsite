@@ -1,7 +1,8 @@
 import HCaptcha from '@hcaptcha/react-hcaptcha';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProgressBar } from 'primereact/progressbar';
 import { PrimeReactProvider } from "primereact/api";
+import { APIResultType, checkAuthentication } from "../../utils/api_interface";
 
 const PUBLIC_SITE_KEY = "9d404a42-7eee-446a-94ae-e5c8c8dc7050";
 
@@ -13,6 +14,19 @@ interface Props {
 
 export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Props) {
   const [progress, setProgress] = useState(0);
+  const [isCaptchaNeeded, setIsCaptchaNeeded] = useState(false);
+
+  useEffect(() => {
+    checkAuthentication().then((result) => {
+      if(result == APIResultType.NeedCaptchaAuthentication) {
+        setIsCaptchaNeeded(true);
+      }
+      else {
+        window.location.href = "/loginPage";
+      }
+    });
+  }, []);
+  
   function handleVerification(token: string, ekey: string) {
     if(token) {
       setProgress(50)
@@ -48,7 +62,7 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
 
 
   return <>
-    <div className="flex flex-col gap-6 justify-center items-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    {isCaptchaNeeded ? <div className="flex flex-col gap-6 justify-center items-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <h1 className="text-gray-100 text-xl">Please, Verify CAPTCHA first before continue:</h1>
       <HCaptcha sitekey={PUBLIC_SITE_KEY} onVerify={handleVerification} onError={handleError} />
       <PrimeReactProvider>
@@ -57,6 +71,6 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
           <p className="text-center text-gray-100">{progress > 0 ? "Please wait.." : ""}</p>
         </div>
       </PrimeReactProvider>
-    </div>
+    </div> : ""}
   </>
 }
