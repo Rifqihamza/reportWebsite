@@ -118,13 +118,19 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
-    else if (response.status == 511) {
-        window.location.reload();
-        return APIResultType.Unauthorized;
-    }
     else {
         return APIResultType.Unauthorized;
     }
+}
+
+export async function checkCaptcha(): Promise<boolean> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    return response.status != 500;
 }
 
 export async function changeReportStatus(report_id: string, report_status: ReportStatus): Promise<APIResultType> {

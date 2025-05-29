@@ -19,17 +19,12 @@ export default function MainPage() {
   const [reportData, setReportData] = useState<ReportData[]>([]);
 
   async function handle_logout() {
-    if (!userData || userData.role === AccountType.Siswa) {
-      window.location.href = "/loginPage";
-      return;
-    }
-
-    if (!(await userLogout())) {
+    if (userData && !(await userLogout())) {
       alert("Terjadi error saat ingin logout!");
       return;
     }
 
-    window.location.reload();
+    window.location.href = "/loginPage";
   }
 
   useEffect(() => {
