@@ -4,6 +4,8 @@
 <div align="center">
   <i>Made by IT MIVHS (2025)</i>
   <br />
+  <i>for Mitra Industri Vocational HighSchool</i>
+  <br />
   .
   <br />
   .
