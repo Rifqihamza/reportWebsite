@@ -2,12 +2,13 @@ import { AccountType, ReportType, ReportStatus } from '../types/variables';
 import type { Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
-const base_url_endpoint: string = "https://webreport.smkind-mm2100.sch.id";
+const base_url_endpoint: string = "http://localhost:4321";
 
 // Useful enum!
 export enum APIResultType {
     NoError = "No Error",
     Unauthorized = "Unauthorized",
+    NeedCaptchaAuthentication = "Need Captcha Authentication",
     InternalServerError = "Internal Server Error"
 }
 
@@ -123,14 +124,23 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
     }
 }
 
-export async function checkCaptcha(): Promise<boolean> {
+export async function checkAuthentication(): Promise<APIResultType> {
     // Fetch to API
-    const response = await fetch(base_url_endpoint + "/", {
+    const response = await fetch(base_url_endpoint + "/api/", {
         method: "GET",
         credentials: "include",
     });
 
-    return response.status != 500;
+    switch(response.status) {
+        case 511:
+            return APIResultType.NeedCaptchaAuthentication;
+        case 500:
+            return APIResultType.InternalServerError;
+        case 401:
+            return APIResultType.Unauthorized;
+        default:
+            return APIResultType.NoError;
+    }
 }
 
 export async function changeReportStatus(report_id: string, report_status: ReportStatus): Promise<APIResultType> {

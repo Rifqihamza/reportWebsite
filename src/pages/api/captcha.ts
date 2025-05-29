@@ -7,17 +7,17 @@ export async function POST({ request }: APIContext) {
   const data = await request.json();
 
   // Verify required data is exists
-  if (!data.recaptcha_token) {
+  if (!data.captcha_token) {
     return create_response_status(400);
   }
 
-  // Setting up recaptcha verification body data
+  // Setting up captcha verification body data
   const requestBody = new URLSearchParams({
     secret: process.env.CAPTCHA_SECRET_KEY!,  // This can be an environment variable
-    response: data.recaptcha_token            // The token passed in from the client
+    response: data.captcha_token            // The token passed in from the client
   });
 
-  // Verify recaptcha token by asking it to google
+  // Verify captcha token by asking it to google
   const response = await fetch('https://api.hcaptcha.com/siteverify', {
     method: "POST",
     headers: {
@@ -27,12 +27,12 @@ export async function POST({ request }: APIContext) {
   });
 
   if (response.status != 200) {
-    console.error(`There's an error when trying to verify recaptcha token from Google. Error: ${await response.text()}`);
+    console.error(`There's an error when trying to verify captcha token from Google. Error: ${await response.text()}`);
   }
 
   const responseData = await response.json();
 
-  console.log(`ReCAPTCHA response data:`);
+  console.log(`captcha response data:`);
   console.log(responseData);
   if (!responseData.success) {
     return create_response_status(401);
@@ -57,12 +57,12 @@ export async function POST({ request }: APIContext) {
   }
 
   // Creating cookie for the user
-  const recaptcha_cookie = cookie.serialize("recaptcha_token", generated_captcha_token, {
+  const captcha_cookie = cookie.serialize("captcha_token", generated_captcha_token, {
     expires: captcha_expire_date,
     path: '/',
     sameSite: 'strict',
     httpOnly: false,
   });
 
-  return create_response_cookie({success: true}, recaptcha_cookie);
+  return create_response_cookie({success: true}, captcha_cookie);
 }
