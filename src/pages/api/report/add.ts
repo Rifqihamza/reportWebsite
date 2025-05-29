@@ -13,7 +13,7 @@ const ReportBodyType = z.object({
     report_type: z.nativeEnum(ReportType),
     follow_up: z.nativeEnum(AccountType).optional(),
     location: z.string(),
-    detail_location: z.string(),
+    detail_location: z.string().optional(),
     report_date: z.string(),
     due_date: z.string().optional(),
     follow_up_name: z.string().optional(),
