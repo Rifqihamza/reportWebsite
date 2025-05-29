@@ -6,7 +6,6 @@ import { getReport, getUser, userLogout } from "../../utils/api_interface";
 import React, { Suspense, useEffect, useState } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
-import LogoutButton from "../../components/LogoutButton/LogoutButtonComponent";
 
 import ReportForm from "./_FormReportPage";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
@@ -51,48 +50,48 @@ export default function MainPage() {
     userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor);
 
   return (
-    <PrimeReactProvider>
-      <LogoutButton handle_logout={handle_logout} userData={userData} />
+    <>
+      <PrimeReactProvider>
 
-      {/* Navbar */}
-      <NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
+        {/* Navbar */}
+        <NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Content */}
-      <div className="rounded-xl md:px-8 md:py-6 px-2 py-4 relative w-full max-w-[95vw] h-fit md:max-h-[80vh] max-h-[70vh] overflow-y-scroll bg-white shadow-md shadow-gray-600">
+        <div className="max-w-7xl mx-auto p-4 m-4 relative rounded-4xl w-full  overflow-y-scroll">
+          {/* Tab 0: Form, bebas diakses */}
+          {activeTab === 0 && (<>
+            <ReportForm reportData={reportData} setReportData={setReportData} isAuthorized={isAuthorized ? true : false} />
+          </>
+          )}
 
-        {/* Tab 0: Form, bebas diakses */}
-        {activeTab === 0 && (<>
-          <ReportForm reportData={reportData} setReportData={setReportData} isAuthorized={isAuthorized ? true : false} />
-        </>
-        )}
+          {/* Tab 1: Table */}
+          {activeTab === 1 && (
+            isAuthorized ? (
+              <Suspense fallback={<LoadingAnimation />}>
+                <TableReportPages
+                  userData={userData}
+                  reportData={reportData}
+                  setReportData={setReportData}
+                />
+              </Suspense>
+            ) : (
+              <OverlayBlockPages />
+            )
+          )}
 
-        {/* Tab 1: Table */}
-        {activeTab === 1 && (
-          isAuthorized ? (
-            <Suspense fallback={<LoadingAnimation />}>
-              <TableReportPages
-                userData={userData}
-                reportData={reportData}
-                setReportData={setReportData}
-              />
-            </Suspense>
-          ) : (
-            <OverlayBlockPages />
-          )
-        )}
+          {/* Tab 2: Chart */}
+          {activeTab === 2 && (
+            isAuthorized ? (
+              <Suspense fallback={<LoadingAnimation />}>
+                <ApexChart reportData={reportData} />
+              </Suspense>
+            ) : (
+              <OverlayBlockPages />
+            )
+          )}
+        </div>
 
-        {/* Tab 2: Chart */}
-        {activeTab === 2 && (
-          isAuthorized ? (
-            <Suspense fallback={<LoadingAnimation />}>
-              <ApexChart reportData={reportData} />
-            </Suspense>
-          ) : (
-            <OverlayBlockPages />
-          )
-        )}
-      </div>
-      <FooterComponent />
-    </PrimeReactProvider>
+        <FooterComponent />
+      </PrimeReactProvider>
+    </>
   );
 }

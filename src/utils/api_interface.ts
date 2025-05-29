@@ -1,8 +1,8 @@
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
-import type { ReportData, User } from "../types/variables";
+import type { Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
-const base_url_endpoint: string = "https://webreport.smkind-mm2100.sch.id";
+const base_url_endpoint: string = "http://localhost:4321";
 
 // Useful enum!
 export enum APIResultType {
@@ -52,6 +52,7 @@ export async function addReport(
     follow_up?: AccountType,
     follow_up_name?: string,
     location?: string,
+    detail_location?: string,
     report_date?: string,
     due_date?: string,
     image?: File
@@ -66,6 +67,7 @@ export async function addReport(
     add_to_formdata(form_data, "follow_up", follow_up);
     add_to_formdata(form_data, "follow_up_name", follow_up_name);
     add_to_formdata(form_data, "location", location);
+    add_to_formdata(form_data, "detail_location", detail_location);
     add_to_formdata(form_data, "report_date", report_date);
     add_to_formdata(form_data, "due_date", due_date);
 
@@ -229,6 +231,28 @@ export async function updateReport(report_id: string, report_data: ReportData) {
     else {
         return APIResultType.Unauthorized;
     }
+}
+
+export type formConfigurationResponse = {
+    pic_data: Report_PIC[],
+    location_data: Report_Location[]
+}
+
+export async function getFormConfiguration() {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/report_form/configuration/", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (response.ok) {
+        return (await response.json()) as formConfigurationResponse;
+    }
+    else if (response.status == 401) {
+        return APIResultType.Unauthorized;
+    }
+
+    return APIResultType.InternalServerError;
 }
 
 export function string_to_reporttype(data: string): ReportType | undefined {

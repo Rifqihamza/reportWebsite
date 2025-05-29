@@ -9,16 +9,16 @@ export default function WrapperPage() {
     const [verifiedRecaptchaToken, setVerifiedRecaptchaToken] = useState(false);
 
     useEffect(() => {
-        if(!sessionStorage.getItem("no-welcome-page")) {
+        if (!sessionStorage.getItem("no-welcome-page")) {
             sessionStorage.setItem("no-welcome-page", "true");
             setShowMain(false);
         }
 
-        if(Cookies.get("recaptcha_token")) {
+        if (Cookies.get("recaptcha_token")) {
             setVerifiedRecaptchaToken(true);
         }
     }, []);
-    
+
     return (
         <>
             {verifiedRecaptchaToken ? (showMain ? <MainPage /> : <WelcomeComponent onFinish={() => setShowMain(true)} />) : <CaptchaChallange onSuccess={() => setVerifiedRecaptchaToken(true)} />}
