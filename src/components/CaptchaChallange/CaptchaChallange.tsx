@@ -16,9 +16,9 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
   function handleVerification(token: string, ekey: string) {
     if(token) {
       setProgress(50)
-      fetch("/api/recaptcha", {
+      fetch("/api/captcha", {
         method: "POST",
-        body: JSON.stringify({ recaptcha_token: token })
+        body: JSON.stringify({ captcha_token: token })
       })
       .then((response) => response.json())
       .then((result) => {

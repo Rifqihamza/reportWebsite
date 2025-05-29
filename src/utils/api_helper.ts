@@ -101,7 +101,7 @@ export function process_server_token(report_num: number): string {
     return jwt.sign({ report_num: report_num }, process.env.JWT_SECRET!);
 }
 
-export async function verify_recaptcha_token(token: string): Promise<boolean> {
+export async function verify_captcha_token(token: string): Promise<boolean> {
     try {
         const result = await prisma.verifiedCaptcha.findUnique({
             where: {
