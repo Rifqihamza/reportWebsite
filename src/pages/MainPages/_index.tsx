@@ -41,6 +41,12 @@ export default function MainPage() {
     });
   }, []);
 
+  useEffect(() => {
+    if(userData?.role === AccountType.Guru || userData?.role === AccountType.Vendor) {
+      setActiveTab(1);
+    }
+  }, [userData]);
+
   const isAuthorized =
     userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor);
 

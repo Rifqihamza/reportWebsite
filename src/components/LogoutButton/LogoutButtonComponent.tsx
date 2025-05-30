@@ -1,4 +1,4 @@
-import { AccountType, type User } from "../../types/variables";
+import { type User } from "../../types/variables";
 
 export default function LogoutButton({ userData, handle_logout }: { userData: User | null, handle_logout: () => Promise<void> }) {
     return <div className="relative group md:block hidden float z-50">
@@ -10,7 +10,7 @@ export default function LogoutButton({ userData, handle_logout }: { userData: Us
             <span
                 className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             >
-                {(!userData || userData.role == AccountType.Siswa) ? "Login" : "Logout"}
+                {!userData ? "Login" : "Logout"}
             </span>
         </button>
     </div>
