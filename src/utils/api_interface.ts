@@ -9,7 +9,8 @@ export enum APIResultType {
     NoError = "No Error",
     Unauthorized = "Unauthorized",
     NeedCaptchaAuthentication = "Need Captcha Authentication",
-    InternalServerError = "Internal Server Error"
+    InternalServerError = "Internal Server Error",
+    DatabaseError = "Database Error"
 }
 
 // Backend Functionalities
@@ -33,6 +34,9 @@ export async function userLogin(username: string, password: string): Promise<API
     }
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
+    }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError
     }
     else {
         return APIResultType.Unauthorized;
@@ -136,6 +140,8 @@ export async function checkAuthentication(): Promise<APIResultType> {
             return APIResultType.NeedCaptchaAuthentication;
         case 500:
             return APIResultType.InternalServerError;
+        case 503:
+            return APIResultType.DatabaseError;
         case 401:
             return APIResultType.Unauthorized;
         default:

@@ -48,6 +48,11 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
           onError ? onError() : "";
         }
       })
+      .catch(err => {
+        setProgress(0);
+        alert("There's an error when trying to verify captcha..");
+        onError ? onError() : "";
+      });
     }
     else {
       onIncorrect ? onIncorrect() : "";
