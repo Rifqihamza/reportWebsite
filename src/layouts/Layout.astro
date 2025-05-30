@@ -4,6 +4,7 @@ import "primereact/resources/themes/lara-light-blue/theme.css"; // atau tema lai
 import "primereact/resources/primereact.min.css"; // komponen core
 import "primeicons/primeicons.css"; // icon
 import VerifyAuthentication from "../components/GlobalComponents/VerifyAuthentication";
+import SpeedInsights from "@vercel/speed-insights/astro";
 ---
 
 <!doctype html>
@@ -33,5 +34,6 @@ import VerifyAuthentication from "../components/GlobalComponents/VerifyAuthentic
       is:inline
       src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"
     ></script>
+    <SpeedInsights />
   </body>
 </html>
