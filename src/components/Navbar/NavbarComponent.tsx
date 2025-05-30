@@ -11,29 +11,71 @@ interface NavbarProps {
     userData: User | null
 }
 
+
 const NavbarComponents = ({ activeTab, setActiveTab, handle_logout, userData }: NavbarProps) => {
     const [setVisible, setIsVisible] = useState<boolean>(false);
+
+    const isAuthorized =
+        userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor);
 
     return (
         <>
             {/* Desk Navbar */}
             <div className="hidden md:flex flex-row items-center justify-evenly px-6 py-2" >
-                {["Form Laporan", "Data Laporan", "Grafik Laporan"].map((label, index) => (
+                <button
+                    onClick={() => setActiveTab(0)}
+                    className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${activeTab === 0
+                        ? "text-white"
+                        : "text-white/80"
+                        }`}
+                >
+                    Form Laporan
+                    <span
+                        className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${activeTab === 0
+                            ? "w-full"
+                            : "w-0 group-hover:w-full group-hover:left-0"
+                            }`}
+                    ></span>
+                </button>
+                {isAuthorized ? (
                     <button
-                        key={index}
-                        onClick={() => setActiveTab(index)}
-                        className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${activeTab === index ? "text-white" : "text-white/80"
+                        onClick={() => setActiveTab(1)}
+                        className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${activeTab === 1
+                            ? "text-white"
+                            : "text-white/80"
                             }`}
                     >
-                        {label}
+                        Tabel Laporan
                         <span
-                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${activeTab === index
+                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${activeTab === 1
                                 ? "w-full"
                                 : "w-0 group-hover:w-full group-hover:left-0"
                                 }`}
                         ></span>
                     </button>
-                ))}
+                ) : (
+                    ""
+                )}
+
+                {isAuthorized ? (
+                    <button
+                        onClick={() => setActiveTab(2)}
+                        className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${activeTab === 2
+                            ? "text-white"
+                            : "text-white/80"
+                            }`}
+                    >
+                        Grafik Laporan
+                        <span
+                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${activeTab === 2
+                                ? "w-full"
+                                : "w-0 group-hover:w-full group-hover:left-0"
+                                }`}
+                        ></span>
+                    </button>
+                ) : (
+                    ""
+                )}
             </div >
             {/* Desk Navbar */}
 

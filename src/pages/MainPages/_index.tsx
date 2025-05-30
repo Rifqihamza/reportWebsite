@@ -52,10 +52,8 @@ export default function MainPage() {
   return (
     <>
       <PrimeReactProvider>
-
         {/* Navbar */}
-        <NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
-
+        < NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
         <div className="max-w-7xl mx-auto p-4 m-4 relative rounded-4xl w-full  overflow-y-scroll">
           {/* Tab 0: Form, bebas diakses */}
           {activeTab === 0 && (<>

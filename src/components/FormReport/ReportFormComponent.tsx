@@ -122,6 +122,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
               required
             ></textarea>
           </div>
+          {/* End Detail Laporan */}
 
           {/* Nama Pelapor */}
           <div className="flex flex-col gap-2 w-full">
@@ -269,52 +270,61 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
                 </div>
               );
             })}
+            {/* End Dropdowns */}
           </div>
-          {/* End Dropdowns */}
+
+          {/* File Image Upload */}
+          <div className="flex flex-col gap-2 w-full mt-6">
+            <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <label
+                htmlFor="foto"
+                className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
+              >
+                <i className="pi pi-file" />
+                Foto Bukti
+              </label>
+            </div>
+            <div className="flex items-center justify-center w-full z-10">
+              <label
+                htmlFor="foto"
+                className="cursor-pointer outline-none px-6 py-8 w-full bg-amber-50 hover:bg-neutral-50 duration-300 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
+              >
+                <div className="flex flex-col items-center justify-center">
+                  <i className="pi pi-cloud text-black" />
+                  <p className={`mb-1 text-sm text-${image ? "black" : "black"}`} id="file-name-display">
+                    {image ? image.name : "Klik untuk upload foto"}
+                  </p>
+                  <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
+                </div>
+
+                <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? setImage(e.target.files[0]) : "" }} />
+              </label>
+            </div>
+          </div>
+          {/* End File Image Upload */}
+
+          {/* Submit Button */}
+          <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
+            {submitDisabled ? (
+              <i
+                className="pi pi-spin pi-spinner"
+                style={{ fontSize: "1rem", marginRight: "10px" }}
+              ></i>
+            ) : (
+              <button
+                type="button"
+                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#93BFCF] hover:bg-[#93bfcfbe] duration-300 "
+                disabled={submitDisabled}
+                onClick={handle_submit}
+              >
+                <i className="pi pi-send mr-2" />
+                Kirim Laporan
+              </button>
+            )}
+          </div>
+          {/* End Submit Button */}
         </div>
         {/* End Container Form Input */}
-
-        {/* File Image Upload */}
-        <div className={"space-y-2 mt-10" + (submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
-          <label
-            htmlFor="foto"
-            className="md:text-lg font-semibold text-xs text-white ml-2 flex flex-row gap-2 items-center"
-          >
-            <i className="pi pi-file" />
-            Foto Bukti
-          </label>
-          <div className="flex items-center justify-center w-full">
-            <label
-              htmlFor="foto"
-              className="flex flex-col items-center justify-center w-full h-32 border-2 border-[#7FA1C3] hover:border-white border-dashed rounded-xl cursor-pointer bg-amber-50 hover:bg-[#93BFCF] duration-400"
-            >
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <i className="pi pi-cloud text-black" />
-                <p className={`mb-1 text-sm text-${image ? "black" : "black"}`} id="file-name-display">
-                  {image ? image.name : "Klik untuk upload foto"}
-                </p>
-                <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
-              </div>
-              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? setImage(e.target.files[0]) : "" }} />
-            </label>
-          </div>
-        </div>
-        {/* End File Image Upload */}
-
-        {/* Submit Button */}
-        <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
-          {submitDisabled ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i> :
-            <button
-              type="button"
-              className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#93BFCF] hover:bg-[#93bfcfbe] duration-300 "
-              disabled={submitDisabled}
-              onClick={handle_submit}
-            >
-              <i className="pi pi-send mr-2" />
-              Kirim Laporan
-            </button>}
-        </div>
-        {/* End Submit Button */}
       </form >
 
       {/* Message Toast */}
@@ -334,7 +344,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
           </section>
         )
         }
-      ></Toast >
+      ></Toast>
       <Toast ref={toastSuccess} />
       {/* End Message Toast */}
 
