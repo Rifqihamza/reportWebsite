@@ -72,6 +72,48 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab }
                             ></span>
                         </button>
                     </li>
+                    <li>
+                        <button
+                            onClick={() => setActiveTab(3)}
+                            className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 3 ? "text-black" : "text-black/50"
+                                }`}
+                        >
+                            <i className="pi pi-file-export"></i>
+                            Export
+                            <span
+                                className={`absolute bottom-0 left-0 h-1 bg-[#6096B4] rounded-full transition-all duration-500 ${activeTab === 3 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
+                                    }`}
+                            ></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => setActiveTab(4)}
+                            className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 4 ? "text-black" : "text-black/50"
+                                }`}
+                        >
+                            <i className="pi pi-file-edit"></i>
+                            Configuration
+                            <span
+                                className={`absolute bottom-0 left-0 h-1 bg-[#6096B4] rounded-full transition-all duration-500 ${activeTab === 4 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
+                                    }`}
+                            ></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={() => setActiveTab(5)}
+                            className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 5 ? "text-black" : "text-black/50"
+                                }`}
+                        >
+                            <i className="pi pi-cog"></i>
+                            Setting
+                            <span
+                                className={`absolute bottom-0 left-0 h-1 bg-[#6096B4] rounded-full transition-all duration-500 ${activeTab === 5 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
+                                    }`}
+                            ></span>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
