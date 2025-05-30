@@ -51,10 +51,10 @@ const PercenContComponent: React.FC<PercenContProps> = ({ reports, icon, label }
     );
 
     return (
-        <div className='bg-black/10 backdrop-blur-md px-6 py-4 rounded-xl  space-y-4'>
+        <div className='bg-white px-6 py-4 rounded-xl  space-y-4'>
             <div className='flex flex-row justify-between items-center gap-10'>
-                <h1 className="md:text-[16px] text-xl text-white font-bold whitespace-nowrap">Persentase {label}</h1>
-                <span><i className={icon} style={{ fontSize: 20, color: "#fff" }} /></span>
+                <h1 className="md:text-[16px] text-xl text-black font-bold whitespace-nowrap">Persentase {label}</h1>
+                <span><i className={icon} style={{ fontSize: 20, color: "#000" }} /></span>
             </div>
             <div className='space-y-3 px-3 py-1'>
                 {percentageData.map((item, index) => (

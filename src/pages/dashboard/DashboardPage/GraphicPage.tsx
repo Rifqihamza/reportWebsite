@@ -258,10 +258,10 @@ export default function GraphicPage({ reportData }: { reportData: ReportData[] }
     return (
         <div className='flex flex-col gap-4 '>
             {/* Line Chart */}
-            <div className="w-full px-4 py-2 rounded-2xl bg-black/10 backdrop-blur-md">
+            <div className="w-full px-4 py-2 rounded-2xl bg-white shadow">
                 <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
-                    <h1 className='font-bold text-center text-xl text-white'>Grafik Laporan Temuan</h1>
-                    <Dropdown className="!bg-transparent [&_.p-dropdown-label]:text-white!" value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)} />
+                    <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
+                    <Dropdown className="px-4!" value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)} />
                 </div>
                 <Suspense fallback={<>Loading..</>}>
                     <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
@@ -273,16 +273,16 @@ export default function GraphicPage({ reportData }: { reportData: ReportData[] }
                 {/* Kiri: Pie Chart Kategori dan Status */}
                 <div className="flex flex-col gap-4">
                     {/* Pie Chart Kategori */}
-                    <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-black/10 backdrop-blur-md">
-                        <h1 className='font-bold uppercase tracking-wider text-white'>Kategori</h1>
+                    <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-white shadow">
+                        <h1 className='font-bold uppercase tracking-wider'>Kategori</h1>
                         <Suspense fallback={<>Loading..</>}>
                             <PieChart reports={pieCategory} setReportType={setChartCategoryFilter} reportType={chartCategoryFilter} />
                         </Suspense>
                     </div>
 
                     {/* Pie Chart Status */}
-                    <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-black/10 backdrop-blur-md">
-                        <h1 className='font-bold uppercase tracking-wider text-white'>Status</h1>
+                    <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-white shadow">
+                        <h1 className='font-bold uppercase tracking-wider'>Status</h1>
                         <Suspense fallback={<>Loading..</>}>
                             <PieChart reports={pieStatus} />
                         </Suspense>
@@ -310,10 +310,10 @@ export default function GraphicPage({ reportData }: { reportData: ReportData[] }
                     </div>
 
                     {/* Container Baru di bawahnya */}
-                    <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-black/10 backdrop-blur-md">
-                        <h2 className="text-white font-semibold uppercase tracking-wider text-lg mb-2">Insights</h2>
+                    <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-white shadow">
+                        <h2 className="font-semibold uppercase tracking-wider text-lg mb-2">Insights</h2>
                         {/* Konten di sini */}
-                        <div className="text-white">{!insight ? "Insights masih dalam pengerjaan" :
+                        <div className="text-black">{!insight ? "Insights masih dalam pengerjaan" :
                             <ol className="list-decimal m-4">
                                 <li>Terdapat <b>{insight.totalReportAllTime} temuan selama ini</b> dan <b>{insight.totalReportThisMonth} diantara nya terjadi pada bulan ini.</b></li>
                                 <li>Grafik menunjukkan bahwa <b>laporan temuan bulan ini {insight.betterThanLastMonth ? "lebih sedikit" : "lebih banyak"} dari bulan sebelumnya.</b></li>

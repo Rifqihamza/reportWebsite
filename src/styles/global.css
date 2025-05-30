@@ -41,11 +41,11 @@ body {
 }
 
 .bg-form {
-  background-color: #6096b4;
+  background: #93bfcf;
 }
 
 .bg-dashboard {
-  background: #fff;
+  background: oklch(96.7% 0.003 264.542);
 }
 
 .titlePage {
@@ -147,4 +147,30 @@ body {
 .welcomeTitle h1 {
   font-family: helloFont;
   font-size: 100px;
+}
+
+.p-inputtext {
+  background-color: #fff;
+  color: black; /* teks input putih */
+  padding: 0.5rem 0;
+  border-radius: 0.75rem;
+  border: none;
+  text-align: center;
+}
+
+/* Agar placeholder juga putih */
+.p-inputtext::placeholder {
+  color: black; /* placeholder putih transparan */
+}
+
+/* Opsional: untuk input yang disabled */
+.p-inputtext:disabled {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.p-inputtext:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
