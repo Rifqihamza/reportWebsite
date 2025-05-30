@@ -10,6 +10,10 @@ const rateLimiterMemory = new RateLimiterMemory({
 
 export const onRequest: MiddlewareHandler = async (context, next) => {
     await first_initialization();
+    
+    if(context.url.href.includes("api/") && !(await check_database_connection())) {
+        return create_response_status(503);
+    }
 
     if(context.url.href.includes("api/") && (!context.url.href.includes("/captcha") && !context.url.href.includes("/login"))) {
         // Verify that the user is verifying captcha already
@@ -44,9 +48,6 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
         }
     }
     
-    if(context.url.href.includes("api/") && !(await check_database_connection())) {
-        return create_response_status(503);
-    }
     
     // Add security layer for response headers
     const response = await next();
