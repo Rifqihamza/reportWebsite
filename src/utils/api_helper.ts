@@ -26,7 +26,7 @@ export function create_response_json(body: Object): Response {
             "Content-Type": "application/json"
         },
         status: 200
-    })
+    });
 }
 
 export function create_response_status(status: number): Response {
@@ -67,7 +67,7 @@ export function verify_user_token(token: string): string | undefined {
     try {
         const result = jwt.verify(token, process.env.JWT_SECRET!);
         if (typeof result == "string") {
-            return undefined
+            return undefined;
         }
 
         return result.username;
@@ -88,7 +88,7 @@ export async function verify_teacher_token(token: string): Promise<boolean | und
         where: {
             username: result
         }
-    })
+    });
 
     return user_data?.role === AccountType.Guru;
 }
@@ -109,11 +109,11 @@ export async function verify_captcha_token(token: string): Promise<boolean> {
             }
         });
 
-        if(!result) {
+        if (!result) {
             return false;
         }
 
-        if(result.expire_at <= new Date()) {
+        if (result.expire_at <= new Date()) {
             try {
                 await prisma.verifiedCaptcha.delete({
                     where: {
@@ -121,7 +121,7 @@ export async function verify_captcha_token(token: string): Promise<boolean> {
                     }
                 });
             }
-            catch(err) {
+            catch (err) {
                 console.error(`There's an error when trying to delete verified captcha of expire date. Error: ${err}`);
             }
 
@@ -135,9 +135,20 @@ export async function verify_captcha_token(token: string): Promise<boolean> {
     }
 }
 
+export async function check_database_connection(): Promise<boolean> {
+    try {
+        await prisma.$connect(); // Connects to the database
+        return true;
+    } catch (error) {
+        return false;
+    } finally {
+        await prisma.$disconnect(); // Disconnects from the database
+    }
+}
+
 export function generate_captcha_token(): string {
     let result = "";
-    for(let i = 0; i < 100; i++) {
+    for (let i = 0; i < 100; i++) {
         result += alphabets[Math.floor(Math.random() * alphabets.length)];
     }
 

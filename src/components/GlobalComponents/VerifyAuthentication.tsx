@@ -22,6 +22,9 @@ export default function VerifyAuthentication() {
       else if (result == APIResultType.Unauthorized && !window.location.href.includes("loginPage")) {
         window.location.href = "/loginPage/";
       }
+      else if(result == APIResultType.DatabaseError) {
+        alert("Database sedang error. Mohon coba lagi.");
+      }
     })
   }, []);
 

@@ -1,6 +1,6 @@
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { MiddlewareHandler } from 'astro';
-import { create_response_cookie, create_response_status, first_initialization, verify_captcha_token, verify_user_token } from "./utils/api_helper";
+import { check_database_connection, create_response_cookie, create_response_status, first_initialization, verify_captcha_token, verify_user_token } from "./utils/api_helper";
 import cookie from 'cookie';
 
 const rateLimiterMemory = new RateLimiterMemory({
@@ -44,6 +44,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
         }
     }
     
+    if(context.url.href.includes("api/") && !(await check_database_connection())) {
+        return create_response_status(503);
+    }
     
     // Add security layer for response headers
     const response = await next();
