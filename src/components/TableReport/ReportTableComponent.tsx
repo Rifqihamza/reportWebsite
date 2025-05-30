@@ -1,8 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { Toast } from "primereact/toast";
-import type { ToastMessage } from "primereact/toast";
-import { type ReportData, type ReportType, type ReportStatus, type User, AccountType } from "../../types/variables";
-import { APIResultType, deleteReport } from "../../utils/api_interface";
+import { type ReportData, type ReportType, type ReportStatus } from "../../types/variables";
 import {
   useReportFilters,
   usePagination,
@@ -15,26 +13,25 @@ import ReportMobileCard from "./ReportMobileCard";
 import ReportDetailModal from "./ReportDetailModal";
 import ReportPagination from "./ReportPagination";
 import DialogComponent from "../DialogPopUp/DialogComponent";
+import { useUserData } from "../../hooks/useUserData";
+import { useReportData } from "../../hooks/useReportData";
 
 const reportsPerPage = 7;
 
 interface ReportListComponentProps {
-  userData: User | null;
-  reportData: ReportData[];
-  setReportData: React.Dispatch<React.SetStateAction<ReportData[]>>;
   selectedFilter: ReportType | ReportStatus | null;
   dateFilter: (Date | null)[];
   searchKeyword: string;
 }
 
 const ReportListComponent: React.FC<ReportListComponentProps> = ({
-  userData,
-  reportData,
-  setReportData,
   selectedFilter,
   dateFilter,
   searchKeyword,
 }) => {
+  const { reportData } = useReportData();
+  const { userData } = useUserData();
+    
   const toastTopRight = useRef<Toast>(null) as React.RefObject<Toast>;
   const [saveDisabled, setSaveDisabled] = useState(false);
 
@@ -57,8 +54,6 @@ const ReportListComponent: React.FC<ReportListComponentProps> = ({
   } = useReportDetail(reportData);
 
   const { deleteDisabled, handleDelete, showMessage } = useReportDeletion(
-    reportData,
-    setReportData,
     toastTopRight
   );
 
@@ -81,8 +76,6 @@ const ReportListComponent: React.FC<ReportListComponentProps> = ({
       {/* Detail Modal */}
       <ReportDetailModal
         detailId={detailId}
-        reportData={reportData}
-        userData={userData}
         onClose={handleClose}
         onDelete={(id) => {
           handleDelete(id, userData).then((success) => {
@@ -96,11 +89,6 @@ const ReportListComponent: React.FC<ReportListComponentProps> = ({
 
       {/* Edit Dialog */}
       <DialogComponent
-        userData={userData}
-        reportData={reportData}
-        setReportData={setReportData}
-        dateFilter={dateFilter}
-        searchKeyword={searchKeyword}
         detailId={detailId}
         visible={dialogVisible}
         setVisible={setDialogVisible}

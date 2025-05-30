@@ -1,14 +1,14 @@
 import { Calendar } from "primereact/calendar";
 import { FloatLabel } from "primereact/floatlabel";
 import TieredDropDown from "../../components/TieredMenu/TieredMenuComponent";
-import React, { Suspense, useState, type Dispatch, type SetStateAction } from "react";
+import React, { Suspense, useState } from "react";
 import LoadingAnimation from "../Loading/LoadingAnimation";
-import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
+import type { ReportStatus, ReportType } from "../../types/variables";
 
 const ReportListComponent = React.lazy(() => import("../../components/TableReport/ReportTableComponent"));
 
 
-export default function ReportTableWrapper({ userData, reportData, setReportData }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
+export default function ReportTableWrapper() {    
     const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
     const [dateFilter, setDateFilter] = useState([null, null] as (Date | null)[]);
     const [searchKeyword, setSearchKeyword] = useState("");
@@ -41,7 +41,7 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
         </div>
 
         <Suspense fallback={<LoadingAnimation />}>
-            <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} dateFilter={dateFilter ?? []} searchKeyword={searchKeyword} />
+            <ReportListComponent selectedFilter={selectedFilter} dateFilter={dateFilter ?? []} searchKeyword={searchKeyword} />
         </Suspense>
     </>
 }

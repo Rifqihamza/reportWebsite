@@ -2,11 +2,11 @@ import React from 'react';
 import { Image } from 'primereact/image';
 import { AccountType, reporttype_to_string, type ReportData, type User } from '../../types/variables';
 import { useFormatDate, statusColors } from '../../hooks/useReportHooks';
+import { useUserData } from "../../hooks/useUserData";
+import { useReportData } from "../../hooks/useReportData";
 
 interface ReportDetailModalProps {
     detailId: string | null;
-    reportData: ReportData[];
-    userData: User | null;
     onClose: () => void;
     onDelete: (id: string) => void;
     onEdit: () => void;
@@ -16,14 +16,15 @@ interface ReportDetailModalProps {
 
 const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
     detailId,
-    reportData,
-    userData,
     onClose,
     onDelete,
     onEdit,
     deleteDisabled,
     saveDisabled
 }) => {
+    const { userData } = useUserData();
+    const { reportData } = useReportData();
+    
     const { formatDate } = useFormatDate();
     const report_data = reportData.find(value => value.id === detailId) || null;
 

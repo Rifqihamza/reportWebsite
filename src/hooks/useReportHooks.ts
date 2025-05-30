@@ -3,6 +3,7 @@ import { APIResultType, deleteReport } from "../utils/api_interface";
 import { AccountType, ReportStatus, ReportType, string_to_reportstatus, reporttype_to_string, type ReportData } from '../types/variables';
 import type { Toast } from 'primereact/toast';
 import type { ToastMessage } from 'primereact/toast';
+import { useReportData } from "./useReportData";
 
 // Utility for formatting dates
 export const useFormatDate = () => {
@@ -136,10 +137,10 @@ export const useReportDetail = (reportData: ReportData[]) => {
 
 // Hook for report deletion
 export const useReportDeletion = (
-    reportData: ReportData[],
-    setReportData: React.Dispatch<React.SetStateAction<ReportData[]>>,
     toastRef: React.RefObject<Toast>
 ) => {
+    const { reportData, setReportData } = useReportData();
+    
     const [deleteDisabled, setDeleteDisabled] = useState(false);
 
     const showMessage = (

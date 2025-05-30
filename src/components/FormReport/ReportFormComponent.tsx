@@ -16,16 +16,16 @@ import {
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
+import { useReportData } from "../../hooks/useReportData";
+import { useIsAuthorized } from "../../hooks/useIsAuthorized";
 
-export default function ReportFormComponent({
-  setReportData,
-  reportData,
-  isAuthorized,
-}: {
-  setReportData: Dispatch<SetStateAction<ReportData[]>>;
-  reportData: ReportData[];
-  isAuthorized: boolean;
-}) {
+export default function ReportFormComponent() {
+  // Authorized state
+  const { isAuthorized } = useIsAuthorized();
+  
+  // Report Data State
+  const { reportData, setReportData } = useReportData();
+  
   // Report Form State
   const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");

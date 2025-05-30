@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData, type User, } from '../../types/variables';
 import { InputTextarea } from "primereact/inputtextarea";
 import { APIResultType, updateReport } from '../../utils/api_interface';
+import { useReportData } from "../../hooks/useReportData";
+import { useUserData } from "../../hooks/useUserData";
 
 const reportTypeOptions = [
     ...Object.keys(ReportType)
@@ -28,20 +30,13 @@ const accountTypeOptions = [
 ];
 
 export default function DialogComponent({
-    reportData,
     detailId,
     visible,
     setVisible,
-    setReportData,
     onSuccess,
     onUnauthorized,
     onError
 }: {
-    userData: User | null,
-    reportData: ReportData[],
-    setReportData: React.Dispatch<React.SetStateAction<ReportData[]>>,
-    dateFilter: (Date | null)[],
-    searchKeyword: string,
     detailId: string | number | null,
     visible: boolean,
     setVisible: (val: boolean) => void,
@@ -49,6 +44,8 @@ export default function DialogComponent({
     onUnauthorized: () => void,
     onError: () => void,
 }) {
+    const { reportData, setReportData } = useReportData();
+    
     const report = reportData.find(value => value.id === detailId) || null;
 
     const [formState, setFormState] = useState({
