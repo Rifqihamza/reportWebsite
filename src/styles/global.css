@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: Saira;
-  src: url("/public/sairaFont/Saira-VariableFont_wdth\,wght.ttf");
+  src: url("/sairaFont/Saira-VariableFont_wdth\,wght.ttf");
 }
 
 ::-webkit-scrollbar {

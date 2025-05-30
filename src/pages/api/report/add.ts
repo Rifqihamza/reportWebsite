@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_recaptcha_token, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report } from "@prisma/client";
 import { AccountType, ReportType } from "../../../types/variables";
@@ -13,6 +13,7 @@ const ReportBodyType = z.object({
     report_type: z.nativeEnum(ReportType),
     follow_up: z.nativeEnum(AccountType).optional(),
     location: z.string(),
+    detail_location: z.string().optional(),
     report_date: z.string(),
     due_date: z.string().optional(),
     follow_up_name: z.string().optional(),
@@ -35,6 +36,7 @@ export async function POST({ request }: APIContext) {
 
     const parsed_result = ReportBodyType.safeParse(result);
     if (!parsed_result.success) {
+        console.log("Request data is not complete!");
         return create_response_status(400);
     }
 
@@ -49,7 +51,8 @@ export async function POST({ request }: APIContext) {
         report_date,
         due_date,
         follow_up_name,
-        image
+        image,
+        detail_location
     } = parsed_result.data;
 
     // Check if user is teacher if it includes due date and follow up data
@@ -57,20 +60,52 @@ export async function POST({ request }: APIContext) {
         const cookies = get_cookies_from_request(request);
         
         if(!cookies || !cookies["user_token"] || !(await verify_teacher_token(cookies["user_token"]))) {
+            console.log("User JWT Token is not valid!");
             return create_response_status(401);
         }
     }
 
+    
+    // Verify PIC name and Location
+    if(pic_name) {
+        const pic_data = await prisma.report_PIC.findUnique({
+            where: {
+                name: pic_name
+            }
+        });
+    
+        if(!pic_data) {
+            console.log("PIC Name is not valid!");
+            return create_response_status(400);
+        }
+    }
+    
+    if(location) {
+        const location_data = await prisma.report_Location.findUnique({
+            where: {
+                location: location
+            }
+        });
+    
+        if(!location_data) {
+            console.log("Location is not valid!");
+            return create_response_status(400);
+        }
+    }
+    
+    
     // Upload file if image exists
     let image_file_path = "";
 
     if (image) {
         console.log("Sending Image...");
         if (image.size > 5 * 1024 * 1024) {
+            console.log("Image size is too large!");
             return create_response_status(413);
         }
 
         if (!image.type.startsWith('image/')) {
+            console.log("Image file type is not recognized as an image!");
             return create_response_status(415);
         }
 
@@ -94,8 +129,7 @@ export async function POST({ request }: APIContext) {
         image_file_path = await response.text();
 
         if (!response.ok) {
-            console.error(`Server Token: ${server_token}`);
-            console.error(`ERROR : ${image_file_path}`);
+            console.error(`Error from PHP Server : ${image_file_path}`);
             return create_response_status(response.status);
         }
 
@@ -115,12 +149,21 @@ export async function POST({ request }: APIContext) {
                 message: message,
                 follow_up: follow_up,
                 follow_up_name: follow_up_name,
-                pic_name: pic_name,
+                responsible_pic: pic_name ? {
+                    connect: {
+                        name: pic_name
+                    },
+                } : undefined,
+                report_location: {
+                    connect: {
+                        location: location
+                    }
+                },
                 type: report_type,
-                location: location,
                 report_date: report_date,
                 due_date: due_date,
-                image: image_file_path
+                image: image_file_path,
+                detail_location: detail_location
             }
         })
     }

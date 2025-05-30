@@ -1,8 +1,8 @@
 import React, { useEffect, useState, Suspense } from "react";
 import strftime from "strftime";
-import Dropdown from "../../components/Dropdown/DropdownComponent";
 import type { ReportData } from "../../types/variables";
 import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
+import { Dropdown } from "primereact/dropdown";
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
@@ -37,10 +37,13 @@ type InsightDataType = {
     totalReportPerDay: {
         [key: string]: number
     },
+    totalReportPerPIC: {
+        [key: string]: number
+    },
     betterThanLastMonth: boolean|null,
     highestOccuranceCategory: ReportType|null,
     highestOccuranceDay: string,
-    notCompletedReportPreviousMonth: number
+    notCompletedReportPreviousMonth: number,
 };
 
 enum LineChartFilterOption {
@@ -68,6 +71,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             totalReportPerCategory: {},
             totalReportPerStatus: {},
             totalReportPerDay: {},
+            totalReportPerPIC: {},
             betterThanLastMonth: null,
             highestOccuranceCategory: null,
             highestOccuranceDay: "",
@@ -109,6 +113,16 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             if(data.status != ReportStatus.Complete && (report_date.getMonth() < currentMonth || report_date.getFullYear() < currentYear)) {
                 result.notCompletedReportPreviousMonth += 1;
             }
+
+            if(data.pic_name) {
+                if(Object.keys(result.totalReportPerPIC).includes(data.pic_name)) {
+                    result.totalReportPerPIC[data.pic_name] += 1;
+                }
+                else {
+                    result.totalReportPerPIC[data.pic_name] = 1;
+                }
+            }
+
             
             result.totalReportPerCategory[data.type]! += 1;
             result.totalReportPerStatus[data.status]! += 1;
@@ -116,15 +130,12 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         });
 
         result.betterThanLastMonth = result.totalReportThisMonth < result.totalReportLastMonth;
-        
         result.highestOccuranceCategory = string_to_reporttype(Object.entries(result.totalReportPerCategory).sort((category_a, category_b) => {
             return category_b[1] - category_a[1];
         })[0][0]) ?? null;
-
         result.highestOccuranceDay = Object.entries(result.totalReportPerDay).sort((day_a, day_b) => {
             return day_b[1] - day_a[1];
         })[0][0];
-
 
         setInsight(result);
     }, [reportData]);
@@ -245,17 +256,18 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     }, [reportData]);
 
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 mx-4'>
             {/* Line Chart */}
             <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
                 <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
                     <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
-                    <Dropdown
+                    {/* <Dropdown
                         id="chartFilter"
                         items={Object.values(LineChartFilterOption)}
                         selected={chartFilter}
                         setSelected={setChartFilter}
-                    />
+                    /> */}
+                    <Dropdown value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)}  />
                 </div>
                 <Suspense fallback={<>Loading..</>}>
                     <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
@@ -314,6 +326,14 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                                 <li>Selama ini, <b>Kategori {reporttype_to_string(insight.highestOccuranceCategory)} paling sering muncul</b> dibandingkan dengan kategori yang lain.</li>
                                 <li><b>Hari yang sering terjadi temuan adalah hari {insight.highestOccuranceDay}</b>.</li>
                                 <li>{insight.notCompletedReportPreviousMonth > 0 ? <>Ada <b>{insight.notCompletedReportPreviousMonth.toString() + " laporan temuan yang belum terselesaikan di bulan lalu. Itu sekitar " + (Math.round(insight.notCompletedReportPreviousMonth * 100 / (insight.totalReportAllTime - insight.totalReportThisMonth))).toString() + "% dari keseluruhan laporan!"}</b></> : <b>Semua temuan bulan lalu sudah terselesaikan semua!</b>}</li>
+                                {Object.keys(insight.totalReportPerPIC).length > 2 ? 
+                                <>
+                                    {(() => {
+                                        const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => b[1] - a[1]);
+                                        return <li>PIC dengan temuan paling sedikit adalah <b>{sortedReportPerPICEntries[0][0]}</b>. Sedangkan yang paling banyak adalah <b>{sortedReportPerPICEntries[sortedReportPerPICEntries.length - 1][0]}</b></li>
+                                    })()
+                                    }
+                                </>:""}
                             </ol>}
                         </div>
                     </div>

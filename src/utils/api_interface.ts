@@ -1,5 +1,5 @@
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
-import type { ReportData, User } from "../types/variables";
+import type { Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
 const base_url_endpoint: string = "http://localhost:4321";
@@ -8,7 +8,9 @@ const base_url_endpoint: string = "http://localhost:4321";
 export enum APIResultType {
     NoError = "No Error",
     Unauthorized = "Unauthorized",
-    InternalServerError = "Internal Server Error"
+    NeedCaptchaAuthentication = "Need Captcha Authentication",
+    InternalServerError = "Internal Server Error",
+    DatabaseError = "Database Error"
 }
 
 // Backend Functionalities
@@ -33,6 +35,9 @@ export async function userLogin(username: string, password: string): Promise<API
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError
+    }
     else {
         return APIResultType.Unauthorized;
     }
@@ -52,6 +57,7 @@ export async function addReport(
     follow_up?: AccountType,
     follow_up_name?: string,
     location?: string,
+    detail_location?: string,
     report_date?: string,
     due_date?: string,
     image?: File
@@ -66,6 +72,7 @@ export async function addReport(
     add_to_formdata(form_data, "follow_up", follow_up);
     add_to_formdata(form_data, "follow_up_name", follow_up_name);
     add_to_formdata(form_data, "location", location);
+    add_to_formdata(form_data, "detail_location", detail_location);
     add_to_formdata(form_data, "report_date", report_date);
     add_to_formdata(form_data, "due_date", due_date);
 
@@ -116,12 +123,29 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
-    else if (response.status == 511) {
-        window.location.reload();
-        return APIResultType.Unauthorized;
-    }
     else {
         return APIResultType.Unauthorized;
+    }
+}
+
+export async function checkAuthentication(): Promise<APIResultType> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    switch(response.status) {
+        case 511:
+            return APIResultType.NeedCaptchaAuthentication;
+        case 500:
+            return APIResultType.InternalServerError;
+        case 503:
+            return APIResultType.DatabaseError;
+        case 401:
+            return APIResultType.Unauthorized;
+        default:
+            return APIResultType.NoError;
     }
 }
 
@@ -229,6 +253,28 @@ export async function updateReport(report_id: string, report_data: ReportData) {
     else {
         return APIResultType.Unauthorized;
     }
+}
+
+export type formConfigurationResponse = {
+    pic_data: Report_PIC[],
+    location_data: Report_Location[]
+}
+
+export async function getFormConfiguration() {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/report_form/configuration/", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (response.ok) {
+        return (await response.json()) as formConfigurationResponse;
+    }
+    else if (response.status == 401) {
+        return APIResultType.Unauthorized;
+    }
+
+    return APIResultType.InternalServerError;
 }
 
 export function string_to_reporttype(data: string): ReportType | undefined {

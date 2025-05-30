@@ -1,14 +1,36 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
-import { addReport, APIResultType } from '../../utils/api_interface';
-import { AccountType, ReportType, string_to_accounttype, string_to_reporttype, type ReportData, type User } from "../../types/variables";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  addReport,
+  APIResultType,
+  getFormConfiguration,
+  type formConfigurationResponse,
+} from "../../utils/api_interface";
+import {
+  AccountType,
+  ReportType,
+  string_to_accounttype,
+  string_to_reporttype,
+  type ReportData,
+  type User,
+} from "../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
-import { Dropdown } from "primereact/dropdown";
+import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
 
-export default function ReportFormComponent({ setReportData, reportData, isAuthorized }: { setReportData: Dispatch<SetStateAction<ReportData[]>>, reportData: ReportData[], isAuthorized: boolean }) {
+export default function ReportFormComponent({
+  setReportData,
+  reportData,
+  isAuthorized,
+}: {
+  setReportData: Dispatch<SetStateAction<ReportData[]>>;
+  reportData: ReportData[];
+  isAuthorized: boolean;
+}) {
+  // Report Form State
   const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
+  const [detailLocation, setDetailLocation] = useState("");
   const [pic, setPic] = useState("");
   const [category, setCategory] = useState(null as ReportType | string | null);
   const [followUpType, setFollowUpType] = useState(null as AccountType | string | null);
@@ -16,45 +38,41 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
   const [reportDate, setReportDate] = useState("");
   const [reportDueDate, setReportDueDate] = useState("");
   const [image, setImage] = useState(null as File | null);
+
+  // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [picNames, setPicNames] = useState([] as string[]);
+  const [locationOptions, setLocationOptions] = useState([] as string[]);
+
   const toastProgress = useRef<Toast>(null);
   const toastSuccess = useRef<Toast>(null);
 
-  const dropdowns = [
-    {
-      id: "kategori",
-      label: "Kategori",
-      Icon: "pi pi-box",
-      items: [...Object.keys(ReportType).filter(x => x != "NoType" && x != "VR"), "5R"],
-    },
-    {
-      id: "followup",
-      label: "Follow Up",
-      Icon: "pi pi-file-check",
-      items: Object.keys(AccountType).filter(x => x != "NoType")
-    },
-  ];
+  const reset_form = () => {
+    setSubmittedBy("");
+    setPic("");
+    setFollowUpType(null);
+    setMessage("");
+    setCategory(null);
+    setLocation("");
+    setReportDate("");
+    setReportDueDate("");
+    setImage(null);
+  };
 
   const handle_submit = async () => {
+    console.log(location);
+
     if (!submitted_by || !message || !category || !location || !reportDate) {
       alert("Please complete the form.");
       return;
     }
 
-    setSubmittedBy("");
-    setPic("");
-    setFollowUpType(null);
-    setMessage("");
-    setCategory(null)
-    setLocation("");
-    setReportDate("");
-    setReportDueDate("");
-    setImage(null);
+    reset_form();
 
     setSubmitDisabled(true);
     toastSuccess.current!.clear();
     toastProgress.current!.show({
-      summary: "Sedang upload data..."
+      summary: "Sedang upload data...",
     });
 
     const result = await addReport(
@@ -65,8 +83,9 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
       string_to_accounttype(followUpType || undefined) || undefined,
       followUpName || undefined,
       location,
-      reportDate ? (new Date(reportDate)).toISOString() : undefined,
-      reportDueDate ? (new Date(reportDueDate)).toISOString() : undefined,
+      detailLocation,
+      reportDate ? new Date(reportDate).toISOString() : undefined,
+      reportDueDate ? new Date(reportDueDate).toISOString() : undefined,
       image || undefined
     );
 
@@ -75,30 +94,38 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
       toastSuccess.current!.show({
         summary: "Data berhasil direkam!",
         severity: "success",
-        life: 3000
+        life: 3000,
       });
-    }
-    else if (result == APIResultType.Unauthorized) {
+    } else if (result == APIResultType.Unauthorized) {
       alert("Unauthroized report detected!");
-    }
-    else if (result == APIResultType.InternalServerError) {
+    } else if (result == APIResultType.InternalServerError) {
       alert("There's an unexpected error occured in the server side!");
-    }
-    else {
+    } else {
       console.log(result);
     }
 
     toastProgress.current!.clear();
     setSubmitDisabled(false);
-  }
+  };
+
+  // Get the location and PIC data
+  useEffect(() => {
+    getFormConfiguration().then((result) => {
+      if ((result as formConfigurationResponse).pic_data !== undefined) {
+        result = result as formConfigurationResponse;
+        setPicNames(result.pic_data.map((value) => value.name));
+        setLocationOptions(result.location_data.map((value) => value.location));
+      } else if (result === APIResultType.Unauthorized) {
+        window.location.href = "/loginPage";
+      }
+    });
+  }, []);
 
   return (
     <>
       <form id="report-form">
-
         {/* Container Form input */}
-        <div className={(submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")}>
-
+        <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>
           {/* Detail Laporan */}
           <div className="flex flex-col w-full">
             <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
@@ -132,7 +159,7 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
                 className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
               >
                 <i className="pi pi-address-book" />
-                Nama
+                Nama Pelapor
               </label>
             </div>
             <input
@@ -147,50 +174,37 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
             />
           </div>
 
-          {/* Nama PIC - Hanya untuk role Guru/Vendor */}
-          {isAuthorized &&
-            (
-              <div className="flex flex-col gap-2 w-full">
-                <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
-                  <label
-                    htmlFor="pic"
-                    className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
-                  >
-                    <i className="pi pi-user" />
-                    PIC
-                  </label>
-                </div>
-                <input
-                  name="pic"
-                  id="pic"
-                  placeholder="Nama PIC..."
-                  className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
-                  onChange={(e) => setPic(e.target.value)}
-                  value={pic}
-                  maxLength={191}
-                />
-              </div>
-            )}
-
           {/* Lokasi Temuan */}
+          <div className="flex flex-row gap-2 w-full">
+            <ReportFormDropdown
+              placeholder={locationOptions.length == 0 ? "Loading Data Lokasi.." : "Pilih Lokasi"}
+              label="Kode Lokasi"
+              items={locationOptions}
+              onSelect={(value) => setLocation(value || "")}
+              selected={location}
+              disabled={locationOptions.length == 0}
+              icon="pi pi-map"
+            />
+          </div>
+          
+          {/* Detail Lokasi */}
           <div className="flex flex-col gap-2 w-full">
             <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
               <label
-                htmlFor="lokasi"
+                htmlFor="detail_location"
                 className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
               >
                 <i className="pi pi-map-marker" />
-                Lokasi
+                Keterangan Lokasi <span className="opacity-50">(opsional)</span>
               </label>
             </div>
             <input
-              type="text"
-              name="lokasi"
-              id="lokasi"
-              placeholder="Lokasi temuan"
-              className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
-              onChange={(e) => setLocation(e.target.value)}
-              value={location}
+              name="detail_location"
+              id="detail_location"
+              placeholder="Tambahkan detail lokasi..."
+              className=" outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
+              onChange={(e) => setDetailLocation(e.target.value)}
+              value={detailLocation}
               maxLength={191}
               required
             />
@@ -199,14 +213,16 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
           {/* Tanggal Temuan section */}
           <div className="flex flex-col gap-2 w-full">
             <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
-              <label htmlFor="tanggal"
+              <label
+                htmlFor="tanggal"
                 className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
               >
                 <i className="pi pi-calendar" />
                 Tanggal Temuan
               </label>
             </div>
-            <input type="datetime-local"
+            <input
+              type="datetime-local"
               placeholder="Tanggal temuan"
               className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
               onChange={(e) => setReportDate(e.target.value)}
@@ -217,62 +233,152 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
           {/* End Tanggal Temuan */}
 
           {/* Due Date Section - Hanya untuk role Guru/Vendor */}
-          {isAuthorized &&
-            (
-              <div className="flex flex-col gap-2 w-full">
-                <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
-                  <label htmlFor="dueDate"
-                    className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
-                  >
-                    <i className="pi pi-clock" />
-                    Tenggat Waktu
-                  </label>
-                </div>
-                <input type="datetime-local"
-                  placeholder="Tenggat Waktu"
-                  className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
-                  onChange={(e) => setReportDueDate(e.target.value)}
-                  value={reportDueDate} />
+          {isAuthorized && (
+            <div className="flex flex-col gap-2 w-full">
+              <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+                <label
+                  htmlFor="dueDate"
+                  className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
+                >
+                  <i className="pi pi-clock" />
+                  Tenggat Waktu
+                  <span className="opacity-50">(opsional)</span>
+                </label>
               </div>
-            )}
+              <input
+                type="datetime-local"
+                placeholder="Tenggat Waktu"
+                className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
+                onChange={(e) => setReportDueDate(e.target.value)}
+                value={reportDueDate}
+              />
+            </div>
+          )}
           {/* End Due Date */}
 
+          {/* Nama PIC - Hanya untuk role Guru/Vendor */}
+          {isAuthorized && (
+            <ReportFormDropdown
+              optional
+              placeholder={picNames.length === 0 ? "Loading PIC Data.." : "Pilih PIC"}
+              label="Nama PIC"
+              items={picNames}
+              selected={pic}
+              onSelect={(value) => {
+                setPic(value || "");
+              }}
+              icon="pi pi-user"
+              disabled={picNames.length === 0}
+            />
+          )}
+          {/* End Nama PIC */}
+
+          {/* Nama Follow Up */}
+          {isAuthorized && (
+            <div className="flex flex-col gap-2 w-full">
+              <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+                <label
+                  htmlFor="lokasi"
+                  className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
+                >
+                  <i className="pi pi-map-marker" />
+                  Nama Follow Up <span className="opacity-50">(opsional)</span>
+                </label>
+              </div>
+              <input
+                type="text"
+                name="followup_name"
+                id="followup_name"
+                placeholder="Nama follow up"
+                className="outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
+                onChange={(e) => setFollowUpName(e.target.value)}
+                value={followUpName}
+                maxLength={191}
+                required
+              />
+            </div>
+          )}
+          {/* End Nama Follow Up */}
+
           {/* Dropdowns Section */}
-          <div className="flex flex-col md:flex-row gap-6 w-full">
-            {dropdowns.map((d, index) => {
-              // Hanya tampilkan dropdown follow up untuk role Guru/Vendor
-              if (d.id === "followup" && !isAuthorized) {
-                return null;
-              }
-
-              let selected = category;
-              let setSelected = setCategory;
-
-              if (d.id == "followup") {
-                selected = followUpType;
-                setSelected = setFollowUpType;
-              }
-
-              return (
-                <div className="bg-[#93BFCF] rounded-2xl translate-y-[1.5rem] w-full" key={index}>
-                  <div className="flex flex-row justify-between items-center px-4 py-3">
-                    <div className="md:text-lg font-semibold text-xs text-white flex flex-row gap-2 items-center">
-                      <i className={d.Icon}></i>
-                      <h1>{d.label}</h1>
-                    </div>
-                    <button type="button" className="cursor-pointer hover:text-[#7FA1C3] disabled:opacity-0 disabled:pointer-events-none" disabled={selected == null} onClick={() => setSelected(null)}>Clear</button>
-                  </div>
-
-                  <div className="outline-none px-6 py-1 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]">
-                    <Dropdown value={selected} onChange={(e) => setSelected(e.value)} options={d.items} optionLabel="name" placeholder={d.label} className="!rounded-2xl !bg-amber-50 !border-none w-full !focus:outline-none" />
-                  </div>
-
-                </div>
-              );
-            })}
-            {/* End Dropdowns */}
+          <div className="flex flex-col md:flex-row gap-6">
+            <ReportFormDropdown
+              label="Pilih Kategori"
+              placeholder="Kategori"
+              items={[...Object.keys(ReportType).filter((x) => x != "NoType" && x != "VR"), "5R"]}
+              onSelect={(value) => {
+                setCategory(value);
+              }}
+              selected={category}
+              icon={"pi pi-box"}
+            />
+            <ReportFormDropdown
+              label="Follow Up"
+              placeholder="Follow Up"
+              optional
+              items={Object.keys(AccountType).filter((x) => x != "NoType")}
+              onSelect={(value) => {
+                setFollowUpType(value);
+              }}
+              selected={followUpType}
+              icon={"pi pi-file-check"}
+            />
           </div>
+          {/* End Dropdowns */}
+        </div>
+        {/* End Container Form Input */}
 
+        {/* File Image Upload */}
+        <div
+          className={
+            "space-y-2 mt-10" +
+            (submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")
+          }
+        >
+          <label
+            htmlFor="foto"
+            className="md:text-lg font-semibold text-xs text-white ml-2 flex flex-row gap-2 items-center"
+          >
+            <i className="pi pi-file" />
+            Foto Bukti <span className="opacity-50">(opsional)</span>
+          </label>
+          <div className="flex items-center justify-center w-full">
+            <label
+              htmlFor="foto"
+              className="flex flex-col items-center justify-center w-full h-32 border-2 border-[#7FA1C3] hover:border-white border-dashed rounded-xl cursor-pointer bg-amber-50 hover:bg-[#93BFCF] duration-400"
+            >
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <i className="pi pi-cloud text-black" />
+                <p
+                  className={`mb-1 text-sm text-${image ? "black" : "black"}`}
+                  id="file-name-display"
+                >
+                  {image ? image.name : "Klik untuk upload foto"}
+                </p>
+                <p className={`text-xs text-${image ? "black" : "black"}`}>
+                  {image
+                    ? `${image.type} (${
+                        image.size.toString().length > 6
+                          ? Math.round(image.size / 10000) / 100 + "MB"
+                          : Math.round(image.size / 10) / 100 + "KB"
+                      })`
+                    : "PNG, JPG atau JPEG (Max. 2MB)"}
+                </p>
+              </div>
+              <input
+                id="foto"
+                name="foto"
+                type="file"
+                className="hidden"
+                accept="image/*"
+                onChange={(e) => {
+                  e.target.files ? setImage(e.target.files[0]) : "";
+                }}
+              />
+            </label>
+          </div>
+        </div>
+        {/* End File Image Upload */}
           {/* File Image Upload */}
           <div className="flex flex-col gap-2 w-full mt-6">
             <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
@@ -323,31 +429,35 @@ export default function ReportFormComponent({ setReportData, reportData, isAutho
             )}
           </div>
           {/* End Submit Button */}
-        </div>
-        {/* End Container Form Input */}
+        {/* End Submit Button */}
       </form >
 
       {/* Message Toast */}
       <Toast
         ref={toastProgress}
         content={({ message }) => (
-          <section className="flex p-3 gap-3 w-full bg-[#fffa] backdrop-blur-xl shadow-2 fadeindown" style={{ borderRadius: '10px' }}>
+          <section
+            className="flex p-3 gap-3 w-full bg-[#fffa] backdrop-blur-xl shadow-2 fadeindown"
+            style={{ borderRadius: "10px" }}
+          >
             <i className="pi pi-cloud-upload text-primary-500 text-2xl"></i>
             <div className="flex flex-col gap-3 w-full">
               <p className="m-0 font-semibold text-base text-[#7FA1C3]">{message.summary}</p>
               <p className="m-0 text-base text-700">{message.detail}</p>
               <div className="flex flex-col gap-2">
-                <ProgressBar mode="indeterminate" showValue={true} style={{ height: "6px" }}></ProgressBar>
+                <ProgressBar
+                  mode="indeterminate"
+                  showValue={true}
+                  style={{ height: "6px" }}
+                ></ProgressBar>
                 <label className="text-right text-xs text-[#7FA1C3]">uploading...</label>
               </div>
             </div>
           </section>
-        )
-        }
+        )}
       ></Toast>
       <Toast ref={toastSuccess} />
       {/* End Message Toast */}
-
     </>
   );
 }

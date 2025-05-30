@@ -41,10 +41,11 @@ export type ReportData = {
     submitted_by: string,
     message: string,
     type: ReportType,
-    follow_up: AccountType,
+    follow_up?: AccountType,
     follow_up_name?: AccountType,
     status: ReportStatus,
     location: string,
+    detail_location: string,
     pic_name: string,
     created_at: string,
     report_date: string,
@@ -58,6 +59,18 @@ export type User = {
     username: string,
     password: string,
     role: AccountType,
+    created_at: string
+}
+
+export type Report_PIC = {
+    id: string,
+    name: string,
+    created_at: string
+}
+
+export type Report_Location = {
+    id: string,
+    location: string,
     created_at: string
 }
 
