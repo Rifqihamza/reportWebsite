@@ -1,17 +1,13 @@
-import OverlayBlockPages from "../../components/Overlay/BlockOverlayComponent";
 import NavbarComponents from "../../components/Navbar/NavbarComponent";
 
 import { AccountType, type ReportData, type User } from "../../types/variables";
 import { getReport, getUser, userLogout } from "../../utils/api_interface";
-import React, { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
 
 import ReportForm from "./_FormReportPage";
-import LoadingAnimation from "../../components/Loading/LoadingAnimation";
 import FooterComponent from "../../components/Footer/FooterComponent";
-const TableReportPages = React.lazy(() => import("./_TableReportPage"));
-const ApexChart = React.lazy(() => import("./_ChartPage"));
 
 export default function MainPage() {
   const [activeTab, setActiveTab] = useState(0);
@@ -49,40 +45,13 @@ export default function MainPage() {
       <PrimeReactProvider>
         {/* Navbar */}
         < NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
-        <div className="max-w-7xl mx-auto p-4 m-4 relative rounded-4xl w-full  overflow-y-scroll">
+        <div className="max-w-7xl mx-auto p-4 m-4 relative rounded-4xl w-full">
           {/* Tab 0: Form, bebas diakses */}
           {activeTab === 0 && (<>
             <ReportForm reportData={reportData} setReportData={setReportData} isAuthorized={isAuthorized ? true : false} />
           </>
           )}
-
-          {/* Tab 1: Table */}
-          {activeTab === 1 && (
-            isAuthorized ? (
-              <Suspense fallback={<LoadingAnimation />}>
-                <TableReportPages
-                  userData={userData}
-                  reportData={reportData}
-                  setReportData={setReportData}
-                />
-              </Suspense>
-            ) : (
-              <OverlayBlockPages />
-            )
-          )}
-
-          {/* Tab 2: Chart */}
-          {activeTab === 2 && (
-            isAuthorized ? (
-              <Suspense fallback={<LoadingAnimation />}>
-                <ApexChart reportData={reportData} />
-              </Suspense>
-            ) : (
-              <OverlayBlockPages />
-            )
-          )}
         </div>
-
         <FooterComponent />
       </PrimeReactProvider>
     </>

@@ -1,20 +1,19 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, } from "react";
 import { Toast } from "primereact/toast";
-import type { ToastMessage } from "primereact/toast";
-import { type ReportData, type ReportType, type ReportStatus, type User, AccountType } from "../../types/variables";
-import { APIResultType, deleteReport } from "../../utils/api_interface";
+import { type ReportData, type ReportType, type ReportStatus, type User, } from "../../../types/variables";
+
 import {
   useReportFilters,
   usePagination,
   useReportDetail,
   useReportDeletion,
-} from "../../hooks/useReportHooks";
+} from "../../../hooks/useReportHooks";
 
 import ReportDesktopTable from "./ReportDesktopTable";
 import ReportMobileCard from "./ReportMobileCard";
 import ReportDetailModal from "./ReportDetailModal";
 import ReportPagination from "./ReportPagination";
-import DialogComponent from "../DialogPopUp/DialogComponent";
+import DialogComponent from "../../DialogPopUp/DialogComponent";
 
 const reportsPerPage = 7;
 

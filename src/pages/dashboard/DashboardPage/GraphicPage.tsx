@@ -1,12 +1,12 @@
 import React, { useEffect, useState, Suspense } from "react";
 import strftime from "strftime";
-import type { ReportData } from "../../types/variables";
-import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
+import type { ReportData } from "../../../types/variables";
+import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../../types/variables';
 import { Dropdown } from "primereact/dropdown";
 
-const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
-const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
-const PercenComp = React.lazy(() => import("../../components/PercenContainer/PercenContComponent"));
+const LineChart = React.lazy(() => import("../../../components/DashboardComponents/ChartLine/LineChartComponent"));
+const PieChart = React.lazy(() => import("../../../components/DashboardComponents/ChartPie/PieChartComponent"));
+const PercenComp = React.lazy(() => import("../../../components/PercenContainer/PercenContComponent"));
 
 const listOfMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
 const listOfNumOfDates = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
@@ -40,8 +40,8 @@ type InsightDataType = {
     totalReportPerPIC: {
         [key: string]: number
     },
-    betterThanLastMonth: boolean|null,
-    highestOccuranceCategory: ReportType|null,
+    betterThanLastMonth: boolean | null,
+    highestOccuranceCategory: ReportType | null,
     highestOccuranceDay: string,
     notCompletedReportPreviousMonth: number,
 };
@@ -53,7 +53,7 @@ enum LineChartFilterOption {
     Today = "Today"
 }
 
-const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
+export default function GraphicPage({ reportData }: { reportData: ReportData[] }) {
     const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
     const [pieCategory, setPieCategory] = useState<CategoryType[]>([]);
     const [pieStatus, setPieStatus] = useState<CategoryType[]>([]);
@@ -78,7 +78,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
             notCompletedReportPreviousMonth: 0
         };
 
-        
+
         // Preparing for the result
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth();
@@ -87,7 +87,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         Object.values(ReportType).forEach(type => {
             result.totalReportPerCategory[type] = 0;
         });
-        
+
         Object.values(ReportStatus).forEach(status => {
             result.totalReportPerStatus[status] = 0;
         });
@@ -95,27 +95,27 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
         listOfHari.forEach(day => {
             result.totalReportPerDay[day] = 0;
         });
-        
-        
+
+
         // Calculate the result
         reportData.forEach(data => {
             const report_date = new Date(data.created_at);
-            
+
             // Report happened today
-            if(report_date.getMonth() == currentMonth && report_date.getFullYear() == currentYear) {
+            if (report_date.getMonth() == currentMonth && report_date.getFullYear() == currentYear) {
                 result.totalReportThisMonth += 1;
             }
 
-            if((currentMonth > 1 && report_date.getMonth() == (currentMonth - 1)) || (currentMonth <= 1 && report_date.getFullYear() == currentYear - 1 && report_date.getDate() == 12)) {
+            if ((currentMonth > 1 && report_date.getMonth() == (currentMonth - 1)) || (currentMonth <= 1 && report_date.getFullYear() == currentYear - 1 && report_date.getDate() == 12)) {
                 result.totalReportLastMonth += 1;
             }
 
-            if(data.status != ReportStatus.Complete && (report_date.getMonth() < currentMonth || report_date.getFullYear() < currentYear)) {
+            if (data.status != ReportStatus.Complete && (report_date.getMonth() < currentMonth || report_date.getFullYear() < currentYear)) {
                 result.notCompletedReportPreviousMonth += 1;
             }
 
-            if(data.pic_name) {
-                if(Object.keys(result.totalReportPerPIC).includes(data.pic_name)) {
+            if (data.pic_name) {
+                if (Object.keys(result.totalReportPerPIC).includes(data.pic_name)) {
                     result.totalReportPerPIC[data.pic_name] += 1;
                 }
                 else {
@@ -123,10 +123,10 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 }
             }
 
-            
+
             result.totalReportPerCategory[data.type]! += 1;
             result.totalReportPerStatus[data.status]! += 1;
-            result.totalReportPerDay[listOfHari[new Date(data.created_at).getDay()-1]] += 1;
+            result.totalReportPerDay[listOfHari[new Date(data.created_at).getDay() - 1]] += 1;
         });
 
         result.betterThanLastMonth = result.totalReportThisMonth < result.totalReportLastMonth;
@@ -139,7 +139,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
 
         setInsight(result);
     }, [reportData]);
-    
+
     useEffect(() => {
         const result: LineChartValueType[] = [];
         const currentDate = new Date();
@@ -256,18 +256,12 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     }, [reportData]);
 
     return (
-        <div className='flex flex-col gap-4 mx-4'>
+        <div className='flex flex-col gap-4 '>
             {/* Line Chart */}
-            <div className="w-full px-4 py-2 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
+            <div className="w-full px-4 py-2 rounded-2xl bg-black/10 backdrop-blur-md">
                 <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
-                    <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
-                    {/* <Dropdown
-                        id="chartFilter"
-                        items={Object.values(LineChartFilterOption)}
-                        selected={chartFilter}
-                        setSelected={setChartFilter}
-                    /> */}
-                    <Dropdown value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)}  />
+                    <h1 className='font-bold text-center text-xl text-white'>Grafik Laporan Temuan</h1>
+                    <Dropdown className="!bg-transparent [&_.p-dropdown-label]:text-white!" value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)} />
                 </div>
                 <Suspense fallback={<>Loading..</>}>
                     <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
@@ -279,16 +273,16 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                 {/* Kiri: Pie Chart Kategori dan Status */}
                 <div className="flex flex-col gap-4">
                     {/* Pie Chart Kategori */}
-                    <div className="w-full h-full px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100 flex flex-col items-center">
-                        <h1 className='font-bold'>Kategori</h1>
+                    <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-black/10 backdrop-blur-md">
+                        <h1 className='font-bold uppercase tracking-wider text-white'>Kategori</h1>
                         <Suspense fallback={<>Loading..</>}>
                             <PieChart reports={pieCategory} setReportType={setChartCategoryFilter} reportType={chartCategoryFilter} />
                         </Suspense>
                     </div>
 
                     {/* Pie Chart Status */}
-                    <div className="w-full px-6 py-4 text-center rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100 flex flex-col items-center">
-                        <h1 className='font-bold'>Status</h1>
+                    <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-black/10 backdrop-blur-md">
+                        <h1 className='font-bold uppercase tracking-wider text-white'>Status</h1>
                         <Suspense fallback={<>Loading..</>}>
                             <PieChart reports={pieStatus} />
                         </Suspense>
@@ -316,24 +310,24 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     </div>
 
                     {/* Container Baru di bawahnya */}
-                    <div className="w-full h-full px-4 py-6 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
-                        <h2 className="font-semibold text-lg mb-2">Insights</h2>
+                    <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-black/10 backdrop-blur-md">
+                        <h2 className="text-white font-semibold uppercase tracking-wider text-lg mb-2">Insights</h2>
                         {/* Konten di sini */}
-                        <div className="text-gray-600">{!insight ? "Insights masih dalam pengerjaan" : 
+                        <div className="text-white">{!insight ? "Insights masih dalam pengerjaan" :
                             <ol className="list-decimal m-4">
                                 <li>Terdapat <b>{insight.totalReportAllTime} temuan selama ini</b> dan <b>{insight.totalReportThisMonth} diantara nya terjadi pada bulan ini.</b></li>
                                 <li>Grafik menunjukkan bahwa <b>laporan temuan bulan ini {insight.betterThanLastMonth ? "lebih sedikit" : "lebih banyak"} dari bulan sebelumnya.</b></li>
                                 <li>Selama ini, <b>Kategori {reporttype_to_string(insight.highestOccuranceCategory)} paling sering muncul</b> dibandingkan dengan kategori yang lain.</li>
                                 <li><b>Hari yang sering terjadi temuan adalah hari {insight.highestOccuranceDay}</b>.</li>
                                 <li>{insight.notCompletedReportPreviousMonth > 0 ? <>Ada <b>{insight.notCompletedReportPreviousMonth.toString() + " laporan temuan yang belum terselesaikan di bulan lalu. Itu sekitar " + (Math.round(insight.notCompletedReportPreviousMonth * 100 / (insight.totalReportAllTime - insight.totalReportThisMonth))).toString() + "% dari keseluruhan laporan!"}</b></> : <b>Semua temuan bulan lalu sudah terselesaikan semua!</b>}</li>
-                                {Object.keys(insight.totalReportPerPIC).length > 2 ? 
-                                <>
-                                    {(() => {
-                                        const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => b[1] - a[1]);
-                                        return <li>PIC dengan temuan paling sedikit adalah <b>{sortedReportPerPICEntries[0][0]}</b>. Sedangkan yang paling banyak adalah <b>{sortedReportPerPICEntries[sortedReportPerPICEntries.length - 1][0]}</b></li>
-                                    })()
-                                    }
-                                </>:""}
+                                {Object.keys(insight.totalReportPerPIC).length > 2 ?
+                                    <>
+                                        {(() => {
+                                            const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => b[1] - a[1]);
+                                            return <li>PIC dengan temuan paling sedikit adalah <b>{sortedReportPerPICEntries[0][0]}</b>. Sedangkan yang paling banyak adalah <b>{sortedReportPerPICEntries[sortedReportPerPICEntries.length - 1][0]}</b></li>
+                                        })()
+                                        }
+                                    </> : ""}
                             </ol>}
                         </div>
                     </div>
@@ -344,4 +338,3 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
     );
 };
 
-export default GraphicChart;

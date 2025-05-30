@@ -39,7 +39,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
             type: 'line' as const,
         },
         theme: {
-            palette: 'palette8'
+            palette: 'palette1'
         },
         colors: colors,
         dataLabels: {
@@ -52,7 +52,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
             max: reports.length > 0 ? ((reports.length > 50 ? 5 : 2) * Math.ceil((reports.sort((a, b) => b.value - a.value)[0].value / (reports.length > 50 ? 5 : 2)) + 0.1)) : 0
         },
         markers: {
-            size: 3,
+            size: 4,
         },
         legend: {
             position: 'bottom' as const,
@@ -63,7 +63,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
     };
 
     return (
-        <ReactApexChart options={options} series={series} type="line" height={300} />
+        <ReactApexChart options={options} series={series} type="line" height={400} />
     );
 };
 

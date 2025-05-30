@@ -1,6 +1,6 @@
 import React from 'react';
-import { reporttype_to_string, type ReportData } from '../../types/variables';
-import { useFormatDate, statusColors } from '../../hooks/useReportHooks';
+import { reporttype_to_string, type ReportData } from '../../../types/variables';
+import { useFormatDate, statusColors } from '../../../hooks/useReportHooks';
 
 interface ReportDesktopTableProps {
     reports: ReportData[];
