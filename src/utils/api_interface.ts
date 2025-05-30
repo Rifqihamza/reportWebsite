@@ -2,7 +2,7 @@ import { AccountType, ReportType, ReportStatus } from '../types/variables';
 import type { Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
-const base_url_endpoint: string = "https://webreport.smkind-mm2100.sch.id";
+const base_url_endpoint: string = "";
 
 // Useful enum!
 export enum APIResultType {
