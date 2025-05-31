@@ -331,7 +331,7 @@ const GraphicChart = () => {
                                 {Object.keys(insight.totalReportPerPIC).length > 2 ? 
                                 <>
                                     {(() => {
-                                        const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => b[1] - a[1]);
+                                        const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => a[1] - b[1]);
                                         return <li>PIC dengan temuan paling sedikit adalah <b>{sortedReportPerPICEntries[0][0]}</b>. Sedangkan yang paling banyak adalah <b>{sortedReportPerPICEntries[sortedReportPerPICEntries.length - 1][0]}</b></li>
                                     })()
                                     }
