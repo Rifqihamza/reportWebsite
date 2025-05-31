@@ -1,8 +1,8 @@
 import OverlayBlockPages from "../../components/Overlay/BlockOverlayComponent";
 import NavbarComponents from "../../components/Navbar/NavbarComponent";
 
-import { AccountType, type ReportData, type User } from "../../types/variables";
-import { getReport, getUser, userLogout } from "../../utils/api_interface";
+import { AccountType } from "../../types/variables";
+import { getReport, getUser } from "../../utils/api_interface";
 import React, { Suspense, useEffect, useState } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
@@ -10,22 +10,17 @@ import { PrimeReactProvider } from "primereact/api";
 import ReportForm from "./_FormReportPage";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
 import FooterComponent from "../../components/Footer/FooterComponent";
+import { useUserDataHook } from "../../hooks/shared/useUserData";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
+import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
 const TableReportPages = React.lazy(() => import("./_TableReportPage"));
 const ApexChart = React.lazy(() => import("./_ChartPage"));
 
 export default function MainPage() {
   const [activeTab, setActiveTab] = useState(0);
-  const [userData, setUserData] = useState<User | null>(null);
-  const [reportData, setReportData] = useState<ReportData[]>([]);
-
-  async function handle_logout() {
-    if (userData && !(await userLogout())) {
-      alert("Terjadi error saat ingin logout!");
-      return;
-    }
-
-    window.location.href = "/loginPage";
-  }
+  const { userData, setUserData } = useUserDataHook();
+  const { setReportData } = useReportDataHook();
+  const { isAuthorized, setIsAuthorized } = useIsAuthorizedHook();
 
   useEffect(() => {
     getUser().then(user_data => {
@@ -41,43 +36,45 @@ export default function MainPage() {
     });
   }, []);
 
-  const isAuthorized =
-    userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor);
+  useEffect(() => {
+    if(userData?.role === AccountType.Guru || userData?.role === AccountType.Vendor) {
+      setActiveTab(1);
+    }
+
+    setIsAuthorized(userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor));
+  }, [userData]);
+
 
   return (
     <>
       <PrimeReactProvider>
-
         {/* Navbar */}
-        <NavbarComponents handle_logout={handle_logout} userData={userData} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <NavbarComponents activeTab={activeTab} setActiveTab={setActiveTab} />
 
+        {/* Contents */}
         <div className="max-w-7xl mx-auto p-4 m-4 relative rounded-4xl w-full  overflow-y-scroll">
-          {/* Tab 0: Form, bebas diakses */}
+          {/* Contents of Tab 0: Form, bebas diakses */}
           {activeTab === 0 && (<>
-            <ReportForm reportData={reportData} setReportData={setReportData} isAuthorized={isAuthorized ? true : false} />
+            <ReportForm />
           </>
           )}
 
-          {/* Tab 1: Table */}
+          {/* Contents of Tab 1: Table */}
           {activeTab === 1 && (
             isAuthorized ? (
               <Suspense fallback={<LoadingAnimation />}>
-                <TableReportPages
-                  userData={userData}
-                  reportData={reportData}
-                  setReportData={setReportData}
-                />
+                <TableReportPages />
               </Suspense>
             ) : (
               <OverlayBlockPages />
             )
           )}
 
-          {/* Tab 2: Chart */}
+          {/* Contents of Tab 2: Chart */}
           {activeTab === 2 && (
             isAuthorized ? (
               <Suspense fallback={<LoadingAnimation />}>
-                <ApexChart reportData={reportData} />
+                <ApexChart />
               </Suspense>
             ) : (
               <OverlayBlockPages />

@@ -1,11 +1,14 @@
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
 import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData, type User, } from '../../types/variables';
 import { InputTextarea } from "primereact/inputtextarea";
 import { APIResultType, updateReport } from '../../utils/api_interface';
+import { useReportDataHook } from "../../hooks/shared/useReportData";
+import { useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
+import { useShowMessageHook } from "../../hooks/shared/useShowMessage";
+import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
 
 const reportTypeOptions = [
     ...Object.keys(ReportType)
@@ -27,28 +30,11 @@ const accountTypeOptions = [
     // Add more options based on your AccountType definition
 ];
 
-export default function DialogComponent({
-    reportData,
-    detailId,
-    visible,
-    setVisible,
-    setReportData,
-    onSuccess,
-    onUnauthorized,
-    onError
-}: {
-    userData: User | null,
-    reportData: ReportData[],
-    setReportData: React.Dispatch<React.SetStateAction<ReportData[]>>,
-    dateFilter: (Date | null)[],
-    searchKeyword: string,
-    detailId: string | number | null,
-    visible: boolean,
-    setVisible: (val: boolean) => void,
-    onSuccess: () => void,
-    onUnauthorized: () => void,
-    onError: () => void,
-}) {
+export default function ReportEditModal() {
+    const { reportData, setReportData } = useReportDataHook();
+    const { detailId } = useReportDetailHook();
+    const { picNamesOptions, locationOptions } = useReportConfigHook();
+    
     const report = reportData.find(value => value.id === detailId) || null;
 
     const [formState, setFormState] = useState({
@@ -62,10 +48,12 @@ export default function DialogComponent({
         due_date: "",
         follow_up_name: "",
         status: "" as ReportStatus,
-
     });
     const [disableSave, setDisableSave] = useState(false);
     const [isChange, setIsChange] = useState(false);
+
+    const { editVisible, setEditVisible } = useReportEditHook();
+    const { showMessage } = useShowMessageHook();
 
     useEffect(() => {
         if (report) {
@@ -115,7 +103,7 @@ export default function DialogComponent({
             } as ReportData); 
         }
         catch {
-            onError();
+            showMessage("Success", "success", "Successfully update data!");
             return;
         }
         finally {
@@ -130,14 +118,14 @@ export default function DialogComponent({
             setReportData(updated);
 
             // Close the dialog component and trigger success function
-            setVisible(false)
-            onSuccess();
+            setEditVisible(false)
+            showMessage("Success", "success", "Successfully update data!");
         }
         else if (result === APIResultType.Unauthorized) {
-            onUnauthorized();
+            showMessage("Unauthorized", "error", "Unauthorized attempt detected!");
         }
         else if (result === APIResultType.InternalServerError) {
-            onError();
+            showMessage("Error", "error", "There's an error!");
         }
     };
 
@@ -145,12 +133,12 @@ export default function DialogComponent({
         <Dialog
             header="Edit Laporan"
             style={{ width: '80vw' }}
-            visible={visible}
+            visible={editVisible}
             draggable={false}
-            onHide={() => setVisible(false)}
+            onHide={() => setEditVisible(false)}
             footer={
                 <div className="flex justify-end gap-2">
-                    <button onClick={() => setVisible(false)} className="text-gray-800 hover:text-gray-200">Batal</button>
+                    <button onClick={() => setEditVisible(false)} className="text-gray-800 hover:text-gray-200">Batal</button>
                     <button onClick={handleSave} disabled={disableSave || !isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"><span className={disableSave ? "" : "hidden"}><i className="pi pi-spinner pi-spin"></i></span> Simpan</button>
                 </div>
             }
@@ -158,8 +146,19 @@ export default function DialogComponent({
             <div className="flex flex-col md:flex-row gap-6 items-start w-full">
                 <div className="flex flex-col space-y-3.5 w-full">
                     <InputField label="Pelapor" value={formState.submitted_by} onChange={(e) => updateField("submitted_by", e.target.value)} />
-                    <InputField label="PIC" value={formState.pic_name} onChange={(e) => updateField("pic_name", e.target.value)} />
-                    <InputField label="Lokasi" value={formState.location} onChange={(e) => updateField("location", e.target.value)} />
+                    <DropdownField
+                        label="PIC"
+                        options={picNamesOptions.map((val) => ({ label: val, value: val }))}
+                        value={formState.pic_name}
+                        onChange={(e) => updateField("pic_name", e.target.value)}
+                    />
+                    <DropdownField
+                        filter
+                        label="Lokasi"
+                        options={locationOptions.map((val) => ({ label: val, value: val }))}
+                        value={formState.location}
+                        onChange={(e) => updateField("location", e.value)}
+                    />
                 </div>
                 <div className="flex flex-col gap-2 w-full">
                     <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
@@ -215,16 +214,17 @@ function InputField({ label, value, onChange }: { label: string; value: string; 
 }
 
 // Komponen dropdown
-function DropdownField({ label, options, value, onChange }: {
+function DropdownField({ label, options, value, onChange, filter }: {
     label: string;
     options: { label: string, value: string }[];
     value: string | AccountType; // Allow both string and AccountType
     onChange: (e: any) => void;
+    filter?: boolean
 }) {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Dropdown value={value} options={options} onChange={onChange} className="w-full" placeholder={`Pilih ${label}`} />
+            <Dropdown filter value={value} options={options} onChange={onChange} className="w-full" placeholder={`Pilih ${label}`} />
         </div>
     );
 }

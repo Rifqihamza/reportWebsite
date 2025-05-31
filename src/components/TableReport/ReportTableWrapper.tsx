@@ -1,19 +1,18 @@
 import { Calendar } from "primereact/calendar";
 import { FloatLabel } from "primereact/floatlabel";
-import TieredDropDown from "../../components/TieredMenu/TieredMenuComponent";
-import React, { Suspense, useState, type Dispatch, type SetStateAction } from "react";
+import FilterSelect from "../SelectFilter/SelectFilterComponent";
+import React, { Suspense } from "react";
 import LoadingAnimation from "../Loading/LoadingAnimation";
-import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
+import { ReportHookEffect, useReportFilterHook } from "../../hooks/useReportHook";
 
 const ReportListComponent = React.lazy(() => import("../../components/TableReport/ReportTableComponent"));
 
 
-export default function ReportTableWrapper({ userData, reportData, setReportData }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
-    const [selectedFilter, setSelectedFilter] = useState(null as null | ReportType | ReportStatus);
-    const [dateFilter, setDateFilter] = useState([null, null] as (Date | null)[]);
-    const [searchKeyword, setSearchKeyword] = useState("");
+export default function ReportTableWrapper() {    
+    const { setSearchKeyword, dateFilter, setDateFilter, selectedFilter, setSelectedFilter } = useReportFilterHook();
 
     return <>
+        <ReportHookEffect />
         <div className="flex md:flex-row flex-col items-center gap-2">
             {/* Search Bar */}
             <div className="relative w-full flex items-center gap-4">
@@ -36,12 +35,12 @@ export default function ReportTableWrapper({ userData, reportData, setReportData
                     <Calendar inputId="until-date" value={dateFilter ? dateFilter[1] : null} onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() == dateFilter[1]?.getTime() ? null : e.value ?? null])} readOnlyInput hideOnRangeSelection />
                     <label htmlFor="until-date" className="whitespace-nowrap">Sampai tanggal</label>
                 </FloatLabel>
-                <TieredDropDown label="Filter" selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
+                <FilterSelect label="Filter" selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             </div>
         </div>
 
         <Suspense fallback={<LoadingAnimation />}>
-            <ReportListComponent userData={userData} reportData={reportData} setReportData={setReportData} selectedFilter={selectedFilter} dateFilter={dateFilter ?? []} searchKeyword={searchKeyword} />
+            <ReportListComponent />
         </Suspense>
     </>
 }

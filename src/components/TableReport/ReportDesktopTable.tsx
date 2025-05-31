@@ -1,14 +1,10 @@
-import React from 'react';
-import { reporttype_to_string, type ReportData } from '../../types/variables';
-import { useFormatDate, statusColors } from '../../hooks/useReportHooks';
+import { reporttype_to_string } from '../../types/variables';
+import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../hooks/useReportHook";
+import { formatDate } from "../../utils/other";
 
-interface ReportDesktopTableProps {
-    reports: ReportData[];
-    onDetailClick: (id: string) => void;
-}
-
-const ReportDesktopTable: React.FC<ReportDesktopTableProps> = ({ reports, onDetailClick }) => {
-    const { formatDate } = useFormatDate();
+export default function ReportDesktopTable() {
+    const { showedReportData } = useReportPaginationHook();
+    const { handleDetail } = useReportDetailHook();
 
     return (
         <div className="hidden md:block overflow-auto relative bg-white border border-gray-300 rounded-4xl">
@@ -66,14 +62,14 @@ const ReportDesktopTable: React.FC<ReportDesktopTableProps> = ({ reports, onDeta
                     </tr>
                 </thead>
                 <tbody className="border-b border-gray-300">
-                    {reports.length === 0 ? (
+                    {showedReportData.length === 0 ? (
                         <tr>
                             <td className="w-fit" colSpan={8}>
                                 <h1 className="p-2 opacity-75 text-center">Tidak ada laporan...</h1>
                             </td>
                         </tr>
                     ) : (
-                        reports.map((report, index) => (
+                        showedReportData.map((report, index) => (
                             <tr key={index} className="report-row" data-report-id={report.id}>
                                 <td className="px-2 py-3 text-center whitespace-nowrap text-sm text-gray-600">
                                     {formatDate(report.created_at)}
@@ -103,7 +99,7 @@ const ReportDesktopTable: React.FC<ReportDesktopTableProps> = ({ reports, onDeta
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center">
                                     <button
                                         className="bg-[#7FA1C3] hover:bg-[#6FA9E3] px-3 py-1 rounded-xl duration-300"
-                                        onClick={() => onDetailClick(report.id)}
+                                        onClick={() => handleDetail(report.id)}
                                     >
                                         Detail
                                     </button>
@@ -116,5 +112,3 @@ const ReportDesktopTable: React.FC<ReportDesktopTableProps> = ({ reports, onDeta
         </div>
     );
 };
-
-export default ReportDesktopTable;

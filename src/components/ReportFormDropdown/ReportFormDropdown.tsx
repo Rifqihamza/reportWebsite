@@ -9,6 +9,7 @@ interface DropdownProps<T extends { toString(): string }> {
   items: T[];
   selected: T|null;
   onSelect: (value: T|null) => void;
+  filter?: boolean
 }
 
 export default function ReportFormDropdown<T extends { toString(): string }>(props: DropdownProps<T>) {
@@ -23,7 +24,7 @@ export default function ReportFormDropdown<T extends { toString(): string }>(pro
       </div>
 
       <div className="outline-none px-6 py-1 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]">
-        <Dropdown disabled={props.disabled} value={props.selected} onChange={(e) => props.onSelect(e.value)} options={props.items} optionLabel="name" placeholder={props.placeholder} className="!rounded-2xl !bg-amber-50 !border-none w-full !focus:outline-none" />
+        <Dropdown filter={props.filter} disabled={props.disabled} value={props.selected} onChange={(e) => props.onSelect(e.value)} options={props.items} optionLabel="name" placeholder={props.placeholder} className="!rounded-2xl !bg-amber-50 !border-none w-full !focus:outline-none" />
       </div>
     </div>
   );

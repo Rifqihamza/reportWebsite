@@ -1,24 +1,19 @@
 import React from 'react';
+import { useReportPaginationHook } from "../../hooks/useReportHook";
 
 interface ReportPaginationProps {
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-    currentPage: number;
-    maxPage: number;
-    onPageChange: (page: number) => void;
 }
 
-const ReportPagination: React.FC<ReportPaginationProps> = ({
-    currentPage,
-    maxPage,
-    onPageChange
-}) => {
+const ReportPagination: React.FC<ReportPaginationProps> = () => {
+    const { currentPage, setCurrentPage, maxPage } = useReportPaginationHook();
+    
     return (
         <div className="flex flex-row items-center mt-2">
             <div className="flex flex-row justify-evenly md:justify-start gap-2 w-full">
                 <button
                     className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
                     disabled={currentPage <= 0}
-                    onClick={() => onPageChange(currentPage - 1)}
+                    onClick={() => setCurrentPage(currentPage - 1)}
                 >
                     <i className="pi pi-angle-left"></i>
                     Prev
@@ -26,7 +21,7 @@ const ReportPagination: React.FC<ReportPaginationProps> = ({
                 <button
                     className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 flex flex-row items-center justify-around"
                     disabled={currentPage >= (maxPage - 1)}
-                    onClick={() => onPageChange(currentPage + 1)}
+                    onClick={() => setCurrentPage(currentPage + 1)}
                 >
                     Next
                     <i className="pi pi-angle-right"></i>

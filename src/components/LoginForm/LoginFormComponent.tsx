@@ -1,18 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { APIResultType, userLogin } from "../../utils/api_interface";
 
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginDisabled, setLoginDisabled] = useState(false);
-  const [forAdmin, setForAdmin] = useState(false);
-
-  useEffect(() => {
-    if(window.location.href.includes("?admin")) {
-      setForAdmin(true);
-    }
-  })
   
   const handleLogin = async () => {
     setLoginDisabled(true);
@@ -84,7 +77,7 @@ export default function LoginFormComponent() {
           ) : (
             ""
           )}
-          Login as {forAdmin ? "admin" : "student"}
+          Login
         </button>
       </div>
     </>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   addReport,
   APIResultType,
@@ -10,22 +10,21 @@ import {
   ReportType,
   string_to_accounttype,
   string_to_reporttype,
-  type ReportData,
-  type User,
 } from "../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
+import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
+import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
 
-export default function ReportFormComponent({
-  setReportData,
-  reportData,
-  isAuthorized,
-}: {
-  setReportData: Dispatch<SetStateAction<ReportData[]>>;
-  reportData: ReportData[];
-  isAuthorized: boolean;
-}) {
+export default function ReportFormComponent() {
+  // Authorized state
+  const { isAuthorized } = useIsAuthorizedHook();
+  
+  // Report Data State
+  const { reportData, setReportData } = useReportDataHook();
+  
   // Report Form State
   const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
@@ -41,8 +40,7 @@ export default function ReportFormComponent({
 
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const [picNames, setPicNames] = useState([] as string[]);
-  const [locationOptions, setLocationOptions] = useState([] as string[]);
+  const { picNamesOptions, setPicNamesOptions, locationOptions, setLocationOptions } = useReportConfigHook();
 
   const toastProgress = useRef<Toast>(null);
   const toastSuccess = useRef<Toast>(null);
@@ -113,7 +111,7 @@ export default function ReportFormComponent({
     getFormConfiguration().then((result) => {
       if ((result as formConfigurationResponse).pic_data !== undefined) {
         result = result as formConfigurationResponse;
-        setPicNames(result.pic_data.map((value) => value.name));
+        setPicNamesOptions(result.pic_data.map((value) => value.name));
         setLocationOptions(result.location_data.map((value) => value.location));
       } else if (result === APIResultType.Unauthorized) {
         window.location.href = "/loginPage";
@@ -149,6 +147,7 @@ export default function ReportFormComponent({
               required
             ></textarea>
           </div>
+          {/* End Detail Laporan */}
 
           {/* Nama Pelapor */}
           <div className="flex flex-col gap-2 w-full">
@@ -183,9 +182,10 @@ export default function ReportFormComponent({
               selected={location}
               disabled={locationOptions.length == 0}
               icon="pi pi-map"
+              filter
             />
           </div>
-          
+
           {/* Detail Lokasi */}
           <div className="flex flex-col gap-2 w-full">
             <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
@@ -259,15 +259,16 @@ export default function ReportFormComponent({
           {isAuthorized && (
             <ReportFormDropdown
               optional
-              placeholder={picNames.length === 0 ? "Loading PIC Data.." : "Pilih PIC"}
+              placeholder={picNamesOptions.length === 0 ? "Loading PIC Data.." : "Pilih PIC"}
               label="Nama PIC"
-              items={picNames}
+              items={picNamesOptions}
               selected={pic}
               onSelect={(value) => {
                 setPic(value || "");
               }}
               icon="pi pi-user"
-              disabled={picNames.length === 0}
+              disabled={picNamesOptions.length === 0}
+              filter
             />
           )}
           {/* End Nama PIC */}
@@ -323,58 +324,35 @@ export default function ReportFormComponent({
               icon={"pi pi-file-check"}
             />
           </div>
-
           {/* End Dropdowns */}
         </div>
         {/* End Container Form Input */}
 
         {/* File Image Upload */}
-        <div
-          className={
-            "space-y-2 mt-10" +
-            (submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : "")
-          }
-        >
-          <label
-            htmlFor="foto"
-            className="md:text-lg font-semibold text-xs text-white ml-2 flex flex-row gap-2 items-center"
-          >
-            <i className="pi pi-file" />
-            Foto Bukti <span className="opacity-50">(opsional)</span>
-          </label>
-          <div className="flex items-center justify-center w-full">
+        <div className="flex flex-col gap-2 w-full mt-6">
+          <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
             <label
               htmlFor="foto"
-              className="flex flex-col items-center justify-center w-full h-32 border-2 border-[#7FA1C3] hover:border-white border-dashed rounded-xl cursor-pointer bg-amber-50 hover:bg-[#93BFCF] duration-400"
+              className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
             >
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+              <i className="pi pi-file" />
+              Foto Bukti
+            </label>
+          </div>
+          <div className="flex items-center justify-center w-full z-10">
+            <label
+              htmlFor="foto"
+              className="cursor-pointer outline-none px-6 py-8 w-full bg-amber-50 hover:bg-neutral-50 duration-300 rounded-2xl [box-shadow:0_0_4px_1px_#93BFCF]"
+            >
+              <div className="flex flex-col items-center justify-center">
                 <i className="pi pi-cloud text-black" />
-                <p
-                  className={`mb-1 text-sm text-${image ? "black" : "black"}`}
-                  id="file-name-display"
-                >
+                <p className={`mb-1 text-sm text-${image ? "black" : "black"}`} id="file-name-display">
                   {image ? image.name : "Klik untuk upload foto"}
                 </p>
-                <p className={`text-xs text-${image ? "black" : "black"}`}>
-                  {image
-                    ? `${image.type} (${
-                        image.size.toString().length > 6
-                          ? Math.round(image.size / 10000) / 100 + "MB"
-                          : Math.round(image.size / 10) / 100 + "KB"
-                      })`
-                    : "PNG, JPG atau JPEG (Max. 2MB)"}
-                </p>
+                <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
               </div>
-              <input
-                id="foto"
-                name="foto"
-                type="file"
-                className="hidden"
-                accept="image/*"
-                onChange={(e) => {
-                  e.target.files ? setImage(e.target.files[0]) : "";
-                }}
-              />
+
+              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? setImage(e.target.files[0]) : "" }} />
             </label>
           </div>
         </div>
@@ -400,7 +378,8 @@ export default function ReportFormComponent({
           )}
         </div>
         {/* End Submit Button */}
-      </form>
+        {/* End Submit Button */}
+      </form >
 
       {/* Message Toast */}
       <Toast

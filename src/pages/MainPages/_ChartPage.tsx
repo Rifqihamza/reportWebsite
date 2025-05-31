@@ -3,6 +3,7 @@ import strftime from "strftime";
 import type { ReportData } from "../../types/variables";
 import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
 import { Dropdown } from "primereact/dropdown";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
@@ -53,7 +54,9 @@ enum LineChartFilterOption {
     Today = "Today"
 }
 
-const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
+const GraphicChart = () => {
+    const { reportData } = useReportDataHook();
+    
     const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
     const [pieCategory, setPieCategory] = useState<CategoryType[]>([]);
     const [pieStatus, setPieStatus] = useState<CategoryType[]>([]);
@@ -267,7 +270,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                         selected={chartFilter}
                         setSelected={setChartFilter}
                     /> */}
-                    <Dropdown value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)}  />
+                    <Dropdown className="[&_.p-dropdown-label]:text-white" value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)}  />
                 </div>
                 <Suspense fallback={<>Loading..</>}>
                     <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
@@ -295,7 +298,7 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                     </div>
                 </div>
 
-                {/* Kanan: Persen Components + Container Baru */}
+                {/* Kanan: Persen Components + Container Insight */}
                 <div className="flex flex-col gap-4 w-full">
                     {/* Grid untuk 2 PersenComp */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -315,11 +318,10 @@ const GraphicChart = ({ reportData }: { reportData: ReportData[] }) => {
                         </Suspense>
                     </div>
 
-                    {/* Container Baru di bawahnya */}
+                    {/* Container Insight di bawahnya */}
                     <div className="w-full h-full px-4 py-6 rounded-2xl border border-gray-300 bg-white shadow-inner shadow-gray-100">
                         <h2 className="font-semibold text-lg mb-2">Insights</h2>
-                        {/* Konten di sini */}
-                        <div className="text-gray-600">{!insight ? "Insights masih dalam pengerjaan" : 
+                        <div className="text-gray-600">{!insight ? "Membuat insight.." : 
                             <ol className="list-decimal m-4">
                                 <li>Terdapat <b>{insight.totalReportAllTime} temuan selama ini</b> dan <b>{insight.totalReportThisMonth} diantara nya terjadi pada bulan ini.</b></li>
                                 <li>Grafik menunjukkan bahwa <b>laporan temuan bulan ini {insight.betterThanLastMonth ? "lebih sedikit" : "lebih banyak"} dari bulan sebelumnya.</b></li>
