@@ -185,7 +185,10 @@ export const useReportFilterHook = create<useReportFilterType>((set) => {
   };
 });
 
-// Used for global useEffect
+
+
+
+// -- REACT GLOBAL USE EFFECT COMPONENT
 export function ReportHookEffect() {
   const { currentPage, setCurrentPage, setMaxPage, setShowedReportData } =
     useReportPaginationHook();
