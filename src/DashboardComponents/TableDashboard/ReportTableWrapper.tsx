@@ -1,9 +1,9 @@
 import { Calendar } from "primereact/calendar";
 import { FloatLabel } from "primereact/floatlabel";
-import TieredDropDown from "../../TieredMenu/TieredMenuComponent";
+import TieredDropDown from "../TieredMenu/TieredMenuComponent";
 import React, { Suspense, useState, type Dispatch, type SetStateAction } from "react";
-import LoadingAnimation from "../../Loading/LoadingAnimation";
-import type { ReportData, ReportStatus, ReportType, User } from "../../../types/variables";
+import LoadingAnimation from "../../components/Loading/LoadingAnimation";
+import type { ReportData, ReportStatus, ReportType, User } from "../../types/variables";
 
 const ReportListComponent = React.lazy(() => import("./ReportTableComponent"));
 

@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 import LoadingAnimation from "../../../components/Loading/LoadingAnimation";
 
 export default function TablePage({ userData, reportData, setReportData }: { userData: User | null, reportData: ReportData[], setReportData: Dispatch<SetStateAction<ReportData[]>> }) {
-    const ReportTableWrapper = React.lazy(() => import("../../../components/DashboardComponents/TableReport/ReportTableWrapper"));
+    const ReportTableWrapper = React.lazy(() => import("../../../DashboardComponents/TableDashboard/ReportTableWrapper"));
     return (
         <>
             <div className="space-y-4">

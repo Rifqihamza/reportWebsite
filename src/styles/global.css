@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: helloFont;
-  src: url("/public/helloFont/Hello.ttf");
+  src: url("/helloFont/Hello.ttf");
 }
 
 @font-face {
@@ -41,11 +41,11 @@ body {
 }
 
 .bg-form {
-  background: #93bfcf;
+  background: #6096B4;
 }
 
 .bg-dashboard {
-  background: oklch(96.7% 0.003 264.542);
+  background: oklch(92.9% 0.013 255.508);
 }
 
 .titlePage {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image } from 'primereact/image';
-import { AccountType, reporttype_to_string, type ReportData, type User } from '../../../types/variables';
-import { useFormatDate, statusColors } from '../../../hooks/useReportHooks';
+import { AccountType, reporttype_to_string, type ReportData, type User } from '../../types/variables';
+import { useFormatDate, statusColors } from '../../hooks/useReportHooks';
 
 interface ReportDetailModalProps {
     detailId: string | null;

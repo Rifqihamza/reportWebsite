@@ -1,21 +1,23 @@
-import React, { useRef, useState, } from "react";
+import React, { useRef, useState } from "react";
 import { Toast } from "primereact/toast";
-import { type ReportData, type ReportType, type ReportStatus, type User, } from "../../../types/variables";
+import {
+  type ReportData,
+  type ReportType,
+  type ReportStatus,
+  type User,
+} from "../../types/variables";
 
 import {
   useReportFilters,
   usePagination,
   useReportDetail,
   useReportDeletion,
-} from "../../../hooks/useReportHooks";
+} from "../../hooks/useReportHooks";
 
-import ReportDesktopTable from "./ReportDesktopTable";
+import ReportDesktopTable, { reportsPerPage } from "./ReportDesktopTable";
 import ReportMobileCard from "./ReportMobileCard";
 import ReportDetailModal from "./ReportDetailModal";
-import ReportPagination from "./ReportPagination";
-import DialogComponent from "../../DialogPopUp/DialogComponent";
-
-const reportsPerPage = 7;
+import DialogComponent from "../DialogPopUp/DialogComponent";
 
 interface ReportListComponentProps {
   userData: User | null;
@@ -34,17 +36,11 @@ const ReportListComponent: React.FC<ReportListComponentProps> = ({
   dateFilter,
   searchKeyword,
 }) => {
-  const toastTopRight = useRef<Toast>(null) as React.RefObject<Toast>;
+  const toastTopRight = useRef<Toast>(null as unknown as Toast);
   const [saveDisabled, setSaveDisabled] = useState(false);
 
   const filteredReports = useReportFilters(reportData, selectedFilter, dateFilter, searchKeyword);
-
-  const {
-    currentPage,
-    setCurrentPage,
-    maxPage,
-    currentItems: displayedReports,
-  } = usePagination(filteredReports, reportsPerPage);
+  const { currentItems: displayedReports } = usePagination(filteredReports, reportsPerPage);
 
   const {
     detailId,
@@ -64,7 +60,13 @@ const ReportListComponent: React.FC<ReportListComponentProps> = ({
   return (
     <>
       {/* Desktop Table View */}
-      <ReportDesktopTable reports={displayedReports} onDetailClick={handleDetail} />
+      <ReportDesktopTable
+        reportData={reportData}
+        onDetailClick={handleDetail}
+        selectedFilter={selectedFilter}
+        dateFilter={dateFilter}
+        searchKeyword={searchKeyword}
+      />
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
@@ -83,11 +85,11 @@ const ReportListComponent: React.FC<ReportListComponentProps> = ({
         reportData={reportData}
         userData={userData}
         onClose={handleClose}
-        onDelete={(id) => {
+        onDelete={(id) =>
           handleDelete(id, userData).then((success) => {
             if (success) setDetailId(null);
-          });
-        }}
+          })
+        }
         onEdit={() => setDialogVisible(true)}
         deleteDisabled={deleteDisabled}
         saveDisabled={saveDisabled}
@@ -109,14 +111,6 @@ const ReportListComponent: React.FC<ReportListComponentProps> = ({
       />
 
       <Toast ref={toastTopRight} position="top-right" />
-
-      {/* Pagination Controls */}
-      <ReportPagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        maxPage={maxPage}
-        onPageChange={(page: number) => setCurrentPage(page)}
-      />
     </>
   );
 };

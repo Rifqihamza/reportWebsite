@@ -1,12 +1,12 @@
 import React, { useEffect, useState, Suspense } from "react";
 import strftime from "strftime";
-import type { ReportData } from "../../../types/variables";
-import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../../types/variables';
+import type { ReportData } from "../../types/variables";
+import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
 import { Dropdown } from "primereact/dropdown";
 
-const LineChart = React.lazy(() => import("../../../components/DashboardComponents/ChartLine/LineChartComponent"));
-const PieChart = React.lazy(() => import("../../../components/DashboardComponents/ChartPie/PieChartComponent"));
-const PercenComp = React.lazy(() => import("../../../components/PercenContainer/PercenContComponent"));
+const LineChart = React.lazy(() => import("../../DashboardComponents/ChartLine/LineChartComponent"));
+const PieChart = React.lazy(() => import("../../DashboardComponents/ChartPie/PieChartComponent"));
+const PercenComp = React.lazy(() => import("../../DashboardComponents/PercenContainer/PercenContComponent"));
 
 const listOfMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"];
 const listOfNumOfDates = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
@@ -53,7 +53,8 @@ enum LineChartFilterOption {
     Today = "Today"
 }
 
-export default function GraphicPage({ reportData }: { reportData: ReportData[] }) {
+export default function GraphicComponent({ reportData }: { reportData: ReportData[] }) {
+
     const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
     const [pieCategory, setPieCategory] = useState<CategoryType[]>([]);
     const [pieStatus, setPieStatus] = useState<CategoryType[]>([]);
