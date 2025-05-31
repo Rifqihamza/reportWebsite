@@ -1,6 +1,7 @@
 import { Toast } from "primereact/toast";
 import { useEffect, useRef } from "react";
 import { useShowMessageHook } from "../../hooks/shared/useShowMessage";
+import { PrimeReactProvider } from "primereact/api";
 
 export default function ToastMessage() {
   const toastRef = useRef<Toast|null>(null);
@@ -13,5 +14,5 @@ export default function ToastMessage() {
     
   }, [toastRef]);
   
-  return <Toast ref={toastRef} position="top-right" />
+  return <PrimeReactProvider><Toast ref={toastRef} position="top-right" /></PrimeReactProvider>
 }

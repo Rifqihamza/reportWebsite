@@ -31,7 +31,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 
     <VerifyAuthentication client:load />
     <slot />
-    <ToastMessage client:load />
+    <ToastMessage client:only />
 
     <script
       is:inline
