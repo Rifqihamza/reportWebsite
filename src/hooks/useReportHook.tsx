@@ -1,4 +1,4 @@
-import { create, type StoreApi, type UseBoundStore } from "zustand";
+import { create } from "zustand";
 import {
   AccountType,
   ReportStatus,

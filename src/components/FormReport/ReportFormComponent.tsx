@@ -16,6 +16,7 @@ import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
 import { useReportData } from "../../hooks/shared/useReportData";
 import { useIsAuthorized } from "../../hooks/shared/useIsAuthorized";
+import { useReportConfigHook } from "../../hooks/useReportConfigHook";
 
 export default function ReportFormComponent() {
   // Authorized state
@@ -39,8 +40,7 @@ export default function ReportFormComponent() {
 
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const [picNames, setPicNames] = useState([] as string[]);
-  const [locationOptions, setLocationOptions] = useState([] as string[]);
+  const { picNamesOptions, setPicNamesOptions, locationOptions, setLocationOptions } = useReportConfigHook();
 
   const toastProgress = useRef<Toast>(null);
   const toastSuccess = useRef<Toast>(null);
@@ -111,7 +111,7 @@ export default function ReportFormComponent() {
     getFormConfiguration().then((result) => {
       if ((result as formConfigurationResponse).pic_data !== undefined) {
         result = result as formConfigurationResponse;
-        setPicNames(result.pic_data.map((value) => value.name));
+        setPicNamesOptions(result.pic_data.map((value) => value.name));
         setLocationOptions(result.location_data.map((value) => value.location));
       } else if (result === APIResultType.Unauthorized) {
         window.location.href = "/loginPage";
@@ -258,15 +258,15 @@ export default function ReportFormComponent() {
           {isAuthorized && (
             <ReportFormDropdown
               optional
-              placeholder={picNames.length === 0 ? "Loading PIC Data.." : "Pilih PIC"}
+              placeholder={picNamesOptions.length === 0 ? "Loading PIC Data.." : "Pilih PIC"}
               label="Nama PIC"
-              items={picNames}
+              items={picNamesOptions}
               selected={pic}
               onSelect={(value) => {
                 setPic(value || "");
               }}
               icon="pi pi-user"
-              disabled={picNames.length === 0}
+              disabled={picNamesOptions.length === 0}
             />
           )}
           {/* End Nama PIC */}

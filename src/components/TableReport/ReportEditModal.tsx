@@ -8,6 +8,7 @@ import { APIResultType, updateReport } from '../../utils/api_interface';
 import { useReportData } from "../../hooks/shared/useReportData";
 import { useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
 import { useShowMessage } from "../../hooks/shared/useShowMessage";
+import { useReportConfigHook } from "../../hooks/useReportConfigHook";
 
 const reportTypeOptions = [
     ...Object.keys(ReportType)
@@ -32,6 +33,7 @@ const accountTypeOptions = [
 export default function DialogComponent() {
     const { reportData, setReportData } = useReportData();
     const { detailId } = useReportDetailHook();
+    const { picNamesOptions, locationOptions } = useReportConfigHook();
     
     const report = reportData.find(value => value.id === detailId) || null;
 
@@ -46,7 +48,6 @@ export default function DialogComponent() {
         due_date: "",
         follow_up_name: "",
         status: "" as ReportStatus,
-
     });
     const [disableSave, setDisableSave] = useState(false);
     const [isChange, setIsChange] = useState(false);
@@ -145,8 +146,18 @@ export default function DialogComponent() {
             <div className="flex flex-col md:flex-row gap-6 items-start w-full">
                 <div className="flex flex-col space-y-3.5 w-full">
                     <InputField label="Pelapor" value={formState.submitted_by} onChange={(e) => updateField("submitted_by", e.target.value)} />
-                    <InputField label="PIC" value={formState.pic_name} onChange={(e) => updateField("pic_name", e.target.value)} />
-                    <InputField label="Lokasi" value={formState.location} onChange={(e) => updateField("location", e.target.value)} />
+                    <DropdownField
+                        label="PIC"
+                        options={picNamesOptions.map((val) => ({ label: val, value: val }))}
+                        value={formState.pic_name}
+                        onChange={(e) => updateField("pic_name", e.target.value)}
+                    />
+                    <DropdownField
+                        label="Lokasi"
+                        options={locationOptions.map((val) => ({ label: val, value: val }))}
+                        value={formState.location}
+                        onChange={(e) => updateField("location", e.value)}
+                    />
                 </div>
                 <div className="flex flex-col gap-2 w-full">
                     <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
