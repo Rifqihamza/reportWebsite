@@ -140,6 +140,7 @@ export async function check_database_connection(): Promise<boolean> {
         await prisma.$connect(); // Connects to the database
         return true;
     } catch (error) {
+        console.error(`There's an error when trying to connect to database. Error: ${error}`);
         return false;
     } finally {
         await prisma.$disconnect(); // Disconnects from the database

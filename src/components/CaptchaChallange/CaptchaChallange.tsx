@@ -21,6 +21,12 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
       if(result == APIResultType.NeedCaptchaAuthentication) {
         setIsCaptchaNeeded(true);
       }
+      else if(result == APIResultType.InternalServerError) {
+        alert("Please try again later.");
+      }
+      else if(result == APIResultType.DatabaseError) {
+        alert("There's an error in database. (Database problem)");
+      }
       else {
         window.location.href = "/loginPage";
       }

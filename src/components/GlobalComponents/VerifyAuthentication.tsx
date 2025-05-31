@@ -15,10 +15,10 @@ export default function VerifyAuthentication() {
     }
 
     checkAuthentication().then((result) => {
-      if (result == APIResultType.NeedCaptchaAuthentication) {
+      if (result == APIResultType.NeedCaptchaAuthentication && !window.location.href.includes("captcha")) {
         window.location.href = "/captcha/";
       }
-      else if (result == APIResultType.Unauthorized && !window.location.href.includes("loginPage")) {
+      else if (result == APIResultType.Unauthorized && !window.location.href.includes("login")) {
         window.location.href = "/loginPage/";
       }
       else if(result == APIResultType.DatabaseError) {
