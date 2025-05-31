@@ -3,7 +3,7 @@ import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AccountType } from "../../types/variables";
 import LogoutButton from "../LogoutButton/LogoutButtonComponent";
-import { useUserData } from "../../hooks/useUserData";
+import { useUserData } from "../../hooks/shared/useUserData";
 import { userLogout } from "../../utils/api_interface";
 interface NavbarProps {
   activeTab: number;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   addReport,
   APIResultType,
@@ -10,14 +10,12 @@ import {
   ReportType,
   string_to_accounttype,
   string_to_reporttype,
-  type ReportData,
-  type User,
 } from "../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
-import { useReportData } from "../../hooks/useReportData";
-import { useIsAuthorized } from "../../hooks/useIsAuthorized";
+import { useReportData } from "../../hooks/shared/useReportData";
+import { useIsAuthorized } from "../../hooks/shared/useIsAuthorized";
 
 export default function ReportFormComponent() {
   // Authorized state

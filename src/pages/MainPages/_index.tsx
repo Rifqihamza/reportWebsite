@@ -1,8 +1,8 @@
 import OverlayBlockPages from "../../components/Overlay/BlockOverlayComponent";
 import NavbarComponents from "../../components/Navbar/NavbarComponent";
 
-import { AccountType, type ReportData, type User } from "../../types/variables";
-import { getReport, getUser, userLogout } from "../../utils/api_interface";
+import { AccountType } from "../../types/variables";
+import { getReport, getUser } from "../../utils/api_interface";
 import React, { Suspense, useEffect, useState } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
@@ -10,9 +10,9 @@ import { PrimeReactProvider } from "primereact/api";
 import ReportForm from "./_FormReportPage";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
 import FooterComponent from "../../components/Footer/FooterComponent";
-import { useUserData } from "../../hooks/useUserData";
-import { useReportData } from "../../hooks/useReportData";
-import { useIsAuthorized } from "../../hooks/useIsAuthorized";
+import { useUserData } from "../../hooks/shared/useUserData";
+import { useReportData } from "../../hooks/shared/useReportData";
+import { useIsAuthorized } from "../../hooks/shared/useIsAuthorized";
 const TableReportPages = React.lazy(() => import("./_TableReportPage"));
 const ApexChart = React.lazy(() => import("./_ChartPage"));
 
@@ -50,14 +50,16 @@ export default function MainPage() {
       <PrimeReactProvider>
         {/* Navbar */}
         <NavbarComponents activeTab={activeTab} setActiveTab={setActiveTab} />
+
+        {/* Contents */}
         <div className="max-w-7xl mx-auto p-4 m-4 relative rounded-4xl w-full  overflow-y-scroll">
-          {/* Tab 0: Form, bebas diakses */}
+          {/* Contents of Tab 0: Form, bebas diakses */}
           {activeTab === 0 && (<>
             <ReportForm />
           </>
           )}
 
-          {/* Tab 1: Table */}
+          {/* Contents of Tab 1: Table */}
           {activeTab === 1 && (
             isAuthorized ? (
               <Suspense fallback={<LoadingAnimation />}>
@@ -68,7 +70,7 @@ export default function MainPage() {
             )
           )}
 
-          {/* Tab 2: Chart */}
+          {/* Contents of Tab 2: Chart */}
           {activeTab === 2 && (
             isAuthorized ? (
               <Suspense fallback={<LoadingAnimation />}>

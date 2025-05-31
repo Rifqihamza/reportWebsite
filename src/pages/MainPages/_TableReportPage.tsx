@@ -1,5 +1,3 @@
-import type { Dispatch, SetStateAction } from "react";
-import type { ReportData } from "../../types/variables";
 import React, { Suspense } from "react";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
 
@@ -12,7 +10,7 @@ export default function TableReportPages() {
       <div className="space-y-4">
         <Suspense fallback={<LoadingAnimation />}>
           <ReportTableWrapper />
-        </Suspense>
+        </Suspense> 
       </div>
     </>
   );

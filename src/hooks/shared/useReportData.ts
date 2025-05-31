@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { ReportData } from "../types/variables";
+import type { ReportData } from "../../types/variables";
 
 type UseReportDataType = {
   reportData: ReportData[];

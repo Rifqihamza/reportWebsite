@@ -3,7 +3,7 @@ import strftime from "strftime";
 import type { ReportData } from "../../types/variables";
 import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
 import { Dropdown } from "primereact/dropdown";
-import { useReportData } from "../../hooks/useReportData";
+import { useReportData } from "../../hooks/shared/useReportData";
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
@@ -270,7 +270,7 @@ const GraphicChart = () => {
                         selected={chartFilter}
                         setSelected={setChartFilter}
                     /> */}
-                    <Dropdown value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)}  />
+                    <Dropdown className="[&_.p-dropdown-label]:text-white" value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)}  />
                 </div>
                 <Suspense fallback={<>Loading..</>}>
                     <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />

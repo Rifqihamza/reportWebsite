@@ -13,13 +13,13 @@ import ShieldIcon from '@mui/icons-material/Shield';
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
-interface menuTieredProps {
+interface FilterSelectProps {
     label: string;
     selectedFilter: ReportStatus | ReportType | null,
-    setSelectedFilter: Dispatch<SetStateAction<ReportStatus | ReportType | null>>
+    setSelectedFilter: (newSelectedFilter: ReportStatus | ReportType | null) => void
 }
 
-export default function PopupDemo(props: menuTieredProps) {
+export default function FilterSelect(props: FilterSelectProps) {
     const menu = useRef<TieredMenu>(null);
     const items: MenuItem[] = [
         {

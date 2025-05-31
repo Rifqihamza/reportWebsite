@@ -1,31 +1,18 @@
 import React from 'react';
 import { Image } from 'primereact/image';
-import { AccountType, reporttype_to_string, type ReportData, type User } from '../../types/variables';
-import { useFormatDate, statusColors } from '../../hooks/useReportHooks';
-import { useUserData } from "../../hooks/useUserData";
-import { useReportData } from "../../hooks/useReportData";
+import { AccountType, reporttype_to_string } from '../../types/variables';
+import { useUserData } from "../../hooks/shared/useUserData";
+import { useReportData } from "../../hooks/shared/useReportData";
+import { statusColors, useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
+import { formatDate } from "../../utils/other";
 
-interface ReportDetailModalProps {
-    detailId: string | null;
-    onClose: () => void;
-    onDelete: (id: string) => void;
-    onEdit: () => void;
-    deleteDisabled: boolean;
-    saveDisabled: boolean;
-}
-
-const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
-    detailId,
-    onClose,
-    onDelete,
-    onEdit,
-    deleteDisabled,
-    saveDisabled
-}) => {
+export default function ReportDetailModal() {
     const { userData } = useUserData();
     const { reportData } = useReportData();
+    const { detailId, deleteDisabled, handleClose, handleDetail } = useReportDetailHook();
+
+    const { setEditVisible } = useReportEditHook();
     
-    const { formatDate } = useFormatDate();
     const report_data = reportData.find(value => value.id === detailId) || null;
 
     const ImageComponent = () => (
@@ -53,7 +40,7 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
 
                 {/* Close Button Modal */}
                 <div className="absolute top-4 right-4 md:top-7 md:right-7">
-                    <button className="cursor-pointer" onClick={onClose}>
+                    <button className="cursor-pointer" onClick={handleClose}>
                         <i className="pi pi-times p-2"></i>
                     </button>
                 </div>
@@ -101,14 +88,14 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
                     <div className="grid grid-cols-2 gap-4 w-full pt-4">
                         <button
                             className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
-                            onClick={onEdit}
+                            onClick={() => setEditVisible(true)}
                         >
                             Edit
                         </button>
                         <button
                             className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
-                            onClick={() => report_data ? onDelete(report_data.id) : null}
-                            disabled={saveDisabled || deleteDisabled}
+                            onClick={() => report_data ? handleDetail(report_data.id) : null}
+                            disabled={deleteDisabled}
                         >
                             {deleteDisabled && <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i>}
                             Hapus
@@ -133,5 +120,3 @@ const DetailField: React.FC<{ label: string; value?: string | null; fallback?: s
         </p>
     </div>
 );
-
-export default ReportDetailModal;

@@ -1,13 +1,13 @@
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
 import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData, type User, } from '../../types/variables';
 import { InputTextarea } from "primereact/inputtextarea";
 import { APIResultType, updateReport } from '../../utils/api_interface';
-import { useReportData } from "../../hooks/useReportData";
-import { useUserData } from "../../hooks/useUserData";
+import { useReportData } from "../../hooks/shared/useReportData";
+import { useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
+import { useShowMessage } from "../../hooks/shared/useShowMessage";
 
 const reportTypeOptions = [
     ...Object.keys(ReportType)
@@ -29,22 +29,9 @@ const accountTypeOptions = [
     // Add more options based on your AccountType definition
 ];
 
-export default function DialogComponent({
-    detailId,
-    visible,
-    setVisible,
-    onSuccess,
-    onUnauthorized,
-    onError
-}: {
-    detailId: string | number | null,
-    visible: boolean,
-    setVisible: (val: boolean) => void,
-    onSuccess: () => void,
-    onUnauthorized: () => void,
-    onError: () => void,
-}) {
+export default function DialogComponent() {
     const { reportData, setReportData } = useReportData();
+    const { detailId } = useReportDetailHook();
     
     const report = reportData.find(value => value.id === detailId) || null;
 
@@ -63,6 +50,9 @@ export default function DialogComponent({
     });
     const [disableSave, setDisableSave] = useState(false);
     const [isChange, setIsChange] = useState(false);
+
+    const { editVisible, setEditVisible } = useReportEditHook();
+    const { showMessage } = useShowMessage();
 
     useEffect(() => {
         if (report) {
@@ -112,7 +102,7 @@ export default function DialogComponent({
             } as ReportData); 
         }
         catch {
-            onError();
+            showMessage("Success", "success", "Successfully update data!");
             return;
         }
         finally {
@@ -127,14 +117,14 @@ export default function DialogComponent({
             setReportData(updated);
 
             // Close the dialog component and trigger success function
-            setVisible(false)
-            onSuccess();
+            setEditVisible(false)
+            showMessage("Success", "success", "Successfully update data!");
         }
         else if (result === APIResultType.Unauthorized) {
-            onUnauthorized();
+            showMessage("Unauthorized", "error", "Unauthorized attempt detected!");
         }
         else if (result === APIResultType.InternalServerError) {
-            onError();
+            showMessage("Error", "error", "There's an error!");
         }
     };
 
@@ -142,12 +132,12 @@ export default function DialogComponent({
         <Dialog
             header="Edit Laporan"
             style={{ width: '80vw' }}
-            visible={visible}
+            visible={editVisible}
             draggable={false}
-            onHide={() => setVisible(false)}
+            onHide={() => setEditVisible(false)}
             footer={
                 <div className="flex justify-end gap-2">
-                    <button onClick={() => setVisible(false)} className="text-gray-800 hover:text-gray-200">Batal</button>
+                    <button onClick={() => setEditVisible(false)} className="text-gray-800 hover:text-gray-200">Batal</button>
                     <button onClick={handleSave} disabled={disableSave || !isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"><span className={disableSave ? "" : "hidden"}><i className="pi pi-spinner pi-spin"></i></span> Simpan</button>
                 </div>
             }

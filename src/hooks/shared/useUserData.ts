@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { User } from "../types/variables";
+import type { User } from "../../types/variables";
 
 
 type useUserDataType = {
