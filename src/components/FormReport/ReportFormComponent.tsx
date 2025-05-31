@@ -51,10 +51,12 @@ export default function ReportFormComponent() {
     setFollowUpType(null);
     setMessage("");
     setCategory(null);
+    setDetailLocation("");
     setLocation("");
     setReportDate("");
     setReportDueDate("");
     setImage(null);
+    setFollowUpName("");
   };
 
   const handle_submit = async () => {
@@ -113,8 +115,6 @@ export default function ReportFormComponent() {
         result = result as formConfigurationResponse;
         setPicNamesOptions(result.pic_data.map((value) => value.name));
         setLocationOptions(result.location_data.map((value) => value.location));
-      } else if (result === APIResultType.Unauthorized) {
-        window.location.href = "/loginPage";
       }
     });
   }, []);

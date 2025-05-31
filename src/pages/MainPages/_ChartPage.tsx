@@ -1,65 +1,17 @@
-import React, { useEffect, useState, Suspense } from "react";
-import strftime from "strftime";
-import type { ReportData } from "../../types/variables";
-import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
+import React, { Suspense } from "react";
+import { ReportType, reporttype_to_string, statusColorHex } from '../../types/variables';
 import { Dropdown } from "primereact/dropdown";
-import { useReportDataHook } from "../../hooks/shared/useReportData";
-import { UseChartHookEffect, useInsightHook, usePieChartHook } from "../../hooks/useChartHook";
+import { LineChartFilterOption, UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../hooks/useChartHook";
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
-const PercenComp = React.lazy(() => import("../../components/PercenContainer/PercenContComponent"));
-
-
-type CategoryType = {
-    labels: string;
-    value: number;
-};
-
-type LineChartValueType = {
-    labels: string;
-    type: ReportType | string;
-    value: number;
-};
-
-type InsightDataType = {
-    totalReportAllTime: number,
-    totalReportLastMonth: number,
-    totalReportThisMonth: number,
-    totalReportPerCategory: {
-        [key in ReportType]?: number
-    },
-    totalReportPerStatus: {
-        [key in ReportStatus]?: number
-    },
-    totalReportPerDay: {
-        [key: string]: number
-    },
-    totalReportPerPIC: {
-        [key: string]: number
-    },
-    betterThanLastMonth: boolean|null,
-    highestOccuranceCategory: ReportType|null,
-    highestOccuranceDay: string,
-    notCompletedReportPreviousMonth: number,
-};
-
-enum LineChartFilterOption {
-    Year = "This Year",
-    Month = "This Month",
-    Week = "This Week",
-    Today = "Today"
-}
+const PercenComp = React.lazy(() => import("../../components/PercentContainer/PercentContComponent"));
 
 const GraphicChart = () => {
-    const { reportData } = useReportDataHook();
-    
-    const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
-    const [chartFilter, setChartFilter] = useState<LineChartFilterOption | null>(LineChartFilterOption.Year);
-    const [percentCategory, setPercentCategory] = useState<CategoryType[]>([]);
-
-    const { lineChartCategoryFilter: chartCategoryFilter, percentStatus, setPercentStatus, setPieCategory, setPieStatus } = usePieChartHook();
-    const { insight, setInsight } = useInsightHook();
+    const { lineChartCategoryFilter: chartCategoryFilter, percentStatus } = usePieChartHook();
+    const { insight } = useInsightHook();
+    const { currentYearReports, chartFilter, setChartFilter } = useLineChartHook();
+    const { percentCategory } = usePercentChartHook();
 
     return (
         <div className='flex flex-col gap-4 mx-4'>

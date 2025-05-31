@@ -4,7 +4,7 @@ import { useReportDataHook } from "./shared/useReportData";
 import { useEffect } from "react";
 import strftime from "strftime";
 
-enum LineChartFilterOption {
+export enum LineChartFilterOption {
   Year = "This Year",
   Month = "This Month",
   Week = "This Week",
@@ -88,8 +88,8 @@ type UseLineChartType = {
   currentYearReports: LineChartValueType[];
   setCurrentYearReports: (newCurrentYearReports: LineChartValueType[]) => void;
 
-  chartFilter: LineChartFilterOption | null;
-  setChartFilter: (newChartFilter: LineChartFilterOption | null) => void;
+  chartFilter: LineChartFilterOption;
+  setChartFilter: (newChartFilter: LineChartFilterOption) => void;
 };
 
 export const useLineChartHook = create<UseLineChartType>((set) => {
@@ -99,7 +99,7 @@ export const useLineChartHook = create<UseLineChartType>((set) => {
       set(() => ({ currentYearReports: newCurrentYearReports }));
     },
 
-    chartFilter: null,
+    chartFilter: LineChartFilterOption.Year,
     setChartFilter(newChartFilter) {
       set(() => ({ chartFilter: newChartFilter }));
     },
