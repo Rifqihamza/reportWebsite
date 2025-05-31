@@ -1,11 +1,11 @@
 import { Toast } from "primereact/toast";
 import { useEffect, useRef } from "react";
-import { useShowMessage } from "../../hooks/shared/useShowMessage";
+import { useShowMessageHook } from "../../hooks/shared/useShowMessage";
 
 export default function ToastMessage() {
   const toastRef = useRef<Toast|null>(null);
 
-  const { setToastRef } = useShowMessage();
+  const { setToastRef } = useShowMessageHook();
 
   useEffect(() => {
     // Set the toast reference when it already rendered

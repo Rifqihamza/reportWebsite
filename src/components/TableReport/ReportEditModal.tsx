@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData, type User, } from '../../types/variables';
 import { InputTextarea } from "primereact/inputtextarea";
 import { APIResultType, updateReport } from '../../utils/api_interface';
-import { useReportData } from "../../hooks/shared/useReportData";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
-import { useShowMessage } from "../../hooks/shared/useShowMessage";
-import { useReportConfigHook } from "../../hooks/useReportConfigHook";
+import { useShowMessageHook } from "../../hooks/shared/useShowMessage";
+import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
 
 const reportTypeOptions = [
     ...Object.keys(ReportType)
@@ -30,8 +30,8 @@ const accountTypeOptions = [
     // Add more options based on your AccountType definition
 ];
 
-export default function DialogComponent() {
-    const { reportData, setReportData } = useReportData();
+export default function ReportEditModal() {
+    const { reportData, setReportData } = useReportDataHook();
     const { detailId } = useReportDetailHook();
     const { picNamesOptions, locationOptions } = useReportConfigHook();
     
@@ -53,7 +53,7 @@ export default function DialogComponent() {
     const [isChange, setIsChange] = useState(false);
 
     const { editVisible, setEditVisible } = useReportEditHook();
-    const { showMessage } = useShowMessage();
+    const { showMessage } = useShowMessageHook();
 
     useEffect(() => {
         if (report) {
@@ -153,6 +153,7 @@ export default function DialogComponent() {
                         onChange={(e) => updateField("pic_name", e.target.value)}
                     />
                     <DropdownField
+                        filter
                         label="Lokasi"
                         options={locationOptions.map((val) => ({ label: val, value: val }))}
                         value={formState.location}
@@ -213,16 +214,17 @@ function InputField({ label, value, onChange }: { label: string; value: string; 
 }
 
 // Komponen dropdown
-function DropdownField({ label, options, value, onChange }: {
+function DropdownField({ label, options, value, onChange, filter }: {
     label: string;
     options: { label: string, value: string }[];
     value: string | AccountType; // Allow both string and AccountType
     onChange: (e: any) => void;
+    filter?: boolean
 }) {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Dropdown value={value} options={options} onChange={onChange} className="w-full" placeholder={`Pilih ${label}`} />
+            <Dropdown filter value={value} options={options} onChange={onChange} className="w-full" placeholder={`Pilih ${label}`} />
         </div>
     );
 }

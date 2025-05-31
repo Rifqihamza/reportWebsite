@@ -10,17 +10,17 @@ import { PrimeReactProvider } from "primereact/api";
 import ReportForm from "./_FormReportPage";
 import LoadingAnimation from "../../components/Loading/LoadingAnimation";
 import FooterComponent from "../../components/Footer/FooterComponent";
-import { useUserData } from "../../hooks/shared/useUserData";
-import { useReportData } from "../../hooks/shared/useReportData";
-import { useIsAuthorized } from "../../hooks/shared/useIsAuthorized";
+import { useUserDataHook } from "../../hooks/shared/useUserData";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
+import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
 const TableReportPages = React.lazy(() => import("./_TableReportPage"));
 const ApexChart = React.lazy(() => import("./_ChartPage"));
 
 export default function MainPage() {
   const [activeTab, setActiveTab] = useState(0);
-  const { userData, setUserData } = useUserData();
-  const { setReportData } = useReportData();
-  const { isAuthorized, setIsAuthorized } = useIsAuthorized();
+  const { userData, setUserData } = useUserDataHook();
+  const { setReportData } = useReportDataHook();
+  const { isAuthorized, setIsAuthorized } = useIsAuthorizedHook();
 
   useEffect(() => {
     getUser().then(user_data => {

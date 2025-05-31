@@ -6,10 +6,10 @@ import {
   string_to_reportstatus,
   type ReportData,
 } from "../types/variables";
-import { useReportData } from "./shared/useReportData";
-import { useUserData } from "./shared/useUserData";
+import { useReportDataHook } from "./shared/useReportData";
+import { useUserDataHook } from "./shared/useUserData";
 import { APIResultType, deleteReport } from "../utils/api_interface";
-import { useShowMessage } from "./shared/useShowMessage";
+import { useShowMessageHook } from "./shared/useShowMessage";
 import { useEffect } from "react";
 
 const maxReportDataPerPage: number = 5;
@@ -56,9 +56,9 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
 
     // -- Handling report deletion
     handleDelete: async (id: string) => {
-      const { reportData, setReportData } = useReportData.getState();
-      const { userData } = useUserData.getState();
-      const { showMessage } = useShowMessage.getState();
+      const { reportData, setReportData } = useReportDataHook.getState();
+      const { userData } = useUserDataHook.getState();
+      const { showMessage } = useShowMessageHook.getState();
 
       // Check if the user is
       if (!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
@@ -189,7 +189,7 @@ export const useReportFilterHook = create<useReportFilterType>((set) => {
 export function ReportHookEffect() {
   const { currentPage, setCurrentPage, setMaxPage, setShowedReportData } =
     useReportPaginationHook();
-  const { reportData } = useReportData();
+  const { reportData } = useReportDataHook();
   const { selectedFilter, dateFilter, searchKeyword, filteredReports, setFilteredReports } =
     useReportFilterHook();
 

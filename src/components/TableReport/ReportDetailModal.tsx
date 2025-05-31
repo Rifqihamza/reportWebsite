@@ -1,14 +1,14 @@
 import React from 'react';
 import { Image } from 'primereact/image';
 import { AccountType, reporttype_to_string } from '../../types/variables';
-import { useUserData } from "../../hooks/shared/useUserData";
-import { useReportData } from "../../hooks/shared/useReportData";
+import { useUserDataHook } from "../../hooks/shared/useUserData";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { statusColors, useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
 import { formatDate } from "../../utils/other";
 
 export default function ReportDetailModal() {
-    const { userData } = useUserData();
-    const { reportData } = useReportData();
+    const { userData } = useUserDataHook();
+    const { reportData } = useReportDataHook();
     const { detailId, deleteDisabled, handleClose, handleDetail } = useReportDetailHook();
 
     const { setEditVisible } = useReportEditHook();

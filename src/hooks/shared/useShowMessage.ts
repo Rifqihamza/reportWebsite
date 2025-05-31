@@ -8,7 +8,7 @@ type useShowMessageType = {
   showMessage: (label: string, severity: ToastMessage["severity"], detail: string) => void;
 };
 
-export const useShowMessage = create<useShowMessageType>((set) => ({
+export const useShowMessageHook = create<useShowMessageType>((set) => ({
   toastRef: null,
   setToastRef(newToastRef) {
       set(() => ({toastRef: newToastRef}));

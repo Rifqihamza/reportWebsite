@@ -3,7 +3,7 @@ import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AccountType } from "../../types/variables";
 import LogoutButton from "../LogoutButton/LogoutButtonComponent";
-import { useUserData } from "../../hooks/shared/useUserData";
+import { useUserDataHook } from "../../hooks/shared/useUserData";
 import { userLogout } from "../../utils/api_interface";
 interface NavbarProps {
   activeTab: number;
@@ -20,7 +20,7 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
     window.location.href = "/loginPage";
   }
 
-  const { userData } = useUserData();
+  const { userData } = useUserDataHook();
   const [setVisible, setIsVisible] = useState<boolean>(false);
 
   const isAuthorized =

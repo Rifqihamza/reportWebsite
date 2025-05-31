@@ -7,7 +7,7 @@ type useUserDataType = {
   setUserData: (data: User) => void
 }
 
-export const useUserData = create<useUserDataType>((set) => ({
+export const useUserDataHook = create<useUserDataType>((set) => ({
   userData: null,
   setUserData: (data: User) => set(() => ({ userData: data }))
 }));

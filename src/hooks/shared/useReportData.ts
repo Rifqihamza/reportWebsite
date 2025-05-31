@@ -6,7 +6,7 @@ type UseReportDataType = {
   setReportData: (reportData: ReportData[]) => void;
 }
 
-export const useReportData = create<UseReportDataType>((set) => ({
+export const useReportDataHook = create<UseReportDataType>((set) => ({
   reportData: [],
   setReportData: (reportData) => {set(() => ({ reportData: reportData }))}
 }));

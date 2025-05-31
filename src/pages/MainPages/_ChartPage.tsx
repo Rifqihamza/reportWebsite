@@ -3,7 +3,7 @@ import strftime from "strftime";
 import type { ReportData } from "../../types/variables";
 import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
 import { Dropdown } from "primereact/dropdown";
-import { useReportData } from "../../hooks/shared/useReportData";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
 
 const LineChart = React.lazy(() => import("../../components/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../components/ChartPie/PieChartComponent"));
@@ -55,7 +55,7 @@ enum LineChartFilterOption {
 }
 
 const GraphicChart = () => {
-    const { reportData } = useReportData();
+    const { reportData } = useReportDataHook();
     
     const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
     const [pieCategory, setPieCategory] = useState<CategoryType[]>([]);

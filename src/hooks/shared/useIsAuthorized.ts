@@ -5,7 +5,7 @@ type useIsAuthorizedType = {
   setIsAuthorized: (newIsAuthorized: boolean | null) => void
 }
 
-export const useIsAuthorized = create<useIsAuthorizedType>((set) => ({
+export const useIsAuthorizedHook = create<useIsAuthorizedType>((set) => ({
   isAuthorized: false,
   setIsAuthorized: (newIsAuthorized) => (set(() => ({ isAuthorized: newIsAuthorized })))
 }))

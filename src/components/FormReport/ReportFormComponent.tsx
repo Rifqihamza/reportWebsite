@@ -14,16 +14,16 @@ import {
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
-import { useReportData } from "../../hooks/shared/useReportData";
-import { useIsAuthorized } from "../../hooks/shared/useIsAuthorized";
-import { useReportConfigHook } from "../../hooks/useReportConfigHook";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
+import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
+import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
 
 export default function ReportFormComponent() {
   // Authorized state
-  const { isAuthorized } = useIsAuthorized();
+  const { isAuthorized } = useIsAuthorizedHook();
   
   // Report Data State
-  const { reportData, setReportData } = useReportData();
+  const { reportData, setReportData } = useReportDataHook();
   
   // Report Form State
   const [submitted_by, setSubmittedBy] = useState("");
@@ -182,6 +182,7 @@ export default function ReportFormComponent() {
               selected={location}
               disabled={locationOptions.length == 0}
               icon="pi pi-map"
+              filter
             />
           </div>
 
@@ -267,6 +268,7 @@ export default function ReportFormComponent() {
               }}
               icon="pi pi-user"
               disabled={picNamesOptions.length === 0}
+              filter
             />
           )}
           {/* End Nama PIC */}
