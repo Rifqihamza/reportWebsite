@@ -9,7 +9,7 @@ import { formatDate } from "../../utils/other";
 export default function ReportDetailModal() {
     const { userData } = useUserDataHook();
     const { reportData } = useReportDataHook();
-    const { detailId, deleteDisabled, handleClose, handleDetail } = useReportDetailHook();
+    const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
 
     const { setEditVisible } = useReportEditHook();
     
@@ -94,7 +94,7 @@ export default function ReportDetailModal() {
                         </button>
                         <button
                             className="disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#7FA1C3] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
-                            onClick={() => report_data ? handleDetail(report_data.id) : null}
+                            onClick={() => report_data ? handleDelete(report_data.id) : null}
                             disabled={deleteDisabled}
                         >
                             {deleteDisabled && <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i>}

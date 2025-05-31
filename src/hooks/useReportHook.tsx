@@ -27,7 +27,7 @@ type useReportDetailHookType = {
 
   deleteDisabled: boolean;
   setDeleteDisabled: (newDeleteDisabled: boolean) => void;
-  handleDelete: (id: string, userData: any) => Promise<boolean | undefined>;
+  handleDelete: (id: string) => Promise<boolean | undefined>;
 };
 
 export const useReportDetailHook = create<useReportDetailHookType>((set, get) => {
@@ -79,7 +79,8 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       if (result == APIResultType.NoError) {
         setReportData(reportData.filter((value) => value.id != id));
         showMessage("Success", "success", "Data berhasil dihapus!");
-        set(() => ({ deleteDisabled: false }));
+
+        set(() => ({ deleteDisabled: false, detailId: null }));
         return true;
       } else if (result == APIResultType.InternalServerError) {
         showMessage("Error", "error", "Terjadi error di server!");
