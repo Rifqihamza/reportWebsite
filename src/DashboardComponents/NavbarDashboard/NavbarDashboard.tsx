@@ -28,7 +28,7 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, 
 
     return (
         <div
-            className={`md:static h-[70vh] w-[calc(100vw_-_(var(--spacing)_*_8))] fixed bg-white shadow shadow-gray-500 rounded-2xl duration-300 z-20 ${showSidebar ? "w-[18rem] translate-x-0" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? " fixed" : "")} `}>
+            className={`md:relative md:w-0 md:h-full h-[70vh] w-[calc(100vw_-_(var(--spacing)_*_8))] fixed bg-white shadow shadow-gray-500 rounded-2xl duration-300 z-20 ${showSidebar ? "md:w-[18rem] translate-x-0" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? " md:absolute!" : "")} `}>
             <div
                 className={`p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap  ${showSidebar ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
                     }`}
