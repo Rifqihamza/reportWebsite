@@ -17,6 +17,7 @@ import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
 import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
+import { useThanksModalHook } from "../../hooks/shared/useThanksModal";
 
 export default function ReportFormComponent() {
   // Authorized state
@@ -41,9 +42,9 @@ export default function ReportFormComponent() {
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const { picNamesOptions, setPicNamesOptions, locationOptions, setLocationOptions } = useReportConfigHook();
+  const { setShowThanks } = useThanksModalHook();
 
   const toastProgress = useRef<Toast>(null);
-  const toastSuccess = useRef<Toast>(null);
 
   const reset_form = () => {
     setSubmittedBy("");
@@ -70,7 +71,6 @@ export default function ReportFormComponent() {
     reset_form();
 
     setSubmitDisabled(true);
-    toastSuccess.current!.clear();
     toastProgress.current!.show({
       summary: "Sedang upload data...",
     });
@@ -91,11 +91,8 @@ export default function ReportFormComponent() {
 
     if (typeof result == "object") {
       setReportData([result, ...reportData]);
-      toastSuccess.current!.show({
-        summary: "Data berhasil direkam!",
-        severity: "success",
-        life: 3000,
-      });
+      setShowThanks(true);
+      console.log("TEST");
     } else if (result == APIResultType.Unauthorized) {
       alert("Unauthroized report detected!");
     } else if (result == APIResultType.InternalServerError) {
@@ -405,7 +402,6 @@ export default function ReportFormComponent() {
           </section>
         )}
       ></Toast>
-      <Toast ref={toastSuccess} />
       {/* End Message Toast */}
     </>
   );

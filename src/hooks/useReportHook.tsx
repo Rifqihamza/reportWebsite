@@ -9,7 +9,7 @@ import {
 import { useReportDataHook } from "./shared/useReportData";
 import { useUserDataHook } from "./shared/useUserData";
 import { APIResultType, deleteReport } from "../utils/api_interface";
-import { useShowMessageHook } from "./shared/useShowMessage";
+import { useMessageToastHook } from "./shared/useMessageToast";
 import { useEffect } from "react";
 
 const maxReportDataPerPage: number = 5;
@@ -58,7 +58,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
     handleDelete: async (id: string) => {
       const { reportData, setReportData } = useReportDataHook.getState();
       const { userData } = useUserDataHook.getState();
-      const { showMessage } = useShowMessageHook.getState();
+      const { showMessage } = useMessageToastHook.getState();
 
       // Check if the user is
       if (!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
