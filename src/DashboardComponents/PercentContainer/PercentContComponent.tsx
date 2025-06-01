@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface Report {
     labels: string;
@@ -23,7 +23,7 @@ const statusColors: {
     Safety: "text-white bg-orange-400"
 };
 
-const PercenContComponent: React.FC<PercenContProps> = ({ reports, icon, label }) => {
+export default function PercenContComponent({ reports, icon, label }: PercenContProps) {
 
     // Normalize label "VR" ke "5R" dan kelompokkan
     const groupedReports = useMemo(() => {
@@ -67,5 +67,3 @@ const PercenContComponent: React.FC<PercenContProps> = ({ reports, icon, label }
         </div>
     );
 };
-
-export default PercenContComponent;

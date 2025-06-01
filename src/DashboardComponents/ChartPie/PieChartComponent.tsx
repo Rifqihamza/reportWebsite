@@ -1,6 +1,7 @@
 import React, { type Dispatch, type SetStateAction } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { statusColorHex, string_to_reporttype, type ReportType } from "../../types/variables";
+import { usePieChartHook } from "../../hooks/useChartHook";
 interface ApexInternalConfig {
   config: {
     labels: string[];
@@ -8,21 +9,15 @@ interface ApexInternalConfig {
   };
 }
 
-interface Report {
-    labels: string;
-    value: number;
-}
-
 interface PieChartProps {
-    reports: Report[];
-    setReportType?: Dispatch<SetStateAction<ReportType|null>>;
     reportType?: ReportType|null
 }
 
-const PieChart: React.FC<PieChartProps> = ({ reports, setReportType, reportType }) => {
+const PieChart: React.FC<PieChartProps> = ({ reportType }) => {
+    const { pieCategory, setLineChartCategoryFilter: setChartCategoryFilter } = usePieChartHook();
 
     // Hitung jumlah masing-masing jenis laporan
-    const reportByCategory = reports.reduce((acc, report) => {
+    const reportByCategory = pieCategory.reduce((acc, report) => {
         report.labels = (report.labels == "VR" ? "5R" : report.labels);
         if (!acc[report.labels]) {
             acc[report.labels] = 0;
@@ -47,12 +42,10 @@ const PieChart: React.FC<PieChartProps> = ({ reports, setReportType, reportType 
                     selectedDataPoints: number[][];
                     w: ApexInternalConfig;
                 }) {
-                    if(setReportType) {
-                        const selectedIndex = config.dataPointIndex;
-                        const selectedLabel = string_to_reporttype(config.w.config.labels[selectedIndex]);
+                    const selectedIndex = config.dataPointIndex;
+                    const selectedLabel = string_to_reporttype(config.w.config.labels[selectedIndex]);
 
-                        setReportType((selectedLabel && selectedLabel != reportType) ? selectedLabel : null);
-                    }
+                    setChartCategoryFilter((selectedLabel && selectedLabel != reportType) ? selectedLabel : null);
                 }
             },
         },

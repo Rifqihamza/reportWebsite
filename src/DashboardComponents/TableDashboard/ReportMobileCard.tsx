@@ -1,14 +1,14 @@
 import React from 'react';
 import { reporttype_to_string, type ReportData } from '../../types/variables';
-import { useFormatDate, statusColors } from '../../hooks/useReportHooks';
+import { statusColors, useReportDetailHook } from "../../hooks/useReportHook";
+import { formatDate } from "../../utils/other";
 
 interface ReportMobileCardProps {
     report: ReportData;
-    onDetail: (id: string) => void;
 }
 
-const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report, onDetail }) => {
-    const { formatDate } = useFormatDate();
+const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
+    const { handleDetail } = useReportDetailHook();
 
     return (
         <div
@@ -48,7 +48,7 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report, onDetail })
             <div className="mt-3 flex justify-end">
                 <button
                     className="mobile-detail-button text-white bg-[#7FA1C3] px-3 py-2 rounded-xl text-sm font-medium"
-                    onClick={() => onDetail(report.id)}
+                    onClick={() => handleDetail(report.id)}
                 >
                     Lihat Detail
                 </button>
