@@ -368,7 +368,7 @@ export default function ReportFormComponent({
           ) : (
             <button
               type="button"
-              className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#93BFCF] hover:bg-[#93bfcfbe] duration-300 "
+              className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#93BFCF] hover:bg-[#6096B4] duration-300 "
               disabled={submitDisabled}
               onClick={handle_submit}
             >
