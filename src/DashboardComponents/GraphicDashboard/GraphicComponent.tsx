@@ -1,8 +1,8 @@
 import React, { useEffect, useState, Suspense } from "react";
 import strftime from "strftime";
-import type { ReportData } from "../../types/variables";
 import { ReportStatus, ReportType, reporttype_to_string, statusColorHex, string_to_reporttype } from '../../types/variables';
 import { Dropdown } from "primereact/dropdown";
+import { useReportDataHook } from "../../hooks/shared/useReportData";
 
 const LineChart = React.lazy(() => import("../../DashboardComponents/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../DashboardComponents/ChartPie/PieChartComponent"));
@@ -53,8 +53,9 @@ enum LineChartFilterOption {
     Today = "Today"
 }
 
-export default function GraphicComponent({ reportData }: { reportData: ReportData[] }) {
-
+export default function GraphicChart() {
+    const { reportData } = useReportDataHook();
+    
     const [currentYearReports, setCurrentYearReports] = useState<LineChartValueType[]>([]);
     const [pieCategory, setPieCategory] = useState<CategoryType[]>([]);
     const [pieStatus, setPieStatus] = useState<CategoryType[]>([]);
@@ -290,7 +291,7 @@ export default function GraphicComponent({ reportData }: { reportData: ReportDat
                     </div>
                 </div>
 
-                {/* Kanan: Persen Components + Container Baru */}
+                {/* Kanan: Persen Components + Container Insight */}
                 <div className="flex flex-col gap-4 w-full">
                     {/* Grid untuk 2 PersenComp */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -310,11 +311,10 @@ export default function GraphicComponent({ reportData }: { reportData: ReportDat
                         </Suspense>
                     </div>
 
-                    {/* Container Baru di bawahnya */}
+                    {/* Container Insight di bawahnya */}
                     <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-white shadow">
                         <h2 className="font-semibold uppercase tracking-wider text-lg mb-2">Insights</h2>
-                        {/* Konten di sini */}
-                        <div className="text-black">{!insight ? "Insights masih dalam pengerjaan" :
+                        <div className="text-black">{!insight ? "Membuat insight.." :
                             <ol className="list-decimal m-4">
                                 <li>Terdapat <b>{insight.totalReportAllTime} temuan selama ini</b> dan <b>{insight.totalReportThisMonth} diantara nya terjadi pada bulan ini.</b></li>
                                 <li>Grafik menunjukkan bahwa <b>laporan temuan bulan ini {insight.betterThanLastMonth ? "lebih sedikit" : "lebih banyak"} dari bulan sebelumnya.</b></li>
@@ -324,7 +324,7 @@ export default function GraphicComponent({ reportData }: { reportData: ReportDat
                                 {Object.keys(insight.totalReportPerPIC).length > 2 ?
                                     <>
                                         {(() => {
-                                            const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => b[1] - a[1]);
+                                            const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => a[1] - b[1]);
                                             return <li>PIC dengan temuan paling sedikit adalah <b>{sortedReportPerPICEntries[0][0]}</b>. Sedangkan yang paling banyak adalah <b>{sortedReportPerPICEntries[sortedReportPerPICEntries.length - 1][0]}</b></li>
                                         })()
                                         }

@@ -4,6 +4,7 @@ import "primereact/resources/themes/lara-light-blue/theme.css"; // atau tema lai
 import "primereact/resources/primereact.min.css"; // komponen core
 import "primeicons/primeicons.css"; // icon
 import VerifyAuthentication from "../components/GlobalComponents/VerifyAuthentication";
+import ToastMessage from "../components/ToastMessage/ToastMessage";
 
 const { children, pageType = "form" } = Astro.props;
 ---
@@ -32,8 +33,9 @@ const { children, pageType = "form" } = Astro.props;
       )
     }
 
-    <!-- <VerifyAuthentication client:load /> -->
+    <VerifyAuthentication client:load />
     <slot />
+    <ToastMessage client:load />
 
     <script
       is:inline

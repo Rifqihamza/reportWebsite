@@ -15,7 +15,6 @@ export default function VerifyAuthentication() {
     }
 
     checkAuthentication().then((result) => {
-      console.log(result);
       if (result == APIResultType.NeedCaptchaAuthentication) {
         window.location.href = "/captcha/";
       }
