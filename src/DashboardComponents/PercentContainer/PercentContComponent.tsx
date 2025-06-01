@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface Report {
     labels: string;
@@ -23,7 +23,7 @@ const statusColors: {
     Safety: "text-white bg-orange-400"
 };
 
-const PercenContComponent: React.FC<PercenContProps> = ({ reports, icon, label }) => {
+export default function PercenContComponent({ reports, icon, label }: PercenContProps) {
 
     // Normalize label "VR" ke "5R" dan kelompokkan
     const groupedReports = useMemo(() => {
@@ -51,10 +51,10 @@ const PercenContComponent: React.FC<PercenContProps> = ({ reports, icon, label }
     );
 
     return (
-        <div className='bg-white px-6 py-4 rounded-xl border border-gray-300 shadow-inner shadow-gray-100 space-y-4'>
+        <div className='bg-white px-6 py-4 rounded-xl  space-y-4'>
             <div className='flex flex-row justify-between items-center gap-10'>
-                <h1 className="md:text-[16px] text-xl font-bold whitespace-nowrap">Persentase {label}</h1>
-                <span><i className={icon} style={{ fontSize: 20 }} /></span>
+                <h1 className="md:text-[16px] text-xl text-black font-bold whitespace-nowrap">Persentase {label}</h1>
+                <span><i className={icon} style={{ fontSize: 20, color: "#000" }} /></span>
             </div>
             <div className='space-y-3 px-3 py-1'>
                 {percentageData.map((item, index) => (
@@ -67,5 +67,3 @@ const PercenContComponent: React.FC<PercenContProps> = ({ reports, icon, label }
         </div>
     );
 };
-
-export default PercenContComponent;

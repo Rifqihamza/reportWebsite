@@ -163,7 +163,6 @@ export function UseChartHookEffect() {
   const { reportData } = useReportDataHook();
   const {
     lineChartCategoryFilter: chartCategoryFilter,
-    percentStatus,
     setPercentStatus,
     setPieCategory,
     setPieStatus,

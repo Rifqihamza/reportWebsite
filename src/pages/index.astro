@@ -1,9 +1,10 @@
 ---
+// index.astro
 import Layout from "../layouts/Layout.astro";
 import WrapperPage from "./MainPages/_wrapper";
 ---
 
-<Layout>
+<Layout pageType="form">
   <section id="container" class="w-full mx-auto relative">
     <WrapperPage client:only />
   </section>

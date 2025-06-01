@@ -7,6 +7,8 @@ import VerifyAuthentication from "../components/GlobalComponents/VerifyAuthentic
 import ToastMessage from "../components/ToastMessage/ToastMessage";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
+
+const { children, pageType = "form" } = Astro.props;
 ---
 
 <!doctype html>
@@ -22,12 +24,16 @@ import SpeedInsights from "@vercel/speed-insights/astro";
     <meta name="generator" content={Astro.generator} />
     <title>Report Website | SMK Mitra Industri MM2100</title>
   </head>
-  <body>
-    <div>
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
-    </div>
+  <body class={pageType === "dashboard" ? "bg-dashboard" : "bg-form"}>
+    {
+      pageType === "form" && (
+        <div>
+          <div class="wave" />
+          <div class="wave" />
+          <div class="wave" />
+        </div>
+      )
+    }
 
     <VerifyAuthentication client:load />
     <slot />

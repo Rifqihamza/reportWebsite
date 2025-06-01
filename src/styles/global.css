@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: helloFont;
-  src: url("/public/helloFont/Hello.ttf");
+  src: url("/helloFont/Hello.ttf");
 }
 
 @font-face {
@@ -10,13 +10,42 @@
   src: url("/sairaFont/Saira-VariableFont_wdth\,wght.ttf");
 }
 
+/* Scrollbar Track */
 ::-webkit-scrollbar {
-  display: none;
+  width: 10px;
+  height: 10px;
+}
+
+/* Scrollbar Thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* warna thumb */
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.3s ease;
+}
+
+/* Thumb Hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* saat hover */
+}
+
+/* Scrollbar Track Background */
+::-webkit-scrollbar-track {
+  background: #aaaa;
+  border-radius: 10px;
 }
 
 body {
   font-family: Saira;
-  background-color: #6096B4;
+}
+
+.bg-form {
+  background: #6096B4;
+}
+
+.bg-dashboard {
+  background: oklch(92.9% 0.013 255.508);
 }
 
 .titlePage {
@@ -28,7 +57,7 @@ body {
 }
 
 .wave {
-  background: #EEE9DA;
+  background: #eee9da;
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 150%;
@@ -118,4 +147,30 @@ body {
 .welcomeTitle h1 {
   font-family: helloFont;
   font-size: 100px;
+}
+
+.p-inputtext {
+  background-color: #fff;
+  color: black; /* teks input putih */
+  padding: 0.5rem 0;
+  border-radius: 0.75rem;
+  border: none;
+  text-align: center;
+}
+
+/* Agar placeholder juga putih */
+.p-inputtext::placeholder {
+  color: black; /* placeholder putih transparan */
+}
+
+/* Opsional: untuk input yang disabled */
+.p-inputtext:disabled {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.p-inputtext:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }

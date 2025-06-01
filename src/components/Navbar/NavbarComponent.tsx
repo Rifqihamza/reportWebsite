@@ -5,12 +5,8 @@ import { AccountType } from "../../types/variables";
 import LogoutButton from "../LogoutButton/LogoutButtonComponent";
 import { useUserDataHook } from "../../hooks/shared/useUserData";
 import { userLogout } from "../../utils/api_interface";
-interface NavbarProps {
-  activeTab: number;
-  setActiveTab: (tabIndex: number) => void;
-}
 
-const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
+const NavbarComponents = () => {
   async function handle_logout() {
     if (userData && !(await userLogout())) {
       alert("Terjadi error saat ingin logout!");
@@ -31,57 +27,17 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
       {/* Desk Navbar */}
       <div className="hidden md:flex flex-row items-center justify-evenly px-6 py-2">
         <button
-          onClick={() => setActiveTab(0)}
-          className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${
-            activeTab === 0 ? "text-white" : "text-white/80"
-          }`}
+          className={`pointer-events-none relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 text-white`}
         >
           Form Laporan
           <span
-            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${
-              activeTab === 0 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
-            }`}
+            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 w-full`}
           ></span>
         </button>
-        {isAuthorized ? (
-          <button
-            onClick={() => setActiveTab(1)}
-            className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${
-              activeTab === 1 ? "text-white" : "text-white/80"
-            }`}
-          >
-            Tabel Laporan
-            <span
-              className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${
-                activeTab === 1 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
-              }`}
-            ></span>
-          </button>
-        ) : (
-          ""
-        )}
-
-        {isAuthorized ? (
-          <button
-            onClick={() => setActiveTab(2)}
-            className={`relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 ${
-              activeTab === 2 ? "text-white" : "text-white/80"
-            }`}
-          >
-            Grafik Laporan
-            <span
-              className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${
-                activeTab === 2 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
-              }`}
-            ></span>
-          </button>
-        ) : (
-          ""
-        )}
       </div>
       {/* Desk Navbar */}
 
-      <LogoutButton handle_logout={handle_logout} userData={userData} />
+      <LogoutButton handle_logout={handle_logout} />
 
       {/* SideBar Section for Mobile */}
       <div className="md:hidden flex flex-row items-center justify-between px-6 py-2 bg-white mb-4">
@@ -106,36 +62,11 @@ const NavbarComponents = ({ activeTab, setActiveTab }: NavbarProps) => {
         <div className="flex flex-col items-start justify-center w-full gap-2">
           <button
             onClick={() => {
-              setActiveTab(0);
               setIsVisible(false);
             }}
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeTab === 0 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"
-            }`}
+            className={`w-full text-left px-4 py-2 rounded-lg bg-[#7FA1C3] text-white`}
           >
             Form Laporan
-          </button>
-          <button
-            onClick={() => {
-              setActiveTab(1);
-              setIsVisible(false);
-            }}
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeTab === 1 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"
-            }`}
-          >
-            Data Laporan
-          </button>
-          <button
-            onClick={() => {
-              setActiveTab(2);
-              setIsVisible(false);
-            }}
-            className={`w-full text-left px-4 py-2 rounded-lg ${
-              activeTab === 2 ? "bg-[#7FA1C3] text-white" : "hover:bg-gray-300 duration-300"
-            }`}
-          >
-            Chart Data
           </button>
         </div>
 

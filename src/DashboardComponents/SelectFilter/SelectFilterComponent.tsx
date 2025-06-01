@@ -12,20 +12,17 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import ShieldIcon from '@mui/icons-material/Shield';
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { useReportFilterHook } from '../../hooks/useReportHook';
 
-interface FilterSelectProps {
-    label: string;
-    selectedFilter: ReportStatus | ReportType | null,
-    setSelectedFilter: (newSelectedFilter: ReportStatus | ReportType | null) => void
-}
-
-export default function FilterSelect(props: FilterSelectProps) {
+export default function FilterSelect() {
+    const { selectedFilter, setSelectedFilter } = useReportFilterHook();
+    
     const menu = useRef<TieredMenu>(null);
     const items: MenuItem[] = [
         {
             label: "No Filter",
             command: () => {
-                props.setSelectedFilter(null);
+                setSelectedFilter(null);
             }
         },
         {
@@ -34,7 +31,7 @@ export default function FilterSelect(props: FilterSelectProps) {
                 return {
                     label: status.toString(),
                     template: () => (
-                        <div className={"flex align-items-center gap-2" + (props.selectedFilter == status ? " text-[#1d4ed8]" : "")}>
+                        <div className={"flex align-items-center gap-2" + (selectedFilter == status ? " text-[#1d4ed8]" : "")}>
                             {(() => {
                                 switch (status) {
                                     case ReportStatus.Complete:
@@ -52,7 +49,7 @@ export default function FilterSelect(props: FilterSelectProps) {
                         </div>
                     ),
                     command: () => {
-                        props.setSelectedFilter(props.selectedFilter == status ? null : status);
+                        setSelectedFilter(selectedFilter == status ? null : status);
                     }
                 }
             })
@@ -63,7 +60,7 @@ export default function FilterSelect(props: FilterSelectProps) {
                 return {
                     label: reporttype_to_string(type),
                     template: () => (
-                        <div className={"flex align-items-center gap-2" + (props.selectedFilter == type ? " text-[#1d4ed8]" : "")}>
+                        <div className={"flex align-items-center gap-2" + (selectedFilter == type ? " text-[#1d4ed8]" : "")}>
                             {(() => {
                                 switch (type) {
                                     case ReportType.Abnormality:
@@ -79,7 +76,7 @@ export default function FilterSelect(props: FilterSelectProps) {
                         </div>
                     ),
                     command: () => {
-                        props.setSelectedFilter(props.selectedFilter == type ? null : type);
+                        setSelectedFilter(selectedFilter == type ? null : type);
                     }
                 }
             })
@@ -90,8 +87,8 @@ export default function FilterSelect(props: FilterSelectProps) {
     return (
         <div className="flex justify-content-center" >
             <TieredMenu model={items} popup ref={menu} breakpoint='4096px' />
-            <button className='bg-[#7fa1c3] hover:bg-[#6482ad] px-4 py-3 rounded-lg text-white duration-200' onClick={(e) => menu.current?.toggle(e)
-            }>{props.selectedFilter ? (reporttype_to_string(props.selectedFilter) ?? props.selectedFilter.toString()) : props.label}</button>
+            <button className='bg-white px-4 py-2 rounded-xl text-black duration-200' onClick={(e) => menu.current?.toggle(e)
+            }>{selectedFilter ? (reporttype_to_string(selectedFilter) ?? selectedFilter.toString()) : "Filter"}</button>
         </div>
     )
 }
