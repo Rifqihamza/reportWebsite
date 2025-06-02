@@ -29,6 +29,14 @@ enum ReportStatus {
   Hold
 }
 
+enum Campus {
+  MI
+  PD
+  PATI
+  AMI
+  MOJO
+}
+
 // Database model
 model Users {
   id       String      @id @default(uuid())
@@ -43,23 +51,29 @@ model Users {
 }
 
 model Report_PIC {
-  id   String @id @default(uuid())
-  name String @unique
+  id          String @id @default(uuid())
+  name        String
+  campus_name Campus
 
   created_at DateTime @default(now())
 
   // Relation
   reports Report[]
+
+  @@unique([name, campus_name])
 }
 
 model Report_Location {
-  id       String @id @default(uuid())
-  location String @unique
+  id          String @id @default(uuid())
+  location    String
+  campus_name Campus
 
   created_at DateTime @default(now())
 
   // Relation
   reports Report[]
+
+  @@unique([location, campus_name])
 }
 
 model Report {
@@ -72,6 +86,7 @@ model Report {
   status          ReportStatus @default(NotStarted)
   image           String?
   detail_location String?
+  campus          Campus
 
   created_at DateTime @default(now())
 
@@ -79,11 +94,11 @@ model Report {
   due_date    DateTime?
 
   // Relations
-  responsible_pic Report_PIC? @relation(references: [name], fields: [pic_name], onDelete: SetNull)
-  pic_name        String?
+  responsible_pic Report_PIC? @relation(references: [id], fields: [pic_id], onDelete: SetNull)
+  pic_id          String?
 
-  report_location Report_Location? @relation(references: [location], fields: [location], onDelete: SetNull)
-  location        String?
+  report_location Report_Location? @relation(references: [id], fields: [location_id], onDelete: SetNull)
+  location_id     String?
 }
 
 model VerifiedCaptcha {

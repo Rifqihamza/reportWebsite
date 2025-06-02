@@ -1,5 +1,6 @@
+import { useCampusData } from "../hooks/shared/useCampusData";
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
-import type { Report_Location, Report_PIC, ReportData, User } from "../types/variables";
+import type { Campus, Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
 const base_url_endpoint: string = "";
@@ -14,7 +15,7 @@ export enum APIResultType {
 }
 
 // Backend Functionalities
-export async function userLogin(username: string, password: string): Promise<APIResultType> {
+export async function userLogin(username: string, password: string): Promise<APIResultType|AccountType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/login", {
         method: "POST",
@@ -30,7 +31,14 @@ export async function userLogin(username: string, password: string): Promise<API
 
     // Check the response
     if (response.ok) {
-        return APIResultType.NoError;
+        const role = (await response.json()).role;
+        const result = string_to_accounttype(role);
+        if(!result) {
+            alert("There's something unexpected. Please send this code to the dev. error code: 001");
+            return APIResultType.NoError;
+        }
+        
+        return result;
     }
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
@@ -60,7 +68,8 @@ export async function addReport(
     detail_location?: string,
     report_date?: string,
     due_date?: string,
-    image?: File
+    image?: File,
+    campus?: Campus
 ): Promise<APIResultType | ReportData> {
     // Setting up Form Data
     const form_data = new FormData();
@@ -75,6 +84,7 @@ export async function addReport(
     add_to_formdata(form_data, "detail_location", detail_location);
     add_to_formdata(form_data, "report_date", report_date);
     add_to_formdata(form_data, "due_date", due_date);
+    add_to_formdata(form_data, "campus", campus);
 
     if (image) {
         const compressed_image = await imageCompression(image, {
@@ -107,8 +117,14 @@ export async function addReport(
 
 
 export async function getReport(): Promise<ReportData[] | APIResultType> {
+    const { selectedCampus } = useCampusData();
+
+    if(!selectedCampus) {
+        return APIResultType.NoError;
+    }
+    
     // Fetch to API
-    const response = await fetch(base_url_endpoint + "/api/report/get", {
+    const response = await fetch(`${base_url_endpoint}/api/report/get?campus=${selectedCampus}`, {
         method: "GET",
         credentials: "include",
     });
@@ -260,9 +276,9 @@ export type formConfigurationResponse = {
     location_data: Report_Location[]
 }
 
-export async function getFormConfiguration() {
+export async function getFormConfiguration(selectedCampus: Campus) {
     // Fetch to API
-    const response = await fetch(base_url_endpoint + "/api/report_form/configuration/", {
+    const response = await fetch(`${base_url_endpoint}/api/report_form/configuration/?campus=${selectedCampus}`, {
         method: "GET",
         credentials: "include",
     });

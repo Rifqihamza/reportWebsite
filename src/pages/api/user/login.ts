@@ -39,5 +39,5 @@ export async function POST({ request }: APIContext) {
     });
 
     // Return OK
-    return create_response_cookie({}, user_token_cookie);
+    return create_response_cookie({ role: user.role }, user_token_cookie);
 }

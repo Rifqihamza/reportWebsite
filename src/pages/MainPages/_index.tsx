@@ -1,33 +1,26 @@
 import NavbarComponents from "../../components/Navbar/NavbarComponent";
 
 import { AccountType } from "../../types/variables";
-import { getReport, getUser } from "../../utils/api_interface";
-import React, { Suspense, useEffect, useState } from "react";
+import { getUser } from "../../utils/api_interface";
+import { useEffect } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
 
 import ReportForm from "./_FormReportPage";
 import FooterComponent from "../../components/Footer/FooterComponent";
 import { useUserDataHook } from "../../hooks/shared/useUserData";
-import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
+import SelectCampusOverlay from "../../components/SelectCampus/SelectCampusOverlay";
 
 export default function MainPage() {
   const { userData, setUserData } = useUserDataHook();
-  const { setReportData } = useReportDataHook();
   const { setIsAuthorized } = useIsAuthorizedHook();
 
   useEffect(() => {
     getUser().then(user_data => {
       if (typeof user_data === "object") {
         setUserData(user_data);
-      }
-    });
-
-    getReport().then(report_data_array => {
-      if (typeof report_data_array === "object") {
-        setReportData(report_data_array);
-      }
+    }
     });
   }, []);
 
@@ -38,6 +31,7 @@ export default function MainPage() {
 
   return (
     <>
+      <SelectCampusOverlay />
       <PrimeReactProvider>
         {/* Navbar */}
         <NavbarComponents />

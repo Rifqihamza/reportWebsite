@@ -1,8 +1,8 @@
 import type { APIContext } from "astro";
 import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
-import { Prisma, type Report } from "@prisma/client";
-import { AccountType, ReportType } from "../../../types/variables";
+import { Prisma, type Report, type Report_Location, type Report_PIC } from "@prisma/client";
+import { AccountType, ReportType, string_to_campus } from "../../../types/variables";
 import { z } from 'zod';
 
 
@@ -18,6 +18,7 @@ const ReportBodyType = z.object({
     due_date: z.string().optional(),
     follow_up_name: z.string().optional(),
     image: z.instanceof(File).optional(),
+    campus: z.string(),
 });
 
 export async function POST({ request }: APIContext) {
@@ -52,7 +53,8 @@ export async function POST({ request }: APIContext) {
         due_date,
         follow_up_name,
         image,
-        detail_location
+        detail_location,
+        campus
     } = parsed_result.data;
 
     // Check if user is teacher if it includes due date and follow up data
@@ -65,14 +67,28 @@ export async function POST({ request }: APIContext) {
         }
     }
 
+
+    const verified_campus_name = string_to_campus(campus);
     
+    if(!verified_campus_name) {
+        console.log(`Campus name is not valid!`);
+        return create_response_status(400);
+    }
+    
+
     // Verify PIC name and Location
     if(pic_name) {
-        const pic_data = await prisma.report_PIC.findUnique({
-            where: {
-                name: pic_name
-            }
-        });
+        let pic_data: Report_PIC | null = null
+        if(verified_campus_name) {
+            pic_data = await prisma.report_PIC.findUnique({
+                where: {
+                    name_campus_name: {
+                        name: pic_name,
+                        campus_name: verified_campus_name
+                    }
+                }
+            });
+        }
     
         if(!pic_data) {
             console.log("PIC Name is not valid!");
@@ -80,12 +96,19 @@ export async function POST({ request }: APIContext) {
         }
     }
     
+
     if(location) {
-        const location_data = await prisma.report_Location.findUnique({
-            where: {
-                location: location
-            }
-        });
+        let location_data: Report_Location | null = null;
+        if(verified_campus_name) {
+            location_data = await prisma.report_Location.findUnique({
+                where: {
+                    location_campus_name: {
+                        location: location,
+                        campus_name: verified_campus_name
+                    }
+                }
+            });
+        }
     
         if(!location_data) {
             console.log("Location is not valid!");
@@ -151,19 +174,26 @@ export async function POST({ request }: APIContext) {
                 follow_up_name: follow_up_name,
                 responsible_pic: pic_name ? {
                     connect: {
-                        name: pic_name
+                        name_campus_name: {
+                            name: pic_name,
+                            campus_name: verified_campus_name
+                        }
                     },
                 } : undefined,
                 report_location: {
                     connect: {
-                        location: location
+                        location_campus_name: {
+                            location: location,
+                            campus_name: verified_campus_name
+                        }
                     }
                 },
                 type: report_type,
                 report_date: report_date,
                 due_date: due_date,
                 image: image_file_path,
-                detail_location: detail_location
+                detail_location: detail_location,
+                campus: verified_campus_name
             }
         })
     }

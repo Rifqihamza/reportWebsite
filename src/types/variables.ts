@@ -18,6 +18,14 @@ export enum ReportStatus {
     Hold = "Hold"
 }
 
+export enum Campus {
+    MI = "MI",
+    PD = "PD",
+    PATI = "PATI",
+    AMI = "AMI",
+    MOJO = "MOJO"
+}
+
 export function reporttype_to_string(data: any): string {
     return data == "VR" ? "5R" : data.toString()
 }
@@ -35,6 +43,10 @@ export function string_to_reportstatus(data: string): ReportStatus | undefined {
     return Object.values(ReportStatus).find(value => value.toString() == data);
 }
 
+export function string_to_campus(data?: string): Campus | undefined {
+    return Object.values(Campus).find(value => value.toString() == data);
+}
+
 // DATABASE MODEL
 export type ReportData = {
     id: string,
@@ -50,6 +62,7 @@ export type ReportData = {
     created_at: string,
     report_date: string,
     due_date: string,
+    campus?: Campus,
     image: string
 }
 

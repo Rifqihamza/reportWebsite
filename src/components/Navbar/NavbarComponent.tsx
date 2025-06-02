@@ -19,9 +19,6 @@ const NavbarComponents = () => {
   const { userData } = useUserDataHook();
   const [setVisible, setIsVisible] = useState<boolean>(false);
 
-  const isAuthorized =
-    userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor);
-
   return (
     <>
       {/* Desk Navbar */}
