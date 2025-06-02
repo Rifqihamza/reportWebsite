@@ -6,8 +6,8 @@ import { Image } from "astro:assets";
 
 ---
 
-<div class="overflow-hidden flex justify-center items-center p-10 fixed top-[-100%] left-1/2 -translate-x-1/2 -translate-y-1/2 has-[.show-thanks]:top-1/2 bg-[#93BFCF] border-white border-3 rounded-xl z-100 w-[70vh] max-w-[min(750px,_70vw)] h-[70vh]">
-    <ThanksOverlayTrigger />
-    <h1 class="text-center text-xl font-thin">Terima kasih sudah melaporkan temuan mu!</h1>
-    <Image src={ThumbsUpImage} alt="Thumbs Up Image" class="absolute bottom-10 left-10" />
+<div class="duration-500 overflow-hidden flex justify-center items-center p-10 fixed top-[-100%] left-1/2 -translate-x-1/2 -translate-y-1/2 has-[.show-thanks]:top-1/2 bg-[#93BFCF] border-white border-3 rounded-xl z-100 w-[70vh] max-w-[min(750px,_70vw)] h-[70vh]">
+    <ThanksOverlayTrigger client:load />
+    <h1 class="text-center text-3xl font-bold text-white">Terima kasih sudah melaporkan temuan mu!</h1>
+    <Image src={ThumbsUpImage} alt="Thumbs Up Image" width={250} height={250} class="absolute bottom-20 left-20 -translate-x-1/2 translate-y-1/2 opacity-20 -rotate-20" />
 </div>

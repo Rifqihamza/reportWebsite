@@ -61,8 +61,6 @@ export default function ReportFormComponent() {
   };
 
   const handle_submit = async () => {
-    console.log(location);
-
     if (!submitted_by || !message || !category || !location || !reportDate) {
       alert("Please complete the form.");
       return;
@@ -92,7 +90,10 @@ export default function ReportFormComponent() {
     if (typeof result == "object") {
       setReportData([result, ...reportData]);
       setShowThanks(true);
-      console.log("TEST");
+      setTimeout(() => {
+        setShowThanks(false);
+      }, 2000);
+
     } else if (result == APIResultType.Unauthorized) {
       alert("Unauthroized report detected!");
     } else if (result == APIResultType.InternalServerError) {
