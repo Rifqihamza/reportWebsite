@@ -23,8 +23,23 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, 
     }, [showSidebar])
 
     useEffect(() => {
-        setShowSidebar(false);
+        setShowSidebar(true);
     }, [activeTab]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 768) {
+                setShowSidebar(true); // md ke atas, sidebar selalu terbuka
+            } else {
+                setShowSidebar(false); // mobile, sidebar tertutup default
+            }
+        };
+
+        handleResize(); // Cek saat pertama kali
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     return (
         <div

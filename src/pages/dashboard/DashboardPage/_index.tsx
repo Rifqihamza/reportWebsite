@@ -17,7 +17,7 @@ export default function DashboardPage() {
     const { userData, setUserData } = useUserDataHook();
     const { setReportData } = useReportDataHook();
     const { setPicNamesOptions, setLocationOptions } = useReportConfigHook();
- 
+
     useEffect(() => {
         getUser().then(user_data => {
             if (typeof user_data === "object") {
@@ -32,27 +32,27 @@ export default function DashboardPage() {
         });
 
         getFormConfiguration().then((result) => {
-          if ((result as formConfigurationResponse).location_data !== undefined) {
-            result = result as formConfigurationResponse;
-            setPicNamesOptions(result.pic_data.map((value) => value.name));
-            setLocationOptions(result.location_data.map((value) => value.location));
-          } else if (result === APIResultType.Unauthorized) {
-            window.location.href = "/loginPage";
-          }
+            if ((result as formConfigurationResponse).location_data !== undefined) {
+                result = result as formConfigurationResponse;
+                setPicNamesOptions(result.pic_data.map((value) => value.name));
+                setLocationOptions(result.location_data.map((value) => value.location));
+            } else if (result === APIResultType.Unauthorized) {
+                window.location.href = "/loginPage";
+            }
         });
     }, []);
-    
+
     useEffect(() => {
-        if(userData) {
-            if(userData?.role !== AccountType.Guru && userData?.role !== AccountType.Vendor) {
+        if (userData) {
+            if (userData?.role !== AccountType.Guru && userData?.role !== AccountType.Vendor) {
                 window.location.href = "/";
             }
         }
     }, [userData]);
 
     return (
-        
-        <div className="flex flex-col h-screen p-4">
+
+        <div className="flex flex-col h-screen p-4 border 2">
             {/* Top Navbar */}
             <div className="bg-white rounded-2xl shadow shadow-gray-500 z-10 flex justify-between items-center px-4 py-1 sticky top-0">
                 <button
@@ -68,7 +68,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Main Area: Sidebar + Scrollable Content */}
-            <div className="flex overflow-auto gap-4 py-4 px-1 h-screen">
+            <div className="flex gap-4 py-4 px-1 h-full overflow-y-auto">
                 {/* Sidebar */}
                 <NavbarDashboard
                     activeTab={activeTab}
