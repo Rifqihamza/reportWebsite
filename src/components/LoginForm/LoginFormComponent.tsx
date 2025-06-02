@@ -1,23 +1,32 @@
 "use client";
 import { useState } from "react";
 import { APIResultType, userLogin } from "../../utils/api_interface";
+import { AccountType } from "../../types/variables";
+import { useMessageToastHook } from "../../hooks/shared/useMessageToast";
 
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginDisabled, setLoginDisabled] = useState(false);
+  const { showMessage } = useMessageToastHook();
   
   const handleLogin = async () => {
     setLoginDisabled(true);
 
     try {
       const result = await userLogin(username, password);
-      if (result == APIResultType.NoError) {
-        window.location.href = "/";
+      if (typeof result === "string") {
+        if(result === AccountType.Guru) {
+          window.location.href = "/dashboard";
+        }
+        else {
+          window.location.href = "/";
+        }
+        return;
       } else if (result == APIResultType.Unauthorized) {
-        alert("Unauthorized!");
+        showMessage("Unauthorized!", "error", "Wrong password or username");
       } else {
-        alert("There's an error!");
+        showMessage("There's an error!", "error", "Unknown error detected please report to developer");
       }
     } catch (err) {
       alert("There's an unexpected error..");
