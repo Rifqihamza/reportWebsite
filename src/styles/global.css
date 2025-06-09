@@ -18,21 +18,22 @@
 
 /* Scrollbar Thumb */
 ::-webkit-scrollbar-thumb {
-  background-color: #888; /* warna thumb */
+  background-color: #93bfcf; /* warna thumb */
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: content-box;
-  transition: background-color 0.3s ease;
+  transition: all 0.5s;
 }
 
 /* Thumb Hover */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* saat hover */
+  background-color: #6096b4; /* saat hover */
+  transition: all 0.5s;
 }
 
 /* Scrollbar Track Background */
 ::-webkit-scrollbar-track {
-  background: #aaaa;
+  background: #fff;
   border-radius: 10px;
 }
 
@@ -41,11 +42,15 @@ body {
 }
 
 .bg-form {
-  background: #6096B4;
+  background: #6096b4;
+}
+
+.bg-form::-webkit-scrollbar {
+  display: none;
 }
 
 .bg-dashboard {
-  background: oklch(92.9% 0.013 255.508);
+  background: #93bfcf;
 }
 
 .titlePage {
@@ -173,4 +178,54 @@ body {
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
+}
+
+/* Mengatur elemen utama dropdown */
+.p-dropdown {
+  width: 100%;
+  background-color: oklch(98.7% 0.022 95.277) !important;
+  border: none;
+  box-shadow: none;
+}
+
+/* Label teks di dalam dropdown */
+.p-dropdown-label {
+  background-color: oklch(98.7% 0.022 95.277) !important;
+  color: black; /* ubah sesuai kebutuhan */
+}
+
+/* Trigger (ikon panah bawah) */
+.p-dropdown-trigger {
+  background-color: oklch(98.7% 0.022 95.277) !important;
+  border-left: none;
+}
+
+/* Dropdown wrapper saat terbuka */
+.p-dropdown-panel {
+  background-color: white; /* atau transparent jika ingin semuanya transparan */
+  border: none;
+  box-shadow: none;
+}
+
+.MyGradient {
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 1) 80%,
+    rgba(0, 0, 0, 0)
+  );
+}
+
+/* style.css atau global.css */
+.swiper-pagination-bullet {
+  background-color: white;
+  opacity: 1;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #ffba08;
 }

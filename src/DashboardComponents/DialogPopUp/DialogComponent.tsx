@@ -34,7 +34,7 @@ export default function ReportEditModal() {
     const { reportData, setReportData } = useReportDataHook();
     const { detailId } = useReportDetailHook();
     const { picNamesOptions, locationOptions } = useReportConfigHook();
-    
+
     const report = reportData.find(value => value.id === detailId) || null;
 
     const [formState, setFormState] = useState({
@@ -76,7 +76,7 @@ export default function ReportEditModal() {
 
     const updateField = (field: keyof typeof formState, value: any) => {
         if (field == "due_date" || field == "report_date") {
-            if(value == null || value == undefined || value == "") {
+            if (value == null || value == undefined || value == "") {
                 value = "";
             }
             else {
@@ -100,7 +100,7 @@ export default function ReportEditModal() {
             result = await updateReport(report.id, {
                 ...report,
                 ...formState // formState now includes the updated status
-            } as ReportData); 
+            } as ReportData);
         }
         catch {
             showMessage("Success", "success", "Successfully update data!");
@@ -224,7 +224,7 @@ function DropdownField({ label, options, value, onChange, filter }: {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Dropdown filter value={value} options={options} onChange={onChange} className="w-full" placeholder={`Pilih ${label}`} />
+            <Dropdown className="[&_.p-dropdown-label]:text-white! [&_.p-dropdown-trigger]:text-white! bg-[#93bfcf]! [&_.p-dropdown]:bg-[#93bfcf]! [&_.p-dropdown-label]:bg-[#93bfcf]! [&_.p-dropdown-trigger]:bg-[#93bfcf]! w-full" filter value={value} options={options} onChange={onChange} placeholder={`Pilih ${label}`} />
         </div>
     );
 }

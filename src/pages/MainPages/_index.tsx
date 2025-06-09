@@ -35,7 +35,7 @@ export default function MainPage() {
       <PrimeReactProvider>
         {/* Navbar */}
         <NavbarComponents />
-        <div className="max-w-7xl mx-auto p-4 m-4 relative rounded-4xl w-full">
+        <div className="max-w-5xl mx-auto px-8">
           <ReportForm />
         </div>
         <FooterComponent />

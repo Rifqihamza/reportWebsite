@@ -1,8 +1,8 @@
 export default function SettingComponent() {
     return (
-        <section className="flex flex-row gap-4 rounded-2xl">
+        <section className="flex md:flex-row flex-col gap-4 w-full rounded-2xl">
             {/* Gambar Profile */}
-            <div className="bg-white shadow shadow-gray-500 flex flex-col items-center gap-4 rounded-2xl p-4 w-1/3">
+            <div className="bg-white shadow shadow-gray-500 flex flex-col items-center gap-4 rounded-2xl p-4 md:w-1/3 w-full">
                 <div className="w-full aspect-square flex items-center justify-center">
                     <img
                         src="/img/avatar.jpg"
@@ -17,7 +17,7 @@ export default function SettingComponent() {
             </div>
 
             {/* Data Profile */}
-            <div className="w-full bg-white shadow shadow-gray-500 rounded-2xl px-8 py-6">
+            <div className="w-full flex flex-col justify-between bg-white shadow shadow-gray-500 rounded-2xl px-8 py-6">
                 <ul className="flex flex-col gap-6">
                     {/* Username */}
                     <li className="flex flex-col items-center gap-2">
