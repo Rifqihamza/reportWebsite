@@ -18,9 +18,6 @@ const NavbarComponents = () => {
   const { userData } = useUserDataHook();
   const [setVisible, setIsVisible] = useState<boolean>(false);
 
-  const isAuthorized =
-    userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor);
-
   return (
     <>
       <div className="flex flex-row items-center justify-evenly px-6 py-2">

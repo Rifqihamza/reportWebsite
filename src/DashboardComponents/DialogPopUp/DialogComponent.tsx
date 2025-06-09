@@ -7,7 +7,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { APIResultType, updateReport } from '../../utils/api_interface';
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
-import { useShowMessageHook } from "../../hooks/shared/useShowMessage";
+import { useMessageToastHook } from "../../hooks/shared/useMessageToast";
 import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
 
 const reportTypeOptions = [
@@ -53,7 +53,7 @@ export default function ReportEditModal() {
     const [isChange, setIsChange] = useState(false);
 
     const { editVisible, setEditVisible } = useReportEditHook();
-    const { showMessage } = useShowMessageHook();
+    const { showMessage } = useMessageToastHook();
 
     useEffect(() => {
         if (report) {

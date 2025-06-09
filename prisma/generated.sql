@@ -16,9 +16,10 @@ CREATE TABLE `Users` (
 CREATE TABLE `Report_PIC` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `campus_name` ENUM('MI', 'PD', 'PATI', 'AMI', 'MOJO') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `Report_PIC_name_key`(`name`),
+    UNIQUE INDEX `Report_PIC_name_campus_name_key`(`name`, `campus_name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -26,9 +27,10 @@ CREATE TABLE `Report_PIC` (
 CREATE TABLE `Report_Location` (
     `id` VARCHAR(191) NOT NULL,
     `location` VARCHAR(191) NOT NULL,
+    `campus_name` ENUM('MI', 'PD', 'PATI', 'AMI', 'MOJO') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `Report_Location_location_key`(`location`),
+    UNIQUE INDEX `Report_Location_location_campus_name_key`(`location`, `campus_name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -47,7 +49,9 @@ CREATE TABLE `Report` (
     `report_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `due_date` DATETIME(3) NULL,
     `pic_name` VARCHAR(191) NULL,
+    `pic_campus` ENUM('MI', 'PD', 'PATI', 'AMI', 'MOJO') NULL,
     `location` VARCHAR(191) NULL,
+    `location_campus` ENUM('MI', 'PD', 'PATI', 'AMI', 'MOJO') NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -63,8 +67,8 @@ CREATE TABLE `VerifiedCaptcha` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Report` ADD CONSTRAINT `Report_pic_name_fkey` FOREIGN KEY (`pic_name`) REFERENCES `Report_PIC`(`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Report` ADD CONSTRAINT `Report_pic_name_pic_campus_fkey` FOREIGN KEY (`pic_name`, `pic_campus`) REFERENCES `Report_PIC`(`name`, `campus_name`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Report` ADD CONSTRAINT `Report_location_fkey` FOREIGN KEY (`location`) REFERENCES `Report_Location`(`location`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Report` ADD CONSTRAINT `Report_location_location_campus_fkey` FOREIGN KEY (`location`, `location_campus`) REFERENCES `Report_Location`(`location`, `campus_name`) ON DELETE SET NULL ON UPDATE CASCADE;
 

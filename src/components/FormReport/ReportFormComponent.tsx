@@ -9,6 +9,7 @@ import {
   AccountType,
   ReportType,
   string_to_accounttype,
+  string_to_campus,
   string_to_reporttype,
 } from "../../types/variables";
 import { Toast } from "primereact/toast";
@@ -17,6 +18,8 @@ import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
 import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
+import { useThanksModalHook } from "../../hooks/shared/useThanksModal";
+import { useCampusData } from "../../hooks/shared/useCampusData";
 
 export default function ReportFormComponent() {
   // Authorized state
@@ -41,9 +44,10 @@ export default function ReportFormComponent() {
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
   const { picNamesOptions, setPicNamesOptions, locationOptions, setLocationOptions } = useReportConfigHook();
+  const { setShowThanks } = useThanksModalHook();
+  const { selectedCampus } = useCampusData();
 
   const toastProgress = useRef<Toast>(null);
-  const toastSuccess = useRef<Toast>(null);
 
   const reset_form = () => {
     setSubmittedBy("");
@@ -60,8 +64,12 @@ export default function ReportFormComponent() {
   };
 
   const handle_submit = async () => {
-    console.log(location);
-
+    if(!selectedCampus) {
+      alert("Please select campus first");
+      window.location.reload();
+      return;
+    }
+    
     if (!submitted_by || !message || !category || !location || !reportDate) {
       alert("Please complete the form.");
       return;
@@ -70,10 +78,11 @@ export default function ReportFormComponent() {
     reset_form();
 
     setSubmitDisabled(true);
-    toastSuccess.current!.clear();
     toastProgress.current!.show({
       summary: "Sedang upload data...",
     });
+
+    const verified_campus_name = string_to_campus(selectedCampus);
 
     const result = await addReport(
       submitted_by,
@@ -86,16 +95,17 @@ export default function ReportFormComponent() {
       detailLocation,
       reportDate ? new Date(reportDate).toISOString() : undefined,
       reportDueDate ? new Date(reportDueDate).toISOString() : undefined,
-      image || undefined
+      image || undefined,
+      verified_campus_name
     );
 
     if (typeof result == "object") {
       setReportData([result, ...reportData]);
-      toastSuccess.current!.show({
-        summary: "Data berhasil direkam!",
-        severity: "success",
-        life: 3000,
-      });
+      setShowThanks(true);
+      setTimeout(() => {
+        setShowThanks(false);
+      }, 2000);
+
     } else if (result == APIResultType.Unauthorized) {
       alert("Unauthroized report detected!");
     } else if (result == APIResultType.InternalServerError) {
@@ -110,14 +120,18 @@ export default function ReportFormComponent() {
 
   // Get the location and PIC data
   useEffect(() => {
-    getFormConfiguration().then((result) => {
+    if(!selectedCampus) {
+      return;
+    }
+
+    getFormConfiguration(selectedCampus).then((result) => {
       if ((result as formConfigurationResponse).pic_data !== undefined) {
         result = result as formConfigurationResponse;
         setPicNamesOptions(result.pic_data.map((value) => value.name));
         setLocationOptions(result.location_data.map((value) => value.location));
       }
     });
-  }, []);
+  }, [selectedCampus]);
 
   return (
     <>
@@ -312,6 +326,7 @@ export default function ReportFormComponent() {
               selected={category}
               icon={"pi pi-box"}
             />
+            {isAuthorized && 
             <ReportFormDropdown
               label="Follow Up"
               placeholder="Follow Up"
@@ -322,7 +337,7 @@ export default function ReportFormComponent() {
               }}
               selected={followUpType}
               icon={"pi pi-file-check"}
-            />
+            />}
           </div>
           {/* End Dropdowns */}
         </div>
@@ -405,7 +420,6 @@ export default function ReportFormComponent() {
           </section>
         )}
       ></Toast>
-      <Toast ref={toastSuccess} />
       {/* End Message Toast */}
     </>
   );
