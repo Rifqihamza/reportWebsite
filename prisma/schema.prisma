@@ -35,6 +35,9 @@ enum Campus {
   PATI
   AMI
   MOJO
+  SM
+  BBL
+  KLTN
 }
 
 // Database model
@@ -54,7 +57,6 @@ model Report_PIC {
   id          String @id @default(uuid())
   name        String
   campus_name Campus
-
   created_at DateTime @default(now())
 
   // Relation
