@@ -23,7 +23,7 @@ export default function SelectCampusOverlay() {
       <Swiper
         effect={"coverflow"}
         autoplay={{
-          delay: 2000,
+          delay: 1500,
           disableOnInteraction: false,
         }}
         coverflowEffect={{
