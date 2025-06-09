@@ -179,3 +179,30 @@ body {
   box-shadow: none !important;
   border: none !important;
 }
+
+/* Mengatur elemen utama dropdown */
+.p-dropdown {
+  width: 100%;
+  background-color: oklch(98.7% 0.022 95.277) !important;
+  border: none;
+  box-shadow: none;
+}
+
+/* Label teks di dalam dropdown */
+.p-dropdown-label {
+  background-color: oklch(98.7% 0.022 95.277) !important;
+  color: black; /* ubah sesuai kebutuhan */
+}
+
+/* Trigger (ikon panah bawah) */
+.p-dropdown-trigger {
+  background-color: oklch(98.7% 0.022 95.277) !important;
+  border-left: none;
+}
+
+/* Dropdown wrapper saat terbuka */
+.p-dropdown-panel {
+  background-color: white; /* atau transparent jika ingin semuanya transparan */
+  border: none;
+  box-shadow: none;
+}

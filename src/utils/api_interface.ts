@@ -2,7 +2,7 @@ import { AccountType, ReportType, ReportStatus } from '../types/variables';
 import type { Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
-const base_url_endpoint: string = "";
+const base_url_endpoint: string = "http://localhost:4321";
 
 // Useful enum!
 export enum APIResultType {
@@ -44,7 +44,7 @@ export async function userLogin(username: string, password: string): Promise<API
 }
 
 function add_to_formdata(formData: FormData, key: string, value?: string) {
-    if(value) {
+    if (value) {
         formData.append(key, value);
     }
 }
@@ -64,7 +64,7 @@ export async function addReport(
 ): Promise<APIResultType | ReportData> {
     // Setting up Form Data
     const form_data = new FormData();
-    
+
     add_to_formdata(form_data, "submitted_by", submitted_by)
     add_to_formdata(form_data, "message", message);
     add_to_formdata(form_data, "report_type", report_type);
@@ -135,7 +135,7 @@ export async function checkAuthentication(): Promise<APIResultType> {
         credentials: "include",
     });
 
-    switch(response.status) {
+    switch (response.status) {
         case 511:
             return APIResultType.NeedCaptchaAuthentication;
         case 500:

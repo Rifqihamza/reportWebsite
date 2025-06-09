@@ -16,11 +16,22 @@ export default function GraphicChart() {
     return (
         <div className='flex flex-col gap-4 mx-4'>
             <UseChartHookEffect />
+            <div className="flex flex-row items-start gap-4">
+                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
+                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
+                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
+                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
+                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
+                <h1 className="text-2xl">&lsaquo;--- ini akan menjadi next plan UI</h1>
+            </div>
             {/* Line Chart */}
             <div className="w-full px-4 py-2 rounded-2xl bg-white shadow">
-                <div className="px-4 w-full flex flex-col lg:flex-row items-center justify-between">
-                    <h1 className='font-bold text-center text-xl'>Grafik Laporan Temuan</h1>
-                    <Dropdown className="px-4!" value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)} />
+                <div className="px-4 w-full flex flex-col items-start gap-2">
+                    <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
+                    <div className="flex flex-row items-center w-fit gap-4">
+                        <Dropdown className="px-4 [&_.p-dropdown-label]:text-white! [&_.p-dropdown-trigger]:text-white! bg-[#93bfcf]! [&_.p-dropdown]:bg-[#93bfcf]! [&_.p-dropdown-label]:bg-[#93bfcf]! [&_.p-dropdown-trigger]:bg-[#93bfcf]! " value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)} />
+                        <h1 className="text-md whitespace-nowrap">&lsaquo;--- ini akan dihilangkan nantinya untuk dipindahkan ke atas</h1>
+                    </div>
                 </div>
                 <Suspense fallback={<>Loading..</>}>
                     <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
@@ -78,14 +89,14 @@ export default function GraphicChart() {
                                 <li>Selama ini, <b>Kategori {reporttype_to_string(insight.highestOccuranceCategory)} paling sering muncul</b> dibandingkan dengan kategori yang lain.</li>
                                 <li><b>Hari yang sering terjadi temuan adalah hari {insight.highestOccuranceDay}</b>.</li>
                                 <li>{insight.notCompletedReportPreviousMonth > 0 ? <>Ada <b>{insight.notCompletedReportPreviousMonth.toString() + " laporan temuan yang belum terselesaikan di bulan lalu. Itu sekitar " + (Math.round(insight.notCompletedReportPreviousMonth * 100 / (insight.totalReportAllTime - insight.totalReportThisMonth))).toString() + "% dari keseluruhan laporan!"}</b></> : <b>Semua temuan bulan lalu sudah terselesaikan semua!</b>}</li>
-                                {Object.keys(insight.totalReportPerPIC).length > 2 ? 
-                                <>
-                                    {(() => {
-                                        const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => a[1] - b[1]);
-                                        return <li>PIC dengan temuan paling sedikit adalah <b>{sortedReportPerPICEntries[0][0]}</b>. Sedangkan yang paling banyak adalah <b>{sortedReportPerPICEntries[sortedReportPerPICEntries.length - 1][0]}</b></li>
-                                    })()
-                                    }
-                                </>:""}
+                                {Object.keys(insight.totalReportPerPIC).length > 2 ?
+                                    <>
+                                        {(() => {
+                                            const sortedReportPerPICEntries = Object.entries(insight.totalReportPerPIC).sort((a, b) => a[1] - b[1]);
+                                            return <li>PIC dengan temuan paling sedikit adalah <b>{sortedReportPerPICEntries[0][0]}</b>. Sedangkan yang paling banyak adalah <b>{sortedReportPerPICEntries[sortedReportPerPICEntries.length - 1][0]}</b></li>
+                                        })()
+                                        }
+                                    </> : ""}
                             </ol>}
                         </div>
                     </div>
