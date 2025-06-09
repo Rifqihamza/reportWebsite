@@ -19,7 +19,7 @@ export enum ReportStatus {
 }
 
 export enum Campus {
-    MI = "MI MM2100",
+    MM = "MI MM2100",
     PD = "MI 03 Putra Dharma",
     PATI = "MI 02 Pati",
     AMI = "Ananda Mitra Industri",

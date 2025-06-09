@@ -30,7 +30,7 @@ enum ReportStatus {
 }
 
 enum Campus {
-  MI
+  MM
   PD
   PATI
   AMI
