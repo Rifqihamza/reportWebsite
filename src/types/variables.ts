@@ -19,14 +19,14 @@ export enum ReportStatus {
 }
 
 export enum Campus {
-    MI = "MI",
-    PD = "PD",
-    PATI = "PATI",
-    AMI = "AMI",
-    MOJO = "MOJO",
-    SM = "SM",
-    BBL = "BBL",
-    KLTN = "KLTN"
+    MI = "MI MM2100",
+    PD = "MI 03 Putra Dharma",
+    PATI = "MI 02 Pati",
+    AMI = "Ananda Mitra Industri",
+    MOJO = "Asy-Syarif Mojokerto",
+    SM = "Stella Maris Labuan Bajo",
+    BBL = "SMK Babelan Kab. Bekasi",
+    KLTN = "SMK Kristen 2 Klaten",
 }
 
 export function reporttype_to_string(data: any): string {
@@ -81,7 +81,6 @@ export type User = {
 export type Report_PIC = {
     id: string,
     name: string,
-    campus_name: Campus,
     created_at: string
 }
 
