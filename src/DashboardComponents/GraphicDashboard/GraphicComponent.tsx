@@ -16,13 +16,13 @@ export default function GraphicChart() {
     return (
         <div className='flex flex-col gap-4 mx-4'>
             <UseChartHookEffect />
-            <div className="flex flex-row items-start gap-4">
+            <div className="flex flex-row flex-wrap justify-center items-start gap-4">
                 <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
                 <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
                 <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
                 <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
                 <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
-                <h1 className="text-2xl">&lsaquo;--- ini akan menjadi next plan UI</h1>
+                <h1 className="text-2xl text-wrap">&lsaquo;--- ini akan menjadi next plan UI</h1>
             </div>
             {/* Line Chart */}
             <div className="w-full px-4 py-2 rounded-2xl bg-white shadow">
@@ -30,7 +30,7 @@ export default function GraphicChart() {
                     <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
                     <div className="flex flex-row items-center w-fit gap-4">
                         <Dropdown className="px-4 [&_.p-dropdown-label]:text-white! [&_.p-dropdown-trigger]:text-white! bg-[#93bfcf]! [&_.p-dropdown]:bg-[#93bfcf]! [&_.p-dropdown-label]:bg-[#93bfcf]! [&_.p-dropdown-trigger]:bg-[#93bfcf]! " value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)} />
-                        <h1 className="text-md whitespace-nowrap">&lsaquo;--- ini akan dihilangkan nantinya untuk dipindahkan ke atas</h1>
+                        <h1 className="text-md md:whitespace-nowrap whitespace-pre-wrap">&lsaquo;--- ini akan dihilangkan nantinya untuk dipindahkan ke atas</h1>
                     </div>
                 </div>
                 <Suspense fallback={<>Loading..</>}>
