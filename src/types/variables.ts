@@ -50,6 +50,14 @@ export function string_to_campus(data?: string): Campus | undefined {
     return Object.values(Campus).find(value => value.toString() == data);
 }
 
+export function campus_to_campuscode(campus?: Campus): string | undefined {
+    return Object.keys(Campus)[Object.values(Campus).findIndex(value => value == campus)];
+}
+
+export function campuscode_to_campus(campus_code?: string): Campus | undefined {
+    return Object.values(Campus)[Object.keys(Campus).findIndex(value => value == campus_code)]
+}
+
 // DATABASE MODEL
 export type ReportData = {
     id: string,

@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const campusMap: Record<Campus, string> = {
-  [Campus.MI]: "/campusImg/mm2100.jpeg",
+  [Campus.MM]: "/campusImg/mm2100.jpeg",
   [Campus.PD]: "/campusImg/putraDharma.jpeg",
   [Campus.AMI]: "/campusImg/anandaMI.png",
   [Campus.PATI]: "/campusImg/mm02Pati.png",

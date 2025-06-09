@@ -11,10 +11,12 @@ import FooterComponent from "../../components/Footer/FooterComponent";
 import { useUserDataHook } from "../../hooks/shared/useUserData";
 import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
 import SelectCampusOverlay from "../../components/SelectCampus/SelectCampusOverlay";
+import { useCampusData } from "../../hooks/shared/useCampusData";
 
 export default function MainPage() {
   const { userData, setUserData } = useUserDataHook();
   const { setIsAuthorized } = useIsAuthorizedHook();
+  const { selectedCampus } = useCampusData();
 
   useEffect(() => {
     getUser().then(user_data => {
@@ -31,7 +33,7 @@ export default function MainPage() {
 
   return (
     <>
-      <SelectCampusOverlay />
+      {!selectedCampus && <SelectCampusOverlay />}
       <PrimeReactProvider>
         {/* Navbar */}
         <NavbarComponents />
