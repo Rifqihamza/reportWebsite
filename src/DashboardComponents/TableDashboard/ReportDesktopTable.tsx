@@ -1,11 +1,24 @@
 import { reporttype_to_string } from '../../types/variables';
 import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../hooks/useReportHook";
+import { useCampusData } from "../../hooks/shared/useCampusData";
+import { useEffect } from "react";
+import { getReport } from "../../utils/api_interface";
 import { formatDate } from "../../utils/other";
 
 export default function ReportDesktopTable() {
     const { showedReportData } = useReportPaginationHook();
     const { handleDetail } = useReportDetailHook();
 
+    const { selectedCampus } = useCampusData();
+
+    useEffect(() => {
+        if (!selectedCampus) return;
+
+        getReport(selectedCampus).then((result) => {
+            // Lakukan sesuatu dengan hasilnya
+            console.log(result);
+        });
+    }, [selectedCampus]);
     return (
         <div className="hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
             <table className="w-full h-[70vh] max-h-[65vh]">

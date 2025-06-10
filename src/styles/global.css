@@ -42,7 +42,7 @@ body {
 }
 
 .bg-form {
-  background: #6096b4;
+  background: #1f324d;
 }
 
 .bg-form::-webkit-scrollbar {
@@ -228,4 +228,14 @@ body {
 
 .swiper-pagination-bullet-active {
   background-color: #ffba08;
+}
+
+.p-progressbar {
+  background-color: #F5EDED;
+  border-radius: 0.75rem;
+}
+
+.p-progressbar-value {
+  background-color: #7FA1C3;
+  border-radius: 0.75rem;
 }

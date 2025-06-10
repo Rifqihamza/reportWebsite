@@ -9,12 +9,13 @@ import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import { AccountType } from "../../../types/variables";
 import { useReportConfigHook } from "../../../hooks/shared/useReportConfig";
+import { useCampusData } from "../../../hooks/shared/useCampusData";
 import { PrimeReactProvider } from "primereact/api";
 
 export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState(0);
     const [showSidebar, setShowSidebar] = useState(true);
-
+    const { selectedCampus } = useCampusData();
     const { userData, setUserData } = useUserDataHook();
     const { setReportData } = useReportDataHook();
     const { setPicNamesOptions, setLocationOptions } = useReportConfigHook();
@@ -31,16 +32,17 @@ export default function DashboardPage() {
                 setReportData(report_data_array);
             }
         });
-
-        getFormConfiguration().then((result) => {
-            if ((result as formConfigurationResponse).location_data !== undefined) {
-                result = result as formConfigurationResponse;
-                setPicNamesOptions(result.pic_data.map((value) => value.name));
-                setLocationOptions(result.location_data.map((value) => value.location));
-            } else if (result === APIResultType.Unauthorized) {
-                window.location.href = "/loginPage";
-            }
-        });
+        if (selectedCampus) {
+            getFormConfiguration(selectedCampus).then((result) => {
+                if ((result as formConfigurationResponse).location_data !== undefined) {
+                    result = result as formConfigurationResponse;
+                    setPicNamesOptions(result.pic_data.map((value) => value.name));
+                    setLocationOptions(result.location_data.map((value) => value.location));
+                } else if (result === APIResultType.Unauthorized) {
+                    window.location.href = "/loginPage";
+                }
+            });
+        }
     }, []);
 
     useEffect(() => {

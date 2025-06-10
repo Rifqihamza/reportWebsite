@@ -74,7 +74,7 @@ export default function LoginFormComponent() {
       <div className="space-y-2 mt-8">
         <button
           type="button"
-          className="disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#7FA1C3] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-xl cursor-pointer"
+          className="disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#1f324d] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-xl cursor-pointer"
           disabled={loginDisabled}
           onClick={handleLogin}
         >

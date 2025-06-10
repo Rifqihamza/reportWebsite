@@ -16,7 +16,7 @@ export async function GET({ request }: APIContext) {
   try {
     const parameter = {
       where: {
-        campus_name: selected_campus_name 
+        campus_name: selected_campus_name
       }
     };
 

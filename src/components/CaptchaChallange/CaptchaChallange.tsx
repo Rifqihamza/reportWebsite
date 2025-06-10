@@ -18,13 +18,13 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
 
   useEffect(() => {
     checkAuthentication().then((result) => {
-      if(result == APIResultType.NeedCaptchaAuthentication) {
+      if (result == APIResultType.NeedCaptchaAuthentication) {
         setIsCaptchaNeeded(true);
       }
-      else if(result == APIResultType.InternalServerError) {
+      else if (result == APIResultType.InternalServerError) {
         alert("Please try again later.");
       }
-      else if(result == APIResultType.DatabaseError) {
+      else if (result == APIResultType.DatabaseError) {
         alert("There's an error in database. (Database problem)");
       }
       else {
@@ -32,33 +32,33 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
       }
     });
   }, []);
-  
+
   function handleVerification(token: string, ekey: string) {
-    if(token) {
+    if (token) {
       setProgress(50)
       fetch("/api/captcha", {
         method: "POST",
         body: JSON.stringify({ captcha_token: token })
       })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) {
-          setTimeout(() => {
-            setProgress(100);
-            onSuccess ? onSuccess(token) : "";
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.success) {
             setTimeout(() => {
-              history.back()
+              setProgress(100);
+              onSuccess ? onSuccess(token) : "";
+              setTimeout(() => {
+                history.back()
+              }, 1000);
             }, 1000);
-          }, 1000);
-        } else {
+          } else {
+            onError ? onError() : "";
+          }
+        })
+        .catch(err => {
+          setProgress(0);
+          alert("There's an error when trying to verify captcha..");
           onError ? onError() : "";
-        }
-      })
-      .catch(err => {
-        setProgress(0);
-        alert("There's an error when trying to verify captcha..");
-        onError ? onError() : "";
-      });
+        });
     }
     else {
       onIncorrect ? onIncorrect() : "";
@@ -73,15 +73,31 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
 
 
   return <>
-    {isCaptchaNeeded ? <div className="flex flex-col gap-6 justify-center items-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-      <h1 className="text-gray-100 text-xl">Please, Verify CAPTCHA first before continue:</h1>
-      <HCaptcha sitekey={PUBLIC_SITE_KEY} onVerify={handleVerification} onError={handleError} />
-      <PrimeReactProvider>
-        <div className="w-full h-1 text-center">
-          <ProgressBar value={progress} displayValueTemplate={() => <></>} className={"max-h-[1rem]" + (progress == 0 ? " opacity-0" : "")}  />
-          <p className="text-center text-gray-100">{progress > 0 ? "Please wait.." : ""}</p>
+    {isCaptchaNeeded ?
+      <div className="bg-black/60 backdrop-blur-md absolute inset-0 flex">
+        <div className="relative overflow-hidden flex flex-col m-auto bg-[#1f324d] [box-shadow:0_0_4px_1px_#fff] text-[#E2DAD6] rounded-xl w-full max-w-md h-fit px-6 py-3">
+          <div className='bg-amber-400 [box-shadow:0_0_4px_1px_#fff] rounded-full w-60 h-60 absolute -top-1/2 -right-1/4'></div>
+          <div className='bg-slate-800 [box-shadow:0_0_4px_1px_#fff] rounded-full w-60 h-60 absolute -bottom-1/2 -left-1/4'></div>
+          <div className='text-center z-50'>
+            <h1 className="text-xl font-semibold">Verify CAPTCHA First!</h1>
+            <p className='text-lg'>Before Continue</p>
+          </div>
+          <div className='mx-auto mt-4 z-50'>
+            <HCaptcha sitekey={PUBLIC_SITE_KEY} onVerify={handleVerification} onError={handleError} />
+          </div>
+          <PrimeReactProvider>
+            <div className="w-full text-center py-4 z-50">
+              <ProgressBar
+                value={progress}
+                displayValueTemplate={() => <></>}
+                className={"max-h-[1rem]" + (progress == 0 ? " opacity-0" : "opacity-1 transform duration-300")} />
+              <p className="text-center text-gray-100">{progress > 0 ? "Please wait.." : ""}</p>
+            </div>
+          </PrimeReactProvider>
         </div>
-      </PrimeReactProvider>
-    </div> : ""}
+      </div>
+      :
+      ""
+    }
   </>
 }
