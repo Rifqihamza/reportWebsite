@@ -104,7 +104,7 @@ export default function ReportFormComponent() {
       setShowThanks(true);
       setTimeout(() => {
         setShowThanks(false);
-      }, 2000);
+      }, 3500);
 
     } else if (result == APIResultType.Unauthorized) {
       alert("Unauthroized report detected!");
