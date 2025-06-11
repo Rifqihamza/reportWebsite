@@ -49,7 +49,7 @@ export default function ReportDetailModal() {
                 <div className="flex flex-col px-0 py-0 lg:px-6 lg:py-2">
                     <h1 className="font-bold lg:text-2xl text-lg text-black tracking-wide">Details Temuan</h1>
                     <p>Status:
-                        <span className={`${report_data ? statusColors[report_data.status] : ""} md:text-md md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap`}>
+                        <span className={`${report_data ? statusColors[report_data.status] : ""} font-medium uppercase md:text-md md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2`}>
                             {report_data?.status}
                         </span>
                     </p>

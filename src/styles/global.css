@@ -18,7 +18,7 @@
 
 /* Scrollbar Thumb */
 ::-webkit-scrollbar-thumb {
-  background-color: #93bfcf; /* warna thumb */
+  background-color: #1f324d; /* warna thumb */
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: content-box;
@@ -27,13 +27,13 @@
 
 /* Thumb Hover */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #6096b4; /* saat hover */
+  background-color: #41689f; /* saat hover */
   transition: all 0.5s;
 }
 
 /* Scrollbar Track Background */
 ::-webkit-scrollbar-track {
-  background: #fff;
+  background: #aaaaaaaa;
   border-radius: 10px;
 }
 
@@ -50,7 +50,7 @@ body {
 }
 
 .bg-dashboard {
-  background: #93bfcf;
+  background: #1f324d;
 }
 
 .titlePage {

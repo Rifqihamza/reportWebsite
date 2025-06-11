@@ -8,7 +8,7 @@ import { ReportHookEffect, useReportFilterHook } from "../../hooks/useReportHook
 const ReportListComponent = React.lazy(() => import("./ReportTableComponent"));
 
 export default function ReportTableWrapper() {    
-    const { setSearchKeyword, dateFilter, setDateFilter, selectedFilter, setSelectedFilter } = useReportFilterHook();
+    const { setSearchKeyword, dateFilter, setDateFilter} = useReportFilterHook();
 
     return <>
         <ReportHookEffect />
