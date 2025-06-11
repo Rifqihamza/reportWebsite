@@ -1,8 +1,9 @@
+import { useCampusData } from "../hooks/shared/useCampusData";
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
 import type { Campus, Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
-const base_url_endpoint: string = "";
+const base_url_endpoint: string = "https://webreport.smkind-mm2100.sch.id";
 
 // Useful enum!
 export enum APIResultType {
@@ -14,7 +15,7 @@ export enum APIResultType {
 }
 
 // Backend Functionalities
-export async function userLogin(username: string, password: string): Promise<APIResultType | AccountType> {
+export async function userLogin(username: string, password: string): Promise<APIResultType|AccountType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/login", {
         method: "POST",
@@ -32,11 +33,11 @@ export async function userLogin(username: string, password: string): Promise<API
     if (response.ok) {
         const role = (await response.json()).role;
         const result = string_to_accounttype(role);
-        if (!result) {
+        if(!result) {
             alert("There's something unexpected. Please send this code to the dev. error code: 001");
             return APIResultType.NoError;
         }
-
+        
         return result;
     }
     else if (response.status == 500) {
@@ -115,19 +116,30 @@ export async function addReport(
 }
 
 
-export async function getReport(campus: string): Promise<ReportData[] | APIResultType> {
-    const response = await fetch(`/api/report/get?campus=${campus}`, {
+export async function getReport(): Promise<ReportData[] | APIResultType> {
+    const { selectedCampus } = useCampusData();
+
+    if(!selectedCampus) {
+        return APIResultType.NoError;
+    }
+    
+    // Fetch to API
+    const response = await fetch(`${base_url_endpoint}/api/report/get?campus=${selectedCampus}`, {
         method: "GET",
         credentials: "include",
     });
 
+    // Check the response
     if (response.ok) {
+        // Sorting report data by date
         let result = (await response.json()) as ReportData[];
         result = result.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
         return result;
-    } else if (response.status === 500) {
+    }
+    else if (response.status == 500) {
         return APIResultType.InternalServerError;
-    } else {
+    }
+    else {
         return APIResultType.Unauthorized;
     }
 }
@@ -266,7 +278,7 @@ export type formConfigurationResponse = {
 
 export async function getFormConfiguration(selectedCampus: Campus) {
     // Fetch to API
-    const response = await fetch(`${base_url_endpoint}/api/report_form/configuration/?campus=${campus_to_campuscode(selectedCampus)}`, {
+    const response = await fetch(`${base_url_endpoint}/api/report_form/configuration/?campus=${selectedCampus}`, {
         method: "GET",
         credentials: "include",
     });
