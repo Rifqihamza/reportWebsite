@@ -1,9 +1,8 @@
-import { useCampusData } from "../hooks/shared/useCampusData";
-import { AccountType, ReportType, ReportStatus, string_to_campus, campus_to_campuscode } from '../types/variables';
+import { AccountType, ReportType, ReportStatus, campus_to_campuscode } from '../types/variables';
 import type { Campus, Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
-const base_url_endpoint: string = "http://localhost:4321";
+const base_url_endpoint: string = "";
 
 // Useful enum!
 export enum APIResultType {
