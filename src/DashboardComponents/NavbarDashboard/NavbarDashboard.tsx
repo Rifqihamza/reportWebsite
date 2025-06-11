@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-
+import { useUserDataHook } from "../../hooks/shared/useUserData";
+import { userLogout } from "../../utils/api_interface";
 interface NavProps {
     activeTab: number;
     setActiveTab: (tabIndex: number) => void;
@@ -41,14 +42,25 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, 
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    const { userData } = useUserDataHook();
+
+    async function handle_logout() {
+        if (userData && !(await userLogout())) {
+            alert("Terjadi error saat ingin logout!");
+            return;
+        }
+        confirm("Apakah Anda yakin ingin keluar?") &&
+            (window.location.href = "/loginPage");
+    }
+
     return (
         <div
             className={`md:relative md:w-0 md:h-full h-[70vh] w-[calc(100vw_-_(var(--spacing)_*_8))] fixed bg-white shadow shadow-gray-500 rounded-2xl duration-300 z-20 ${showSidebar ? "md:w-[18rem] translate-x-0" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? " md:absolute!" : "")} `}>
             <div
-                className={`p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap  ${showSidebar ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
+                className={`h-full p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap  ${showSidebar ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
                     }`}
             >
-                <ul className="space-y-2">
+                <ul className="relative h-full space-y-2">
                     <li>
                         <button
                             onClick={() => setActiveTab(0)}
@@ -131,6 +143,15 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, 
                                 className={`absolute bottom-0 left-0 h-1 bg-[#6096B4] rounded-full transition-all duration-500 ${activeTab === 5 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
                                     }`}
                             ></span>
+                        </button>
+                    </li>
+                    <li className="absolute bottom-0 w-full">
+                        <button
+                            onClick={() => handle_logout()}
+                            className="flex flex-row items-center justify-center gap-3 w-full font-semibold uppercase tracking-wider text-white bg-[#6096B4] px-4 py-2 rounded-lg hover:bg-[#7FA1C3] transition-colors duration-300 cursor-pointer"
+                        >
+                            <i className="pi pi-sign-out"></i>
+                            Logout
                         </button>
                     </li>
                 </ul>

@@ -132,7 +132,6 @@ export default function ReportEditModal() {
     return (
         <Dialog
             header="Edit Laporan"
-            style={{ width: '80vw' }}
             visible={editVisible}
             draggable={false}
             onHide={() => setEditVisible(false)}

@@ -1,13 +1,49 @@
 ---
-
-import ThanksOverlayTrigger from "./ThanksOverlayTrigger"
-import ThumbsUpImage from "../../../public/img/thumbsUp.png";
+import ThanksOverlayTrigger from "./ThanksOverlayTrigger";
+import LogoSekolah from "../../../public/img/logoSekolah.png";
+import HeroImage from "../../../public/img/9086589-removebg-preview.png";
 import { Image } from "astro:assets";
-
 ---
 
-<div class="duration-500 overflow-hidden flex justify-center items-center p-10 fixed top-[-100%] left-1/2 -translate-x-1/2 -translate-y-1/2 has-[.show-thanks]:top-1/2 bg-[#93BFCF] border-white border-3 rounded-xl z-100 w-[70vh] max-w-[min(750px,_70vw)] h-[70vh]">
-    <ThanksOverlayTrigger client:load />
-    <h1 class="text-center text-3xl font-bold text-white">Terima kasih sudah melaporkan temuan mu!</h1>
-    <Image src={ThumbsUpImage} alt="Thumbs Up Image" width={250} height={250} class="absolute bottom-20 left-20 -translate-x-1/2 translate-y-1/2 opacity-20 -rotate-20" />
+<div
+  class="duration-500 overflow-hidden flex justify-center items-center p-10 fixed top-[-100%] left-1/2 -translate-x-1/2 -translate-y-1/2 has-[.show-thanks]:top-0 z-100 w-full h-full bg-black/50 backdrop-blur-sm has-[.show-thanks]:translate-y-0 has-[.show-thanks]:opacity-100 has-[.show-thanks]:pointer-events-auto"
+>
+  <ThanksOverlayTrigger client:load />
+
+  <section
+    class="fixed inset-0 -translate-y-[1rem] flex items-center justify-center p-4"
+  >
+    <div
+      class="bg-neutral-200 shadow shadow-gray-600 w-full max-w-3xl h-fit p-6 rounded-xl space-y-4 relative"
+    >
+      <h1
+        class="font-bold uppercase text-xl text-white bg-[#7FA1C3] px-4 py-3 rounded-xl text-center"
+      >
+        Terima Kasih Telah Melapor!
+      </h1>
+      <div class="flex flex-col-reverse md:flex-row justify-center gap-4">
+        <div class="flex flex-col gap-4">
+          <span
+            class="px-4 bg-[#7FA1C3] h-full rounded-xl text-justify flex flex-col gap-4 items-center justify-center"
+          >
+            <Image src={LogoSekolah} class="w-1/5 h-auto" alt="Logo Sekolah" />
+            <p class="text-white text-lg font-medium">
+              Kami menghargai partisipasi Anda dalam melaporkan temuan ini.
+              Bersama kita wujudkan lingkungan yang lebih baik.
+            </p>
+          </span>
+          <button
+            class="px-4 py-5 bg-[#7FA1C3] text-white rounded-xl uppercase tracking-wider font-bold cursor-pointer"
+          >
+            Selesai
+          </button>
+        </div>
+        <Image
+          src={HeroImage}
+          class="md:w-1/2 w-full px-4 py-2 bg-[#7FA1C3] h-full mx-auto rounded-xl"
+          alt="Thanks Image"
+        />
+      </div>
+    </div>
+  </section>
 </div>

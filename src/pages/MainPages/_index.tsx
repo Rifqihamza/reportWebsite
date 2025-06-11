@@ -22,7 +22,7 @@ export default function MainPage() {
     getUser().then(user_data => {
       if (typeof user_data === "object") {
         setUserData(user_data);
-    }
+      }
     });
   }, []);
 

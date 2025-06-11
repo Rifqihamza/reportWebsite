@@ -19,7 +19,7 @@ export async function GET({ request }: APIContext) {
     });
     const location_data = await prisma.report_Location.findMany({
       where: {
-        campus_name: selected_campus_name as any
+        campus_name: selected_campus_name
       }
     });
 
