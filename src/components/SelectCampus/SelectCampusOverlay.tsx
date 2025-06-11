@@ -3,10 +3,11 @@ import { Campus } from "../../types/variables";
 import SelectCampusButton from "./SelectCampusButton";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
+import { Autoplay, EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 export default function SelectCampusOverlay() {
   const { selectedCampus } = useCampusData();
@@ -23,7 +24,7 @@ export default function SelectCampusOverlay() {
       <Swiper
         effect={"coverflow"}
         autoplay={{
-          delay: 1500,
+          delay: 2500,
           disableOnInteraction: false,
         }}
         coverflowEffect={{
@@ -36,11 +37,12 @@ export default function SelectCampusOverlay() {
         pagination={{
           clickable: true,
         }}
+        navigation={true}
         loop={true}
         slidesPerView={1}
         spaceBetween={-950}
         centeredSlides={true}
-        modules={[EffectCoverflow, Autoplay, Pagination]}
+        modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
         className="w-full MyGradient"
         style={
           {
@@ -48,6 +50,8 @@ export default function SelectCampusOverlay() {
             "--swiper-pagination-bullet-inactive-color": "#fff",
             "--swiper-pagination-bullet-inactive-opacity": "1",
             "--swiper-pagination-bottom": "15px",
+            "--swiper-navigation-color": "#fff",
+
           } as any
         }
       >
@@ -57,6 +61,6 @@ export default function SelectCampusOverlay() {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </div >
   );
 }

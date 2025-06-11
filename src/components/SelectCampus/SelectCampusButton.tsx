@@ -30,7 +30,7 @@ export default function SelectCampusButton(props: Props) {
   return (
     <button
       onClick={handleClick}
-      className="text-white w-full text-xl p-4 cursor-pointer duration-200 rounded-xl flex flex-col items-center gap-2"
+      className="text-white w-full h-full text-xl p-4 cursor-pointer duration-200 rounded-xl flex flex-col items-center gap-2"
     >
       {verified_campus && (
         <div className="relative md:w-1/3 w-[20rem] aspect-video">

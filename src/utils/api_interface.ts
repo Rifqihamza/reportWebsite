@@ -1,4 +1,3 @@
-import { useCampusData } from "../hooks/shared/useCampusData";
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
 import type { Campus, Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';

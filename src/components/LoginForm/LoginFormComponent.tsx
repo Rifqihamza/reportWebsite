@@ -16,7 +16,7 @@ export default function LoginFormComponent() {
     try {
       const result = await userLogin(username, password);
       if (typeof result === "string") {
-        if(result === AccountType.Guru) {
+        if(result === AccountType.Guru || result === AccountType.Vendor) {
           window.location.href = "/dashboard";
         }
         else {

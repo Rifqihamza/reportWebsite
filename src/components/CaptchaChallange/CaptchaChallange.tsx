@@ -74,7 +74,7 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
 
   return <>
     {isCaptchaNeeded ?
-      <div className="bg-black/60 backdrop-blur-md absolute inset-0 flex">
+      <div className="bg-black/60 backdrop-blur-md absolute inset-0 flex p-3">
         <div className="relative overflow-hidden flex flex-col m-auto bg-[#1f324d] [box-shadow:0_0_4px_1px_#fff] text-[#E2DAD6] rounded-xl w-full max-w-md h-fit px-6 py-3">
           <div className='bg-amber-400 [box-shadow:0_0_4px_1px_#fff] rounded-full w-60 h-60 absolute -top-1/2 -right-1/4'></div>
           <div className='bg-slate-800 [box-shadow:0_0_4px_1px_#fff] rounded-full w-60 h-60 absolute -bottom-1/2 -left-1/4'></div>
