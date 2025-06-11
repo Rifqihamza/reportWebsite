@@ -1,4 +1,4 @@
-import { AccountType, ReportType, ReportStatus, campus_to_campuscode } from '../types/variables';
+import { AccountType, ReportType, ReportStatus } from '../types/variables';
 import type { Campus, Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 

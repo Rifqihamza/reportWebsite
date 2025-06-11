@@ -12,26 +12,34 @@ export default function GraphicChart() {
     const { insight } = useInsightHook();
     const { currentYearReports, chartFilter, setChartFilter } = useLineChartHook();
     const { percentCategory } = usePercentChartHook();
+    const options = Object.values(LineChartFilterOption);
 
     return (
         <div className='flex flex-col gap-4 mx-4'>
             <UseChartHookEffect />
-            <div className="flex flex-row flex-wrap justify-center items-start gap-4">
-                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
-                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
-                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
-                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
-                <button className="bg-white px-4 py-2 rounded-xl">Dropdowns</button>
-                <h1 className="text-2xl text-wrap">&lsaquo;--- ini akan menjadi next plan UI</h1>
+            <div className="md:hidden block w-full">
+                <Dropdown
+                    className="px-4 py-2 [&_.p-dropdown-label]:text-white! [&_.p-dropdown-trigger]:text-white! rounded-2xl! bg-[#1f324d]! [&_.p-dropdown]:bg-[#1f324d]! [&_.p-dropdown-label]:bg-[#1f324d]! [&_.p-dropdown-trigger]:bg-[#1f324d]!"
+                    value={chartFilter}
+                    onChange={(e) => setChartFilter(e.value)}
+                    options={Object.values(LineChartFilterOption)} />
+            </div>
+            <div className="w-full hidden md:flex md:flex-row md:justify-between md:gap-3 bg-white px-4 py-3 rounded-2xl">
+                {options.map((option) => (
+                    <button
+                        key={option}
+                        onClick={() => setChartFilter(option)}
+                        className={`p-4 rounded-lg w-full ${chartFilter === option ? 'bg-[#1f324d] text-white' : 'bg-gray-200 hover:bg-[#1f324d]/20 text-black'
+                            }`}
+                    >
+                        {option}
+                    </button>
+                ))}
             </div>
             {/* Line Chart */}
             <div className="w-full px-4 py-2 rounded-2xl bg-white shadow">
                 <div className="px-4 w-full flex flex-col items-start gap-2">
                     <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
-                    <div className="flex flex-row items-center w-fit gap-4">
-                        <Dropdown className="px-4 [&_.p-dropdown-label]:text-white! [&_.p-dropdown-trigger]:text-white! bg-[#93bfcf]! [&_.p-dropdown]:bg-[#93bfcf]! [&_.p-dropdown-label]:bg-[#93bfcf]! [&_.p-dropdown-trigger]:bg-[#93bfcf]! " value={chartFilter} onChange={(e) => setChartFilter(e.value)} options={Object.values(LineChartFilterOption)} />
-                        <h1 className="text-md md:whitespace-nowrap whitespace-pre-wrap">&lsaquo;--- ini akan dihilangkan nantinya untuk dipindahkan ke atas</h1>
-                    </div>
                 </div>
                 <Suspense fallback={<>Loading..</>}>
                     <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />

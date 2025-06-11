@@ -15,10 +15,14 @@ export default function LoginFormComponent() {
 
     try {
       const result = await userLogin(username, password);
-      if (result === AccountType.Guru) {
-        window.location.href = "/dashboard";
-      } else if (Object.values(AccountType).find((val) => val.toString() == result.toString())) {
-        window.location.href = "/";
+      if (typeof result === "string") {
+        if(result === AccountType.Guru || result === AccountType.Vendor) {
+          window.location.href = "/dashboard";
+        }
+        else {
+          window.location.href = "/";
+        }
+        return;
       } else if (result == APIResultType.Unauthorized) {
         showMessage("Unauthorized!", "error", "Wrong password or username");
       } else {

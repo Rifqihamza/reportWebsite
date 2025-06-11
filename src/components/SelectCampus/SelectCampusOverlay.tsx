@@ -51,9 +51,7 @@ export default function SelectCampusOverlay() {
             "--swiper-pagination-bullet-inactive-opacity": "1",
             "--swiper-pagination-bottom": "15px",
             "--swiper-navigation-color": "#fff",
-            "--swiper-navigation-size": "44px",
-            "--swiper-navigation-top-offset": "50%",
-            "--swiper-navigation-sides-offset": "500px",
+
           } as any
         }
       >
