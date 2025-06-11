@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import NavbarDashboard from "../../../DashboardComponents/NavbarDashboard/NavbarDashboard";
+// Import Page
 import TablePage from "./_TablePage";
 import WelcomePage from "./_WelcomePage";
 import GraphicPage from "./_GraphicPage";
 import SettingPage from "./_SettingPage";
+import ExportPage from "./_ExportPage";
+import ConfigurationPage from "./_ConfigurationPage";
+// Import Hook State
 import { APIResultType, type formConfigurationResponse, getFormConfiguration, getReport, getUser } from "../../../utils/api_interface";
 import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
@@ -11,6 +15,7 @@ import { AccountType } from "../../../types/variables";
 import { useReportConfigHook } from "../../../hooks/shared/useReportConfig";
 import { useCampusData } from "../../../hooks/shared/useCampusData";
 import { PrimeReactProvider } from "primereact/api";
+
 export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState(0);
     const [showSidebar, setShowSidebar] = useState(true);
@@ -86,6 +91,8 @@ export default function DashboardPage() {
                         {activeTab === 0 && <WelcomePage />}
                         {activeTab === 1 && <TablePage />}
                         {activeTab === 2 && <GraphicPage />}
+                        {activeTab === 3 && <ExportPage />}
+                        {activeTab === 4 && <ConfigurationPage />}
                         {activeTab === 5 && <SettingPage />}
                     </div>
                 </div>

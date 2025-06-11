@@ -1,9 +1,7 @@
 import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
-import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData, type User, } from '../../types/variables';
-import { InputTextarea } from "primereact/inputtextarea";
+import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData } from '../../types/variables';
 import { APIResultType, updateReport } from '../../utils/api_interface';
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
@@ -21,14 +19,11 @@ const reportTypeOptions = [
     { label: "5R", value: "5R" }
 ];
 
-// Assuming AccountType is something like a string or an enum
-// We need to create options based on the possible values of AccountType
 const accountTypeOptions = [
     { label: "Guru", value: AccountType.Guru },
     { label: "Siswa", value: AccountType.Siswa },
     { label: "Vendor", value: AccountType.Vendor },
     { label: "Tukang", value: AccountType.Tukang },
-    // Add more options based on your AccountType definition
 ];
 
 export default function ReportEditModal() {
@@ -43,6 +38,7 @@ export default function ReportEditModal() {
         submitted_by: "",
         pic_name: "",
         location: "",
+        detail_location: "",
         type: "" as ReportType,
         follow_up: "" as AccountType,
         report_date: "",
@@ -63,28 +59,22 @@ export default function ReportEditModal() {
                 submitted_by: report.submitted_by || "",
                 pic_name: report.pic_name || "",
                 location: report.location || "",
+                detail_location: report.detail_location || "",
                 type: report.type,
-                follow_up: report.follow_up || "" as AccountType, // Make sure to cast if necessary
+                follow_up: report.follow_up || "" as AccountType,
                 report_date: report.report_date,
                 due_date: report.due_date || "",
                 follow_up_name: report.follow_up_name || "",
                 status: report.status,
-
             });
         }
         setIsChange(false);
     }, [report]);
 
     const updateField = (field: keyof typeof formState, value: any) => {
-        if (field == "due_date" || field == "report_date") {
-            if (value == null || value == undefined || value == "") {
-                value = "";
-            }
-            else {
-                value = (new Date(value)).toISOString()
-            }
-        }
-        else if (field == "type") {
+        if (field === "due_date" || field === "report_date") {
+            value = value ? (new Date(value)).toISOString() : "";
+        } else if (field === "type") {
             value = string_to_reporttype(value);
         }
         setFormState(prev => ({ ...prev, [field]: value }));
@@ -129,7 +119,6 @@ export default function ReportEditModal() {
             showMessage("Error", "error", "There's an error!");
         }
     };
-
     return (
         <Dialog
             header="Edit Laporan"
@@ -140,22 +129,31 @@ export default function ReportEditModal() {
             footer={
                 <div className="flex justify-end gap-2">
                     <button onClick={() => setEditVisible(false)} className="text-gray-800 hover:text-gray-200">Batal</button>
-                    <button onClick={handleSave} disabled={disableSave || !isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"><span className={disableSave ? "" : "hidden"}><i className="pi pi-spinner pi-spin"></i></span> Simpan</button>
+                    <button onClick={handleSave} disabled={disableSave || !isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none">
+                        {disableSave && <i className="pi pi-spinner pi-spin mr-2" />}
+                        Simpan
+                    </button>
                 </div>
             }
         >
             <div className="flex flex-col md:flex-row gap-6 items-start w-full">
                 <div className="flex flex-col space-y-3.5 w-full">
+                    <div className="flex flex-col gap-2 w-full">
+                        <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
+                        <textarea
+                            rows={9}
+                            id="descriptionReport"
+                            value={formState.message}
+                            onChange={(e) => updateField("message", e.target.value)}
+                            className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
+                            disabled={!!formState.message}
+                        />
+                    </div>
                     <InputField
                         label="Pelapor"
                         value={formState.submitted_by}
                         onChange={(e) => updateField("submitted_by", e.target.value)}
-                    />
-                    <DropdownField
-                        label="PIC"
-                        options={picNamesOptions.map((val) => ({ label: val, value: val }))}
-                        value={formState.pic_name}
-                        onChange={(e) => updateField("pic_name", e.target.value)}
+                        disabled={!!formState.submitted_by}
                     />
                     <DropdownField
                         filter
@@ -163,16 +161,20 @@ export default function ReportEditModal() {
                         options={locationOptions.map((val) => ({ label: val, value: val }))}
                         value={formState.location}
                         onChange={(e) => updateField("location", e.value)}
+                        disabled={!!formState.location}
                     />
-                </div>
-                <div className="flex flex-col gap-2 w-full">
-                    <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
-                    <textarea
-                        rows={9}
-                        id="descriptionReport"
-                        value={formState.message}
-                        onChange={(e) => updateField("message", e.target.value)}
-                        className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
+                    <InputField
+                        label="Detail Lokasi"
+                        value={formState.detail_location}
+                        onChange={(e) => updateField("submitted_by", e.target.value)}
+                        disabled={!!formState.detail_location}
+                    />
+                    <DropdownField
+                        label="PIC"
+                        options={picNamesOptions.map((val) => ({ label: val, value: val }))}
+                        value={formState.pic_name}
+                        onChange={(e) => updateField("pic_name", e.target.value)}
+                        disabled={!!formState.pic_name}
                     />
                 </div>
             </div>
@@ -183,39 +185,48 @@ export default function ReportEditModal() {
                     options={reportTypeOptions}
                     value={reporttype_to_string(formState.type)}
                     onChange={(e) => updateField("type", e.value)}
+                    disabled
                 />
                 <DropdownField
-                    label="Follow Up"
-                    options={accountTypeOptions} // Using the newly created options
-                    value={formState.follow_up}
-                    onChange={(e) => updateField("follow_up", e.value as AccountType)} // Cast the value to AccountType
-                />
-                <DropdownField // Add the status dropdown here
                     label="Edit Status"
                     options={Object.values(ReportStatus).map((status) => ({ label: status, value: status }))}
                     value={formState.status}
                     onChange={(e) => updateField("status", e.value)}
                 />
-                <InputField label="Follow Up Oleh" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} />
+                <DropdownField
+                    label="Follow Up"
+                    options={accountTypeOptions}
+                    value={formState.follow_up}
+                    onChange={(e) => updateField("follow_up", e.value as AccountType)}
+                />
+                <InputField
+                    label="Follow Up Oleh"
+                    value={formState.follow_up_name}
+                    onChange={(e) => updateField("follow_up_name", e.target.value)}
+                />
                 <CalendarField
                     label="Tanggal Temuan"
-                    value={new Date(formState.report_date)}
+                    value={formState.report_date ? new Date(formState.report_date) : null}
                     onChange={(e) => updateField("report_date", e.value ? new Date(e.value) : "")}
-                    required={true}
+                    disabled
                 />
-
                 <CalendarField
                     label="Due Date"
-                    value={(formState.due_date != "") ? new Date(formState.due_date) : null}
+                    value={formState.due_date ? new Date(formState.due_date) : null}
                     onChange={(e) => updateField("due_date", e.value ? new Date(e.value) : "")}
                 />
             </div>
-        </Dialog >
+        </Dialog>
     );
 }
 
-// Komponen input teks
-function InputField({ label, value, onChange }: { label: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+// Input Text Field
+function InputField({ label, value, onChange, disabled = false }: {
+    label: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    disabled?: boolean;
+}) {
     return (
         <div className="flex flex-col gap-1">
             <label className="font-semibold mb-1">{label}</label>
@@ -224,34 +235,42 @@ function InputField({ label, value, onChange }: { label: string; value: string; 
                 value={value}
                 onChange={onChange}
                 className="outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
+                disabled={disabled}
             />
         </div>
     );
 }
 
-// Komponen dropdown
-function DropdownField({ label, options, value, onChange, filter }: {
+// Dropdown Field
+function DropdownField({ label, options, value, onChange, filter, disabled = false }: {
     label: string;
     options: { label: string, value: string }[];
-    value: string | AccountType; // Allow both string and AccountType
+    value: string | AccountType;
     onChange: (e: any) => void;
-    filter?: boolean
+    filter?: boolean;
+    disabled?: boolean;
 }) {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Dropdown filter value={value} options={options} onChange={onChange} className="w-full rounded-lg! bg-transparent! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!" placeholder={`Pilih ${label}`} />
+            <Dropdown
+                filter={filter}
+                value={value}
+                options={options}
+                onChange={onChange}
+                disabled={disabled}
+                className="w-full rounded-lg! bg-transparent! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!"
+                placeholder={`Pilih ${label}`} />
         </div>
     );
 }
 
-
-
-function CalendarField({ label, value, onChange, required = false }: {
+// Calendar Field
+function CalendarField({ label, value, onChange, disabled = false }: {
     label: string;
     value: Date | null;
     onChange: (e: any) => void;
-    required?: boolean
+    disabled?: boolean;
 }) {
     return (
         <div className="flex flex-col">
@@ -260,8 +279,8 @@ function CalendarField({ label, value, onChange, required = false }: {
                 value={value}
                 onChange={onChange}
                 showTime
-                required={true}
                 className="w-full outline-none! px-4! py-2! border! border-gray-400! focus:border-gray-800! rounded-lg!"
+                disabled={disabled}
             />
         </div>
     );
