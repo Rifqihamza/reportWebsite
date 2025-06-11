@@ -11,12 +11,9 @@ import { AccountType } from "../../../types/variables";
 import { useReportConfigHook } from "../../../hooks/shared/useReportConfig";
 import { useCampusData } from "../../../hooks/shared/useCampusData";
 import { PrimeReactProvider } from "primereact/api";
-import { useCampusData } from "../../../hooks/shared/useCampusData";
-
 export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState(0);
     const [showSidebar, setShowSidebar] = useState(true);
-    const { selectedCampus } = useCampusData();
     const { userData, setUserData } = useUserDataHook();
     const { setReportData } = useReportDataHook();
     const { setPicNamesOptions, setLocationOptions } = useReportConfigHook();
@@ -29,11 +26,13 @@ export default function DashboardPage() {
             }
         });
 
-        getReport().then(report_data_array => {
-            if (typeof report_data_array === "object") {
-                setReportData(report_data_array);
-            }
-        });
+        if (selectedCampus) {
+            getReport(selectedCampus).then(report_data_array => {
+                if (typeof report_data_array === "object") {
+                    setReportData(report_data_array);
+                }
+            });
+        }
         if (selectedCampus) {
             getFormConfiguration(selectedCampus).then((result) => {
                 if ((result as formConfigurationResponse).location_data !== undefined) {
