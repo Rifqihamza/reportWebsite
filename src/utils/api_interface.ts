@@ -116,15 +116,13 @@ export async function addReport(
 }
 
 
-export async function getReport(): Promise<ReportData[] | APIResultType> {
-    const { selectedCampus } = useCampusData();
-
-    if(!selectedCampus) {
+export async function getReport(campus: Campus): Promise<ReportData[] | APIResultType> {
+    if(!campus) {
         return APIResultType.NoError;
     }
     
     // Fetch to API
-    const response = await fetch(`${base_url_endpoint}/api/report/get?campus=${selectedCampus}`, {
+    const response = await fetch(`${base_url_endpoint}/api/report/get?campus=${campus}`, {
         method: "GET",
         credentials: "include",
     });
