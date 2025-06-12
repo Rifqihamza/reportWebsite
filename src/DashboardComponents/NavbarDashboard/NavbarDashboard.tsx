@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-interface NavProps {
+interface Props {
     activeTab: number;
     setActiveTab: (tabIndex: number) => void;
     showSidebar: boolean;
     setShowSidebar: (show: boolean) => void;
 }
 
-export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, setShowSidebar }: NavProps) {
+export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, setShowSidebar }: Props) {
 
     const [shouldRender, setShouldRender] = useState(false)
 
@@ -45,10 +45,10 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, 
         <div
             className={`md:relative md:w-0 md:h-full h-[70vh] w-[calc(100vw_-_(var(--spacing)_*_8))] fixed bg-white shadow shadow-gray-500 rounded-2xl duration-300 z-20 ${showSidebar ? "md:w-[18rem] translate-x-0" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? " md:absolute!" : "")} `}>
             <div
-                className={`p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap  ${showSidebar ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
+                className={`h-full flex flex-col p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap  ${showSidebar ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
                     }`}
             >
-                <ul className="space-y-2">
+                <ul className="space-y-2 h-full">
                     <li>
                         <button
                             onClick={() => setActiveTab(0)}
@@ -134,6 +134,13 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, 
                         </button>
                     </li>
                 </ul>
+                <button
+                    onClick={() => window.location.href = "/"}
+                    className={`flex flex-row gap-2 items-center justify-center bg-[#6096b4] rounded-2xl p-4 text-white relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 cursor-pointer hover:scale-110 hover:brightness-120 duration-300`}
+                >
+                    <i className="pi pi-search"></i>
+                    Report a finding!
+                </button>
             </div>
         </div>
     );
