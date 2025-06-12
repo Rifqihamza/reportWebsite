@@ -89,13 +89,15 @@ export type User = {
 export type Report_PIC = {
     id: string,
     name: string,
-    created_at: string
+    created_at: string,
+    campus_name: string
 }
 
 export type Report_Location = {
     id: string,
     location: string,
-    created_at: string
+    created_at: string,
+    campus_name: string
 }
 
 export const statusColorHex: Record<string, string> = {

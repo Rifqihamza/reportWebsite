@@ -4,13 +4,12 @@ import TablePage from "./_TablePage";
 import WelcomePage from "./_WelcomePage";
 import GraphicPage from "./_GraphicPage";
 import SettingPage from "./_SettingPage";
-import { APIResultType, type formConfigurationResponse, getFormConfiguration, getReport, getUser } from "../../../utils/api_interface";
+import { getReport, getUser } from "../../../utils/api_interface";
 import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import { AccountType } from "../../../types/variables";
-import { useReportConfigHook } from "../../../hooks/shared/useReportConfig";
+import UseReportConfigHookEffect from "../../../hooks/shared/useReportConfig";
 import { PrimeReactProvider } from "primereact/api";
-import { useCampusData } from "../../../hooks/shared/useCampusData";
 
 export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState(0);
@@ -18,8 +17,6 @@ export default function DashboardPage() {
 
     const { userData, setUserData } = useUserDataHook();
     const { setReportData } = useReportDataHook();
-    const { setPicNamesOptions, setLocationOptions } = useReportConfigHook();
-    const { selectedCampus } = useCampusData();
 
     useEffect(() => {
         getUser().then(user_data => {
@@ -36,20 +33,6 @@ export default function DashboardPage() {
     }, []);
 
     useEffect(() => {
-        if(selectedCampus) {
-            getFormConfiguration(selectedCampus).then((result) => {
-                if ((result as formConfigurationResponse).location_data !== undefined) {
-                    result = result as formConfigurationResponse;
-                    setPicNamesOptions(result.pic_data.map((value) => value.name));
-                    setLocationOptions(result.location_data.map((value) => value.location));
-                } else if (result === APIResultType.Unauthorized) {
-                    window.location.href = "/loginPage";
-                }
-            });
-        }
-    }, [selectedCampus]);
-
-    useEffect(() => {
         if (userData) {
             if (userData?.role !== AccountType.Guru && userData?.role !== AccountType.Vendor) {
                 window.location.href = "/";
@@ -58,42 +41,45 @@ export default function DashboardPage() {
     }, [userData]);
 
     return (
-        <PrimeReactProvider>
-            <div className="flex flex-col h-screen p-4 border 2">
-                {/* Top Navbar */}
-                <div className="bg-white rounded-2xl shadow shadow-gray-500 z-10 flex justify-between items-center px-4 py-1 sticky top-0">
-                    <button
-                        onClick={() => setShowSidebar(!showSidebar)}
-                        className="p-2 flex items-center gap-4 font-semibold"
-                    >
-                        <i className="pi pi-bars"></i>
-                        E-Lapor Dashboard
-                    </button>
-                    <div>
-                        <img src="/img/logoSekolah.png" className="w-7 h-auto ring-2 ring-white rounded-full" alt="" />
+        <>
+            <UseReportConfigHookEffect useAll />
+            <PrimeReactProvider>
+                <div className="flex flex-col h-screen p-4 border 2">
+                    {/* Top Navbar */}
+                    <div className="bg-white rounded-2xl shadow shadow-gray-500 z-10 flex justify-between items-center px-4 py-1 sticky top-0">
+                        <button
+                            onClick={() => setShowSidebar(!showSidebar)}
+                            className="p-2 flex items-center gap-4 font-semibold"
+                        >
+                            <i className="pi pi-bars"></i>
+                            E-Lapor Dashboard
+                        </button>
+                        <div>
+                            <img src="/img/logoSekolah.png" className="w-7 h-auto ring-2 ring-white rounded-full" alt="" />
+                        </div>
+                    </div>
+
+                    {/* Main Area: Sidebar + Scrollable Content */}
+                    <div className="flex gap-4 py-4 px-1 h-full overflow-y-auto">
+                        {/* Sidebar */}
+                        <NavbarDashboard
+                            activeTab={activeTab}
+                            setActiveTab={setActiveTab}
+                            showSidebar={showSidebar}
+                            setShowSidebar={setShowSidebar}
+                        />
+
+                        {/* Scrollable Content */}
+                        <div className="flex-1 overflow-y-auto px-2 ">
+                            {activeTab === 0 && <WelcomePage />}
+                            {activeTab === 1 && <TablePage />}
+                            {activeTab === 2 && <GraphicPage />}
+                            {activeTab === 5 && <SettingPage />}
+                        </div>
                     </div>
                 </div>
-
-                {/* Main Area: Sidebar + Scrollable Content */}
-                <div className="flex gap-4 py-4 px-1 h-full overflow-y-auto">
-                    {/* Sidebar */}
-                    <NavbarDashboard
-                        activeTab={activeTab}
-                        setActiveTab={setActiveTab}
-                        showSidebar={showSidebar}
-                        setShowSidebar={setShowSidebar}
-                    />
-
-                    {/* Scrollable Content */}
-                    <div className="flex-1 overflow-y-auto px-2 ">
-                        {activeTab === 0 && <WelcomePage />}
-                        {activeTab === 1 && <TablePage />}
-                        {activeTab === 2 && <GraphicPage />}
-                        {activeTab === 5 && <SettingPage />}
-                    </div>
-                </div>
-            </div>
-        </PrimeReactProvider>
+            </PrimeReactProvider>
+        </>
     );
 }
 

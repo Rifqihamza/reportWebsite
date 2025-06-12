@@ -17,9 +17,9 @@ import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
-import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
+import UseReportConfigHookEffect, { useReportConfigHook } from "../../hooks/shared/useReportConfig";
 import { useThanksModalHook } from "../../hooks/shared/useThanksModal";
-import { useCampusData } from "../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../hooks/shared/useCampusData";
 
 export default function ReportFormComponent() {
   // Authorized state
@@ -43,9 +43,9 @@ export default function ReportFormComponent() {
 
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const { picNamesOptions, setPicNamesOptions, locationOptions, setLocationOptions } = useReportConfigHook();
+  const { picNamesOptions, locationOptions } = useReportConfigHook();
   const { setShowThanks } = useThanksModalHook();
-  const { selectedCampus } = useCampusData();
+  const { selectedCampus } = useCampusDataHook();
 
   const toastProgress = useRef<Toast>(null);
 
@@ -123,18 +123,11 @@ export default function ReportFormComponent() {
     if(!selectedCampus) {
       return;
     }
-
-    getFormConfiguration(selectedCampus).then((result) => {
-      if ((result as formConfigurationResponse).pic_data !== undefined) {
-        result = result as formConfigurationResponse;
-        setPicNamesOptions(result.pic_data.map((value) => value.name));
-        setLocationOptions(result.location_data.map((value) => value.location));
-      }
-    });
   }, [selectedCampus]);
 
   return (
     <>
+      <UseReportConfigHookEffect />
       <form id="report-form">
         {/* Container Form input */}
         <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>

@@ -1,7 +1,4 @@
-import { Sidebar } from "primereact/sidebar";
-import { useState } from "react";
-import { AccountType } from "../../types/variables";
-import LogoutButton from "../LogoutButton/LogoutButtonComponent";
+import LogoutButton from "./LogoutButtonComponent";
 import { useUserDataHook } from "../../hooks/shared/useUserData";
 import { userLogout } from "../../utils/api_interface";
 
@@ -16,7 +13,6 @@ const NavbarComponents = () => {
   }
 
   const { userData } = useUserDataHook();
-  const [setVisible, setIsVisible] = useState<boolean>(false);
 
   return (
     <>

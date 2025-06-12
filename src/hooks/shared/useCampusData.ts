@@ -8,7 +8,7 @@ type UseCampusDataType = {
   setSelectedCampus: (newSelectedCampus: Campus|null) => void
 }
 
-export const useCampusData = create(
+export const useCampusDataHook = create(
   persist<UseCampusDataType>(
     (set) => ({
       selectedCampus: null,
