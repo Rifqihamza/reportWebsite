@@ -2,17 +2,11 @@ import { useEffect, useState } from "react";
 import { useUserDataHook } from "../../hooks/shared/useUserData";
 import { userLogout } from "../../utils/api_interface";
 import { useDashboardNavbarHook } from "../../hooks/shared/useDashboardNavbar";
-interface Props {
-    activeTab: number;
-    setActiveTab: (tabIndex: number) => void;
-    showSidebar: boolean;
-    setShowSidebar: (show: boolean) => void;
-}
 
 export default function NavbarDashboard() {
 
     const [shouldRender, setShouldRender] = useState(false)
-    const { showSidebar, setShowSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();
+    const { showSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();
 
     useEffect(() => {
         if (!showSidebar) {
@@ -24,25 +18,6 @@ export default function NavbarDashboard() {
             setShouldRender(false);
         }
     }, [showSidebar])
-
-    useEffect(() => {
-        setShowSidebar(false);
-    }, [activeTab]);
-
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth >= 768) {
-                setShowSidebar(true); // md ke atas, sidebar selalu terbuka
-            } else {
-                setShowSidebar(false); // mobile, sidebar tertutup default
-            }
-        };
-
-        handleResize(); // Cek saat pertama kali
-        window.addEventListener("resize", handleResize);
-
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
 
     const { userData } = useUserDataHook();
 
@@ -57,9 +32,9 @@ export default function NavbarDashboard() {
 
     return (
         <div
-            className={`md:relative md:w-0 md:h-full h-[70vh] w-[calc(100vw_-_(var(--spacing)_*_8))] fixed bg-white rounded-2xl duration-300 z-20 ${showSidebar ? "md:w-[18rem] translate-x-0" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? " md:absolute!" : "")} `}>
+            className={`lg:relative lg:h-full h-[70vh] w-[calc(100vw_-_(var(--spacing)_*_14))] fixed bg-white rounded-2xl duration-300 z-20 lg:w-[18rem] lg:opacity-100 lg:translate-x-0 lg:left-0 ${showSidebar ? "-translate-x-1/2 left-1/2" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? "" : "")} `}>
             <div
-                className={`flex flex-col gap-2 h-full p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap  ${showSidebar ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
+                className={`flex flex-col gap-2 h-full p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap opacity-100 translate-x-0"
                     }`}
             >
                 <ul className="relative h-full space-y-2">

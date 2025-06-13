@@ -47,13 +47,13 @@ export default function DashboardPage() {
                     <div className="bg-white rounded-2xl shadow shadow-gray-500 z-10 flex justify-between items-center px-4 py-1 sticky top-0">
                         <button
                             onClick={() => setShowSidebar(!showSidebar)}
-                            className="p-2 flex items-center gap-4 font-semibold"
+                            className="p-4 flex items-center gap-4 font-semibold lg:hidden"
                         >
                             <i className="pi pi-bars"></i>
                             E-Lapor Dashboard
                         </button>
                         <div>
-                            <img src="/img/logoSekolah.png" className="w-7 h-auto ring-2 ring-white rounded-full" alt="" />
+                            <img src="/img/logoSekolah.png" className="w-10 h-auto ring-2 ring-white rounded-full" alt="" />
                         </div>
                     </div>
 

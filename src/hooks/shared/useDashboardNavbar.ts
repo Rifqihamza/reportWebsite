@@ -3,6 +3,7 @@ import { create } from "zustand";
 type useDashboardNavbarType = {
   activeTab: number;
   setActiveTab: (newActiveTab: number) => void;
+  
   showSidebar: boolean
   setShowSidebar: (newShowSidebar: boolean) => void
 };
