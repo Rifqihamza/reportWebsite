@@ -19,6 +19,9 @@ export async function GET({ request }: APIContext) {
     const user_data = await prisma.users.findUnique({
         where: {
             username: username
+        },
+        omit: {
+            password: true,
         }
     });
 
