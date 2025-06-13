@@ -20,8 +20,8 @@ export default function ReportTableToolbar() {
           />
           <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black" />
       </div>
-      <div className="flex items-center gap-2 w-max">
-          <FloatLabel className="overflow-x-hidden w-max">
+      <div className="flex items-center gap-2">
+          <FloatLabel className="overflow-x-hidden">
               <Calendar
                   inputId="from-date"
                   value={dateFilter ? dateFilter[0] : null}
@@ -37,7 +37,7 @@ export default function ReportTableToolbar() {
               <label htmlFor="from-date" className="whitespace-nowrap w-fit text-center">Dari tanggal</label>
           </FloatLabel>
           <span className="text-white text-4xl">-</span>
-          <FloatLabel className="overflow-x-hidden w-max">
+          <FloatLabel className="overflow-x-hidden">
               <Calendar
                   inputId="until-date"
                   value={dateFilter ? dateFilter[1] : null}
