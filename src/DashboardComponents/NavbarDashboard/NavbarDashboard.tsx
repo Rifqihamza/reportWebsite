@@ -57,7 +57,7 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, 
         <div
             className={`md:relative md:w-0 md:h-full h-[70vh] w-[calc(100vw_-_(var(--spacing)_*_8))] fixed bg-white rounded-2xl duration-300 z-20 ${showSidebar ? "md:w-[18rem] translate-x-0" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? " md:absolute!" : "")} `}>
             <div
-                className={`h-full p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap  ${showSidebar ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
+                className={`flex flex-col gap-2 h-full p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap  ${showSidebar ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
                     }`}
             >
                 <ul className="relative h-full space-y-2">
@@ -145,22 +145,20 @@ export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, 
                             ></span>
                         </button>
                     </li>
-                    <li className="absolute bottom-0 w-full">
-                        <button
-                            onClick={() => handle_logout()}
-                            className="flex flex-row items-center justify-center gap-3 w-full font-semibold uppercase tracking-wider text-white bg-[#1f324d] px-4 py-2 rounded-lg hover:bg-[#7FA1C3] transition-colors duration-300 cursor-pointer"
-                        >
-                            <i className="pi pi-sign-out"></i>
-                            Logout
-                        </button>
-                    </li>
                 </ul>
                 <button
                     onClick={() => window.location.href = "/"}
-                    className={`flex flex-row gap-2 items-center justify-center bg-[#6096b4] rounded-2xl p-4 text-white relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 cursor-pointer hover:scale-110 hover:brightness-120 duration-300`}
+                    className={`flex flex-row items-center justify-center gap-3 w-full font-semibold uppercase tracking-wider text-white bg-[#1f324d] px-4 py-2 rounded-lg hover:bg-[#7FA1C3] hover:brightness-120 duration-300 cursor-pointer`}
                 >
                     <i className="pi pi-search"></i>
                     Report a finding!
+                </button>
+                <button
+                    onClick={() => handle_logout()}
+                    className="flex flex-row items-center justify-center gap-3 w-full font-semibold uppercase tracking-wider text-white bg-[#1f324d] px-4 py-2 rounded-lg hover:bg-[#7FA1C3] duration-300 cursor-pointer"
+                >
+                    <i className="pi pi-sign-out"></i>
+                    Logout
                 </button>
             </div>
         </div>

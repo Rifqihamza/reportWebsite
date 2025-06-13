@@ -85,8 +85,8 @@ export default function FilterSelect() {
 
 
     return (
-        <div className="flex justify-content-center w-full" >
-            <TieredMenu model={items} popup ref={menu} breakpoint='4096px' />
+        <div className="flex justify-content-center w-fit" >
+            <TieredMenu model={items} popup ref={menu} breakpoint='4096px' className="mt-2" />
             <button className='bg-white px-4 py-2 rounded-xl text-black duration-200 w-full' onClick={(e) => menu.current?.toggle(e)
             }>{selectedFilter ? (reporttype_to_string(selectedFilter) ?? selectedFilter.toString()) : "Filter"}</button>
         </div>

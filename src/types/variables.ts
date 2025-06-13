@@ -67,7 +67,7 @@ export type ReportData = {
     follow_up?: AccountType,
     follow_up_name?: AccountType,
     status: ReportStatus,
-    location: string,
+    location_id: string,
     detail_location: string,
     pic_name: string,
     created_at: string,
