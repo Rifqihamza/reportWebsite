@@ -75,7 +75,6 @@ export default function ReportFormComponent() {
       return;
     }
 
-    reset_form();
 
     setSubmitDisabled(true);
     toastProgress.current!.show({
@@ -100,6 +99,7 @@ export default function ReportFormComponent() {
     );
 
     if (typeof result == "object") {
+      reset_form();
       setReportData([result, ...reportData]);
       setShowThanks(true);
       setTimeout(() => {

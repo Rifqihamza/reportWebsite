@@ -70,9 +70,11 @@ export default function ReportDetailModal() {
                         </div>
                         <hr />
 
+                        <>{console.log(report_data)}</>
+
                         {/* Report Details */}
                         <DetailField label="Pelapor:" value={report_data?.submitted_by} />
-                        <DetailField label="Lokasi:" value={report_data?.location + (report_data?.detail_location ? (", " + report_data?.detail_location) : "")} />
+                        <DetailField label="Lokasi:" value={report_data?.location_name + (report_data?.detail_location ? (", " + report_data?.detail_location) : "")} />
                         <DetailField label="Kategori:" value={report_data ? reporttype_to_string(report_data.type)! : ""} />
                         <DetailField label="Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
                         <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />

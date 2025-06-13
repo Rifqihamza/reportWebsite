@@ -62,14 +62,13 @@ export default function ReportEditModal() {
                 message: report.message || "",
                 submitted_by: report.submitted_by || "",
                 pic_name: report.pic_name || "",
-                location: report.location || "",
+                location: report.location_name || "",
                 type: report.type,
                 follow_up: report.follow_up || "" as AccountType, // Make sure to cast if necessary
                 report_date: report.report_date,
                 due_date: report.due_date || "",
                 follow_up_name: report.follow_up_name || "",
                 status: report.status,
-
             });
         }
         setIsChange(false);
@@ -153,14 +152,14 @@ export default function ReportEditModal() {
                     />
                     <DropdownField
                         label="PIC"
-                        options={picNamesOptions.map((val) => ({ label: val, value: val }))}
+                        options={report?.campus ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
                         value={formState.pic_name}
                         onChange={(e) => updateField("pic_name", e.target.value)}
                     />
                     <DropdownField
                         filter
                         label="Lokasi"
-                        options={locationOptions.map((val) => ({ label: val, value: val }))}
+                        options={report?.campus ? locationOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
                         value={formState.location}
                         onChange={(e) => updateField("location", e.value)}
                     />

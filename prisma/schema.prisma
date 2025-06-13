@@ -56,7 +56,7 @@ model Users {
 model Report_PIC {
   id          String @id @default(uuid())
   name        String
-  campus_name String
+  campus_name Campus
 
   created_at DateTime @default(now())
 
@@ -64,6 +64,7 @@ model Report_PIC {
   reports Report[]
 
   @@unique([name, campus_name])
+  @@unique([id, name])
 }
 
 model Report_Location {
@@ -77,6 +78,7 @@ model Report_Location {
   reports Report[]
 
   @@unique([location, campus_name])
+  @@unique([id, location])
 }
 
 model Report {
@@ -97,11 +99,13 @@ model Report {
   due_date    DateTime?
 
   // Relations
-  responsible_pic Report_PIC? @relation(references: [id], fields: [pic_id], onDelete: SetNull)
+  responsible_pic Report_PIC? @relation(references: [id, name], fields: [pic_id, pic_name], onDelete: SetNull)
   pic_id          String?
+  pic_name        String?
 
-  report_location Report_Location? @relation(references: [id], fields: [location_id], onDelete: SetNull)
+  report_location Report_Location? @relation(references: [id, location], fields: [location_id, location_name], onDelete: SetNull)
   location_id     String?
+  location_name   String?
 }
 
 model VerifiedCaptcha {
