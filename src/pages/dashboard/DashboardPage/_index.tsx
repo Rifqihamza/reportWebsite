@@ -10,11 +10,11 @@ import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import { AccountType } from "../../../types/variables";
 import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
 import { PrimeReactProvider } from "primereact/api";
+import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 export default function DashboardPage() {
-    const [activeTab, setActiveTab] = useState(0);
-    const [showSidebar, setShowSidebar] = useState(true);
     const { userData, setUserData } = useUserDataHook();
     const { setReportData } = useReportDataHook();
+    const { setShowSidebar, activeTab, showSidebar } = useDashboardNavbarHook();
 
     useEffect(() => {
         getUser().then(user_data => {
@@ -60,12 +60,7 @@ export default function DashboardPage() {
                     {/* Main Area: Sidebar + Scrollable Content */}
                     <div className="flex gap-4 py-4 px-1 h-full overflow-y-auto">
                         {/* Sidebar */}
-                        <NavbarDashboard
-                            activeTab={activeTab}
-                            setActiveTab={setActiveTab}
-                            showSidebar={showSidebar}
-                            setShowSidebar={setShowSidebar}
-                        />
+                        <NavbarDashboard />
 
                         {/* Scrollable Content */}
                         <div className="flex-1 overflow-y-auto px-2 ">

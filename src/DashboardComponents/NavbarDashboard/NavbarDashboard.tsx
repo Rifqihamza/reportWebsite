@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useUserDataHook } from "../../hooks/shared/useUserData";
 import { userLogout } from "../../utils/api_interface";
+import { useDashboardNavbarHook } from "../../hooks/shared/useDashboardNavbar";
 interface Props {
     activeTab: number;
     setActiveTab: (tabIndex: number) => void;
@@ -8,9 +9,10 @@ interface Props {
     setShowSidebar: (show: boolean) => void;
 }
 
-export default function NavbarDashboard({ setActiveTab, showSidebar, activeTab, setShowSidebar }: Props) {
+export default function NavbarDashboard() {
 
     const [shouldRender, setShouldRender] = useState(false)
+    const { showSidebar, setShowSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();
 
     useEffect(() => {
         if (!showSidebar) {
