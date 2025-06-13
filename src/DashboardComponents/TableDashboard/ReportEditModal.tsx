@@ -150,19 +150,31 @@ export default function ReportEditModal() {
                         value={formState.submitted_by}
                         onChange={(e) => updateField("submitted_by", e.target.value)}
                     />
-                    <DropdownField
-                        label="PIC"
-                        options={report?.campus ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
-                        value={formState.pic_name}
-                        onChange={(e) => updateField("pic_name", e.target.value)}
-                    />
-                    <DropdownField
-                        filter
-                        label="Lokasi"
-                        options={report?.campus ? locationOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
-                        value={formState.location}
-                        onChange={(e) => updateField("location", e.value)}
-                    />
+                    {
+                        (() => {
+                            const disabled = Object.values(picNamesOptions).length == 0
+                            return <DropdownField
+                                label="PIC"
+                                options={(report?.campus && !disabled) ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
+                                value={formState.pic_name}
+                                onChange={(e) => updateField("pic_name", e.target.value)}
+                                disabled={disabled}
+                            />
+                        })()
+                    }
+                    {
+                        (() => {
+                            const disabled = Object.values(locationOptions).length == 0
+                            return <DropdownField
+                                filter
+                                label="Lokasi"
+                                options={(report?.campus && !disabled) ? locationOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
+                                value={formState.location}
+                                onChange={(e) => updateField("location", e.value)}
+                                disabled={disabled}
+                            />
+                        })()
+                    }
                 </div>
                 <div className="flex flex-col gap-2 w-full">
                     <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
@@ -229,17 +241,18 @@ function InputField({ label, value, onChange }: { label: string; value: string; 
 }
 
 // Komponen dropdown
-function DropdownField({ label, options, value, onChange, filter }: {
+function DropdownField({ label, options, value, onChange, disabled, filter }: {
     label: string;
     options: { label: string, value: string }[];
     value: string | AccountType; // Allow both string and AccountType
     onChange: (e: any) => void;
+    disabled?: boolean
     filter?: boolean
 }) {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Dropdown filter value={value} options={options} onChange={onChange} className="w-full rounded-lg! bg-transparent! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!" placeholder={`Pilih ${label}`} />
+            <Dropdown filter={filter} disabled={disabled} value={value} options={options} onChange={onChange} className="w-full rounded-lg! bg-transparent! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!" placeholder={`Pilih ${label}`} />
         </div>
     );
 }
