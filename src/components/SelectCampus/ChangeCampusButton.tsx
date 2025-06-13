@@ -12,6 +12,16 @@ export default function ChangeCampusButton() {
   }
 
   return <>
-    <button onClick={handleChangeCampus} className="bg-amber-50 pl-3 pr-4 py-2 text-md rounded-br-xl fixed top-0 left-0 duration-300 hover:bg-[#7FA1C3] hover:text-white z-10"><i className="pi pi-home"></i> Change Campus</button>
-  </>
+        <button
+            className="h-12 flex items-center overflow-hidden px-4 py-3 bg-amber-50 hover:bg-[#7FA1C3] hover:text-white fixed top-12 right-0 hover:w-[11rem] w-[3rem] duration-300 cursor-pointer group"
+            onClick={handleChangeCampus}
+        >
+            <i className="pi pi-home mr-2"></i>
+            <span
+                className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+                Change Campus
+            </span>
+        </button>
+      </>
 }

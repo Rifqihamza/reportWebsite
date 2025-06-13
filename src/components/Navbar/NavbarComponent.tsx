@@ -17,8 +17,6 @@ const NavbarComponents = () => {
   const { userData } = useUserDataHook();
   return (
     <>
-      <ChangeCampusButton />
-      <DashboardButton />
       <div className="flex flex-row items-center justify-evenly px-6 py-2">
         <button
           className={`pointer-events-none relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 text-white`}
@@ -29,6 +27,8 @@ const NavbarComponents = () => {
           ></span>
         </button>
       </div>
+      <ChangeCampusButton />
+      <DashboardButton />
       <LogoutButton handle_logout={handle_logout} />
     </>
   );
