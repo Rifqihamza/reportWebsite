@@ -1,6 +1,7 @@
 import LogoutButton from "./LogoutButtonComponent";
 import { useUserDataHook } from "../../hooks/shared/useUserData";
 import { userLogout } from "../../utils/api_interface";
+import ChangeCampusButton from "../SelectCampus/ChangeCampusButton";
 
 const NavbarComponents = () => {
   async function handle_logout() {
@@ -15,6 +16,7 @@ const NavbarComponents = () => {
   const { userData } = useUserDataHook();
   return (
     <>
+      <ChangeCampusButton />
       <div className="flex flex-row items-center justify-evenly px-6 py-2">
         <button
           className={`pointer-events-none relative group px-4 py-2 font-semibold uppercase tracking-wider transition-colors duration-300 text-white`}
