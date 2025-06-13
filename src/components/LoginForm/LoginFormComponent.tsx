@@ -28,6 +28,7 @@ export default function LoginFormComponent() {
             window.location.href = "/";
           }
         }, 2000);
+        return;
       }
       else if (result == APIResultType.Unauthorized) {
         setPasswordWrong(true);

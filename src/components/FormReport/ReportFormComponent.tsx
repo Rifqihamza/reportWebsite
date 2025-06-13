@@ -128,6 +128,7 @@ export default function ReportFormComponent() {
   return (
     <>
       <UseReportConfigHookEffect />
+      <p className="text-white w-full text-center mt-4">Campus: {selectedCampus}</p>
       <form id="report-form">
         {/* Container Form input */}
         <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>
