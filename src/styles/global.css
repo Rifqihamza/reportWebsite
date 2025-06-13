@@ -239,3 +239,11 @@ body {
   background-color: #7FA1C3;
   border-radius: 0.75rem;
 }
+
+.p-dropdown-item.p-highlight {
+  background-color: #13a09422 !important;
+}
+
+.p-dropdown-item.p-highlight:hover {
+  background-color: #13a09455 !important;
+}
