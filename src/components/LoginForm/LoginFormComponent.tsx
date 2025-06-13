@@ -1,13 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { APIResultType, userLogin } from "../../utils/api_interface";
-import { AccountType } from "../../types/variables";
 import { useMessageToastHook } from "../../hooks/shared/useMessageToast";
+import { AccountType } from "../../types/variables";
 
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginDisabled, setLoginDisabled] = useState(false);
+  const [passwordWrong, setPasswordWrong] = useState(false);
   const { showMessage } = useMessageToastHook();
 
   const handleLogin = async () => {
@@ -15,17 +16,24 @@ export default function LoginFormComponent() {
 
     try {
       const result = await userLogin(username, password);
-      if (typeof result === "string") {
-        if(result === AccountType.Guru || result === AccountType.Vendor) {
-          window.location.href = "/dashboard";
-        }
-        else {
-          window.location.href = "/";
-        }
-        return;
-      } else if (result == APIResultType.Unauthorized) {
+      console.log(result.toString());
+      console.log(Object.values(AccountType));
+      if(Object.values(AccountType).includes(result as AccountType)) {
+        showMessage("Welcome!", "success", "You've successfully login! You'll be redirected in a second..");
+        setTimeout(() => {
+          if(result === AccountType.Guru || result === AccountType.Vendor) {
+            window.location.href = "/dashboard";
+          }
+          else if(result === AccountType.Siswa) {
+            window.location.href = "/";
+          }
+        }, 2000);
+      }
+      else if (result == APIResultType.Unauthorized) {
+        setPasswordWrong(true);
         showMessage("Unauthorized!", "error", "Wrong password or username");
-      } else {
+      } 
+      else {
         showMessage("There's an error!", "error", "Unknown error detected please report to developer");
       }
     } catch (err) {
@@ -35,23 +43,28 @@ export default function LoginFormComponent() {
     setLoginDisabled(false);
   };
 
+  useEffect(() => {
+    setPasswordWrong(false);
+  }, [username, password]);
+
   return (
     <>
       {/* Username */}
       <div className="space-y-2 mt-6">
-        <label htmlFor="username" className="font-bold">
+        <label htmlFor="username" className={`font-bold ${passwordWrong ? "text-red-600" : ""}`}>
           Username
         </label>
-        <input type="text" name="username" placeholder="Username..." autoComplete="off" className="mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black" onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black ${passwordWrong ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
 
       {/* Password */}
       <div className="space-y-2 mt-2">
-        <label htmlFor="password" className="font-bold">
+        <label htmlFor="password" className={`font-bold ${passwordWrong ? "text-red-600" : ""}`}>
           Passsword
         </label>
-        <input type="password" name="password" placeholder="Password..." className="mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black" onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="password" name="password" placeholder="Password..." className={`mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black ${passwordWrong ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
+      <p className="text-red-600 h-1">{passwordWrong ? "username/password is wrong" : ""}</p>
 
       {/* Login Button */}
       <div className="space-y-2 mt-8">
