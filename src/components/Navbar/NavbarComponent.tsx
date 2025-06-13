@@ -13,7 +13,6 @@ const NavbarComponents = () => {
   }
 
   const { userData } = useUserDataHook();
-
   return (
     <>
       <div className="flex flex-row items-center justify-evenly px-6 py-2">

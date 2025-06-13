@@ -8,7 +8,7 @@ import { ReportHookEffect, useReportFilterHook } from "../../hooks/useReportHook
 const ReportListComponent = React.lazy(() => import("./ReportTableComponent"));
 
 export default function ReportTableWrapper() {    
-    const { setSearchKeyword, dateFilter, setDateFilter, selectedFilter, setSelectedFilter } = useReportFilterHook();
+    const { setSearchKeyword, dateFilter, setDateFilter} = useReportFilterHook();
 
     return <>
         <ReportHookEffect />
@@ -24,7 +24,7 @@ export default function ReportTableWrapper() {
                 />
                 <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black" />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full">
                 <FloatLabel className="overflow-x-hidden">
                     <Calendar
                         inputId="from-date"
@@ -59,7 +59,6 @@ export default function ReportTableWrapper() {
                 </FloatLabel>
                 <FilterSelect />
             </div>
-
         </div>
 
         <Suspense fallback={<LoadingAnimation />}>

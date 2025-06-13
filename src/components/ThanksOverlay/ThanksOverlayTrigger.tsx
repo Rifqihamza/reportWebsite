@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useThanksModalHook } from "../../hooks/shared/useThanksModal";
 
 export default function ThanksOverlayTrigger() {

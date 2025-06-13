@@ -6,7 +6,7 @@ export default function ReportDesktopTable() {
     const { showedReportData } = useReportPaginationHook();
     const { handleDetail } = useReportDetailHook();
 
-    return (
+    return <>
         <div className="hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
             <table className="w-full h-[70vh] max-h-[65vh]">
                 <thead>
@@ -98,7 +98,7 @@ export default function ReportDesktopTable() {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center border-b border-gray-300">
                                     <button
-                                        className="bg-[#7FA1C3] hover:bg-[#6FA9E3] px-3 py-1 rounded-xl duration-300"
+                                        className="bg-[#1f324d] hover:bg-[#6FA9E3] px-3 py-1 rounded-xl duration-300"
                                         onClick={() => handleDetail(report.id)}
                                     >
                                         Detail
@@ -110,5 +110,5 @@ export default function ReportDesktopTable() {
                 </tbody>
             </table>
         </div>
-    );
+    </>;
 };

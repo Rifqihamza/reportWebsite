@@ -3,7 +3,7 @@ import { ReportStatus, ReportType, reporttype_to_string, string_to_reporttype } 
 import { useReportDataHook } from "./shared/useReportData";
 import { useEffect } from "react";
 import strftime from "strftime";
-import { useReportConfigHook } from "./shared/useReportConfig";
+import { useReportConfigHook } from "./useReportConfig";
 
 export enum LineChartFilterOption {
   Year = "This Year",

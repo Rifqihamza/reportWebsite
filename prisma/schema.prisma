@@ -56,7 +56,7 @@ model Users {
 model Report_PIC {
   id          String @id @default(uuid())
   name        String
-  campus_name Campus
+  campus_name String
 
   created_at DateTime @default(now())
 

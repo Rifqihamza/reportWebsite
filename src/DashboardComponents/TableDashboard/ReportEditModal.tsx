@@ -8,7 +8,8 @@ import { APIResultType, updateReport } from '../../utils/api_interface';
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
 import { useMessageToastHook } from "../../hooks/shared/useMessageToast";
-import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
+import { useReportConfigHook } from "../../hooks/useReportConfig";
+import { Calendar } from "primereact/calendar";
 
 const reportTypeOptions = [
     ...Object.keys(ReportType)
@@ -34,7 +35,7 @@ export default function ReportEditModal() {
     const { reportData, setReportData } = useReportDataHook();
     const { detailId } = useReportDetailHook();
     const { picNamesOptions, locationOptions } = useReportConfigHook();
-    
+
     const report = reportData.find(value => value.id === detailId) || null;
 
     const [formState, setFormState] = useState({
@@ -76,7 +77,7 @@ export default function ReportEditModal() {
 
     const updateField = (field: keyof typeof formState, value: any) => {
         if (field == "due_date" || field == "report_date") {
-            if(value == null || value == undefined || value == "") {
+            if (value == null || value == undefined || value == "") {
                 value = "";
             }
             else {
@@ -100,7 +101,7 @@ export default function ReportEditModal() {
             result = await updateReport(report.id, {
                 ...report,
                 ...formState // formState now includes the updated status
-            } as ReportData); 
+            } as ReportData);
         }
         catch {
             showMessage("Success", "success", "Successfully update data!");
@@ -132,7 +133,7 @@ export default function ReportEditModal() {
     return (
         <Dialog
             header="Edit Laporan"
-            style={{ width: '80vw' }}
+            className="w-full max-w-6xl"
             visible={editVisible}
             draggable={false}
             onHide={() => setEditVisible(false)}
@@ -145,7 +146,11 @@ export default function ReportEditModal() {
         >
             <div className="flex flex-col md:flex-row gap-6 items-start w-full">
                 <div className="flex flex-col space-y-3.5 w-full">
-                    <InputField label="Pelapor" value={formState.submitted_by} onChange={(e) => updateField("submitted_by", e.target.value)} />
+                    <InputField
+                        label="Pelapor"
+                        value={formState.submitted_by}
+                        onChange={(e) => updateField("submitted_by", e.target.value)}
+                    />
                     <DropdownField
                         label="PIC"
                         options={picNamesOptions.map((val) => ({ label: val, value: val }))}
@@ -162,7 +167,13 @@ export default function ReportEditModal() {
                 </div>
                 <div className="flex flex-col gap-2 w-full">
                     <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
-                    <InputTextarea rows={9} id="descriptionReport" className="w-full resize-none" value={formState.message} onChange={(e) => updateField("message", e.target.value)} />
+                    <textarea
+                        rows={9}
+                        id="descriptionReport"
+                        value={formState.message}
+                        onChange={(e) => updateField("message", e.target.value)}
+                        className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
+                    />
                 </div>
             </div>
 
@@ -189,14 +200,14 @@ export default function ReportEditModal() {
                 <CalendarField
                     label="Tanggal Temuan"
                     value={new Date(formState.report_date)}
-                    onChange={(e) => updateField("report_date", new Date(e.target.value))}
+                    onChange={(e) => updateField("report_date", e.value ? new Date(e.value) : "")}
                     required={true}
                 />
 
                 <CalendarField
                     label="Due Date"
                     value={(formState.due_date != "") ? new Date(formState.due_date) : null}
-                    onChange={(e) => updateField("due_date", e.target.value ? new Date(e.target.value) : "")}
+                    onChange={(e) => updateField("due_date", e.value ? new Date(e.value) : "")}
                 />
             </div>
         </Dialog >
@@ -208,7 +219,12 @@ function InputField({ label, value, onChange }: { label: string; value: string; 
     return (
         <div className="flex flex-col gap-1">
             <label className="font-semibold mb-1">{label}</label>
-            <InputText value={value} onChange={onChange} className="w-full" />
+            <input
+                type="text"
+                value={value}
+                onChange={onChange}
+                className="outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
+            />
         </div>
     );
 }
@@ -224,30 +240,28 @@ function DropdownField({ label, options, value, onChange, filter }: {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Dropdown filter value={value} options={options} onChange={onChange} className="w-full" placeholder={`Pilih ${label}`} />
+            <Dropdown filter value={value} options={options} onChange={onChange} className="w-full rounded-lg! bg-transparent! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!" placeholder={`Pilih ${label}`} />
         </div>
     );
 }
 
+
+
 function CalendarField({ label, value, onChange, required = false }: {
     label: string;
     value: Date | null;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: any) => void;
     required?: boolean
 }) {
-    const inputValue = value
-        ? new Date(value).toISOString().slice(0, 16) // format for datetime-local
-        : "";
-
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <input
-                type="datetime-local"
-                value={inputValue}
+            <Calendar
+                value={value}
                 onChange={onChange}
-                className="p-inputtext p-component w-full"
+                showTime
                 required={true}
+                className="w-full outline-none! px-4! py-2! border! border-gray-400! focus:border-gray-800! rounded-lg!"
             />
         </div>
     );

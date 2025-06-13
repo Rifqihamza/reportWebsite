@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { useCampusDataHook } from "./useCampusData";
-import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../../utils/api_interface";
-import { campus_to_campuscode } from "../../types/variables";
+import { useCampusDataHook } from "./shared/useCampusData";
+import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../utils/api_interface";
+import { campus_to_campuscode } from "../types/variables";
 
 type useReportConfigType = {
   picNamesOptions: string[];

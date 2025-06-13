@@ -17,7 +17,7 @@ import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
-import UseReportConfigHookEffect, { useReportConfigHook } from "../../hooks/shared/useReportConfig";
+import UseReportConfigHookEffect, { useReportConfigHook } from "../../hooks/useReportConfig";
 import { useThanksModalHook } from "../../hooks/shared/useThanksModal";
 import { useCampusDataHook } from "../../hooks/shared/useCampusData";
 
@@ -104,7 +104,7 @@ export default function ReportFormComponent() {
       setShowThanks(true);
       setTimeout(() => {
         setShowThanks(false);
-      }, 2000);
+      }, 3500);
 
     } else if (result == APIResultType.Unauthorized) {
       alert("Unauthroized report detected!");
@@ -133,7 +133,7 @@ export default function ReportFormComponent() {
         <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>
           {/* Detail Laporan */}
           <div className="flex flex-col w-full">
-            <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10 ">
+            <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
               <label
                 htmlFor="laporan"
                 className="md:text-lg font-semibold mb-6 text-xs text-white flex flex-row gap-2 items-center"

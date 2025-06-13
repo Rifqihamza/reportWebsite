@@ -8,13 +8,11 @@ import { getReport, getUser } from "../../../utils/api_interface";
 import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import { AccountType } from "../../../types/variables";
-import UseReportConfigHookEffect from "../../../hooks/shared/useReportConfig";
+import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
 import { PrimeReactProvider } from "primereact/api";
-
 export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState(0);
     const [showSidebar, setShowSidebar] = useState(true);
-
     const { userData, setUserData } = useUserDataHook();
     const { setReportData } = useReportDataHook();
 
