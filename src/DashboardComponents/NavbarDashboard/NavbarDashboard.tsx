@@ -6,7 +6,7 @@ import { useDashboardNavbarHook } from "../../hooks/shared/useDashboardNavbar";
 export default function NavbarDashboard() {
 
     const [shouldRender, setShouldRender] = useState(false)
-    const { showSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();
+    const { showSidebar, setShowSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();
 
     useEffect(() => {
         if (!showSidebar) {
@@ -17,7 +17,11 @@ export default function NavbarDashboard() {
         else {
             setShouldRender(false);
         }
-    }, [showSidebar])
+    }, [showSidebar]);
+
+    useEffect(() => {
+        setShowSidebar(false);
+    }, [activeTab]);
 
     const { userData } = useUserDataHook();
 
