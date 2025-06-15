@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { ProgressBar } from 'primereact/progressbar';
 import { PrimeReactProvider } from "primereact/api";
 import { APIResultType, checkAuthentication } from "../../utils/api_interface";
+import UseUserDataHookEffect from "../../hooks/shared/useUserData";
+import { AccountType, type User } from "../../types/variables";
 
 const PUBLIC_SITE_KEY = "9d404a42-7eee-446a-94ae-e5c8c8dc7050";
 
@@ -46,9 +48,6 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
             setTimeout(() => {
               setProgress(100);
               onSuccess ? onSuccess(token) : "";
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 1000);
             }, 1000);
           } else {
             onError ? onError() : "";
@@ -71,9 +70,24 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
     onError ? onError() : "";
   }
 
+  function handleRedirect({ userData, isAuthorized }: { userData: User | null, isAuthorized: boolean }) {
+    setTimeout(() => {
+      if(userData && userData.role === AccountType.Guru) {
+        window.location.href = "/dashboard";
+      }
+      else if(isAuthorized) {
+        window.location.href = "/";
+      }
+      else if(!isAuthorized){
+        window.location.href = "/loginPage";
+      }
+    }, 1000);
+  }
 
   return <>
+    {progress >= 100 ? <UseUserDataHookEffect onResolve={handleRedirect} /> : <></>}
     {isCaptchaNeeded ?
+    <>
       <div className="bg-black/60 backdrop-blur-md absolute inset-0 flex p-3">
         <div className="relative overflow-hidden flex flex-col m-auto bg-[#1f324d] [box-shadow:0_0_4px_1px_#fff] text-[#E2DAD6] rounded-xl w-full max-w-md h-fit px-6 py-3">
           <div className='bg-amber-400 [box-shadow:0_0_4px_1px_#fff] rounded-full w-60 h-60 absolute -top-1/2 -right-1/4'></div>
@@ -96,6 +110,7 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
           </PrimeReactProvider>
         </div>
       </div>
+      </>
       :
       ""
     }
