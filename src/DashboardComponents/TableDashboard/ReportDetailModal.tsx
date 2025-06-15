@@ -19,12 +19,13 @@ export default function ReportDetailModal() {
         <div className="flex flex-col justify-center items-center w-fit h-fit">
             <Image
                 src={report_data?.image}
-                imageClassName="object-contain rounded-lg"
+                imageClassName="object-cover rounded-lg max-h-[50vh]"
                 alt="Foto Bukti Laporan"
                 preview={true}
                 width="800"
+                loading="lazy"
             />
-            <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview </p>
+            <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview</p>
         </div>
     );
 
