@@ -20,6 +20,7 @@ import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
 import UseReportConfigHookEffect, { useReportConfigHook } from "../../hooks/useReportConfig";
 import { useThanksModalHook } from "../../hooks/shared/useThanksModal";
 import { useCampusDataHook } from "../../hooks/shared/useCampusData";
+import { useMessageToastHook } from "../../hooks/shared/useMessageToast";
 
 export default function ReportFormComponent() {
   // Authorized state
@@ -46,6 +47,7 @@ export default function ReportFormComponent() {
   const { picNamesOptions, locationOptions } = useReportConfigHook();
   const { setShowThanks } = useThanksModalHook();
   const { selectedCampus } = useCampusDataHook();
+  const { showMessage } = useMessageToastHook();
 
   const toastProgress = useRef<Toast>(null);
 
@@ -65,13 +67,13 @@ export default function ReportFormComponent() {
 
   const handle_submit = async () => {
     if(!selectedCampus) {
-      alert("Please select campus first");
+      showMessage("Please select campus first.", "warn", "");
       window.location.reload();
       return;
     }
     
-    if (!submitted_by || !message || !category || !location || !reportDate) {
-      alert("Please complete the form.");
+    if (!submitted_by || !message || !category || !location || !reportDate || !image) {
+      showMessage("Please complete the form.", "warn", "");
       return;
     }
 
@@ -338,7 +340,7 @@ export default function ReportFormComponent() {
         {/* End Container Form Input */}
 
         {/* File Image Upload */}
-        <div className="flex flex-col gap-2 w-full mt-6">
+        <div className={`flex flex-col gap-2 w-full mt-6 ${submitDisabled ? "opacity-50 bg-[#ccc55] pointer-events-none" : ""}`}>
           <div className="bg-[#93BFCF] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
             <label
               htmlFor="foto"
@@ -358,10 +360,10 @@ export default function ReportFormComponent() {
                 <p className={`mb-1 text-sm text-${image ? "black" : "black"}`} id="file-name-display">
                   {image ? image.name : "Klik untuk upload foto"}
                 </p>
-                <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 2MB)"}</p>
+                <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 5MB)"}</p>
               </div>
 
-              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? setImage(e.target.files[0]) : "" }} />
+              <input id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < 5000000) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", "Please put an image smaller than 5MB"))) : "" }} />
             </label>
           </div>
         </div>
