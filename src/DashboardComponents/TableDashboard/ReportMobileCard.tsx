@@ -27,7 +27,7 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
                     <span className="font-semibold">Laporan: </span>{report.message}
                 </p>
                 <p>
-                    <span className="font-semibold">Lokasi:</span> {report.location}
+                    <span className="font-semibold">Lokasi:</span> {report.location_name}
                 </p>
                 <p>
                     <span className="font-semibold">PIC:</span> {report.pic_name || "Belum ditentukan"}

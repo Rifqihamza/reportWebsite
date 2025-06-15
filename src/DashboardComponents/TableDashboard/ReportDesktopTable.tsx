@@ -81,7 +81,7 @@ export default function ReportDesktopTable() {
                                     {report.message}
                                 </td>
                                 <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm text-gray-600 max-w-[13rem] truncate">
-                                    {report.location}
+                                    {report.location_name}
                                 </td>
                                 <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm text-gray-600 max-w-[13rem] truncate">
                                     {report.pic_name || "Belum ditentukan"}
