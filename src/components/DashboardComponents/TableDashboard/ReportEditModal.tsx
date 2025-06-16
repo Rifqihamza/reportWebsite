@@ -59,6 +59,7 @@ export default function ReportEditModal() {
                 submitted_by: report.submitted_by || "",
                 pic_name: report.pic_name || "",
                 location: report.location_name || "",
+                detail_location: report.detail_location || "",
                 type: report.type,
                 follow_up: report.follow_up || "" as AccountType,
                 report_date: report.report_date,
@@ -135,63 +136,56 @@ export default function ReportEditModal() {
                 </div>
             }
         >
-            <div className="flex flex-col md:flex-row gap-6 items-start w-full">
-                <div className="flex flex-col space-y-3.5 w-full">
-                    <div className="flex flex-col gap-2 w-full">
-                        <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
-                        <textarea
-                            rows={9}
-                            id="descriptionReport"
-                            value={formState.message}
-                            onChange={(e) => updateField("message", e.target.value)}
-                            className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
-                            disabled={!!formState.message}
-                        />
-                    </div>
-                    <InputField
-                        label="Pelapor"
-                        value={formState.submitted_by}
-                        onChange={(e) => updateField("submitted_by", e.target.value)}
-                    />
-                    {
-                        (() => {
-                            const disabled = Object.values(picNamesOptions).length == 0
-                            return <DropdownField
-                                label="PIC"
-                                options={(report?.campus && !disabled) ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
-                                value={formState.pic_name}
-                                onChange={(e) => updateField("pic_name", e.target.value)}
-                                disabled={disabled}
-                            />
-                        })()
-                    }
-                    {
-                        (() => {
-                            const disabled = Object.values(locationOptions).length == 0
-                            return <DropdownField
-                                filter
-                                label="Lokasi"
-                                options={(report?.campus && !disabled) ? locationOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
-                                value={formState.location}
-                                onChange={(e) => updateField("location", e.value)}
-                                disabled={disabled}
-                            />
-                        })()
-                    }
-                </div>
-                <div className="flex flex-col gap-2 w-full">
-                    <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
-                    <textarea
-                        rows={9}
-                        id="descriptionReport"
-                        value={formState.message}
-                        onChange={(e) => updateField("message", e.target.value)}
-                        className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
-                    />
-                </div>
+            <div className="">
+                <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
+                <textarea
+                    rows={3}
+                    id="descriptionReport"
+                    value={formState.message}
+                    onChange={(e) => updateField("message", e.target.value)}
+                    className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
+                    disabled
+                />
             </div>
+            <div className="grid grid-cols-2 gap-4 items-center">
+                <InputField
+                    label="Pelapor"
+                    value={formState.submitted_by}
+                    onChange={(e) => updateField("submitted_by", e.target.value)}
+                    disabled
+                />
+                {
+                    (() => {
+                        const disabled = Object.values(picNamesOptions).length == 0
+                        return <DropdownField
+                            label="PIC"
+                            options={(report?.campus && !disabled) ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
+                            value={formState.pic_name}
+                            onChange={(e) => updateField("pic_name", e.target.value)}
+                            disabled
+                        />
+                    })()
+                }
+                {
+                    (() => {
+                        const disabled = Object.values(locationOptions).length == 0
+                        return <DropdownField
+                            filter
+                            label="Lokasi"
+                            options={(report?.campus && !disabled) ? locationOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
+                            value={formState.location}
+                            onChange={(e) => updateField("location", e.value)}
+                            disabled
+                        />
+                    })()
+                }
+                <InputField
+                    label="Detail Lokasi"
+                    value={formState.detail_location}
+                    onChange={(e) => updateField("detail_location", e.target.value)}
+                    disabled
+                />
 
-            <div className="space-y-2 grid lg:grid-cols-2 grid-cols-1 lg:gap-4 gap-2 mt-4">
                 <DropdownField
                     label="Kategori"
                     options={reportTypeOptions}
@@ -228,7 +222,8 @@ export default function ReportEditModal() {
                     onChange={(e) => updateField("due_date", e.value ? new Date(e.value) : "")}
                 />
             </div>
-        </Dialog>
+
+        </Dialog >
     );
 }
 
@@ -240,13 +235,22 @@ function InputField({ label, value, onChange, disabled = false }: {
     disabled?: boolean;
 }) {
     return (
-        <div className="flex flex-col gap-1">
-            <label className="font-semibold mb-1">{label}</label>
-            <input
+        <div className="flex flex-col">
+            <div className="flex justify-between px-2">
+                <label className="font-semibold mb-1">{label}</label>
+                {disabled
+                    ?
+                    <p className="text-gray-400">
+                        <i className="pi pi-lock"></i>
+                    </p>
+                    :
+                    ""
+                }
+            </div>            <input
                 type="text"
                 value={value}
                 onChange={onChange}
-                className="outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
+                className="outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg disabled:border-gray-300"
                 disabled={disabled}
             />
         </div>
@@ -264,8 +268,18 @@ function DropdownField({ label, options, value, onChange, disabled, filter }: {
 }) {
     return (
         <div className="flex flex-col">
-            <label className="font-semibold mb-1">{label}</label>
-            <Dropdown filter={filter} disabled={disabled} value={value} options={options} onChange={onChange} className="w-full rounded-lg! bg-transparent! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!" placeholder={`Pilih ${label}`} />
+            <div className="flex justify-between px-2">
+                <label className="font-semibold mb-1">{label}</label>
+                {disabled
+                    ?
+                    <p className="text-gray-400">
+                        <i className="pi pi-lock"></i>
+                    </p>
+                    :
+                    ""
+                }
+            </div>
+            <Dropdown filter={filter} disabled={disabled} value={value} options={options} onChange={onChange} className="w-full rounded-lg! bg-transparent! [&_.p-dropdown]:disabled:border-gray-300! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!" placeholder={`Pilih ${label}`} />
         </div>
     );
 }
@@ -279,8 +293,17 @@ function CalendarField({ label, value, onChange, disabled = false }: {
 }) {
     return (
         <div className="flex flex-col">
-            <label className="font-semibold mb-1">{label}</label>
-            <Calendar
+            <div className="flex justify-between px-2">
+                <label className="font-semibold mb-1">{label}</label>
+                {disabled
+                    ?
+                    <p className="text-gray-400">
+                        <i className="pi pi-lock"></i>
+                    </p>
+                    :
+                    ""
+                }
+            </div>            <Calendar
                 value={value}
                 onChange={onChange}
                 showTime
