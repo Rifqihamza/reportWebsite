@@ -5,7 +5,7 @@ import { APIResultType, checkAuthentication } from "../../utils/api_interface";
 
 export default function VerifyAuthentication() {
   useEffect(() => {
-    if(window.location.href.includes("captcha")) {
+    if(window.location.href.includes("captcha") || window.location.href.includes("faq")) {
       return;
     }
     

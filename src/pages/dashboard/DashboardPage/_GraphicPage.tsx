@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
-import LoadingAnimation from "../../../components/Loading/LoadingAnimation";
+import LoadingAnimation from "../../../components/GlobalComponents/Loading/LoadingAnimation";
 
-const GraphicComponent = React.lazy(() => import("../../../DashboardComponents/GraphicDashboard/GraphicComponent"))
+const GraphicComponent = React.lazy(() => import("../../../components/DashboardComponents/GraphicDashboard/GraphicComponent"))
 
 
 export default function GraphicPage() {

@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
-import NavbarDashboard from "../../../DashboardComponents/NavbarDashboard/NavbarDashboard";
+import { useEffect } from "react";
+import NavbarDashboard from "../../../components/DashboardComponents/NavbarDashboard/NavbarDashboard";
 import TablePage from "./_TablePage";
 import WelcomePage from "./_WelcomePage";
 import GraphicPage from "./_GraphicPage";
 import SettingPage from "./_SettingPage";
-import { getReport, getUser } from "../../../utils/api_interface";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
-import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import { AccountType } from "../../../types/variables";
 import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
 import { PrimeReactProvider } from "primereact/api";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
+
 export default function DashboardPage() {
     const { userData } = useUserDataHook();
     const { setShowSidebar, activeTab, showSidebar } = useDashboardNavbarHook();

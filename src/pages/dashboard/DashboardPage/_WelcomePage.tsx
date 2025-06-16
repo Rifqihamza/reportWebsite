@@ -1,4 +1,4 @@
-import WelcomeComponent from "../../../DashboardComponents/WelcomeDashboard/WelcomeComponent";
+import WelcomeComponent from "../../../components/DashboardComponents/WelcomeDashboard/WelcomeComponent";
 
 export default function WelcomePage() {
     return (

@@ -33,12 +33,10 @@ export default function UseUserDataHookEffect(props: { onResolve?: (res: { userD
     getUser().then(user_data => {
       if (typeof user_data === "object") {
         setUserData(user_data);
-        console.log("Authorized!");
         props.onResolve ? props.onResolve({ isAuthorized: true, userData: user_data }) : "";
       }
       else if(user_data === APIResultType.Unauthorized) {
         setUserData();
-        console.log("Unauthorized!");
         props.onResolve ? props.onResolve({ isAuthorized: false, userData: null }) : "";
       }
 
