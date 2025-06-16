@@ -8,7 +8,7 @@ type useThanksModalType = {
 
 export const useThanksModalHook = create<useThanksModalType>((set) => {
     return {
-        showThanks: true,
+        showThanks: false,
         setShowThanks(newShowThanks) {
             set(() => ({ showThanks: newShowThanks }));
         },
