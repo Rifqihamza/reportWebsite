@@ -2,6 +2,8 @@
 import ThanksOverlayTrigger from "./ThanksOverlayTrigger";
 import LogoSekolah from "../../../../public/img/logoSekolah.png";
 import HeroImage from "../../../../public/img/9086589-removebg-preview.png";
+import ThanksCloseButton from "./ThanksCloseButton";
+
 import { Image } from "astro:assets";
 ---
 
@@ -33,12 +35,7 @@ import { Image } from "astro:assets";
               Bersama kita wujudkan lingkungan yang lebih baik.
             </p>
           </div>
-
-          <button
-            class="px-4 py-4 bg-[#7FA1C3] text-white rounded-xl uppercase tracking-wider font-bold cursor-pointer"
-          >
-            Selesai
-          </button>
+          <ThanksCloseButton client:load />
         </div>
 
         <div class="w-full md:w-1/2 flex justify-center">
