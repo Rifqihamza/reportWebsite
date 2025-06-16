@@ -1,4 +1,4 @@
-import ReportFormComponent from "../../components/FormReport/ReportFormComponent";
+import ReportFormComponent from "../../components/ReportFormComponents/FormReport/ReportFormComponent";
 
 export default function ReportForm() {
 

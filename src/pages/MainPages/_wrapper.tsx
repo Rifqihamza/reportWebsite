@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import MainPage from './_index';
-import WelcomeComponent from '../../components/WelcomeOverlay/WelcomeComponent';
+import WelcomeComponent from '../../components/ReportFormComponents/WelcomeOverlay/WelcomeComponent';
 
 export default function WrapperPage() {
     const [showMain, setShowMain] = useState(true);

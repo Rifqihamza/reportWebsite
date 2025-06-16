@@ -1,0 +1,52 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import FaqNavbar from "../../components/FaqComponents/FaqNavbar/FaqNavbar";
+import FaqList from "../../components/FaqComponents/FaqList/FaqList";
+---
+
+<Layout pageType="faq">
+  <FaqNavbar client:load />
+  <div class="bg-[#1f324d] text-white px-50 w-full h-[90vh] flex flex-col gap-2 justify-center items-center">
+    <h1 class="text-5xl text-center font-thin">Apa itu Report Website?</h1>
+    <p class="text-xl text-center font-thin">
+      <b>Report Website</b> adalah website yang memungkinkan kita melaporkan temuan yang ada di sekolah dan mengorganisir semua nya di dalam suatu sistem terkendali agar <b
+        >memudahkan kita untuk melihat, menganalisis, dan membuat keputusan berdasarkan data-data yang telah dikumpulkan</b
+      >
+    </p>
+  </div>
+  <div class="bg-transparent text-[#1f324d] px-34 py-64 w-full h-[100vh] flex flex-col gap-2 items-center">
+    <h1 class="text-5xl text-center font-thin pt-10">Cara menggunakan website</h1>
+    <p class="text-xl text-center font-thin pb-10">How to use the website</p>
+    <div class="flex flex-row gap-4 font-normal">
+      <div class="flex flex-col p-10">
+        <h1 class="text-2xl!"><i class="pi pi-user"></i> Sebagai Siswa</h1>
+        <ol class="list-decimal text-md mt-2">
+          <li>Siswa mengklik tombol login di kanan atas dan akan pergi ke halaman login.</li>
+          <li>Siswa masukkan username dan password yang telah diberikan sebelumnya oLeh guru. Jika sudah, siswa akan masuk ke form laporan</li>
+          <li>Siswa dapat masukkan data laporan yang ditemukan langsung di form tersebut. Lalu, siswa dapat menekan tombol "submit"</li>
+        </ol>
+      </div>
+      <div class="flex flex-col p-10">
+        <h1 class="text-2xl!"><i class="pi pi-user-plus"></i> Sebagai Admin</h1>
+        <ol class="list-decimal text-md mt-2">
+          <li>Admin mengklik tombol login di kanan atas dan akan pergi ke halaman login.</li>
+          <li>Admin masukkan username dan password khusus admin yang telah diberikan sebelumnya. Jika sudah, admin akan masuk ke dashboard admin</li>
+          <li>Admin dapat melihat, mengedit, dan mengubah status dari laporan yang telah di-submit user di tab "Table Report"</li>
+          <li>Admin juga dapat menganalisis data laporan di tab "Statistics" untuk melihat data yang sudah diolah</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="py-64 px-50 bg-[#1f324d] h-dvh">
+    <h1 class="text-5xl text-center font-thin pt-10 text-white">FAQ</h1>
+    <p class="text-xl text-center font-thin pb-10 text-white">Frequently Asked Question</p>
+    <FaqList client:load />
+  </div>
+  <button></button>
+</Layout>
+
+<style is:global>
+  body {
+    background-color: #e3e3e3;
+  }
+</style>

@@ -1,35 +1,19 @@
-import { useEffect, useState } from "react";
-import NavbarDashboard from "../../../DashboardComponents/NavbarDashboard/NavbarDashboard";
-// Import Page
+import { useEffect } from "react";
+import NavbarDashboard from "../../../components/DashboardComponents/NavbarDashboard/NavbarDashboard";
 import TablePage from "./_TablePage";
 import WelcomePage from "./_WelcomePage";
 import GraphicPage from "./_GraphicPage";
 import SettingPage from "./_SettingPage";
-import { getReport, getUser } from "../../../utils/api_interface";
-import { useUserDataHook } from "../../../hooks/shared/useUserData";
-import { useReportDataHook } from "../../../hooks/shared/useReportData";
+import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { AccountType } from "../../../types/variables";
 import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
 import { PrimeReactProvider } from "primereact/api";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
+
 export default function DashboardPage() {
-    const { userData, setUserData } = useUserDataHook();
-    const { setReportData } = useReportDataHook();
+    const { userData } = useUserDataHook();
     const { setShowSidebar, activeTab, showSidebar } = useDashboardNavbarHook();
 
-    useEffect(() => {
-        getUser().then(user_data => {
-            if (typeof user_data === "object") {
-                setUserData(user_data);
-            }
-        });
-
-        getReport().then(report_data_array => {
-            if (typeof report_data_array === "object") {
-                setReportData(report_data_array);
-            }
-        });
-    }, []);
 
     useEffect(() => {
         if (userData) {
@@ -41,6 +25,7 @@ export default function DashboardPage() {
 
     return (
         <>
+            <UseUserDataHookEffect />
             <UseReportConfigHookEffect useAll />
             <PrimeReactProvider>
                 <div className="flex flex-col h-screen p-4 border 2">

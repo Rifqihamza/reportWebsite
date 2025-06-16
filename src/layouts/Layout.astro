@@ -1,15 +1,15 @@
 ---
 import "../styles/global.css";
-import "primereact/resources/themes/lara-light-blue/theme.css"; // atau tema lain
+import "primereact/resources/themes/saga-blue/theme.css"; // atau tema lain
 import "primereact/resources/primereact.min.css"; // komponen core
 import "primeicons/primeicons.css"; // icon
 
 import VerifyAuthentication from "../components/GlobalComponents/VerifyAuthentication";
-import ToastMessage from "../components/ToastMessage/ToastMessage";
+import ToastMessage from "../components/GlobalComponents/ToastMessage/ToastMessage";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
 
-const { children, pageType = "form" } = Astro.props;
+const { pageType = "form" } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,7 +25,7 @@ const { children, pageType = "form" } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>Report Website | SMK Mitra Industri MM2100</title>
   </head>
-  <body class={pageType === "dashboard" ? "bg-dashboard" : "bg-form"}>
+  <body class={pageType === "dashboard" ? "bg-dashboard" : (pageType === "form" ? "bg-form" : "")}>
     {
       pageType === "form" && (
         <div>
