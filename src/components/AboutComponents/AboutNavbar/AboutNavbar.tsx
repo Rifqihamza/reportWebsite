@@ -1,4 +1,4 @@
-export default function FaqNavbar() {
+export default function AboutNavbar() {
   const handleRedirect = () => {
     window.location.href = "/loginPage";
   };
