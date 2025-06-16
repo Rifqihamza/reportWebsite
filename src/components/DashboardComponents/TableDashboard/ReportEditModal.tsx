@@ -167,17 +167,16 @@ export default function ReportEditModal() {
                             options={(report?.campus && !disabled) ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
                             value={formState.pic_name}
                             onChange={(e) => updateField("pic_name", e.target.value)}
-                            disabled
+                            disabled={disabled}
                         />
                     })()
                 }
                 {
                     (() => {
-                        const disabled = Object.values(locationOptions).length == 0
                         return <DropdownField
                             filter
                             label="Lokasi"
-                            options={(report?.campus && !disabled) ? locationOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
+                            options={[{label: formState.location, value: formState.location}]}
                             value={formState.location}
                             onChange={(e) => updateField("location", e.value)}
                             disabled
