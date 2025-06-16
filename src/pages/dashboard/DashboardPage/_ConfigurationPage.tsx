@@ -1,5 +1,5 @@
 import React, { Suspense } from "react"
-import LoadingAnimation from "../../../components/Loading/LoadingAnimation"
+import LoadingAnimation from "../../../components/GlobalComponents/Loading/LoadingAnimation"
 export default function ConfigurationPage() {
     const ConfigurationComponent = React.lazy(() => import("../../../components/DashboardComponents/ConfigurationDashboard/ConfigurationComponent"))
     return (

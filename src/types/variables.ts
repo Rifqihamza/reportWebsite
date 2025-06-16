@@ -1,4 +1,5 @@
 export enum AccountType {
+    Admin = "Admin",
     Guru = "Guru",
     Siswa = "Siswa",
     Vendor = "Vendor",

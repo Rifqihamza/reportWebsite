@@ -14,7 +14,7 @@ export enum APIResultType {
 }
 
 // Backend Functionalities
-export async function userLogin(username: string, password: string): Promise<APIResultType|AccountType> {
+export async function userLogin(username: string, password: string): Promise<APIResultType | AccountType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/login", {
         method: "POST",
@@ -32,11 +32,11 @@ export async function userLogin(username: string, password: string): Promise<API
     if (response.ok) {
         const role = (await response.json()).role;
         const result = string_to_accounttype(role);
-        if(!result) {
+        if (!result) {
             alert("There's something unexpected. Please send this code to the dev. error code: 001");
             return APIResultType.NoError;
         }
-        
+
         return result;
     }
     else if (response.status == 500) {
@@ -237,6 +237,22 @@ export async function getUser(): Promise<User | APIResultType> {
 
     return APIResultType.InternalServerError;
 }
+
+export async function getAllUsers(): Promise<User[] | APIResultType> {
+    const response = await fetch(base_url_endpoint + "/api/user/allUsers", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (response.ok) {
+        return (await response.json()) as User[];
+    } else if (response.status === 401) {
+        return APIResultType.Unauthorized;
+    } else {
+        return APIResultType.InternalServerError;
+    }
+}
+
 
 export async function updateReport(report_id: string, report_data: ReportData) {
     // Fetch to API
