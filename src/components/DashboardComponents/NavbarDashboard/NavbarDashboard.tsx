@@ -77,7 +77,7 @@ export default function NavbarDashboard() {
                                 }`}
                         >
                             <i className="pi pi-chart-bar"></i>
-                            Graphic Chart
+                            Statistics
                             <span
                                 className={`absolute bottom-0 left-0 h-1 bg-[#1f324d] rounded-full transition-all duration-500 ${activeTab === 2 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
                                     }`}
