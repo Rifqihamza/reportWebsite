@@ -1,6 +1,6 @@
 export default function HelpButton() {
   const handleGotoHelp = () => {
-    window.location.href = "/about"
+    window.location.href = "/"
   }
   
   return <>

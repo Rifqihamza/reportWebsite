@@ -78,7 +78,7 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
         window.location.href = "/dashboard";
       }
       else if(isAuthorized) {
-        window.location.href = "/";
+        window.location.href = "/form";
       }
       else if(!isAuthorized){
         window.location.href = "/loginPage";

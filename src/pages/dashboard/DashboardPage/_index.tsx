@@ -18,7 +18,7 @@ export default function DashboardPage() {
     useEffect(() => {
         if (userData) {
             if (userData?.role !== AccountType.Guru && userData?.role !== AccountType.Vendor) {
-                window.location.href = "/";
+                window.location.href = "/form";
             }
         }
     }, [userData]);

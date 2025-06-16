@@ -28,7 +28,7 @@ export default function LoginFormComponent() {
             window.location.href = "/dashboard";
           }
           else if(result === AccountType.Siswa) {
-            window.location.href = "/";
+            window.location.href = "/form";
           }
         }, 2000);
         return;
