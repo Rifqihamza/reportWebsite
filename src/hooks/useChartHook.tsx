@@ -3,7 +3,7 @@ import { ReportStatus, ReportType, reporttype_to_string, string_to_reporttype } 
 import { useReportDataHook } from "./shared/useReportData";
 import { useEffect } from "react";
 import strftime from "strftime";
-import { useReportConfigHook } from "./shared/useReportConfig";
+import { useReportConfigHook } from "./useReportConfig";
 
 export enum LineChartFilterOption {
   Year = "This Year",
@@ -205,8 +205,10 @@ export function UseChartHookEffect() {
     });
 
     // Insert all of the PIC to the data first
-    Object.values(picNamesOptions).forEach((picName) => {
-      result.totalReportPerPIC[picName] = 0;
+    Object.values(picNamesOptions).forEach((picNames) => {
+      picNames.forEach((picName) => {
+        result.totalReportPerPIC[picName] = 0;
+      })
     });
 
     // Calculate the result
@@ -234,7 +236,7 @@ export function UseChartHookEffect() {
         result.notCompletedReportPreviousMonth += 1;
       }
 
-      result.totalReportPerPIC[data.pic_name] += 1;
+      if(data.pic_name) result.totalReportPerPIC[data.pic_name] += 1;
       result.totalReportPerCategory[data.type]! += 1;
       result.totalReportPerStatus[data.status]! += 1;
       result.totalReportPerDay[listOfHari[new Date(data.created_at).getDay() - 1]] += 1;

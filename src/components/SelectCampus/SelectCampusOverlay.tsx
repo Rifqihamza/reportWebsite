@@ -1,4 +1,4 @@
-import { useCampusData } from "../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../hooks/shared/useCampusData";
 import { Campus } from "../../types/variables";
 import SelectCampusButton from "./SelectCampusButton";
 
@@ -10,7 +10,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 export default function SelectCampusOverlay() {
-  const { selectedCampus } = useCampusData();
+  const { selectedCampus } = useCampusDataHook();
 
   return (
     <div className={
@@ -24,8 +24,8 @@ export default function SelectCampusOverlay() {
       <Swiper
         effect={"coverflow"}
         autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
+          delay: 1500,
+          disableOnInteraction: true,
         }}
         coverflowEffect={{
           rotate: 0,

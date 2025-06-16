@@ -67,9 +67,11 @@ export type ReportData = {
     follow_up?: AccountType,
     follow_up_name?: AccountType,
     status: ReportStatus,
-    location: string,
+    location_id?: string,
+    location_name?: string,
     detail_location: string,
-    pic_name: string,
+    pic_id?: string,
+    pic_name?: string,
     created_at: string,
     report_date: string,
     due_date: string,
@@ -89,13 +91,15 @@ export type User = {
 export type Report_PIC = {
     id: string,
     name: string,
-    created_at: string
+    created_at: string,
+    campus_name: string
 }
 
 export type Report_Location = {
     id: string,
     location: string,
-    created_at: string
+    created_at: string,
+    campus_name: string
 }
 
 export const statusColorHex: Record<string, string> = {

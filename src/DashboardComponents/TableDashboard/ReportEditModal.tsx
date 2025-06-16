@@ -6,7 +6,7 @@ import { APIResultType, updateReport } from '../../utils/api_interface';
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useReportDetailHook, useReportEditHook } from "../../hooks/useReportHook";
 import { useMessageToastHook } from "../../hooks/shared/useMessageToast";
-import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
+import { useReportConfigHook } from "../../hooks/useReportConfig";
 import { Calendar } from "primereact/calendar";
 
 const reportTypeOptions = [
@@ -58,8 +58,7 @@ export default function ReportEditModal() {
                 message: report.message || "",
                 submitted_by: report.submitted_by || "",
                 pic_name: report.pic_name || "",
-                location: report.location || "",
-                detail_location: report.detail_location || "",
+                location: report.location_name || "",
                 type: report.type,
                 follow_up: report.follow_up || "" as AccountType,
                 report_date: report.report_date,
@@ -153,28 +152,41 @@ export default function ReportEditModal() {
                         label="Pelapor"
                         value={formState.submitted_by}
                         onChange={(e) => updateField("submitted_by", e.target.value)}
-                        disabled={!!formState.submitted_by}
                     />
-                    <DropdownField
-                        filter
-                        label="Lokasi"
-                        options={locationOptions.map((val) => ({ label: val, value: val }))}
-                        value={formState.location}
-                        onChange={(e) => updateField("location", e.value)}
-                        disabled={!!formState.location}
-                    />
-                    <InputField
-                        label="Detail Lokasi"
-                        value={formState.detail_location}
-                        onChange={(e) => updateField("submitted_by", e.target.value)}
-                        disabled={!!formState.detail_location}
-                    />
-                    <DropdownField
-                        label="PIC"
-                        options={picNamesOptions.map((val) => ({ label: val, value: val }))}
-                        value={formState.pic_name}
-                        onChange={(e) => updateField("pic_name", e.target.value)}
-                        disabled={!!formState.pic_name}
+                    {
+                        (() => {
+                            const disabled = Object.values(picNamesOptions).length == 0
+                            return <DropdownField
+                                label="PIC"
+                                options={(report?.campus && !disabled) ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
+                                value={formState.pic_name}
+                                onChange={(e) => updateField("pic_name", e.target.value)}
+                                disabled={disabled}
+                            />
+                        })()
+                    }
+                    {
+                        (() => {
+                            const disabled = Object.values(locationOptions).length == 0
+                            return <DropdownField
+                                filter
+                                label="Lokasi"
+                                options={(report?.campus && !disabled) ? locationOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
+                                value={formState.location}
+                                onChange={(e) => updateField("location", e.value)}
+                                disabled={disabled}
+                            />
+                        })()
+                    }
+                </div>
+                <div className="flex flex-col gap-2 w-full">
+                    <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
+                    <textarea
+                        rows={9}
+                        id="descriptionReport"
+                        value={formState.message}
+                        onChange={(e) => updateField("message", e.target.value)}
+                        className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
                     />
                 </div>
             </div>
@@ -241,26 +253,19 @@ function InputField({ label, value, onChange, disabled = false }: {
     );
 }
 
-// Dropdown Field
-function DropdownField({ label, options, value, onChange, filter, disabled = false }: {
+// Komponen dropdown
+function DropdownField({ label, options, value, onChange, disabled, filter }: {
     label: string;
     options: { label: string, value: string }[];
     value: string | AccountType;
     onChange: (e: any) => void;
-    filter?: boolean;
-    disabled?: boolean;
+    disabled?: boolean
+    filter?: boolean
 }) {
     return (
         <div className="flex flex-col">
             <label className="font-semibold mb-1">{label}</label>
-            <Dropdown
-                filter={filter}
-                value={value}
-                options={options}
-                onChange={onChange}
-                disabled={disabled}
-                className="w-full rounded-lg! bg-transparent! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!"
-                placeholder={`Pilih ${label}`} />
+            <Dropdown filter={filter} disabled={disabled} value={value} options={options} onChange={onChange} className="w-full rounded-lg! bg-transparent! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!" placeholder={`Pilih ${label}`} />
         </div>
     );
 }

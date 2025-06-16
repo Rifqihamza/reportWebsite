@@ -1,4 +1,4 @@
-import { AccountType, ReportType, ReportStatus } from '../types/variables';
+import { AccountType, ReportType, ReportStatus, campus_to_campuscode } from '../types/variables';
 import type { Campus, Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
@@ -115,13 +115,9 @@ export async function addReport(
 }
 
 
-export async function getReport(campus: Campus): Promise<ReportData[] | APIResultType> {
-    if(!campus) {
-        return APIResultType.NoError;
-    }
-    
+export async function getReport(): Promise<ReportData[] | APIResultType> {
     // Fetch to API
-    const response = await fetch(`${base_url_endpoint}/api/report/get?campus=${campus}`, {
+    const response = await fetch(`${base_url_endpoint}/api/report/get`, {
         method: "GET",
         credentials: "include",
     });
@@ -273,9 +269,9 @@ export type formConfigurationResponse = {
     location_data: Report_Location[]
 }
 
-export async function getFormConfiguration(selectedCampus: Campus) {
+export async function getFormConfiguration() {
     // Fetch to API
-    const response = await fetch(`${base_url_endpoint}/api/report_form/configuration/?campus=${selectedCampus}`, {
+    const response = await fetch(`${base_url_endpoint}/api/report_form/configuration/`, {
         method: "GET",
         credentials: "include",
     });

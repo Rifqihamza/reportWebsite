@@ -47,7 +47,7 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
               setProgress(100);
               onSuccess ? onSuccess(token) : "";
               setTimeout(() => {
-                history.back()
+                window.location.href = "/";
               }, 1000);
             }, 1000);
           } else {

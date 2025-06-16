@@ -17,9 +17,9 @@ import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
 import { useReportDataHook } from "../../hooks/shared/useReportData";
 import { useIsAuthorizedHook } from "../../hooks/shared/useIsAuthorized";
-import { useReportConfigHook } from "../../hooks/shared/useReportConfig";
+import UseReportConfigHookEffect, { useReportConfigHook } from "../../hooks/useReportConfig";
 import { useThanksModalHook } from "../../hooks/shared/useThanksModal";
-import { useCampusData } from "../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../hooks/shared/useCampusData";
 
 export default function ReportFormComponent() {
   // Authorized state
@@ -43,9 +43,9 @@ export default function ReportFormComponent() {
 
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const { picNamesOptions, setPicNamesOptions, locationOptions, setLocationOptions } = useReportConfigHook();
+  const { picNamesOptions, locationOptions } = useReportConfigHook();
   const { setShowThanks } = useThanksModalHook();
-  const { selectedCampus } = useCampusData();
+  const { selectedCampus } = useCampusDataHook();
 
   const toastProgress = useRef<Toast>(null);
 
@@ -75,7 +75,6 @@ export default function ReportFormComponent() {
       return;
     }
 
-    reset_form();
 
     setSubmitDisabled(true);
     toastProgress.current!.show({
@@ -100,6 +99,7 @@ export default function ReportFormComponent() {
     );
 
     if (typeof result == "object") {
+      reset_form();
       setReportData([result, ...reportData]);
       setShowThanks(true);
       setTimeout(() => {
@@ -123,18 +123,12 @@ export default function ReportFormComponent() {
     if(!selectedCampus) {
       return;
     }
-
-    getFormConfiguration(selectedCampus).then((result) => {
-      if ((result as formConfigurationResponse).pic_data !== undefined) {
-        result = result as formConfigurationResponse;
-        setPicNamesOptions(result.pic_data.map((value) => value.name));
-        setLocationOptions(result.location_data.map((value) => value.location));
-      }
-    });
   }, [selectedCampus]);
 
   return (
     <>
+      <UseReportConfigHookEffect />
+      <p className="text-white w-full text-center mt-4">Campus: {selectedCampus}</p>
       <form id="report-form">
         {/* Container Form input */}
         <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>
@@ -189,12 +183,12 @@ export default function ReportFormComponent() {
           {/* Lokasi Temuan */}
           <div className="flex flex-row gap-2 w-full">
             <ReportFormDropdown
-              placeholder={locationOptions.length == 0 ? "Loading Data Lokasi.." : "Pilih Lokasi"}
+              placeholder={(selectedCampus && Object.values(locationOptions).length == 0) ? "Loading Data Lokasi.." : "Pilih Lokasi"}
               label="Kode Lokasi"
-              items={locationOptions}
+              items={selectedCampus ? locationOptions[selectedCampus] : []}
               onSelect={(value) => setLocation(value || "")}
               selected={location}
-              disabled={locationOptions.length == 0}
+              disabled={Object.values(locationOptions).length == 0}
               icon="pi pi-map"
               filter
             />
@@ -273,15 +267,15 @@ export default function ReportFormComponent() {
           {isAuthorized && (
             <ReportFormDropdown
               optional
-              placeholder={picNamesOptions.length === 0 ? "Loading PIC Data.." : "Pilih PIC"}
+              placeholder={Object.values(picNamesOptions).length === 0 ? "Loading PIC Data.." : "Pilih PIC"}
               label="Nama PIC"
-              items={picNamesOptions}
+              items={selectedCampus ? picNamesOptions[selectedCampus] : []}
               selected={pic}
               onSelect={(value) => {
                 setPic(value || "");
               }}
               icon="pi pi-user"
-              disabled={picNamesOptions.length === 0}
+              disabled={Object.values(picNamesOptions).length === 0}
               filter
             />
           )}

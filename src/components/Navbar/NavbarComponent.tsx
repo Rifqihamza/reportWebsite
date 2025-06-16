@@ -1,6 +1,8 @@
-import LogoutButton from "../LogoutButton/LogoutButtonComponent";
+import LogoutButton from "./LogoutButtonComponent";
 import { useUserDataHook } from "../../hooks/shared/useUserData";
 import { userLogout } from "../../utils/api_interface";
+import ChangeCampusButton from "../SelectCampus/ChangeCampusButton";
+import DashboardButton from "./DashboardButton";
 
 const NavbarComponents = () => {
   async function handle_logout() {
@@ -25,6 +27,8 @@ const NavbarComponents = () => {
           ></span>
         </button>
       </div>
+      <ChangeCampusButton />
+      <DashboardButton />
       <LogoutButton handle_logout={handle_logout} />
     </>
   );

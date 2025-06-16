@@ -49,3 +49,17 @@ Let's make this straight: We really want to know the core problem and the cause 
   <h3>Chapter 3 : <i>The Plan</i></h3>
 </div>
 <b>Data is important</b>. So, we planned to create a website that is used to collects data around the school. We want to make it automatically organize and manage the data behind the scene so that we don't need to do the hard work. We have technology, and it really can help us do the calculation. At the end, teachers and staffs only need to get the insight concluded from the reports data, find its core problem, and create the appropriate solution to solve it.
+
+
+<br />
+<br />
+<br />
+<br />
+<hr />
+<div align="left">
+  <h3>Main Features</h3>
+</div>
+<ol>
+  <li>Organized Data Monitoring: Data Tables, Analyzed Chart, Quick Insights Generation</li>
+  <li>Clear Data Input Form: To report a new findings in school, and feed data to the system.</li>
+</ol>

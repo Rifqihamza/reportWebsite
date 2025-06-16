@@ -1,4 +1,4 @@
-import { useCampusData } from "../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../hooks/shared/useCampusData";
 import { Campus, string_to_campus } from "../../types/variables";
 
 interface Props {
@@ -18,7 +18,7 @@ export const campusMap: Record<Campus, { image: string; name: string }> = {
 };
 
 export default function SelectCampusButton(props: Props) {
-  const { setSelectedCampus } = useCampusData();
+  const { setSelectedCampus } = useCampusDataHook();
   const verified_campus = string_to_campus(props.value);
 
   const handleClick = () => {

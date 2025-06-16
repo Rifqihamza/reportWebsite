@@ -1,27 +1,10 @@
-import type { APIContext } from "astro";
 import { create_response_json, create_response_status } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
-import { Campus, campuscode_to_campus } from "../../../types/variables";
 
-export async function GET({ request }: APIContext) {
-  const url = new URL(request.url);
-  const selected_campus_name = url.searchParams.get("campus");
-
-  if(!selected_campus_name || !campuscode_to_campus(selected_campus_name)) {
-    return create_response_status(400);
-  }
-
+export async function GET() {
   try {
-    const pic_data = await prisma.report_PIC.findMany({
-      where: {
-        campus_name: selected_campus_name as any
-      }
-    });
-    const location_data = await prisma.report_Location.findMany({
-      where: {
-        campus_name: selected_campus_name
-      }
-    });
+    const pic_data = await prisma.report_PIC.findMany();
+    const location_data = await prisma.report_Location.findMany();
 
     return create_response_json({
       pic_data: pic_data,

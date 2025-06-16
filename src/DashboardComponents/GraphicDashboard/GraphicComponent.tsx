@@ -75,14 +75,14 @@ export default function GraphicChart() {
                             <PercenComp
                                 reports={percentStatus}
                                 label='Status'
-                                icon='pi pi-exclamation-triangle'
+                                icon='pi pi-chart-line'
                             />
                         </Suspense>
                         <Suspense fallback={<>Loading..</>}>
                             <PercenComp
                                 reports={percentCategory}
                                 label='Kategori'
-                                icon='pi pi-exclamation-triangle'
+                                icon='pi pi-chart-line'
                             />
                         </Suspense>
                     </div>
