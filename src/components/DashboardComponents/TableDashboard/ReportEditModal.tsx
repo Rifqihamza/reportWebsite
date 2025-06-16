@@ -34,14 +34,8 @@ export default function ReportEditModal() {
     const report = reportData.find(value => value.id === detailId) || null;
 
     const [formState, setFormState] = useState({
-        message: "",
-        submitted_by: "",
         pic_name: "",
-        location: "",
-        detail_location: "",
-        type: "" as ReportType,
         follow_up: "" as AccountType,
-        report_date: "",
         due_date: "",
         follow_up_name: "",
         status: "" as ReportStatus,
@@ -55,14 +49,8 @@ export default function ReportEditModal() {
     useEffect(() => {
         if (report) {
             setFormState({
-                message: report.message || "",
-                submitted_by: report.submitted_by || "",
                 pic_name: report.pic_name || "",
-                location: report.location_name || "",
-                detail_location: report.detail_location || "",
-                type: report.type,
                 follow_up: report.follow_up || "" as AccountType,
-                report_date: report.report_date,
                 due_date: report.due_date || "",
                 follow_up_name: report.follow_up_name || "",
                 status: report.status,
@@ -72,10 +60,8 @@ export default function ReportEditModal() {
     }, [report]);
 
     const updateField = (field: keyof typeof formState, value: any) => {
-        if (field === "due_date" || field === "report_date") {
+        if (field === "due_date") {
             value = value ? (new Date(value)).toISOString() : "";
-        } else if (field === "type") {
-            value = string_to_reporttype(value);
         }
         setFormState(prev => ({ ...prev, [field]: value }));
         setIsChange(true);
@@ -88,10 +74,7 @@ export default function ReportEditModal() {
 
         let result: APIResultType | null;
         try {
-            result = await updateReport(report.id, {
-                ...report,
-                ...formState // formState now includes the updated status
-            } as ReportData);
+            result = await updateReport(report.id, formState);
         }
         catch {
             showMessage("Success", "success", "Successfully update data!");
@@ -146,8 +129,7 @@ export default function ReportEditModal() {
                 <textarea
                     rows={3}
                     id="descriptionReport"
-                    value={formState.message}
-                    onChange={(e) => updateField("message", e.target.value)}
+                    value={report ? report.message : ""}
                     className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
                     disabled
                 />
@@ -155,8 +137,7 @@ export default function ReportEditModal() {
             <div className="grid grid-cols-2 gap-4 items-center">
                 <InputField
                     label="Pelapor"
-                    value={formState.submitted_by}
-                    onChange={(e) => updateField("submitted_by", e.target.value)}
+                    value={report ? report.submitted_by : ""}
                     disabled
                 />
                 {
@@ -176,25 +157,22 @@ export default function ReportEditModal() {
                         return <DropdownField
                             filter
                             label="Lokasi"
-                            options={[{label: formState.location, value: formState.location}]}
-                            value={formState.location}
-                            onChange={(e) => updateField("location", e.value)}
+                            options={[{label: report?.location_name ?? "", value: report?.location_name ?? ""}]}
+                            value={report?.location_name ?? ""}
                             disabled
                         />
                     })()
                 }
                 <InputField
                     label="Detail Lokasi"
-                    value={formState.detail_location}
-                    onChange={(e) => updateField("detail_location", e.target.value)}
+                    value={report?.detail_location ?? ""}
                     disabled
                 />
 
                 <DropdownField
                     label="Kategori"
                     options={reportTypeOptions}
-                    value={reporttype_to_string(formState.type)}
-                    onChange={(e) => updateField("type", e.value)}
+                    value={reporttype_to_string(report?.type ?? "")}
                     disabled
                 />
                 <DropdownField
@@ -216,8 +194,7 @@ export default function ReportEditModal() {
                 />
                 <CalendarField
                     label="Tanggal Temuan"
-                    value={formState.report_date ? new Date(formState.report_date) : null}
-                    onChange={(e) => updateField("report_date", e.value ? new Date(e.value) : "")}
+                    value={report?.report_date ? new Date(report.report_date) : null}
                     disabled
                 />
                 <CalendarField
@@ -235,7 +212,7 @@ export default function ReportEditModal() {
 function InputField({ label, value, onChange, disabled = false }: {
     label: string;
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
 }) {
     return (
@@ -266,7 +243,7 @@ function DropdownField({ label, options, value, onChange, disabled, filter }: {
     label: string;
     options: { label: string, value: string }[];
     value: string | AccountType;
-    onChange: (e: any) => void;
+    onChange?: (e: any) => void;
     disabled?: boolean
     filter?: boolean
 }) {
@@ -292,7 +269,7 @@ function DropdownField({ label, options, value, onChange, disabled, filter }: {
 function CalendarField({ label, value, onChange, disabled = false }: {
     label: string;
     value: Date | null;
-    onChange: (e: any) => void;
+    onChange?: (e: any) => void;
     disabled?: boolean;
 }) {
     return (
@@ -307,7 +284,9 @@ function CalendarField({ label, value, onChange, disabled = false }: {
                     :
                     ""
                 }
-            </div>            <Calendar
+            </div>
+
+            <Calendar
                 value={value}
                 onChange={onChange}
                 showTime
