@@ -137,7 +137,12 @@ export default function ReportEditModal() {
             }
         >
             <div className="">
-                <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
+                <div className="flex flex-row w-full justify-between">
+                    <label htmlFor="descriptionReport" className="font-bold">Deskripsi Laporan</label>
+                    <p className="text-gray-400">
+                        <i className="pi pi-lock"></i>
+                    </p>
+                </div>
                 <textarea
                     rows={3}
                     id="descriptionReport"
