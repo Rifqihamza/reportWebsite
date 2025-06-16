@@ -11,14 +11,14 @@
     transform: translate(-50%, 100%);
     bottom: -10px;
     left: 50%;
-    color: #6096B4;
+    color: #fff;
 }
 .loader:before,
 .loader:after {
   content: "";
   position: absolute;
   border-radius: 50px;
-  box-shadow: 0 0 0 3px inset #6096B4;
+  box-shadow: 0 0 0 3px inset #fff;
   animation: l5 2.5s infinite;
 }
 .loader:after {
