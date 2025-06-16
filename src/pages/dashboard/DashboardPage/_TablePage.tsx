@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
-import LoadingAnimation from "../../../components/Loading/LoadingAnimation";
+import LoadingAnimation from "../../../components/GlobalComponents/Loading/LoadingAnimation";
 
-const ReportTableWrapper = React.lazy(() => import("../../../DashboardComponents/TableDashboard/ReportTableWrapper"));
+const ReportTableWrapper = React.lazy(() => import("../../../components/DashboardComponents/TableDashboard/ReportTableWrapper"));
 
 export default function TablePage() {
     return (

@@ -238,7 +238,15 @@ export async function getUser(): Promise<User | APIResultType> {
     return APIResultType.InternalServerError;
 }
 
-export async function updateReport(report_id: string, report_data: ReportData) {
+type updatedDataType = {
+    pic_name: string,
+    follow_up: AccountType,
+    due_date: string,
+    follow_up_name: string,
+    status: ReportStatus,
+};
+
+export async function updateReport(report_id: string, updated_data: updatedDataType) {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/update", {
         method: "PUT",
@@ -248,7 +256,7 @@ export async function updateReport(report_id: string, report_data: ReportData) {
         },
         body: JSON.stringify({
             "report_id": report_id,
-            "report_data": report_data
+            "report_data": updated_data
         })
     });
 

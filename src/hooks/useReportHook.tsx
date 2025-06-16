@@ -6,7 +6,7 @@ import {
   string_to_reportstatus,
   type ReportData,
 } from "../types/variables";
-import { useReportDataHook } from "./shared/useReportData";
+import UseReportDataHookEffect, { useReportDataHook } from "./shared/useReportData";
 import { useUserDataHook } from "./shared/useUserData";
 import { APIResultType, deleteReport } from "../utils/api_interface";
 import { useMessageToastHook } from "./shared/useMessageToast";
@@ -244,7 +244,7 @@ export function ReportHookEffect() {
           ":" +
           value.message +
           ":" +
-          value.location
+          value.location_name
         ).toLowerCase();
         return search_data.includes(searchKeyword.toLowerCase());
       });
@@ -254,7 +254,9 @@ export function ReportHookEffect() {
     setFilteredReports(result_data);
   }, [selectedFilter, reportData, dateFilter, searchKeyword]);
 
-  return <></>;
+  return <>
+    <UseReportDataHookEffect />
+  </>;
 }
 
 // Utility constants
