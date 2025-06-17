@@ -17,6 +17,11 @@ export async function GET({ request }: APIContext) {
     if (!username) return create_response_status(401);
 
     const users = await prisma.users.findMany({
+        where: {
+            NOT: {
+                role: "Admin"
+            }
+        },
         select: {
             id: true,
             username: true,
