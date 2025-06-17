@@ -68,7 +68,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       // Disable delete button
       set(() => ({ deleteDisabled: true }));
 
-      if (reportData.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
+      if (reportData?.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
         alert("Tidak bisa menghapus laporan yang sudah di follow up");
         set(() => ({ deleteDisabled: false }));
         return;
@@ -77,7 +77,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       const result = await deleteReport(id);
 
       if (result == APIResultType.NoError) {
-        setReportData(reportData.filter((value) => value.id != id));
+        setReportData(reportData?.filter((value) => value.id != id) || null);
         showMessage("Success", "success", "Data berhasil dihapus!");
 
         set(() => ({ deleteDisabled: false, detailId: null }));
@@ -215,6 +215,10 @@ export function ReportHookEffect() {
   }, [filteredReports, currentPage]);
 
   useEffect(() => {
+    if(!reportData) {
+      return;
+    }
+    
     // Filter Categories and Status
     let result_data = reportData.filter((value) =>
       selectedFilter

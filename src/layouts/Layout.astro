@@ -36,14 +36,23 @@ const { pageType = "form" } = Astro.props;
       )
     }
 
-    <VerifyAuthentication client:load />
     <slot />
-    <ToastMessage client:only />
 
-    <script
-      is:inline
-      src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"
-    ></script>
-    <SpeedInsights />
+    {(() => {
+      const url = Astro.url.pathname.split("/")[1];
+
+      console.log(url);
+      if(url == "captcha" || url == "") {
+        return <></>;
+      }
+
+      return <>
+        <VerifyAuthentication client:load />
+        <ToastMessage client:only />
+      </>
+    })()}
+    
   </body>
 </html>
+
+<SpeedInsights />
