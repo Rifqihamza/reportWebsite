@@ -13,7 +13,7 @@ export default function ReportDetailModal() {
 
     const { setEditVisible } = useReportEditHook();
     
-    const report_data = reportData.find(value => value.id === detailId) || null;
+    const report_data = reportData?.find(value => value.id === detailId) || null;
 
     const ImageComponent = () => (
         <div className="flex flex-col justify-center items-center w-fit h-fit">

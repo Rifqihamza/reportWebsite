@@ -23,9 +23,6 @@ import { useUserDataHook } from "../../../hooks/shared/useUserData";
 export default function ReportFormComponent() {
   const { isAuthorized } = useUserDataHook();
   
-  // Report Data State
-  const { reportData, setReportData } = useReportDataHook();
-  
   // Report Form State
   const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
@@ -99,7 +96,6 @@ export default function ReportFormComponent() {
 
     if (typeof result == "object") {
       reset_form();
-      setReportData([result, ...reportData]);
       setShowThanks(true);
       setTimeout(() => {
         setShowThanks(false);

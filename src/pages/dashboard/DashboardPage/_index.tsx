@@ -18,8 +18,8 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (userData) {
-            if (userData?.role !== AccountType.Guru && userData?.role !== AccountType.Admin) {
-                window.location.href = "/";
+            if (userData?.role !== AccountType.Guru && userData?.role !== AccountType.Vendor) {
+                window.location.href = "/form";
             }
         }
     }, [userData]);

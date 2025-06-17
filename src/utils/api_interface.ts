@@ -238,23 +238,15 @@ export async function getUser(): Promise<User | APIResultType> {
     return APIResultType.InternalServerError;
 }
 
-export async function getAllUsers(): Promise<User[] | APIResultType> {
-    const response = await fetch(base_url_endpoint + "/api/user/allUsers", {
-        method: "GET",
-        credentials: "include",
-    });
+type updatedDataType = {
+    pic_name: string,
+    follow_up: AccountType,
+    due_date: string,
+    follow_up_name: string,
+    status: ReportStatus,
+};
 
-    if (response.ok) {
-        return (await response.json()) as User[];
-    } else if (response.status === 401) {
-        return APIResultType.Unauthorized;
-    } else {
-        return APIResultType.InternalServerError;
-    }
-}
-
-
-export async function updateReport(report_id: string, report_data: ReportData) {
+export async function updateReport(report_id: string, updated_data: updatedDataType) {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/update", {
         method: "PUT",
@@ -264,7 +256,7 @@ export async function updateReport(report_id: string, report_data: ReportData) {
         },
         body: JSON.stringify({
             "report_id": report_id,
-            "report_data": report_data
+            "report_data": updated_data
         })
     });
 

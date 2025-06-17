@@ -128,7 +128,7 @@ export default function NavbarDashboard() {
                     </li>
                 </ul>
                 <button
-                    onClick={() => window.location.href = "/"}
+                    onClick={() => window.location.href = "/form"}
                     className={`flex flex-row items-center justify-center gap-3 w-full font-semibold uppercase tracking-wider text-white bg-[#1f324d] px-4 py-2 rounded-lg hover:bg-[#7FA1C3] hover:brightness-120 duration-300 cursor-pointer`}
                 >
                     <i className="pi pi-search"></i>

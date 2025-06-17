@@ -1,9 +1,11 @@
 ---
+import HelpButton from "../../components/GlobalComponents/HelpButton/HelpButton";
 import LoginFormComponent from "../../components/LoginComponents/LoginForm/LoginFormComponent";
 import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout>
+  <HelpButton client:load />
   <div class="flex justify-center items-center w-full h-screen">
     <div class="bg-white p-6 rounded-3xl max-w-3xl w-full mx-8">
       <form method="POST" action="">

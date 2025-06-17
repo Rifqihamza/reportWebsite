@@ -27,8 +27,8 @@ export default function LoginFormComponent() {
           if(result === AccountType.Guru || result === AccountType.Admin) {
             window.location.href = "/dashboard";
           }
-          else if(result === AccountType.Siswa || result === AccountType.Tukang || result === AccountType.Vendor) {
-            window.location.href = "/";
+          else if(result === AccountType.Siswa) {
+            window.location.href = "/form";
           }
         }, 2000);
         return;

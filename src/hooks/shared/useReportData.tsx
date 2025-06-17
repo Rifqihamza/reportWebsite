@@ -4,12 +4,12 @@ import { useEffect } from "react";
 import { getReport } from "../../utils/api_interface";
 
 type UseReportDataType = {
-  reportData: ReportData[];
-  setReportData: (reportData: ReportData[]) => void;
+  reportData: ReportData[] | null;
+  setReportData: (reportData: ReportData[] | null) => void;
 };
 
 export const useReportDataHook = create<UseReportDataType>((set) => ({
-  reportData: [],
+  reportData: null,
   setReportData: (reportData) => {
     set(() => ({ reportData: reportData }));
   },

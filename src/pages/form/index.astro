@@ -1,0 +1,15 @@
+---
+// index.astro
+import HelpButton from "../../components/GlobalComponents/HelpButton/HelpButton";
+import ThanksOverlay from "../../components/GlobalComponents/ThanksOverlay/ThanksOverlay.astro";
+import Layout from "../../layouts/Layout.astro";
+import WrapperPage from "../MainPages/_wrapper";
+---
+
+<Layout pageType="form">
+  <HelpButton client:load />
+  <ThanksOverlay />
+  <section id="container" class="w-full mx-auto relative">
+    <WrapperPage client:only />
+  </section>
+</Layout>
