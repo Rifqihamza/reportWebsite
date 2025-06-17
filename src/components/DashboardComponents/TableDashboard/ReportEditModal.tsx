@@ -31,7 +31,7 @@ export default function ReportEditModal() {
     const { detailId } = useReportDetailHook();
     const { picNamesOptions, locationOptions } = useReportConfigHook();
 
-    const report = reportData.find(value => value.id === detailId) || null;
+    const report = reportData?.find(value => value.id === detailId) || null;
 
     const [formState, setFormState] = useState({
         pic_name: "",
@@ -86,9 +86,9 @@ export default function ReportEditModal() {
 
         if (result === APIResultType.NoError) {
             // Update current report data information
-            const updated: any = reportData.map(item =>
+            const updated: any = reportData?.map(item =>
                 item.id === report.id ? { ...item, ...formState } : item
-            );
+            ) || null;
             setReportData(updated);
 
             // Close the dialog component and trigger success function
