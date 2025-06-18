@@ -17,7 +17,7 @@ export default function WelcomeComponent() {
     const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 12 ? "Selamat Siang" : "Selamat Pagi");
     
     return (
-        <div className="h-full w-full bg-white rounded-2xl relative px-4 py-20 flex flex-col text-center">
+        <div className="h-fit md:h-full w-full bg-white rounded-2xl relative px-4 py-10 md:py-20 flex flex-col text-center">
             {/* Welcome message */}
             <h1 className="text-3xl tracking-wide text-[#1f324d]">{greeting}, <b>{userData?.username}</b>!</h1>
             <p>Selamat datang di <b>Dashboard Admin</b>! Disini adalah tempat kita melihat, mengelola, dan menganalisa data laporan yang telah direkam oleh sistem</p>
