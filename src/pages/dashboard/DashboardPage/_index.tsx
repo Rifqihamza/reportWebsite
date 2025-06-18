@@ -10,6 +10,7 @@ import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
 import { PrimeReactProvider } from "primereact/api";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import ExportPage from "./_ExportPage";
+import ConfigurationPage from "./_ConfigurationPage";
 
 export default function DashboardPage() {
     const { userData } = useUserDataHook();
@@ -55,6 +56,7 @@ export default function DashboardPage() {
                             {activeTab === 1 && <TablePage />}
                             {activeTab === 2 && <GraphicPage />}
                             {activeTab === 3 && <ExportPage />}
+                            {activeTab === 4 && <ConfigurationPage />}
                             {activeTab === 5 && <SettingPage />}
                         </div>
                     </div>
