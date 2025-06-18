@@ -43,7 +43,7 @@ enum Campus {
 // Database model
 model Users {
   id       String      @id @default(uuid())
-  email    String      @unique
+  email    String
   username String      @unique
   password String
   role     AccountType

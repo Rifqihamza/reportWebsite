@@ -2,11 +2,9 @@ import { create } from "zustand"
 import { ExportOutputType, type ReportData } from "../types/variables";
 import { useEffect } from "react";
 
-
-
 type UseExportType = {
   selectedRows: (keyof ReportData)[],
-  selectedOutput: ExportOutputType,
+  selectedOutputType: ExportOutputType,
   dateRange: (Date|null)[],
   filter: {
     [key in (keyof ReportData)]: string
@@ -25,7 +23,7 @@ export const useExportHook = create<UseExportType>((set) => {
   return {
     // Default values
     selectedRows: [],
-    selectedOutput: ExportOutputType.CSV,
+    selectedOutputType: ExportOutputType.CSV,
     dateRange: [null, null],
     filter: null,
 
@@ -52,7 +50,7 @@ export const useExportHook = create<UseExportType>((set) => {
     // Output Functionality
     setSelectedOutput(output) {
         set(() => ({
-          selectedOutput: output
+          selectedOutputType: output
         }));
     },
     

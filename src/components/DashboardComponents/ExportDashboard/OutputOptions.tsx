@@ -4,7 +4,7 @@ import { ExportOutputType } from "../../../types/variables";
 
 export default function OutputOptions() {
   const outputOptions: ExportOutputType[] = Object.values(ExportOutputType) as ExportOutputType[];
-  const { selectedOutput, setSelectedOutput } = useExportHook();
+  const { selectedOutputType: selectedOutput, setSelectedOutput } = useExportHook();
   
   return <>
     <div className="bg-[#1f324d] w-full h-full rounded-xl row-span-3 flex flex-col">

@@ -130,6 +130,4 @@ export const statusColorHex: Record<string, string> = {
 export enum ExportOutputType {
   Excel = "Excel",
   CSV = "CSV",
-  PDF = "PDF",
-  TXT = "TXT"
 }
