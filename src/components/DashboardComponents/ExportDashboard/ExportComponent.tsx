@@ -7,6 +7,7 @@ import DateRangeOptions from "./DateRangeOptions";
 import OutputOptions from "./OutputOptions";
 import RowOptions from "./RowOptions";
 import * as XLSX from 'xlsx';
+import FilterOptions from "./FilterOptions";
 
 export default function ExportComponent() {
   const { reportData } = useReportDataHook();
@@ -84,10 +85,10 @@ export default function ExportComponent() {
           <RowOptions />
           <OutputOptions />
           <DateRangeOptions />
-          {/* <FilterOptions /> */}
+          <FilterOptions />
         </div>
         {/* Export button */}
-        <button className="h-full p-4 bg-[#1f324d] text-white rounded-2xl" onClick={handleExport}>
+        <button className="h-full p-4 bg-[#1f324d] text-white rounded-2xl hover:brightness-75" onClick={handleExport}>
           Process & Export
         </button>
       </div>

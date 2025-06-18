@@ -11,7 +11,7 @@ export default function RowOptions() {
       <h1 className="text-md lg:text-xl text-white py-3 px-6 w-full text-center">Opsi Barisan</h1>
       <div className="bg-[#ededed] h-full rounded-xl flex flex-col gap-2 p-2 overflow-auto">
           {rows.map((value) => {
-            return <button className={`cursor-pointer text-sm lg:text-md p-2 border-2 ${(selectedRows.includes(value) ? "bg-[#1f324d] text-white" : "bg-white text-[#1f324d] border-[#1f324d]")} rounded-xl`} onClick={() => {toggleRow(value)}}>{value}</button>;
+            return <button className={`cursor-pointer text-sm lg:text-md p-2 border-2 hover:brightness-75 ${(selectedRows.includes(value) ? "bg-[#1f324d] text-white" : "bg-white text-[#1f324d] border-[#1f324d]")} rounded-xl`} onClick={() => {toggleRow(value)}}>{value}</button>;
           })}
       </div>
     </div>
