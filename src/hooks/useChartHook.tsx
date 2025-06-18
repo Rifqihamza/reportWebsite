@@ -173,6 +173,10 @@ export function UseChartHookEffect() {
   const { picNamesOptions } = useReportConfigHook();
 
   useEffect(() => {
+    if(!reportData) {
+      return;
+    }
+    
     const result: InsightDataType = {
       totalReportAllTime: reportData.length,
       totalReportLastMonth: 0,
@@ -257,6 +261,10 @@ export function UseChartHookEffect() {
   }, [reportData]);
 
   useEffect(() => {
+    if(!reportData) {
+      return;
+    }
+    
     const result: LineChartValueType[] = [];
     const currentDate = new Date();
     const showedReportType = chartCategoryFilter
@@ -345,6 +353,10 @@ export function UseChartHookEffect() {
   }, [reportData, chartFilter, chartCategoryFilter]);
 
   useEffect(() => {
+    if(!reportData) {
+      return;
+    }
+    
     const categoryStats: CategoryType[] = [];
     const statusStats: CategoryType[] = [];
     const percenStats: Record<string, number> = {};
