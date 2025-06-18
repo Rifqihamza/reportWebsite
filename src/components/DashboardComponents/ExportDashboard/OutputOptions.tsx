@@ -7,7 +7,10 @@ export default function OutputOptions() {
   const { selectedOutputType: selectedOutput, setSelectedOutput } = useExportHook();
 
   return <>
-    <div className="bg-[#1f324d] w-full h-fit shadow-sm shadow-gray-400 rounded-xl row-span-3 flex flex-col">
+    <div className="bg-[#1f324d] w-full h-fit shadow-sm shadow-gray-400 rounded-xl row-span-3 flex flex-col relative">
+      <div className="absolute -top-2 -right-2 bg-[#263d5d] rounded-full p-2 w-8 h-8 flex items-center justify-center shadow-md shadow-gray-700">
+        <h1 className="text-white font-medium">4</h1>
+      </div>
       <h1 className="text-md lg:text-xl text-white py-3 px-6 w-full text-center">Opsi Output</h1>
       <div className="bg-[#ededed] w-full h-full rounded-xl flex flex-col gap-2 p-2 overflow-auto">
         {outputOptions.map((value) => {
