@@ -1,10 +1,97 @@
+import strftime from "strftime";
+import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
+import UseReportDataHookEffect, { useReportDataHook } from "../../../hooks/shared/useReportData";
+import { useExportHook } from "../../../hooks/useExportHook";
+import { ExportOutputType, table_rows, type ReportData } from "../../../types/variables";
+import DateRangeOptions from "./DateRangeOptions";
+import OutputOptions from "./OutputOptions";
+import RowOptions from "./RowOptions";
+import * as XLSX from 'xlsx';
+import FilterOptions from "./FilterOptions";
+
 export default function ExportComponent() {
-    return (
-        <div className="h-full w-full bg-white rounded-2xl relative">
-            <div className="flex flex-col items-center justify-center h-full text-center">
-                <h1 className="font-bold text-3xl uppercase">- Work In Progress -</h1>
-                <p className="font-medium text-xl">Export Page</p>
-            </div>
+  const { reportData } = useReportDataHook();
+  const { dateRange, selectedOutputType, selectedRows } = useExportHook();
+  const { showMessage } = useMessageToastHook();
+
+  const handleExport = () => {
+    // Check if report data is empty
+    if(!reportData) {
+        showMessage("Data dalam keadaan kosong.", "warn", "");
+        return;
+    }
+
+    // Check if there's no rows selected
+    if(selectedRows.length === 0) {
+        showMessage("Pilih minimal satu opsi barisan.", "warn", "");
+        return;
+    }
+    
+    const filteredReportData: ReportData[] = reportData.filter((value) => {
+        const startDatePassed = dateRange[0] ? dateRange[0] <= new Date(value.created_at) : true;
+        const endDatePassed = dateRange[1] ? dateRange[1] >= new Date(value.created_at) : true;
+
+        return startDatePassed && endDatePassed;
+    });
+
+    // Filter out rows
+    const resultData: string[][] = [[...(selectedRows as string[])], ...(filteredReportData.map((value) => {
+        // console.log(value);
+        let result: string[] = [];
+        selectedRows.forEach((row) => {
+            result.push(value[table_rows[row]] ?? "");
+        })
+        return result;
+    }))]
+
+    const file_name = `DataReport_${strftime("%d-%m-%Y", new Date())}`;
+    
+    // Output the result depends on the selected output file type
+    if(selectedOutputType === ExportOutputType.CSV) {
+        const csvContent = (resultData.map((value) => value.join(",")).join("\n"));
+        console.log(csvContent);
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${file_name}.csv`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+    else if(selectedOutputType == ExportOutputType.Excel) {
+        const worksheet = XLSX.utils.aoa_to_sheet(resultData.map((value, index) => {
+            const result = value;
+            
+            if(index > 0) {
+                result[0] = strftime("%d/%m/%Y", new Date(result[0]));
+            }
+
+            return result;
+        }));         // 2D array to worksheet
+        const workbook = XLSX.utils.book_new();                  // Create workbook
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+        XLSX.writeFile(workbook, `${file_name}.xlsx`);                      // Triggers download
+    }
+  };
+
+  return (
+    <>
+        <UseReportDataHookEffect />
+      <div className="h-full w-full p-4 bg-white rounded-2xl relative overflow-auto grid grid-flow-row grid-rows-[1fr_auto]">
+        <div className="w-full h-11/12 flex flex-col gap-4 p-4 lg:grid lg:grid-cols-5 lg:grid-rows-3 overflow-auto">
+          <RowOptions />
+          <OutputOptions />
+          <DateRangeOptions />
+          <FilterOptions />
         </div>
-    )
+        {/* Export button */}
+        <button className="h-full p-4 bg-[#1f324d] text-white rounded-2xl hover:brightness-75" onClick={handleExport}>
+          Process & Export
+        </button>
+      </div>
+    </>
+  );
 }
