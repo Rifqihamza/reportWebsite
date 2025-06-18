@@ -1,6 +1,6 @@
 // src/components/ConfigurationComponent.tsx
 import { useEffect } from "react";
-import { getAllUsers, string_to_accounttype } from "../../../utils/api_interface"; // sesuaikan path
+import { getAllUsers } from "../../../utils/api_interface"; // sesuaikan path
 import { useUserAccount } from "../../../hooks/shared/useUserAccount";
 
 export default function ConfigurationComponent() {

@@ -237,6 +237,21 @@ export async function getUser(): Promise<User | APIResultType> {
 
     return APIResultType.InternalServerError;
 }
+export async function getAllUsers(): Promise<User | APIResultType> {
+    const response = await fetch(base_url_endpoint + "/api/user/allUsers", {
+        method: "GET",
+        credentials: "include"
+    })
+
+    if (response.ok) {
+        return (await response.json())
+    }
+    else if (response.status === 401) {
+        return APIResultType.Unauthorized
+    }
+
+    return APIResultType.InternalServerError
+}
 
 type updatedDataType = {
     pic_name: string,
