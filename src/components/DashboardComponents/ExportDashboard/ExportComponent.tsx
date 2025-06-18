@@ -79,7 +79,7 @@ export default function ExportComponent() {
   return (
     <>
         <UseReportDataHookEffect />
-      <div className="h-full w-full p-4 bg-white rounded-2xl relative overflow-auto grid grid-flow-row grid-rows-[auto_1fr]">
+      <div className="h-full w-full p-4 bg-white rounded-2xl relative overflow-auto grid grid-flow-row grid-rows-[1fr_auto]">
         <div className="w-full h-11/12 flex flex-col gap-4 p-4 lg:grid lg:grid-cols-5 lg:grid-rows-3 overflow-auto">
           <RowOptions />
           <OutputOptions />
