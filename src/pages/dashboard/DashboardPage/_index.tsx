@@ -9,6 +9,8 @@ import { AccountType } from "../../../types/variables";
 import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
 import { PrimeReactProvider } from "primereact/api";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
+import ExportPage from "./_ExportPage";
+import ConfigurationPage from "./_ConfigurationPage";
 
 export default function DashboardPage() {
     const { userData } = useUserDataHook();
@@ -17,7 +19,7 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (userData) {
-            if (userData?.role !== AccountType.Guru && userData?.role !== AccountType.Vendor) {
+            if (userData?.role !== AccountType.Admin) {
                 window.location.href = "/form";
             }
         }
@@ -27,23 +29,23 @@ export default function DashboardPage() {
         <>
             <UseUserDataHookEffect />
             <UseReportConfigHookEffect useAll />
-            <PrimeReactProvider>
-                <div className="flex flex-col h-screen p-4 border 2">
-                    {/* Top Navbar */}
-                    <div className="bg-white rounded-2xl shadow shadow-gray-500 z-10 flex justify-between items-center px-4 py-1 sticky top-0">
-                        <button
-                            onClick={() => setShowSidebar(!showSidebar)}
-                            className="p-4 flex items-center gap-4 font-semibold lg:hidden"
-                        >
-                            <i className="pi pi-bars"></i>
-                            E-Lapor Dashboard
-                        </button>
-                        <div>
-                            <img src="/img/logoSekolah.png" className="w-10 h-auto ring-2 ring-white rounded-full" alt="" />
-                        </div>
+            <div className="flex flex-col h-screen p-4 border 2">
+                {/* Top Navbar */}
+                <div className="bg-white rounded-2xl shadow shadow-gray-500 z-10 flex justify-between items-center px-4 py-1 sticky top-0">
+                    <button
+                        onClick={() => setShowSidebar(!showSidebar)}
+                        className="p-4 flex items-center gap-4 font-semibold lg:hidden"
+                    >
+                        <i className="pi pi-bars"></i>
+                        E-Lapor Dashboard
+                    </button>
+                    <div>
+                        <img src="/img/logoSekolah.png" className="w-10 h-auto ring-2 ring-white rounded-full" alt="" />
                     </div>
+                </div>
 
-                    {/* Main Area: Sidebar + Scrollable Content */}
+                {/* Main Area: Sidebar + Scrollable Content */}
+                <PrimeReactProvider>
                     <div className="flex gap-4 py-4 px-1 h-full overflow-y-auto">
                         {/* Sidebar */}
                         <NavbarDashboard />
@@ -53,11 +55,13 @@ export default function DashboardPage() {
                             {activeTab === 0 && <WelcomePage />}
                             {activeTab === 1 && <TablePage />}
                             {activeTab === 2 && <GraphicPage />}
+                            {activeTab === 3 && <ExportPage />}
+                            {activeTab === 4 && <ConfigurationPage />}
                             {activeTab === 5 && <SettingPage />}
                         </div>
                     </div>
-                </div>
-            </PrimeReactProvider>
+                </PrimeReactProvider>
+            </div>
         </>
     );
 }

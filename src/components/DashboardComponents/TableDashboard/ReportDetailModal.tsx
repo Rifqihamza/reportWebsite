@@ -87,24 +87,22 @@ export default function ReportDetailModal() {
                 </div>
 
                 {/* Action Buttons */}
-                {userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
-                    <div className="grid grid-cols-2 gap-4 w-full pt-4">
-                        <button
-                            className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#1f324d] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
-                            onClick={() => setEditVisible(true)}
-                        >
-                            Edit
-                        </button>
-                        <button
-                            className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#1f324d] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
-                            onClick={() => report_data ? handleDelete(report_data.id) : null}
-                            disabled={deleteDisabled}
-                        >
-                            {deleteDisabled && <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i>}
-                            Hapus
-                        </button>
-                    </div>
-                )}
+                <div className="grid grid-cols-2 gap-4 w-full pt-4">
+                    <button
+                        className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#1f324d] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+                        onClick={() => setEditVisible(true)}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#1f324d] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+                        onClick={() => report_data ? handleDelete(report_data.id) : null}
+                        disabled={deleteDisabled}
+                    >
+                        {deleteDisabled && <i className="pi pi-spin pi-spinner" style={{ fontSize: '1rem', marginRight: '10px' }}></i>}
+                        Hapus
+                    </button>
+                </div>
             </div>
         </>
     );

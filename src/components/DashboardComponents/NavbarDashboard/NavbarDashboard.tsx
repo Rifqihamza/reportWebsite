@@ -36,7 +36,7 @@ export default function NavbarDashboard() {
 
     return (
         <div
-            className={`lg:relative lg:h-full h-[70vh] w-[calc(100vw_-_(var(--spacing)_*_14))] fixed bg-white rounded-2xl duration-300 z-20 lg:w-[18rem] lg:opacity-100 lg:translate-x-0 lg:left-0 ${showSidebar ? "-translate-x-1/2 left-1/2" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? "" : "")} `}>
+            className={`lg:relative lg:h-full h-[80vh] w-[calc(100vw_-_(var(--spacing)_*_14))] fixed bg-white shadow-md shadow-gray-400 rounded-2xl duration-300 z-20 lg:w-[18rem] lg:opacity-100 lg:translate-x-0 lg:left-0 ${showSidebar ? "-translate-x-1/2 left-1/2" : "w-0 opacity-0 -translate-x-full" + (shouldRender ? "" : "")} `}>
             <div
                 className={`flex flex-col gap-2 h-full p-6 transform transition-all duration-300 ease-in-out whitespace-nowrap opacity-100 translate-x-0"
                     }`}

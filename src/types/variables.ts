@@ -1,4 +1,5 @@
 export enum AccountType {
+    Admin = "Admin",
     Guru = "Guru",
     Siswa = "Siswa",
     Vendor = "Vendor",
@@ -102,6 +103,21 @@ export type Report_Location = {
     campus_name: string
 }
 
+
+// Table variables
+export const table_rows: {
+    [key: string]: (keyof ReportData)
+} = {
+    "Tanggal": "report_date",
+    "Nama Pelapor": "submitted_by",
+    "Laporan": "message",
+    "Lokasi": "location_name",
+    "PIC": "pic_name",
+    "Kategori": "type",
+    "Status": "status"
+}
+
+// Other things
 export const statusColorHex: Record<string, string> = {
     NotStarted: "#fca5a5", // Tailwind bg-red-300
     InProcess: "#fde047",  // Tailwind bg-yellow-300
@@ -111,3 +127,8 @@ export const statusColorHex: Record<string, string> = {
     "5R": "#7750a5",
     Safety: "#ea8557"
 };
+
+export enum ExportOutputType {
+  Excel = "Excel",
+  CSV = "CSV",
+}

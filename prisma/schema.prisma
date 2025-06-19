@@ -10,6 +10,7 @@ datasource db {
 
 // Enum
 enum AccountType {
+  Admin
   Guru
   Siswa
   Vendor
@@ -43,7 +44,6 @@ enum Campus {
 // Database model
 model Users {
   id       String      @id @default(uuid())
-  email    String      @unique
   username String      @unique
   password String
   role     AccountType
