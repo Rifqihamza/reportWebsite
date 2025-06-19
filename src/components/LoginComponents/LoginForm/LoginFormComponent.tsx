@@ -24,7 +24,7 @@ export default function LoginFormComponent() {
         showMessage("Welcome!", "success", "You've successfully login! You'll be redirected in a second..");
         setIsPasswordCorrect(true);
         setTimeout(() => {
-          if(result === AccountType.Guru || result === AccountType.Vendor) {
+          if(result === AccountType.Guru || result === AccountType.Admin) {
             window.location.href = "/dashboard";
           }
           else if(result === AccountType.Siswa) {

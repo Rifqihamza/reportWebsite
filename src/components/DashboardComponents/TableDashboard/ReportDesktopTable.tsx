@@ -1,4 +1,4 @@
-import { reporttype_to_string } from '../../../types/variables';
+import { reporttype_to_string, table_rows } from '../../../types/variables';
 import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../hooks/useReportHook";
 import { formatDate } from "../../../utils/other";
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
@@ -14,48 +14,14 @@ export default function ReportDesktopTable() {
             <table className="w-full h-[70vh] max-h-[65vh]">
                 <thead>
                     <tr>
-                        <th
-                            scope="col"
-                            className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
-                        >
-                            Tanggal
-                        </th>
-                        <th
-                            scope="col"
-                            className="px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
-                        >
-                            Nama Pelapor
-                        </th>
-                        <th
-                            scope="col"
-                            className="px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
-                        >
-                            Laporan
-                        </th>
-                        <th
-                            scope="col"
-                            className="px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
-                        >
-                            Lokasi
-                        </th>
-                        <th
-                            scope="col"
-                            className="px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
-                        >
-                            PIC
-                        </th>
-                        <th
-                            scope="col"
-                            className="px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
-                        >
-                            Kategori
-                        </th>
-                        <th
-                            scope="col"
-                            className="px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
-                        >
-                            Status
-                        </th>
+                        {Object.keys(table_rows).map((key) => {
+                            return <th
+                                scope="col"
+                                className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
+                            >
+                                {key}
+                            </th>;
+                        })}
                         <th
                             scope="col"
                             className="rounded-tr-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
