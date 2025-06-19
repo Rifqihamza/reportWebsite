@@ -1,8 +1,8 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, process_server_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
-import { Prisma, type Report, type Report_Location, type Report_PIC } from "@prisma/client";
-import { AccountType, ReportType, string_to_campus } from "../../../types/variables";
+import { Prisma, type Report, type Report_Location } from "@prisma/client";
+import { ReportType, string_to_campus } from "../../../types/variables";
 import { z } from 'zod';
 
 
@@ -51,17 +51,17 @@ export async function POST({ request }: APIContext) {
 
 
     const verified_campus_name = string_to_campus(campus);
-    
-    if(!verified_campus_name) {
+
+    if (!verified_campus_name) {
         console.log(`Campus name is not valid!`);
         return create_response_status(400);
     }
-    
-    
 
-    if(location) {
+
+
+    if (location) {
         let location_data: Report_Location | null = null;
-        if(verified_campus_name) {
+        if (verified_campus_name) {
             location_data = await prisma.report_Location.findUnique({
                 where: {
                     location_campus_name: {
@@ -71,14 +71,14 @@ export async function POST({ request }: APIContext) {
                 }
             });
         }
-    
-        if(!location_data) {
+
+        if (!location_data) {
             console.log("Location is not valid!");
             return create_response_status(400);
         }
     }
-    
-    
+
+
     // Upload file if image exists
     let image_file_path = "";
 

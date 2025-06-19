@@ -1,13 +1,11 @@
 import React from 'react';
 import { Image } from 'primereact/image';
-import { AccountType, reporttype_to_string } from '../../../types/variables';
-import { useUserDataHook } from "../../../hooks/shared/useUserData";
+import { reporttype_to_string } from '../../../types/variables';
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import { statusColors, useReportDetailHook, useReportEditHook } from "../../../hooks/useReportHook";
 import { formatDate } from "../../../utils/other";
 
 export default function ReportDetailModal() {
-    const { userData } = useUserDataHook();
     const { reportData } = useReportDataHook();
     const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
 
@@ -79,8 +77,8 @@ export default function ReportDetailModal() {
                         <DetailField label="Kategori:" value={report_data ? reporttype_to_string(report_data.type)! : ""} />
                         <DetailField label="Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
                         <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
-                        <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : "Belum ditentukan"} />
-                        <DetailField label="Due Date:" value={report_data ? formatDate(report_data.due_date) : "Belum ditentukan"} />
+                        <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : ""} fallback="Belum ditentukan" />
+                        <DetailField label="Due Date:" value={report_data?.due_date ? formatDate(report_data.due_date) : undefined} fallback="Belum ditentukan" />
                         <DetailField label="Follow Up Oleh:" value={report_data?.follow_up_name} fallback="Belum ditentukan" />
                     </div>
                     {/* End Details */}

@@ -10,13 +10,14 @@ export default function ReportDesktopTable() {
     const { reportData } = useReportDataHook();
 
     return <>
-    
-            <table className="w-full h-[70vh] max-h-[65vh] hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
+
+        <div className='hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4'>
+            <table className="w-full h-[70vh] max-h-[65vh] ">
                 <thead>
                     <tr>
                         {Object.keys(table_rows).map((key) => {
                             return <th
-                            key={key}
+                                key={key}
                                 scope="col"
                                 className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
                             >
@@ -34,18 +35,18 @@ export default function ReportDesktopTable() {
                 <tbody>
                     {(() => {
                         // If the data is not loaded returns loading animation
-                        if(reportData === null) {
+                        if (reportData === null) {
                             return <tr><td><LoadingAnimation /></td></tr>
                         }
-                        
+
                         // If there's no data
-                        if(showedReportData.length === 0){
+                        if (showedReportData.length === 0) {
                             return <tr>
                                 <td className="w-fit" colSpan={8}>
                                     <h1 className="p-2 opacity-75 text-center">Tidak ada laporan...</h1>
                                 </td>
                             </tr>
-                        } 
+                        }
 
                         // Return a normal report data
                         return <>
@@ -90,5 +91,6 @@ export default function ReportDesktopTable() {
                     })()}
                 </tbody>
             </table>
-     </>;
+        </div>
+    </>;
 };
