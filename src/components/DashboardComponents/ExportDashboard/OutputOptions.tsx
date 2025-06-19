@@ -15,12 +15,12 @@ export default function OutputOptions() {
       <div className="bg-[#ededed] w-full h-full rounded-xl flex flex-col gap-2 p-2 overflow-auto">
         {outputOptions.map((value) => {
           return <button
-            className={`w-full h-full cursor-pointer px-2 py-6 text-sm lg:text-md
+            className={`w-full h-full cursor-pointer px-2 py-6 border-2 text-sm lg:text-md
                ${(selectedOutput === value ?
-                "bg-[#1f324d] text-white hover:bg-white hover:text-[#1f324d]"
+                "bg-[#1f324d] text-white"
                 :
-                "bg-[#1f324d] text-white border-[#1f324d] hover:bg-white hover:text-[#1f324d]")}
-                   rounded-xl duration-300`} onClick={() => { setSelectedOutput(value) }}>{value}</button>;
+                "bg-white text-[#1f324d] border-[#1f324d] hover:bg-white hover:text-[#1f324d]")}
+                   rounded-xl duration-300 hover:brightness-75`} onClick={() => { setSelectedOutput(value) }}>{value}</button>;
         })}
       </div>
     </div>
