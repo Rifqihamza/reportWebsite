@@ -8,13 +8,19 @@ import OutputOptions from "./OutputOptions";
 import RowOptions from "./RowOptions";
 import * as XLSX from 'xlsx';
 import FilterOptions from "./FilterOptions";
+import { useState } from "react";
 
 export default function ExportComponent() {
   const { reportData } = useReportDataHook();
   const { dateRange, selectedOutputType, selectedRows } = useExportHook();
   const { showMessage } = useMessageToastHook();
+  
+  const [processingState, setProcessingState] = useState(0);
+  
 
-  const handleExport = () => {
+  const handleExport = async () => {
+    setProcessingState(1);
+    
     // Check if report data is empty
     if (!reportData) {
       showMessage("Data dalam keadaan kosong.", "warn", "");
@@ -46,6 +52,17 @@ export default function ExportComponent() {
 
     const file_name = `DataReport_${strftime("%d-%m-%Y", new Date())}`;
 
+    await (new Promise((res, rej) => {
+      setTimeout(() => {
+        res(true);
+      }, ((100 * selectedRows.length) + Math.random() * 1000));
+    }))
+
+    setProcessingState(2);
+    setTimeout(() => {
+      setProcessingState(0);
+    }, 1000);
+    
     // Output the result depends on the selected output file type
     if (selectedOutputType === ExportOutputType.CSV) {
       const csvContent = (resultData.map((value) => value.join(",")).join("\n"));
@@ -92,8 +109,8 @@ export default function ExportComponent() {
           </div>
         </div>
         {/* Export button */}
-        <button className="h-full p-4 bg-[#1f324d] text-white rounded-2xl hover:brightness-75" onClick={handleExport}>
-          Process & Export
+        <button className={`h-full p-4 bg-[#1f324d] border-2 text-white rounded-2xl hover:brightness-75 ${(processingState == 1) ? "bg-white text-[#1f324d]! border-[#1f324d] pointer-events-none" : ""}`} onClick={handleExport}>
+          {(processingState == 1) ? "Processing..." : ((processingState == 2) ? "Done!" : "Process & Export")}
         </button>
       </div>
     </>
