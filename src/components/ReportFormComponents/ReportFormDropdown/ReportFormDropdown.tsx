@@ -23,7 +23,7 @@ export default function ReportFormDropdown<T extends { toString(): string }>(pro
         {props.optional ? <button type="button" className="cursor-pointer text-gray-300 hover:text-[#7FA1C3] disabled:opacity-0 disabled:pointer-events-none" disabled={props.selected == null} onClick={() => props.onSelect(null)}>Clear</button> : ""}
       </div>
 
-      <div className="outline-none px-6 py-1 w-full bg-[#E2DAD6] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease">
+      <div className="outline-none px-6 py-1 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease">
         <Dropdown
           filter={props.filter}
           disabled={props.disabled}

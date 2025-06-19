@@ -6,39 +6,30 @@ import {
 import {
   AccountType,
   ReportType,
-  string_to_accounttype,
   string_to_campus,
   string_to_reporttype,
 } from "../../../types/variables";
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
-import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import UseReportConfigHookEffect, { useReportConfigHook } from "../../../hooks/useReportConfig";
 import { useThanksModalHook } from "../../../hooks/shared/useThanksModal";
 import { useCampusDataHook } from "../../../hooks/shared/useCampusData";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
-import { useUserDataHook } from "../../../hooks/shared/useUserData";
 
 export default function ReportFormComponent() {
-  const { isAuthorized } = useUserDataHook();
-  
   // Report Form State
   const [submitted_by, setSubmittedBy] = useState("");
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [detailLocation, setDetailLocation] = useState("");
-  const [pic, setPic] = useState("");
   const [category, setCategory] = useState(null as ReportType | string | null);
-  const [followUpType, setFollowUpType] = useState(null as AccountType | string | null);
-  const [followUpName, setFollowUpName] = useState("");
   const [reportDate, setReportDate] = useState("");
-  const [reportDueDate, setReportDueDate] = useState("");
   const [image, setImage] = useState(null as File | null);
 
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const { picNamesOptions, locationOptions } = useReportConfigHook();
+  const { locationOptions } = useReportConfigHook();
   const { setShowThanks } = useThanksModalHook();
   const { selectedCampus } = useCampusDataHook();
   const { showMessage } = useMessageToastHook();
@@ -47,16 +38,12 @@ export default function ReportFormComponent() {
 
   const reset_form = () => {
     setSubmittedBy("");
-    setPic("");
-    setFollowUpType(null);
     setMessage("");
     setCategory(null);
     setDetailLocation("");
     setLocation("");
     setReportDate("");
-    setReportDueDate("");
     setImage(null);
-    setFollowUpName("");
   };
 
   const handle_submit = async () => {
@@ -83,13 +70,9 @@ export default function ReportFormComponent() {
       submitted_by,
       message,
       string_to_reporttype(category)!,
-      pic,
-      string_to_accounttype(followUpType || undefined) || undefined,
-      followUpName || undefined,
       location,
       detailLocation,
       reportDate ? new Date(reportDate).toISOString() : undefined,
-      reportDueDate ? new Date(reportDueDate).toISOString() : undefined,
       image || undefined,
       verified_campus_name
     );
@@ -155,7 +138,7 @@ export default function ReportFormComponent() {
 
             {/* Nama Pelapor */}
             <div className="flex flex-col gap-2 w-full">
-              <div className="bg-[#5b708c] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
                 <label
                   htmlFor="submitted_by"
                   className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
@@ -169,7 +152,7 @@ export default function ReportFormComponent() {
                 name="submitted_by"
                 id="submitted_by"
                 placeholder="Nama Pelapor..."
-                className=" outline-none px-6 py-4 w-full bg-[#E2DAD6] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className=" outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setSubmittedBy(e.target.value)}
                 value={submitted_by}
                 maxLength={191}
@@ -207,7 +190,7 @@ export default function ReportFormComponent() {
                 name="detail_location"
                 id="detail_location"
                 placeholder="Tambahkan detail lokasi..."
-                className=" outline-none px-6 py-4 w-full bg-[#E2DAD6] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className=" outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setDetailLocation(e.target.value)}
                 value={detailLocation}
                 maxLength={191}
@@ -230,84 +213,13 @@ export default function ReportFormComponent() {
               autoComplete="off"
                 type="datetime-local"
                 placeholder="Tanggal temuan"
-                className="outline-none px-6 py-4 w-full bg-[#E2DAD6] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className="outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setReportDate(e.target.value)}
                 value={reportDate}
                 required
               />
             </div>
             {/* End Tanggal Temuan */}
-
-            {/* Due Date Section - Hanya untuk role Guru/Vendor */}
-            {isAuthorized && (
-              <div className="flex flex-col gap-2 w-full">
-                <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
-                  <label
-                    htmlFor="dueDate"
-                    className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
-                  >
-                    <i className="pi pi-clock" />
-                    Tenggat Waktu
-                    <span className="opacity-50">(opsional)</span>
-                  </label>
-                </div>
-                <input
-                autoComplete="off"
-                  type="datetime-local"
-                  placeholder="Tenggat Waktu"
-                  className="outline-none px-6 py-4 w-full bg-[#E2DAD6] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
-                  onChange={(e) => setReportDueDate(e.target.value)}
-                  value={reportDueDate}
-                />
-              </div>
-            )}
-            {/* End Due Date */}
-
-            {/* Nama PIC - Hanya untuk role Guru/Vendor */}
-            {isAuthorized && (
-              <ReportFormDropdown
-                optional
-                placeholder={Object.values(picNamesOptions).length === 0 ? "Loading PIC Data.." : "Pilih PIC"}
-                label="Nama PIC"
-                items={selectedCampus ? picNamesOptions[selectedCampus] : []}
-                selected={pic}
-                onSelect={(value) => {
-                  setPic(value || "");
-                }}
-                icon="pi pi-user"
-                disabled={Object.values(picNamesOptions).length === 0}
-                filter
-              />
-            )}
-            {/* End Nama PIC */}
-
-            {/* Nama Follow Up */}
-            {isAuthorized && (
-              <div className="flex flex-col gap-2 w-full">
-                <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
-                  <label
-                    htmlFor="lokasi"
-                    className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
-                  >
-                    <i className="pi pi-map-marker" />
-                    Nama Follow Up <span className="opacity-50">(opsional)</span>
-                  </label>
-                </div>
-                <input
-                autoComplete="off"
-                  type="text"
-                  name="followup_name"
-                  id="followup_name"
-                  placeholder="Nama follow up"
-                  className="outline-none px-6 py-4 w-full bg-[#E2DAD6] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
-                  onChange={(e) => setFollowUpName(e.target.value)}
-                  value={followUpName}
-                  maxLength={191}
-                  required
-                />
-              </div>
-            )}
-            {/* End Nama Follow Up */}
 
             {/* Dropdowns Section */}
             <div className="flex flex-col md:flex-row gap-6">
@@ -321,25 +233,13 @@ export default function ReportFormComponent() {
                 selected={category}
                 icon={"pi pi-box"}
               />
-              {isAuthorized && 
-              <ReportFormDropdown
-                label="Follow Up"
-                placeholder="Follow Up"
-                optional
-                items={Object.keys(AccountType).filter((x) => x != "NoType" && x != "Admin")}
-                onSelect={(value) => {
-                  setFollowUpType(value);
-                }}
-                selected={followUpType}
-                icon={"pi pi-file-check"}
-              />}
             </div>
             {/* End Dropdowns */}
           </div>
           {/* End Container Form Input */}
 
           {/* File Image Upload */}
-          <div className={`flex flex-col gap-2 w-full mt-6 ${submitDisabled ? "opacity-50 bg-[#ccc55] pointer-events-none" : ""}`}>
+          <div className={`flex flex-col gap-2 w-full ${submitDisabled ? "opacity-50 bg-[#ccc55] pointer-events-none" : ""}`}>
             <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
               <label
                 htmlFor="foto"
@@ -352,7 +252,7 @@ export default function ReportFormComponent() {
             <div className="flex items-center justify-center w-full z-10">
               <label
                 htmlFor="foto"
-                className="cursor-pointer outline-none px-6 py-8 w-full bg-[#E2DAD6] hover:bg-neutral-50 duration-300 rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className="cursor-pointer outline-none px-6 py-8 w-full bg-[#E2DAD6] border-2 border-[#314f79] hover:bg-neutral-50 duration-300 rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
               >
                 <div className="flex flex-col items-center justify-center">
                   <i className="pi pi-cloud text-black" />
@@ -370,7 +270,7 @@ export default function ReportFormComponent() {
           {/* End File Image Upload */}
 
           {/* Submit Button */}
-          <div className="flex md:justify-end justify-center w-full md:w-auto mt-6">
+          <div className="flex md:justify-end justify-center w-full md:w-auto mt-12">
             {submitDisabled ? (
               <i
                 className="pi pi-spin pi-spinner"

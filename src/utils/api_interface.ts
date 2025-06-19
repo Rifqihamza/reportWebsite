@@ -60,13 +60,9 @@ export async function addReport(
     submitted_by: string,
     message: string,
     report_type: ReportType,
-    pic_name?: string,
-    follow_up?: AccountType,
-    follow_up_name?: string,
     location?: string,
     detail_location?: string,
     report_date?: string,
-    due_date?: string,
     image?: File,
     campus?: Campus
 ): Promise<APIResultType | ReportData> {
@@ -76,13 +72,9 @@ export async function addReport(
     add_to_formdata(form_data, "submitted_by", submitted_by)
     add_to_formdata(form_data, "message", message);
     add_to_formdata(form_data, "report_type", report_type);
-    add_to_formdata(form_data, "pic_name", pic_name)
-    add_to_formdata(form_data, "follow_up", follow_up);
-    add_to_formdata(form_data, "follow_up_name", follow_up_name);
     add_to_formdata(form_data, "location", location);
     add_to_formdata(form_data, "detail_location", detail_location);
     add_to_formdata(form_data, "report_date", report_date);
-    add_to_formdata(form_data, "due_date", due_date);
     add_to_formdata(form_data, "campus", campus);
 
     if (image) {

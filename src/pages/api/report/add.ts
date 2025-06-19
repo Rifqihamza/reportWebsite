@@ -9,14 +9,10 @@ import { z } from 'zod';
 const ReportBodyType = z.object({
     submitted_by: z.string(),
     message: z.string(),
-    pic_name: z.string().optional(),
     report_type: z.nativeEnum(ReportType),
-    follow_up: z.nativeEnum(AccountType).optional(),
     location: z.string(),
     detail_location: z.string().optional(),
     report_date: z.string(),
-    due_date: z.string().optional(),
-    follow_up_name: z.string().optional(),
     image: z.instanceof(File).optional(),
     campus: z.string(),
 });
@@ -45,27 +41,13 @@ export async function POST({ request }: APIContext) {
     const {
         submitted_by,
         message,
-        pic_name,
         report_type,
-        follow_up,
         location,
         report_date,
-        due_date,
-        follow_up_name,
         image,
         detail_location,
         campus
     } = parsed_result.data;
-
-    // Check if user is teacher if it includes due date and follow up data
-    if(follow_up || follow_up_name || due_date) {
-        const cookies = get_cookies_from_request(request);
-        
-        if(!cookies || !cookies["user_token"] || !(await verify_teacher_token(cookies["user_token"]))) {
-            console.log("User JWT Token is not valid!");
-            return create_response_status(401);
-        }
-    }
 
 
     const verified_campus_name = string_to_campus(campus);
@@ -75,26 +57,6 @@ export async function POST({ request }: APIContext) {
         return create_response_status(400);
     }
     
-
-    // Verify PIC name and Location
-    if(pic_name) {
-        let pic_data: Report_PIC | null = null
-        if(verified_campus_name) {
-            pic_data = await prisma.report_PIC.findUnique({
-                where: {
-                    name_campus_name: {
-                        name: pic_name,
-                        campus_name: verified_campus_name
-                    }
-                }
-            });
-        }
-    
-        if(!pic_data) {
-            console.log("PIC Name is not valid!");
-            return create_response_status(400);
-        }
-    }
     
 
     if(location) {
@@ -170,16 +132,6 @@ export async function POST({ request }: APIContext) {
             data: {
                 submitted_by: submitted_by,
                 message: message,
-                follow_up: follow_up,
-                follow_up_name: follow_up_name,
-                responsible_pic: pic_name ? {
-                    connect: {
-                        name_campus_name: {
-                            name: pic_name,
-                            campus_name: verified_campus_name
-                        }
-                    },
-                } : undefined,
                 report_location: {
                     connect: {
                         location_campus_name: {
@@ -190,7 +142,6 @@ export async function POST({ request }: APIContext) {
                 },
                 type: report_type,
                 report_date: report_date,
-                due_date: due_date,
                 image: image_file_path,
                 detail_location: detail_location,
                 campus: verified_campus_name

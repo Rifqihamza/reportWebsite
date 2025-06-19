@@ -18,7 +18,8 @@ export default function ConfigurationComponent() {
 
     return (
         <section>
-            <div className="hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
+            {/* TODO Haven't created mobile page responsiveness yet */}
+            <div className="block overflow-auto relative bg-white rounded-xl px-6 py-4">
                 <h2 className="text-2xl font-bold mb-4">Daftar Akun Pengguna</h2>
                 <table className="w-full h-[70vh] max-h-[65vh]">
                     <thead>
