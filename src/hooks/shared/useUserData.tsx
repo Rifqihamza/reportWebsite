@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { User } from "../../types/variables";
 import { useEffect } from "react";
 import { APIResultType, getUser } from "../../utils/api_interface";
+import { useMessageToastHook } from "./useMessageToast";
 
 
 type useUserDataType = {
@@ -21,6 +22,7 @@ let initalized = false;
 
 export default function UseUserDataHookEffect(props: { onResolve?: (res: { userData: User | null, isAuthorized: boolean }) => void }) {
   const { setUserData } = useUserDataHook();
+  const { showMessage } = useMessageToastHook();
 
   useEffect(() => {
     // Make sure to run only once in a page regardless how many time rendered the component
@@ -38,6 +40,9 @@ export default function UseUserDataHookEffect(props: { onResolve?: (res: { userD
       else if(user_data === APIResultType.Unauthorized) {
         setUserData();
         props.onResolve ? props.onResolve({ isAuthorized: false, userData: null }) : "";
+      }
+      else if(user_data === APIResultType.DatabaseError) {
+        showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       }
 
     });

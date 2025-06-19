@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { create } from "zustand";
 import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../utils/api_interface";
 import { useCampusDataHook } from "./shared/useCampusData";
-import { campus_to_campuscode } from "../types/variables";
+import { useMessageToastHook } from "./shared/useMessageToast";
 
 type useReportConfigType = {
   picNamesOptions: { [key: string]: string[] };
@@ -31,6 +31,7 @@ export const useReportConfigHook = create<useReportConfigType>((set) => {
 export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
   const { selectedCampus } = useCampusDataHook();
   const { setLocationOptions, setPicNamesOptions } = useReportConfigHook();
+  const { showMessage } = useMessageToastHook();
 
   useEffect(() => {
     // If not used all campus is not selected yet
@@ -67,6 +68,8 @@ export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
         setLocationOptions(resultLocationOptions);
       } else if (result === APIResultType.Unauthorized) {
         window.location.href = "/loginPage";
+      } else if (result === APIResultType.DatabaseError) {
+        showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       }
     });
   }, [selectedCampus]);
