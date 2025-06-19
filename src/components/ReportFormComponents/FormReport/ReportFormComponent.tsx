@@ -4,7 +4,6 @@ import {
   APIResultType,
 } from "../../../utils/api_interface";
 import {
-  AccountType,
   ReportType,
   string_to_campus,
   string_to_reporttype,
@@ -47,12 +46,12 @@ export default function ReportFormComponent() {
   };
 
   const handle_submit = async () => {
-    if(!selectedCampus) {
+    if (!selectedCampus) {
       showMessage("Please select campus first.", "warn", "");
       window.location.reload();
       return;
     }
-    
+
     if (!submitted_by || !message || !category || !location || !reportDate || !image) {
       showMessage("Please complete the form.", "warn", "");
       return;
@@ -98,7 +97,7 @@ export default function ReportFormComponent() {
 
   // Get the location and PIC data
   useEffect(() => {
-    if(!selectedCampus) {
+    if (!selectedCampus) {
       return;
     }
   }, [selectedCampus]);
@@ -108,7 +107,7 @@ export default function ReportFormComponent() {
       <div className="max-w-5xl mx-auto px-8">
         <UseReportConfigHookEffect />
         <p className="text-white w-full text-center mt-4">Campus: {selectedCampus}</p>
-        <form id="report-form">
+        <form id="report-form" autoComplete="off">
           {/* Container Form input */}
           <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>
             {/* Detail Laporan */}
@@ -127,7 +126,7 @@ export default function ReportFormComponent() {
                 name="laporan"
                 id="laporan"
                 placeholder="Deskripsikan Temuan Anda..."
-                className="resize-none outline-none px-6 py-4 w-full bg-amber-50 rounded-2xl [box-shadow:0_0_4px_1px_#5b708c]"
+                className="resize-none outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setMessage(e.target.value)}
                 value={message}
                 maxLength={191}
@@ -148,7 +147,7 @@ export default function ReportFormComponent() {
                 </label>
               </div>
               <input
-              autoComplete="off"
+                autoComplete="off"
                 name="submitted_by"
                 id="submitted_by"
                 placeholder="Nama Pelapor..."
@@ -186,7 +185,7 @@ export default function ReportFormComponent() {
                 </label>
               </div>
               <input
-              autoComplete="off"
+                autoComplete="off"
                 name="detail_location"
                 id="detail_location"
                 placeholder="Tambahkan detail lokasi..."
@@ -210,7 +209,7 @@ export default function ReportFormComponent() {
                 </label>
               </div>
               <input
-              autoComplete="off"
+                autoComplete="off"
                 type="datetime-local"
                 placeholder="Tanggal temuan"
                 className="outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
@@ -263,7 +262,7 @@ export default function ReportFormComponent() {
                 </div>
 
                 <input
-                autoComplete="off" id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < 5000000) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", "Please put an image smaller than 5MB"))) : "" }} />
+                  autoComplete="off" id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < 5000000) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", "Please put an image smaller than 5MB"))) : "" }} />
               </label>
             </div>
           </div>
@@ -279,7 +278,7 @@ export default function ReportFormComponent() {
             ) : (
               <button
                 type="button"
-                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#314f79] hover:bg-[#6096B4] duration-300 "
+                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#314f79] hover:bg-[#E2DAC9] duration-300 "
                 disabled={submitDisabled}
                 onClick={handle_submit}
               >
@@ -288,7 +287,6 @@ export default function ReportFormComponent() {
               </button>
             )}
           </div>
-          {/* End Submit Button */}
           {/* End Submit Button */}
         </form >
 
