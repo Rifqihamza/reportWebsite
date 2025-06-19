@@ -19,7 +19,7 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (userData) {
-            if (userData?.role !== AccountType.Guru && userData?.role !== AccountType.Vendor) {
+            if (userData?.role !== AccountType.Admin) {
                 window.location.href = "/form";
             }
         }

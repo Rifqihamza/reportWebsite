@@ -25,7 +25,6 @@ export async function GET({ request }: APIContext) {
         select: {
             id: true,
             username: true,
-            email: true,
             role: true,
             created_at: true,
         },

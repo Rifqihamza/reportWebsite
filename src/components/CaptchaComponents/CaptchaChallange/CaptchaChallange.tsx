@@ -74,7 +74,7 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
 
   function handleRedirect({ userData, isAuthorized }: { userData: User | null, isAuthorized: boolean }) {
     setTimeout(() => {
-      if(userData && (userData.role === AccountType.Guru || userData.role === AccountType.Admin)) {
+      if(userData && userData.role === AccountType.Admin) {
         window.location.href = "/dashboard";
       }
       else if(isAuthorized) {

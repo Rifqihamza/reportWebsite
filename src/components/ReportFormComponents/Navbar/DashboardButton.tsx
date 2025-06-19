@@ -8,7 +8,7 @@ export default function DashboardButton() {
     window.location.href = "/dashboard";
   }
   
-  if(userData && (userData.role === AccountType.Guru || userData.role === AccountType.Admin)) {
+  if(userData && userData.role === AccountType.Admin) {
     return <>
       
         <button

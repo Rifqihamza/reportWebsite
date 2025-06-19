@@ -14,7 +14,7 @@ interface DropdownProps<T extends { toString(): string }> {
 
 export default function ReportFormDropdown<T extends { toString(): string }>(props: DropdownProps<T>) {
   return (
-    <div className="bg-[#93BFCF] rounded-2xl w-full mt-[1.5rem]">
+    <div className="bg-[#5b708c] rounded-2xl w-full mt-[1.5rem]">
       <div className="flex flex-row justify-between items-center px-4 py-3">
         <div className="md:text-lg font-semibold text-xs text-white flex flex-row gap-2 items-center">
           <i className={props.icon}></i>

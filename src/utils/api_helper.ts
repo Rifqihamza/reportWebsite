@@ -90,7 +90,7 @@ export async function verify_teacher_token(token: string): Promise<boolean | und
         }
     });
 
-    return user_data?.role === AccountType.Guru;
+    return user_data?.role === AccountType.Admin;
 }
 
 export function verify_admin_token(token?: string): boolean {

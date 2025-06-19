@@ -1,7 +1,9 @@
 import React, { Suspense } from "react"
 import LoadingAnimation from "../../../components/GlobalComponents/Loading/LoadingAnimation"
+
+const ConfigurationComponent = React.lazy(() => import("../../../components/DashboardComponents/ConfigurationDashboard/ConfigurationComponent"))
+
 export default function ConfigurationPage() {
-    const ConfigurationComponent = React.lazy(() => import("../../../components/DashboardComponents/ConfigurationDashboard/ConfigurationComponent"))
     return (
         <>
             <Suspense fallback={<LoadingAnimation />}>
