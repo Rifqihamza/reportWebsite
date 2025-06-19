@@ -12,7 +12,7 @@ export default function ReportDetailModal() {
     const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
 
     const { setEditVisible } = useReportEditHook();
-    
+
     const report_data = reportData?.find(value => value.id === detailId) || null;
 
     const ImageComponent = () => (
@@ -79,15 +79,15 @@ export default function ReportDetailModal() {
                         <DetailField label="Kategori:" value={report_data ? reporttype_to_string(report_data.type)! : ""} />
                         <DetailField label="Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
                         <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
-                        <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : "N/A"} />
-                        <DetailField label="Due Date:" value={report_data ? formatDate(report_data.due_date) : null} fallback="Belum ditentukan" />
+                        <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : "Belum ditentukan"} />
+                        <DetailField label="Due Date:" value={report_data ? formatDate(report_data.due_date) : "Belum ditentukan"} />
                         <DetailField label="Follow Up Oleh:" value={report_data?.follow_up_name} fallback="Belum ditentukan" />
                     </div>
                     {/* End Details */}
                 </div>
 
                 {/* Action Buttons */}
-                {userData && (userData.role === AccountType.Guru || userData.role === AccountType.Vendor) && (
+                {userData && (userData.role === AccountType.Guru || userData.role === AccountType.Admin) && (
                     <div className="grid grid-cols-2 gap-4 w-full pt-4">
                         <button
                             className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#1f324d] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"

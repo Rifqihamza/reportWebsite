@@ -6,11 +6,9 @@ const ReportTableWrapper = React.lazy(() => import("../../../components/Dashboar
 export default function TablePage() {
     return (
         <>
-            <div className="space-y-4">
-                <Suspense fallback={<LoadingAnimation />}>
-                    <ReportTableWrapper />
-                </Suspense>
-            </div>
+            <Suspense fallback={<LoadingAnimation />}>
+                <ReportTableWrapper />
+            </Suspense>
         </>
     );
 }

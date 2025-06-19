@@ -10,12 +10,13 @@ export default function ReportDesktopTable() {
     const { reportData } = useReportDataHook();
 
     return <>
-        <div className="hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
-            <table className="w-full h-[70vh] max-h-[65vh]">
+    
+            <table className="w-full h-[70vh] max-h-[65vh] hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
                 <thead>
                     <tr>
                         {Object.keys(table_rows).map((key) => {
                             return <th
+                            key={key}
                                 scope="col"
                                 className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
                             >
@@ -34,7 +35,7 @@ export default function ReportDesktopTable() {
                     {(() => {
                         // If the data is not loaded returns loading animation
                         if(reportData === null) {
-                            return <tr><LoadingAnimation /></tr>
+                            return <tr><td><LoadingAnimation /></td></tr>
                         }
                         
                         // If there's no data
@@ -89,6 +90,5 @@ export default function ReportDesktopTable() {
                     })()}
                 </tbody>
             </table>
-        </div>
-    </>;
+     </>;
 };

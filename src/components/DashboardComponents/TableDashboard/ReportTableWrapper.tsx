@@ -5,15 +5,15 @@ import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
 
 const ReportListComponent = React.lazy(() => import("./ReportTableComponent"));
 
-export default function ReportTableWrapper() {    
+export default function ReportTableWrapper() {
 
     return <>
         <ReportHookEffect />
-
-        {/* Table Component */}
-        <ReportTableToolbar />
-        <Suspense fallback={<LoadingAnimation />}>
-            <ReportListComponent />
-        </Suspense>
+        <div className="space-y-4">
+            <Suspense fallback={<LoadingAnimation />}>
+                <ReportTableToolbar />
+                <ReportListComponent />
+            </Suspense>
+        </div>
     </>
 }
