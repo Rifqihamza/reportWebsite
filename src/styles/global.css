@@ -183,20 +183,20 @@ body {
 /* Mengatur elemen utama dropdown */
 .p-dropdown {
   width: 100%;
-  background-color: oklch(98.7% 0.022 95.277) !important;
+  background-color: #E2DAD6 !important;
   border: none;
   box-shadow: none;
 }
 
 /* Label teks di dalam dropdown */
 .p-dropdown-label {
-  background-color: oklch(98.7% 0.022 95.277) !important;
+  background-color: #E2DAD6 !important;
   color: black; /* ubah sesuai kebutuhan */
 }
 
 /* Trigger (ikon panah bawah) */
 .p-dropdown-trigger {
-  background-color: oklch(98.7% 0.022 95.277) !important;
+  background-color: #E2DAD6 !important;
   border-left: none;
 }
 

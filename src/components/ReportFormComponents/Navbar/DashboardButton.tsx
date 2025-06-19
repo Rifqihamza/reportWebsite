@@ -12,7 +12,7 @@ export default function DashboardButton() {
     return <>
       
         <button
-            className="h-12 flex items-center overflow-hidden px-4 py-3 bg-amber-50 hover:bg-[#7FA1C3] hover:text-white rounded-bl-xl fixed top-24 right-0 hover:rounded-l-xl hover:w-[14rem] w-[3rem] duration-300 cursor-pointer group"
+            className="h-12 flex items-center overflow-hidden px-4 py-3 bg-[#E2DAD6] hover:bg-[#314f79] hover:text-white rounded-bl-xl fixed top-24 right-0 hover:rounded-l-xl hover:w-[14rem] w-[3rem] duration-300 cursor-pointer group"
             onClick={handleGoToDashboard}
         >
             <i className="pi pi-chart-bar mr-2"></i>

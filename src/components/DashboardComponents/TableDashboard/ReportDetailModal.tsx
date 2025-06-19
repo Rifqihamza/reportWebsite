@@ -12,7 +12,7 @@ export default function ReportDetailModal() {
     const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
 
     const { setEditVisible } = useReportEditHook();
-    
+
     const report_data = reportData?.find(value => value.id === detailId) || null;
 
     const ImageComponent = () => (
@@ -79,8 +79,8 @@ export default function ReportDetailModal() {
                         <DetailField label="Kategori:" value={report_data ? reporttype_to_string(report_data.type)! : ""} />
                         <DetailField label="Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
                         <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
-                        <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : "N/A"} />
-                        <DetailField label="Due Date:" value={report_data ? formatDate(report_data.due_date) : null} fallback="Belum ditentukan" />
+                        <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : "Belum ditentukan"} />
+                        <DetailField label="Due Date:" value={report_data ? formatDate(report_data.due_date) : "Belum ditentukan"} />
                         <DetailField label="Follow Up Oleh:" value={report_data?.follow_up_name} fallback="Belum ditentukan" />
                     </div>
                     {/* End Details */}
