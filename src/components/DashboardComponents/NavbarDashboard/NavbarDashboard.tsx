@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { userLogout } from "../../../utils/api_interface";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
+import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 export default function NavbarDashboard() {
 
@@ -24,8 +25,11 @@ export default function NavbarDashboard() {
     }, [activeTab]);
 
     const { userData } = useUserDataHook();
+    const { isConnected } = useNetworkConnectivityHook();
 
     async function handle_logout() {
+        if(!isConnected) return;
+        
         if (userData && !(await userLogout())) {
             alert("Terjadi error saat ingin logout!");
             return;

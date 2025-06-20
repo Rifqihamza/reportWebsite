@@ -3,12 +3,16 @@ import { useEffect } from "react";
 import { APIResultType, getAllUsers } from "../../../utils/api_interface"; // sesuaikan path
 import { useUserAccount } from "../../../hooks/shared/useUserAccount";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
+import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 export default function ConfigurationComponent() {
     const { showUserAccountData, setShowUserAccountData } = useUserAccount();
     const { showMessage } = useMessageToastHook();
+    const { isConnected } = useNetworkConnectivityHook();
 
     useEffect(() => {
+        if(!isConnected) return;
+        
         getAllUsers().then((result) => {
             if (Array.isArray(result)) {
                 setShowUserAccountData(result);

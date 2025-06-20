@@ -3,6 +3,7 @@ import type { User } from "../../types/variables";
 import { useEffect } from "react";
 import { APIResultType, getUser } from "../../utils/api_interface";
 import { useMessageToastHook } from "./useMessageToast";
+import { useNetworkConnectivityHook } from "./useNetworkConnectivity";
 
 
 type useUserDataType = {
@@ -23,10 +24,11 @@ let initalized = false;
 export default function UseUserDataHookEffect(props: { onResolve?: (res: { userData: User | null, isAuthorized: boolean }) => void }) {
   const { setUserData } = useUserDataHook();
   const { showMessage } = useMessageToastHook();
+  const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
     // Make sure to run only once in a page regardless how many time rendered the component
-    if(initalized) {
+    if(initalized || !isConnected) {
       return;
     }
     initalized = true;

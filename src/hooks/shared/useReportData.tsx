@@ -3,6 +3,7 @@ import type { ReportData } from "../../types/variables";
 import { useEffect } from "react";
 import { APIResultType, getReport } from "../../utils/api_interface";
 import { useMessageToastHook } from "./useMessageToast";
+import { useNetworkConnectivityHook } from "./useNetworkConnectivity";
 
 type UseReportDataType = {
   reportData: ReportData[] | null;
@@ -21,9 +22,10 @@ let initialized = false;
 export default function UseReportDataHookEffect() {
   const { setReportData } = useReportDataHook();
   const { showMessage } = useMessageToastHook();
+  const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
-    if(initialized) {
+    if(initialized || !isConnected) {
       return;
     }
     initialized = true;

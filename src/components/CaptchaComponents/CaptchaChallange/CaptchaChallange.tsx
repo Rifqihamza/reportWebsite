@@ -6,6 +6,7 @@ import { APIResultType, checkAuthentication } from "../../../utils/api_interface
 import UseUserDataHookEffect from "../../../hooks/shared/useUserData";
 import { AccountType, type User } from "../../../types/variables";
 import { useMessageToastHook } from '../../../hooks/shared/useMessageToast';
+import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 const PUBLIC_SITE_KEY = "9d404a42-7eee-446a-94ae-e5c8c8dc7050";
 
@@ -20,8 +21,13 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
   const [isCaptchaNeeded, setIsCaptchaNeeded] = useState(false);
 
   const { showMessage } = useMessageToastHook();
+  const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
+    if(!isConnected) {
+      return;
+    }
+    
     checkAuthentication().then((result) => {
       if (result == APIResultType.NeedCaptchaAuthentication) {
         setIsCaptchaNeeded(true);
@@ -39,6 +45,10 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
   }, []);
 
   function handleVerification(token: string, ekey: string) {
+    if(!isConnected) {
+      return;
+    }
+    
     if (token) {
       setProgress(50)
       fetch("/api/captcha", {

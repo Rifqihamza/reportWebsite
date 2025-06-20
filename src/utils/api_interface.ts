@@ -156,36 +156,6 @@ export async function checkAuthentication(): Promise<APIResultType> {
     }
 }
 
-export async function changeReportStatus(report_id: string, report_status: ReportStatus): Promise<APIResultType> {
-    // Fetch to API
-    const response = await fetch(base_url_endpoint + "/api/report/change_status", {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "report_id": report_id,
-            "report_status": report_status
-        })
-    });
-
-    // Check the response
-    if (response.ok) {
-        return APIResultType.NoError;
-    }
-    else if (response.status == 500) {
-        return APIResultType.InternalServerError;
-    }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError;
-    }
-    else {
-        return APIResultType.Unauthorized;
-    }
-}
-
-
 export async function deleteReport(report_id: string): Promise<APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/delete", {

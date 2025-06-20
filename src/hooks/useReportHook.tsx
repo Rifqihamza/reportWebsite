@@ -11,6 +11,7 @@ import { useUserDataHook } from "./shared/useUserData";
 import { APIResultType, deleteReport } from "../utils/api_interface";
 import { useMessageToastHook } from "./shared/useMessageToast";
 import { useEffect } from "react";
+import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
 
 const maxReportDataPerPage: number = 5;
 
@@ -56,6 +57,9 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
 
     // -- Handling report deletion
     handleDelete: async (id: string) => {
+      const { isConnected } = useNetworkConnectivityHook.getState();
+      if(!isConnected) return;
+      
       const { reportData, setReportData } = useReportDataHook.getState();
       const { userData } = useUserDataHook.getState();
       const { showMessage } = useMessageToastHook.getState();

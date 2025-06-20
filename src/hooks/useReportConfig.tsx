@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../utils/api_interface";
 import { useCampusDataHook } from "./shared/useCampusData";
 import { useMessageToastHook } from "./shared/useMessageToast";
+import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
 
 type useReportConfigType = {
   picNamesOptions: { [key: string]: string[] };
@@ -32,8 +33,13 @@ export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
   const { selectedCampus } = useCampusDataHook();
   const { setLocationOptions, setPicNamesOptions } = useReportConfigHook();
   const { showMessage } = useMessageToastHook();
+  const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
+    if(!isConnected) {
+        showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
+    }
+    
     // If not used all campus is not selected yet
     if (!props.useAll && !selectedCampus) {
       return;
