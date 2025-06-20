@@ -125,7 +125,7 @@ body {
   background-color: #ffffff;
   padding: 0.2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: none;
+  border: 2px solid #1f324d;
   min-width: 10rem;
 }
 
@@ -238,4 +238,10 @@ body {
 .p-progressbar-value {
   background-color: #7FA1C3;
   border-radius: 0.75rem;
+}
+
+.p-dropdown-panel {
+  border-radius: var(--radius-xl);
+  margin-top: 5px;
+  border: 2px solid #1f324d;
 }

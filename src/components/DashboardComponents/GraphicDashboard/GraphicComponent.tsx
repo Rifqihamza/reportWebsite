@@ -22,7 +22,7 @@ export default function GraphicChart() {
             <div className='flex flex-col gap-4 mx-4'>
                 <div className="md:hidden block w-full">
                     <Dropdown
-                        className="px-4 py-2 [&_.p-dropdown-label]:text-white! [&_.p-dropdown-trigger]:text-white! rounded-2xl! bg-[#1f324d]! [&_.p-dropdown]:bg-[#1f324d]! [&_.p-dropdown-label]:bg-[#1f324d]! [&_.p-dropdown-trigger]:bg-[#1f324d]!"
+                        className="px-4 py-2 rounded-xl! [&_.p-dropdown-label]:text-[#1f324d]! [&_.p-dropdown-trigger]:text-[#1f324d]! bg-white! [&_.p-dropdown]:bg-white! [&_.p-dropdown-label]:bg-white! [&_.p-dropdown-trigger]:bg-white! md:[&_.p-dropdown-label]:text-white! md:[&_.p-dropdown-trigger]:text-white! md:bg-[#1f324d]! md:[&_.p-dropdown]:bg-[#1f324d]! md:[&_.p-dropdown-label]:bg-[#1f324d]! md:[&_.p-dropdown-trigger]:bg-[#1f324d]!"
                         value={chartFilter}
                         onChange={(e) => setChartFilter(e.value)}
                         options={Object.values(LineChartFilterOption)} />
