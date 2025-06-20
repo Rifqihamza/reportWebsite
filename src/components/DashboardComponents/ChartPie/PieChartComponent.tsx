@@ -10,11 +10,12 @@ interface ApexInternalConfig {
 }
 
 interface PieChartProps {
-    reportType?: ReportType|null
+    reportType?: ReportType|null,
+    category?: boolean
 }
 
-const PieChart: React.FC<PieChartProps> = ({ reportType }) => {
-    const { pieCategory, setLineChartCategoryFilter: setChartCategoryFilter } = usePieChartHook();
+const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
+    const { pieCategory, pieStatus, setLineChartCategoryFilter: setChartCategoryFilter } = usePieChartHook();
 
     // Hitung jumlah masing-masing jenis laporan
     const reportByCategory = pieCategory.reduce((acc, report) => {
@@ -25,10 +26,20 @@ const PieChart: React.FC<PieChartProps> = ({ reportType }) => {
         acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
         return acc;
     }, {} as Record<string, number>);
+    
+    const reportByStatus = pieStatus.reduce((acc, report) => {
+        report.labels = (report.labels == "VR" ? "5R" : report.labels);
+        if (!acc[report.labels]) {
+            acc[report.labels] = 0;
+        }
+        acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
+        return acc;
+    }, {} as Record<string, number>);
+    
 
 
-    const labels = Object.keys(reportByCategory);
-    const series = Object.values(reportByCategory);
+    const labels = Object.keys(category ? reportByCategory : reportByStatus);
+    const series = Object.values(category ? reportByCategory : reportByStatus);
     const colors = labels.map(label => statusColorHex[label] || '#E0E0E0'); // default gray if not matched
 
     const options = {

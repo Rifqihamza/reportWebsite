@@ -3,9 +3,40 @@ import jwt from "jsonwebtoken";
 import cookie from 'cookie';
 import { prisma } from "./db";
 import { AccountType } from "@prisma/client";
+import type { Campus } from "../types/variables";
 
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+// REMOVE THIS AFTER DONE OKAY? :D
+const location_data: {
+    [key in Campus]: string[]
+} = {
+    "MM": [
+
+    ],
+    "PD": [
+
+    ],
+    "PATI": [
+
+    ],
+    "AMI": [
+
+    ],
+    "MOJO": [
+
+    ],
+    "SM": [
+
+    ],
+    "BBL": [
+
+    ],
+    "KLTN": [
+
+    ]
+}
 
 // First Initialization
 export async function first_initialization() {
@@ -13,6 +44,23 @@ export async function first_initialization() {
         return;
     }
 
+    const result: {
+        location: string,
+        campus_name: Campus
+    }[] = [];
+    Object.entries(location_data).forEach(([campus, location_names]) => {
+        location_names.forEach((location_name) => {
+            result.push({
+                location: location_name,
+                campus_name: (campus as Campus)
+            });
+        })
+    });
+    
+    await prisma.report_Location.createMany({
+        data: result
+    })
+    
     done_initialization = true;
 
     configDotenv();
