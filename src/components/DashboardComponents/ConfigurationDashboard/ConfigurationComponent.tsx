@@ -1,18 +1,19 @@
 // src/components/ConfigurationComponent.tsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { APIResultType, getAllUsers } from "../../../utils/api_interface"; // sesuaikan path
 import { useUserAccount } from "../../../hooks/shared/useUserAccount";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
+import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
 
 export default function ConfigurationComponent() {
+    const [doneFetching, setDoneFetching] = useState(false);
     const { showUserAccountData, setShowUserAccountData } = useUserAccount();
     const { showMessage } = useMessageToastHook();
     const { isConnected } = useNetworkConnectivityHook();
 
     useEffect(() => {
         if(!isConnected) return;
-        
         getAllUsers().then((result) => {
             if (Array.isArray(result)) {
                 setShowUserAccountData(result);
@@ -23,6 +24,8 @@ export default function ConfigurationComponent() {
             }
         }).catch((err) => {
             showMessage("There's a network error.", "error", "Please reload the website once you connected.");
+        }).finally(() => {
+            setDoneFetching(true);
         });
     }, []);
 
@@ -52,10 +55,15 @@ export default function ConfigurationComponent() {
                                     </td>
                                 </tr>
                             ))
-                        ) : (
+                        ) : (doneFetching ? (
                             <tr>
                                 <td colSpan={5} className="py-4 text-center text-gray-500">
                                     Tidak ada data pengguna yang tersedia.
+                                </td>
+                            </tr>
+                        ) : <tr>
+                                <td colSpan={5} className="w-full">
+                                    <LoadingAnimation />
                                 </td>
                             </tr>
                         )}

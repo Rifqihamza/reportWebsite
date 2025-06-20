@@ -194,7 +194,7 @@ export default function ReportEditModal() {
                     onChange={(e) => updateField("follow_up", e.value as AccountType)}
                 />
                 <InputField
-                    label="Follow Up Oleh"
+                    label="Nama Follow Up"
                     value={formState.follow_up_name}
                     onChange={(e) => updateField("follow_up_name", e.target.value)}
                 />
