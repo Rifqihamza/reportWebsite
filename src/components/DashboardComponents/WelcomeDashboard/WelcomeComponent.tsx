@@ -14,7 +14,7 @@ export default function WelcomeComponent() {
     const { setActiveTab } = useDashboardNavbarHook();
 
     const currentHour = (new Date()).getHours();
-    const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 12 ? "Selamat Siang" : "Selamat Pagi");
+    const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 12 ? (currentHour >= 15 ? "Selamat Sore" : "Selamat Siang") : "Selamat Pagi");
 
     return (
         <div className="h-fit md:h-full w-full bg-white rounded-2xl relative px-4 py-10 md:py-20 flex flex-col text-center">
