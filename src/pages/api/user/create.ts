@@ -19,7 +19,6 @@ export async function POST({ request }: APIContext) {
     try {
         await prisma.users.create({
             data: {
-                email: email,
                 username: username,
                 password: password,
                 role: role
@@ -32,6 +31,9 @@ export async function POST({ request }: APIContext) {
         }
         else if(err instanceof Prisma.PrismaClientKnownRequestError) {
             return create_response_status(409)
+        }
+        else if(err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
         }
         
         console.error(`There's an error when trying to create user: ${err}`);

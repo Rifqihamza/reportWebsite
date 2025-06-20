@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { APIResultType, userLogin } from "../../../utils/api_interface";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { AccountType } from "../../../types/variables";
+import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
@@ -11,9 +12,15 @@ export default function LoginFormComponent() {
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(null as boolean | null);
   
-  const { showMessage } = useMessageToastHook()
+  const { showMessage } = useMessageToastHook();
+  const { isConnected } = useNetworkConnectivityHook();
 
   const handleLogin = async () => {
+    if(!isConnected) {
+      showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
+      return;
+    }
+    
     setLoginDisabled(true);
 
     try {
@@ -33,10 +40,13 @@ export default function LoginFormComponent() {
         }, 2000);
         return;
       }
-      else if (result == APIResultType.Unauthorized) {
+      else if (result === APIResultType.Unauthorized) {
         setIsPasswordCorrect(false);
         showMessage("Unauthorized!", "error", "Wrong password or username");
-      } 
+      }
+      else if (result === APIResultType.DatabaseError) {
+        showMessage("Database Error!", "error", "please try again later.");
+      }
       else {
         showMessage("There's an error!", "error", "Unknown error detected please report to developer");
       }

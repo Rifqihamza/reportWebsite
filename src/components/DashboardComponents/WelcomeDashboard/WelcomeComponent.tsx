@@ -14,7 +14,7 @@ export default function WelcomeComponent() {
     const { setActiveTab } = useDashboardNavbarHook();
 
     const currentHour = (new Date()).getHours();
-    const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 12 ? "Selamat Siang" : "Selamat Pagi");
+    const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 12 ? (currentHour >= 15 ? "Selamat Sore" : "Selamat Siang") : "Selamat Pagi");
 
     return (
         <div className="h-fit md:h-full w-full bg-white rounded-2xl relative px-4 py-10 md:py-20 flex flex-col text-center">
@@ -26,8 +26,8 @@ export default function WelcomeComponent() {
             <div className="w-full h-fit p-4 mt-4 grid md:grid-cols-2 grid-cols-1 gap-4">
                 <QuickNavigationButton title="Report Table" description="Lihat dan kelola data laporan yang disimpan" icon="pi-table" onClick={() => setActiveTab(1)} />
                 <QuickNavigationButton title="Report Statistics" description="Lihat dan analisa data laporan berdasarkan statistik" icon="pi-chart-line" onClick={() => setActiveTab(2)} />
-                <QuickNavigationButton title="Export Data" description="Export data berdasarkan statistik" icon="pi-file-export" onClick={() => setActiveTab(3)} />
-                <QuickNavigationButton title="Configuration" description="Lihat data atau edit data pengguna" icon="pi-file-edit" onClick={() => setActiveTab(4)} />
+                <QuickNavigationButton title="Export Data" description="Download data yang telah terekam sistem" icon="pi-file-export" onClick={() => setActiveTab(3)} />
+                <QuickNavigationButton title="Users" description="Lihat data pengguna yang menggunakan website ini" icon="pi-user" onClick={() => setActiveTab(4)} />
             </div>
         </div>
     )

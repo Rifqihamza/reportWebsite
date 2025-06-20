@@ -8,6 +8,7 @@ import { useReportDetailHook, useReportEditHook } from "../../../hooks/useReport
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useReportConfigHook } from "../../../hooks/useReportConfig";
 import { Calendar } from "primereact/calendar";
+import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 const reportTypeOptions = [
     ...Object.keys(ReportType)
@@ -45,6 +46,7 @@ export default function ReportEditModal() {
 
     const { editVisible, setEditVisible } = useReportEditHook();
     const { showMessage } = useMessageToastHook();
+    const { isConnected } = useNetworkConnectivityHook();
 
     useEffect(() => {
         if (report) {
@@ -68,6 +70,10 @@ export default function ReportEditModal() {
     };
 
     const handleSave = async () => {
+        if(!isConnected) {
+            showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
+        }
+        
         if (disableSave || !report || !isChange) return;
         setDisableSave(true);
 
@@ -188,7 +194,7 @@ export default function ReportEditModal() {
                     onChange={(e) => updateField("follow_up", e.value as AccountType)}
                 />
                 <InputField
-                    label="Follow Up Oleh"
+                    label="Nama Follow Up"
                     value={formState.follow_up_name}
                     onChange={(e) => updateField("follow_up_name", e.target.value)}
                 />

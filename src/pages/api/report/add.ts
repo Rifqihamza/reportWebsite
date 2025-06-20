@@ -4,6 +4,7 @@ import { prisma } from "../../../utils/db";
 import { Prisma, type Report, type Report_Location } from "@prisma/client";
 import { ReportType, string_to_campus } from "../../../types/variables";
 import { z } from 'zod';
+import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 
 
 const ReportBodyType = z.object({
@@ -62,14 +63,23 @@ export async function POST({ request }: APIContext) {
     if (location) {
         let location_data: Report_Location | null = null;
         if (verified_campus_name) {
-            location_data = await prisma.report_Location.findUnique({
-                where: {
-                    location_campus_name: {
-                        location: location,
-                        campus_name: verified_campus_name
+            try {
+                location_data = await prisma.report_Location.findUnique({
+                    where: {
+                        location_campus_name: {
+                            location: location,
+                            campus_name: verified_campus_name
+                        }
                     }
+                });
+            }
+            catch(err) {
+                if(err instanceof Prisma.PrismaClientInitializationError) {
+                    return create_response_status(503);
                 }
-            });
+                console.error(`There's an error when trying to get report data. Error: ${err}`);
+                return create_response_status(500);
+            }
         }
 
         if (!location_data) {
@@ -102,14 +112,21 @@ export async function POST({ request }: APIContext) {
         const server_token = process_server_token(report_num);
 
 
-        const response = await fetch(`${process.env.PHP_SERVER_URL!}/upload_image.php`, {
-            method: "POST",
-            headers: {
-                "Api-Authorization": process.env.PHP_SERVER_AUTHORIZATION!,
-                "Cookie": `server_token=${server_token}`
-            },
-            body: form_data
-        });
+        let response;
+        try {
+            response = await fetch(`${process.env.PHP_SERVER_URL!}/upload_image.php`, {
+                method: "POST",
+                headers: {
+                    "Api-Authorization": process.env.PHP_SERVER_AUTHORIZATION!,
+                    "Cookie": `server_token=${server_token}`
+                },
+                body: form_data
+            });
+        }
+        catch(err) {
+            console.error(`There's an error when trying to get report data. Error: ${err}`);
+            return create_response_status(500);
+        }
 
         image_file_path = await response.text();
 
@@ -152,7 +169,10 @@ export async function POST({ request }: APIContext) {
         if (err instanceof Prisma.PrismaClientValidationError) {
             return create_response_status(400);
         }
-
+        else if(err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
+        }
+        
         console.error(`There's an error when trying to add report data. Error: ${err}`);
         return create_response_status(500);
     }

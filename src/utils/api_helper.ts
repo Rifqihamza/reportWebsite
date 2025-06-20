@@ -2,18 +2,65 @@ import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
 import cookie from 'cookie';
 import { prisma } from "./db";
-import { AccountType } from "@prisma/client";
+import { AccountType, Prisma } from "@prisma/client";
 import type { Campus } from "../types/variables";
+import { APIResultType } from "./api_interface";
 
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+// REMOVE THIS AFTER DONE OKAY? :D
+const location_data: {
+    [key in Campus]: string[]
+} = {
+    "MM": [
+
+    ],
+    "PD": [
+
+    ],
+    "PATI": [
+
+    ],
+    "AMI": [
+
+    ],
+    "MOJO": [
+
+    ],
+    "SM": [
+
+    ],
+    "BBL": [
+
+    ],
+    "KLTN": [
+
+    ]
+}
 
 // First Initialization
 export async function first_initialization() {
     if (done_initialization) {
         return;
     }
+    
+    // const result: {
+    //     location: string,
+    //     campus_name: Campus
+    // }[] = [];
+    // Object.entries(location_data).forEach(([campus, location_names]) => {
+    //     location_names.forEach((location_name) => {
+    //         result.push({
+    //             location: location_name,
+    //             campus_name: (campus as Campus)
+    //         });
+    //     })
+    // });
+    
+    // await prisma.report_Location.createMany({
+    //     data: result
+    // })
     
     done_initialization = true;
 
@@ -79,18 +126,28 @@ export function verify_user_token(token: string): string | undefined {
     }
 }
 
-export async function verify_teacher_token(token: string): Promise<boolean | undefined> {
+export async function verify_teacher_token(token: string): Promise<boolean | undefined | APIResultType> {
     const result = verify_user_token(token);
 
     if (!result) {
         return;
     }
 
-    const user_data = await prisma.users.findUnique({
-        where: {
-            username: result
+    let user_data;
+    try {
+        user_data = await prisma.users.findUnique({
+            where: {
+                username: result
+            }
+        });
+    }
+    catch(err) {
+        if(err instanceof Prisma.PrismaClientInitializationError) {
+            return APIResultType.DatabaseError;
         }
-    });
+        console.error(`There's an error when trying to get user data : ${err}`);
+        return APIResultType.InternalServerError;
+    }
 
     return user_data?.role === AccountType.Admin;
 }
@@ -103,7 +160,7 @@ export function process_server_token(report_num: number): string {
     return jwt.sign({ report_num: report_num }, process.env.JWT_SECRET!);
 }
 
-export async function verify_captcha_token(token: string): Promise<boolean> {
+export async function verify_captcha_token(token: string): Promise<boolean|APIResultType> {
     try {
         const result = await prisma.verifiedCaptcha.findUnique({
             where: {
@@ -132,8 +189,12 @@ export async function verify_captcha_token(token: string): Promise<boolean> {
 
         return true;
     }
-    catch {
-        return false;
+    catch(err) {
+        if(err instanceof Prisma.PrismaClientInitializationError) {
+            return APIResultType.DatabaseError;
+        }
+        console.error(`There's an error when trying to get user data : ${err}`);
+        return APIResultType.InternalServerError;
     }
 }
 

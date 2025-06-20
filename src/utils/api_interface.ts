@@ -156,36 +156,6 @@ export async function checkAuthentication(): Promise<APIResultType> {
     }
 }
 
-export async function changeReportStatus(report_id: string, report_status: ReportStatus): Promise<APIResultType> {
-    // Fetch to API
-    const response = await fetch(base_url_endpoint + "/api/report/change_status", {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "report_id": report_id,
-            "report_status": report_status
-        })
-    });
-
-    // Check the response
-    if (response.ok) {
-        return APIResultType.NoError;
-    }
-    else if (response.status == 500) {
-        return APIResultType.InternalServerError;
-    }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError;
-    }
-    else {
-        return APIResultType.Unauthorized;
-    }
-}
-
-
 export async function deleteReport(report_id: string): Promise<APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/report/delete", {
@@ -244,11 +214,17 @@ export async function getUser(): Promise<User | APIResultType> {
 
     return APIResultType.InternalServerError;
 }
-export async function getAllUsers(): Promise<User | APIResultType> {
-    const response = await fetch(base_url_endpoint + "/api/user/allUsers", {
-        method: "GET",
-        credentials: "include"
-    })
+export async function getAllUsers(): Promise<User | boolean | APIResultType> {
+    let response;
+    try {
+        response = await fetch(base_url_endpoint + "/api/user/allUsers", {
+            method: "GET",
+            credentials: "include"
+        })
+    }
+    catch(err) {
+        return false;
+    }
 
     if (response.ok) {
         return (await response.json())
@@ -307,10 +283,16 @@ export type formConfigurationResponse = {
 
 export async function getFormConfiguration() {
     // Fetch to API
-    const response = await fetch(`${base_url_endpoint}/api/report_form/configuration/`, {
-        method: "GET",
-        credentials: "include",
-    });
+    let response;
+    try {
+        response = await fetch(`${base_url_endpoint}/api/report_form/configuration/`, {
+            method: "GET",
+            credentials: "include",
+        });
+    }
+    catch(err) {
+        return false;
+    }
 
     if (response.ok) {
         return (await response.json()) as formConfigurationResponse;

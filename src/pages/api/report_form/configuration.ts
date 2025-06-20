@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { create_response_json, create_response_status } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 
@@ -11,8 +12,11 @@ export async function GET() {
       location_data: location_data
     });
   }
-  catch (err) {
-    console.log(`There's an error when trying to get report configuration data. Error: ${err}`);
-    return create_response_status(500);
+  catch(err) {
+      if(err instanceof Prisma.PrismaClientInitializationError) {
+          return create_response_status(503);
+      }
+      console.log(`There's an error when trying to get report configuration data. Error: ${err}`);
+      return create_response_status(500);
   }
 }
