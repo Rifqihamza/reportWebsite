@@ -55,7 +55,7 @@ export default function ReportDetailModal() {
             {/* Modal content */}
             <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") +
                 " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-fit " +
-                "lg:max-h-[100vh] max-h-[90vh] p-8 rounded-t-3xl z-50 flex flex-col space-y-5"}>
+                "lg:max-h-[100vh] max-h-[90vh] px-4 p-8 rounded-t-3xl z-50 flex flex-col space-y-5"}>
 
                 {/* Close Button Modal */}
                 <div className="absolute top-4 right-4 md:top-7 md:right-7">
@@ -74,7 +74,7 @@ export default function ReportDetailModal() {
                     </p>
                 </div>
 
-                <div className="mt-4 flex flex-col md:flex-row gap-6 mx-4 h-full overflow-auto">
+                <div className="mt-4 flex flex-col md:flex-row gap-6 mx-4 h-full overflow-auto lg:overflow-hidden">
                     {/* Image Render */}
                     <div>
                         {report_data?.image ? <ImageComponent /> : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
