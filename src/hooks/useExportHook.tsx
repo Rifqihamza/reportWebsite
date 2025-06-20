@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { ExportOutputType, type ReportData } from "../types/variables";
+import { ExportOutputType, table_rows, type ReportData } from "../types/variables";
 import { useEffect } from "react";
 
 type UseExportType = {
@@ -11,6 +11,7 @@ type UseExportType = {
   }|null,
 
   toggleRow: (row: keyof ReportData) => void,
+  toggleAllRow: () => void,
   
   setSelectedOutput: (output: ExportOutputType) => void,
   
@@ -43,6 +44,25 @@ export const useExportHook = create<UseExportType>((set) => {
           // If not, add the row
           return {
             selectedRows: [...result, row]
+          }
+        });
+    },
+
+    toggleAllRow() {
+        set((state) => {
+          const result = state.selectedRows;
+
+          // If the row that user wants to insert is already in result
+          if(result.length === Object.values(table_rows).length) {
+            // Remove all of the row
+            return {
+              selectedRows: []
+            };
+          }
+          
+          // If not, add the row
+          return {
+            selectedRows: (Object.keys(table_rows) as (keyof ReportData)[])
           }
         });
     },
