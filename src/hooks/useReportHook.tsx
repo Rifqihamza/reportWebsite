@@ -252,7 +252,9 @@ export function ReportHookEffect() {
           ":" +
           value.message +
           ":" +
-          value.location_name
+          value.location_name +
+          ":" + 
+          (value.campus ?? "").toString()
         ).toLowerCase();
         return search_data.includes(searchKeyword.toLowerCase());
       });

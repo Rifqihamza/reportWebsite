@@ -71,6 +71,9 @@ export default function ReportDesktopTable() {
                                         {reporttype_to_string(report.type)}
                                     </td>
                                     <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap">
+                                        {report.campus}
+                                    </td>
+                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap">
                                         <span
                                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                                         >
