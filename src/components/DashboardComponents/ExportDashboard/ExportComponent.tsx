@@ -41,9 +41,8 @@ export default function ExportComponent() {
     });
 
     // Filter out rows
-    const resultData: string[][] = [[...(selectedRows as string[])], ...(filteredReportData.map((value) => {
-      // console.log(value);
-      let result: string[] = [];
+    const resultData: string[][] = [["No.", ...(selectedRows as string[])], ...(filteredReportData.map((value, index) => {
+      let result: string[] = [(index + 1).toString()];
       selectedRows.forEach((row) => {
         result.push(value[table_rows[row]] ?? "");
       })
@@ -66,7 +65,6 @@ export default function ExportComponent() {
     // Output the result depends on the selected output file type
     if (selectedOutputType === ExportOutputType.CSV) {
       const csvContent = (resultData.map((value) => value.join(",")).join("\n"));
-      console.log(csvContent);
       const blob = new Blob([csvContent], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
 

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import NavbarDashboard from "../../../components/DashboardComponents/NavbarDashboard/NavbarDashboard";
+import NavbarDashboard from "../../../components/DashboardComponents/SidebarAdmin/SidebarAdmin";
 import TablePage from "./_TablePage";
 import WelcomePage from "./_WelcomePage";
 import GraphicPage from "./_GraphicPage";

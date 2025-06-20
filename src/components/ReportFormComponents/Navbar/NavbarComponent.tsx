@@ -3,9 +3,14 @@ import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { userLogout } from "../../../utils/api_interface";
 import ChangeCampusButton from "../SelectCampus/ChangeCampusButton";
 import DashboardButton from "./DashboardButton";
+import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 const NavbarComponents = () => {
+  const { isConnected } = useNetworkConnectivityHook();
+  
   async function handle_logout() {
+    if(!isConnected) return;
+    
     if (userData && !(await userLogout())) {
       alert("Terjadi error saat ingin logout!");
       return;

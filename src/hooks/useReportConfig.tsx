@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../utils/api_interface";
 import { useCampusDataHook } from "./shared/useCampusData";
 import { useMessageToastHook } from "./shared/useMessageToast";
+import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
 
 type useReportConfigType = {
   picNamesOptions: { [key: string]: string[] };
@@ -32,8 +33,13 @@ export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
   const { selectedCampus } = useCampusDataHook();
   const { setLocationOptions, setPicNamesOptions } = useReportConfigHook();
   const { showMessage } = useMessageToastHook();
+  const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
+    if(!isConnected) {
+        showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
+    }
+    
     // If not used all campus is not selected yet
     if (!props.useAll && !selectedCampus) {
       return;
@@ -70,7 +76,11 @@ export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
         window.location.href = "/loginPage";
       } else if (result === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");
+      } else if (result === false) {
+        showMessage("There's a network error.", "error", "Please reload the website once you connected.");
       }
+    }).catch(() => {
+      showMessage("There's a network error.", "error", "Please reload the website once you connected.");
     });
   }, [selectedCampus]);
 

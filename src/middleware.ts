@@ -2,6 +2,7 @@ import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { MiddlewareHandler } from 'astro';
 import { check_database_connection, create_response_cookie, create_response_status, first_initialization, verify_captcha_token, verify_user_token } from "./utils/api_helper";
 import cookie from 'cookie';
+import { APIResultType } from "./utils/api_interface";
 
 const rateLimiterMemory = new RateLimiterMemory({
     points: 50, // Max 50 requests
@@ -24,7 +25,13 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
         
         // // Verify the captcha token
         // const result = await verify_captcha_token(captcha_token);
-        // if(!result) {
+        // if(result === APIResultType.DatabaseError) {
+        //     return create_response_status(503);
+        // }
+        // else if(result === APIResultType.InternalServerError) {
+        //     return create_response_status(500);
+        // }
+        // else if(!result) {
         //     const captcha_cookie = cookie.serialize("captcha_token", "", {
         //         expires: new Date(),
         //         path: '/',

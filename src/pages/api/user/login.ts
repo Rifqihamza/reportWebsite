@@ -3,6 +3,7 @@ import { create_response_cookie, create_response_status, generate_user_token } f
 import cookie from 'cookie';
 import { prisma } from "../../../utils/db";
 import sha3 from "js-sha3";
+import { Prisma } from "@prisma/client";
 
 export async function POST({ request }: APIContext) {
     // Get username and password to check
@@ -14,11 +15,24 @@ export async function POST({ request }: APIContext) {
     }
 
     // Get user data
-    const user = await prisma.users.findUnique({
-        where: {
-            username: username,
+    let user;
+    try {
+        user = await prisma.users.findFirst({
+            where: {
+                username: {
+                    equals: username,
+                }
+            },
+        })
+    }
+    catch(err) {
+        if(err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
         }
-    })
+        console.error(`There's an error when trying to create report_PIC data : ${err}`);
+        return create_response_status(500);
+    }
+    
 
     if(!user) {
         return create_response_status(404);

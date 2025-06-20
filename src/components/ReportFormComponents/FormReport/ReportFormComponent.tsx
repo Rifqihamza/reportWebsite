@@ -15,6 +15,7 @@ import UseReportConfigHookEffect, { useReportConfigHook } from "../../../hooks/u
 import { useThanksModalHook } from "../../../hooks/shared/useThanksModal";
 import { useCampusDataHook } from "../../../hooks/shared/useCampusData";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
+import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 export default function ReportFormComponent() {
   // Report Form State
@@ -32,6 +33,7 @@ export default function ReportFormComponent() {
   const { setShowThanks } = useThanksModalHook();
   const { selectedCampus } = useCampusDataHook();
   const { showMessage } = useMessageToastHook();
+  const { isConnected } = useNetworkConnectivityHook();
 
   const toastProgress = useRef<Toast>(null);
 
@@ -46,6 +48,11 @@ export default function ReportFormComponent() {
   };
 
   const handle_submit = async () => {
+    if(!isConnected) {
+      showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
+      return;
+    }
+
     if (!selectedCampus) {
       showMessage("Please select campus first.", "warn", "");
       window.location.reload();
