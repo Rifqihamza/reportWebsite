@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Cookies from 'js-cookie';
-import { APIResultType, checkAuthentication } from "../../utils/api_interface";
+import { APIResultType, checkAuthentication } from "../../../utils/api_interface";
 
 
 export default function VerifyAuthentication() {
