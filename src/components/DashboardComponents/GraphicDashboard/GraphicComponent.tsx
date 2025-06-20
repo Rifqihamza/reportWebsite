@@ -57,7 +57,7 @@ export default function GraphicChart() {
                         <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-white shadow">
                             <h1 className='font-bold uppercase tracking-wider'>Kategori</h1>
                             <Suspense fallback={<>Loading..</>}>
-                                <PieChart reportType={chartCategoryFilter} />
+                                <PieChart reportType={chartCategoryFilter} category={true} />
                             </Suspense>
                         </div>
 

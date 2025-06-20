@@ -101,6 +101,9 @@ export async function addReport(
     else if (response.status == 401) {
         return APIResultType.Unauthorized;
     }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError;
+    }
     else {
         return APIResultType.InternalServerError;
     }
@@ -123,6 +126,9 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
     }
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
+    }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError;
     }
     else {
         return APIResultType.Unauthorized;
@@ -171,6 +177,9 @@ export async function changeReportStatus(report_id: string, report_status: Repor
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError;
+    }
     else {
         return APIResultType.Unauthorized;
     }
@@ -196,6 +205,9 @@ export async function deleteReport(report_id: string): Promise<APIResultType> {
     }
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
+    }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError;
     }
     else {
         return APIResultType.Unauthorized;
@@ -223,6 +235,9 @@ export async function getUser(): Promise<User | APIResultType> {
     if (response.ok) {
         return (await response.json()) as User;
     }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError;
+    }
     else if (response.status == 401) {
         return APIResultType.Unauthorized;
     }
@@ -237,6 +252,9 @@ export async function getAllUsers(): Promise<User | APIResultType> {
 
     if (response.ok) {
         return (await response.json())
+    }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError;
     }
     else if (response.status === 401) {
         return APIResultType.Unauthorized
@@ -274,6 +292,9 @@ export async function updateReport(report_id: string, updated_data: updatedDataT
     else if (response.status == 500) {
         return APIResultType.InternalServerError;
     }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError;
+    }
     else {
         return APIResultType.Unauthorized;
     }
@@ -296,6 +317,9 @@ export async function getFormConfiguration() {
     }
     else if (response.status == 401) {
         return APIResultType.Unauthorized;
+    }
+    else if (response.status == 503) {
+        return APIResultType.DatabaseError;
     }
 
     return APIResultType.InternalServerError;

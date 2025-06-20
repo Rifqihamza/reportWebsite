@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import type { ReportData } from "../../types/variables";
 import { useEffect } from "react";
-import { getReport } from "../../utils/api_interface";
+import { APIResultType, getReport } from "../../utils/api_interface";
+import { useMessageToastHook } from "./useMessageToast";
 
 type UseReportDataType = {
   reportData: ReportData[] | null;
@@ -19,6 +20,7 @@ let initialized = false;
 
 export default function UseReportDataHookEffect() {
   const { setReportData } = useReportDataHook();
+  const { showMessage } = useMessageToastHook();
 
   useEffect(() => {
     if(initialized) {
@@ -29,6 +31,9 @@ export default function UseReportDataHookEffect() {
     getReport().then((report_data_array) => {
       if (typeof report_data_array === "object") {
         setReportData(report_data_array);
+      }
+      else if (report_data_array === APIResultType.DatabaseError) {
+        showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       }
     });
   }, []);

@@ -3,16 +3,18 @@ import jwt from "jsonwebtoken";
 import cookie from 'cookie';
 import { prisma } from "./db";
 import { AccountType } from "@prisma/client";
+import type { Campus } from "../types/variables";
 
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 
 // First Initialization
 export async function first_initialization() {
     if (done_initialization) {
         return;
     }
-
+    
     done_initialization = true;
 
     configDotenv();
