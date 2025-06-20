@@ -15,11 +15,11 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
             className="report-card bg-white p-4 rounded-lg shadow-sm border border-gray-200"
             data-report-id={report.id}
         >
-            <div className="flex justify-between items-center mb-2">
-                <h3 className="font-bold text-lg lg:text-2xl text-gray-900 truncate">Details Laporan</h3>
+            <div className="flex flex-col mb-2">
+                <h3 className="font-bold text-lg lg:text-2xl text-gray-900 truncate">Laporan terkait {reporttype_to_string(report.type)}</h3>
                 <p className="font-semibold text-xs lg:text-md truncate">{formatDate(new Date(report.created_at).toISOString())}</p>
             </div>
-            <div className="text-sm text-gray-500 space-y-2 break-all">
+            <div className="text-sm text-gray-500 space-y-2 break-all mt-4">
                 <p>
                     <span className="font-semibold">Nama Pelapor: </span> {report.submitted_by}
                 </p>

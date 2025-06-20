@@ -1,3 +1,5 @@
+import strftime from "strftime";
+
 export function formatDate(dateStr: string) {
   const date = new Date(dateStr);
 
@@ -8,12 +10,5 @@ export function formatDate(dateStr: string) {
     year: "numeric",
   });
 
-  // Format time part without "pukul"
-  const formattedTime = date.toLocaleTimeString("id-ID", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-
-  return `${formattedDate} ${formattedTime}`;
+  return `${formattedDate}, ${strftime("%H:%M", date)}`;
 }
