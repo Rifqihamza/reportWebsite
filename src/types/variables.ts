@@ -114,7 +114,8 @@ export const table_rows: {
     "Lokasi": "location_name",
     "PIC": "pic_name",
     "Kategori": "type",
-    "Status": "status"
+    "Kampus": "campus",
+    "Status": "status",
 }
 
 // Other things

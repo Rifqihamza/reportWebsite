@@ -41,9 +41,8 @@ export default function ExportComponent() {
     });
 
     // Filter out rows
-    const resultData: string[][] = [[...(selectedRows as string[])], ...(filteredReportData.map((value) => {
-      // console.log(value);
-      let result: string[] = [];
+    const resultData: string[][] = [["No.", ...(selectedRows as string[])], ...(filteredReportData.map((value, index) => {
+      let result: string[] = [(index + 1).toString()];
       selectedRows.forEach((row) => {
         result.push(value[table_rows[row]] ?? "");
       })
