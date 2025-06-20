@@ -3,11 +3,21 @@ import { create_response_status, get_cookies_from_request, verify_teacher_token 
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report } from "@prisma/client";
 import type { ReportData } from "../../../types/variables";
+import { APIResultType } from "../../../utils/api_interface";
 
 export async function PUT({ request }: APIContext) {
     // Verify user_token
     const cookies = get_cookies_from_request(request);
-    if (!cookies || !cookies["user_token"] || !verify_teacher_token(cookies["user_token"])) {
+          
+    const verification_result = await verify_teacher_token(cookies ? (cookies["user_token"] ?? "") : "");
+    if(verification_result !== true) {
+        if(verification_result === APIResultType.DatabaseError) {
+            return create_response_status(503);
+        }
+        else if(verification_result === APIResultType.InternalServerError) {
+            return create_response_status(500);
+        }
+        
         return create_response_status(401);
     }
 

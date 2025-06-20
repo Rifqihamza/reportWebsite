@@ -2,11 +2,21 @@ import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
 import { create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
 import { Prisma } from "@prisma/client";
+import { APIResultType } from "../../../utils/api_interface";
 
 export async function DELETE({ request }: APIContext) {
     // Verify user_token
     const cookies = get_cookies_from_request(request);
-    if(!cookies || !cookies["user_token"] || !verify_teacher_token(cookies["user_token"])) {
+      
+    const verification_result = await verify_teacher_token(cookies ? (cookies["user_token"] ?? "") : "");
+    if(verification_result !== true) {
+        if(verification_result === APIResultType.DatabaseError) {
+            return create_response_status(503);
+        }
+        else if(verification_result === APIResultType.InternalServerError) {
+            return create_response_status(500);
+        }
+        
         return create_response_status(401);
     }
 

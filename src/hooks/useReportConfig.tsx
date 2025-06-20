@@ -71,6 +71,8 @@ export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
       } else if (result === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       }
+    }).catch(() => {
+      showMessage("There's a network error.", "error", "Please reload the website after you connected.");
     });
   }, [selectedCampus]);
 

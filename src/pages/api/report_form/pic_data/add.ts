@@ -3,6 +3,7 @@ import { create_response_status, verify_teacher_token } from "../../../../utils/
 import { prisma } from "../../../../utils/db";
 import { campuscode_to_campus } from "../../../../types/variables";
 import { Prisma } from "@prisma/client";
+import { APIResultType } from "../../../../utils/api_interface";
 
 type AddPICRequestBodyType = {
   name?: string,
@@ -12,7 +13,16 @@ type AddPICRequestBodyType = {
 export async function POST({ request, cookies }: APIContext) {
   // Verify the request coming from an admin
   const user_cookies = cookies.get("user_token")?.value;
-  if(!user_cookies || !(await verify_teacher_token(user_cookies))) {
+  
+  const verification_result = await verify_teacher_token(user_cookies ?? "");
+  if(verification_result !== true) {
+    if(verification_result === APIResultType.DatabaseError) {
+      return create_response_status(503);
+    }
+    else if(verification_result === APIResultType.InternalServerError) {
+      return create_response_status(500);
+    }
+    
     return create_response_status(401);
   }
   
