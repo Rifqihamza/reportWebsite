@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
 import { create_response_status, get_cookies_from_request, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
-import type { Report } from "@prisma/client";
+import { Prisma, type Report } from "@prisma/client";
 import type { ReportData } from "../../../types/variables";
 
 export async function PUT({ request }: APIContext) {
@@ -31,6 +31,9 @@ export async function PUT({ request }: APIContext) {
         }
     }
     catch(err) {
+        if(err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
+        }
         console.error(`There's an error when trying to get report data for verification: ${err}`);
         return create_response_status(500);
     }
@@ -54,7 +57,7 @@ export async function PUT({ request }: APIContext) {
                 responsible_pic: new_report_data.pic_name ? {
                     connect: {
                         name_campus_name: {
-                            campus_name: prev_report_data.campus.toString(),
+                            campus_name: prev_report_data.campus,
                             name: new_report_data.pic_name
                         }
                     }
@@ -70,7 +73,10 @@ export async function PUT({ request }: APIContext) {
             }
         });
     }
-    catch (err) {
+    catch(err) {
+        if(err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
+        }
         console.error(`There's an error when trying to update report data: ${err}`);
         return create_response_status(500);
     }

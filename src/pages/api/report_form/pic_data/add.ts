@@ -1,9 +1,12 @@
 import type { APIContext } from "astro";
 import { create_response_status, verify_teacher_token } from "../../../../utils/api_helper";
 import { prisma } from "../../../../utils/db";
+import { campuscode_to_campus } from "../../../../types/variables";
+import { Prisma } from "@prisma/client";
 
 type AddPICRequestBodyType = {
-  name?: string
+  name?: string,
+  campus_code?: string
 }
 
 export async function POST({ request, cookies }: APIContext) {
@@ -23,19 +26,28 @@ export async function POST({ request, cookies }: APIContext) {
     return create_response_status(400);
   }
 
+  const verified_campus_name = campuscode_to_campus(body.campus_code);
+  if(!verified_campus_name) {
+    return create_response_status(400);
+  }
 
   // Add data to Report_PIC table
   try {
     await prisma.report_PIC.create({
       data: {
-        name: body.name
+        name: body.name,
+        campus_name: verified_campus_name
       }
     });
   }
   catch(err) {
-    console.error(`There's an error when trying to create report_PIC data : ${err}`);
-    return create_response_status(500);
+      if(err instanceof Prisma.PrismaClientInitializationError) {
+          return create_response_status(503);
+      }
+      console.error(`There's an error when trying to create report_PIC data : ${err}`);
+      return create_response_status(500);
   }
+  
 
   return create_response_status(200);
 }
