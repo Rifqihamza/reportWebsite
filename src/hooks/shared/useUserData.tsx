@@ -44,7 +44,8 @@ export default function UseUserDataHookEffect(props: { onResolve?: (res: { userD
       else if(user_data === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       }
-
+    }).catch((err) => {
+      showMessage("There's a network error.", "error", "Please reload the website after you connected.");
     });
   }, []);
   

@@ -10,8 +10,8 @@ export default function ReportTableWrapper() {
     return <>
         <ReportHookEffect />
         <div className="space-y-4">
+            <ReportTableToolbar />
             <Suspense fallback={<LoadingAnimation />}>
-                <ReportTableToolbar />
                 <ReportListComponent />
             </Suspense>
         </div>
