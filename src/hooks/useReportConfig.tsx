@@ -70,9 +70,11 @@ export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
         window.location.href = "/loginPage";
       } else if (result === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");
+      } else if (result === false) {
+        showMessage("There's a network error.", "error", "Please reload the website once you connected.");
       }
     }).catch(() => {
-      showMessage("There's a network error.", "error", "Please reload the website after you connected.");
+      showMessage("There's a network error.", "error", "Please reload the website once you connected.");
     });
   }, [selectedCampus]);
 

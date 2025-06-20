@@ -1,18 +1,24 @@
 // src/components/ConfigurationComponent.tsx
 import { useEffect } from "react";
-import { getAllUsers } from "../../../utils/api_interface"; // sesuaikan path
+import { APIResultType, getAllUsers } from "../../../utils/api_interface"; // sesuaikan path
 import { useUserAccount } from "../../../hooks/shared/useUserAccount";
+import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 
 export default function ConfigurationComponent() {
     const { showUserAccountData, setShowUserAccountData } = useUserAccount();
+    const { showMessage } = useMessageToastHook();
 
     useEffect(() => {
         getAllUsers().then((result) => {
             if (Array.isArray(result)) {
                 setShowUserAccountData(result);
-            } else {
-                console.error("Gagal mengambil data user:", result);
+            } else if(result === false) {
+                showMessage("There's a network error.", "error", "Please reload the website once you connected.");
+            } else if(result === APIResultType.InternalServerError) {
+                showMessage("Terjadi error di server.", "error", "Reload website setelah beberapa waktu");
             }
+        }).catch((err) => {
+            showMessage("There's a network error.", "error", "Please reload the website once you connected.");
         });
     }, []);
 

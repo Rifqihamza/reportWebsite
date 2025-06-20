@@ -244,11 +244,17 @@ export async function getUser(): Promise<User | APIResultType> {
 
     return APIResultType.InternalServerError;
 }
-export async function getAllUsers(): Promise<User | APIResultType> {
-    const response = await fetch(base_url_endpoint + "/api/user/allUsers", {
-        method: "GET",
-        credentials: "include"
-    })
+export async function getAllUsers(): Promise<User | boolean | APIResultType> {
+    let response;
+    try {
+        response = await fetch(base_url_endpoint + "/api/user/allUsers", {
+            method: "GET",
+            credentials: "include"
+        })
+    }
+    catch(err) {
+        return false;
+    }
 
     if (response.ok) {
         return (await response.json())
@@ -307,10 +313,16 @@ export type formConfigurationResponse = {
 
 export async function getFormConfiguration() {
     // Fetch to API
-    const response = await fetch(`${base_url_endpoint}/api/report_form/configuration/`, {
-        method: "GET",
-        credentials: "include",
-    });
+    let response;
+    try {
+        response = await fetch(`${base_url_endpoint}/api/report_form/configuration/`, {
+            method: "GET",
+            credentials: "include",
+        });
+    }
+    catch(err) {
+        return false;
+    }
 
     if (response.ok) {
         return (await response.json()) as formConfigurationResponse;
