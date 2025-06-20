@@ -6,7 +6,7 @@ import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
 
-export default function ConfigurationComponent() {
+export default function UsersComponent() {
     const [doneFetching, setDoneFetching] = useState(false);
     const { showUserAccountData, setShowUserAccountData } = useUserAccount();
     const { showMessage } = useMessageToastHook();

@@ -108,8 +108,8 @@ export default function NavbarDashboard() {
                             className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 4 ? "text-[#1f324d]" : "text-black/50"
                                 }`}
                         >
-                            <i className="pi pi-file-edit"></i>
-                            Configuration
+                            <i className="pi pi-user"></i>
+                            Users
                             <span
                                 className={`absolute bottom-0 left-0 h-1 bg-[#1f324d] rounded-full transition-all duration-500 ${activeTab === 4 ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
                                     }`}

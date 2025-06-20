@@ -26,8 +26,8 @@ export default function WelcomeComponent() {
             <div className="w-full h-fit p-4 mt-4 grid md:grid-cols-2 grid-cols-1 gap-4">
                 <QuickNavigationButton title="Report Table" description="Lihat dan kelola data laporan yang disimpan" icon="pi-table" onClick={() => setActiveTab(1)} />
                 <QuickNavigationButton title="Report Statistics" description="Lihat dan analisa data laporan berdasarkan statistik" icon="pi-chart-line" onClick={() => setActiveTab(2)} />
-                <QuickNavigationButton title="Export Data" description="Export data berdasarkan statistik" icon="pi-file-export" onClick={() => setActiveTab(3)} />
-                <QuickNavigationButton title="Configuration" description="Lihat data atau edit data pengguna" icon="pi-file-edit" onClick={() => setActiveTab(4)} />
+                <QuickNavigationButton title="Export Data" description="Download data yang telah terekam sistem" icon="pi-file-export" onClick={() => setActiveTab(3)} />
+                <QuickNavigationButton title="Users" description="Lihat data pengguna yang menggunakan website ini" icon="pi-user" onClick={() => setActiveTab(4)} />
             </div>
         </div>
     )
