@@ -7,7 +7,6 @@ interface Report {
 
 interface PercenContProps {
     reports: Report[];
-    icon: string;
     label: string;
 }
 
@@ -23,7 +22,7 @@ const statusColors: {
     Safety: "text-white bg-orange-400"
 };
 
-export default function PercenContComponent({ reports, icon, label }: PercenContProps) {
+export default function PercenContComponent({ reports, label }: PercenContProps) {
 
     // Normalize label "VR" ke "5R" dan kelompokkan
     const groupedReports = useMemo(() => {
@@ -53,8 +52,7 @@ export default function PercenContComponent({ reports, icon, label }: PercenCont
     return (
         <div className='bg-white px-6 py-4 rounded-xl  space-y-4'>
             <div className='flex flex-row justify-between items-center gap-10'>
-                <h1 className="text-md md:text-lg text-black font-bold whitespace-nowrap overflow-hidden">Persentase {label}</h1>
-                <span><i className={icon} style={{ fontSize: 20, color: "#000" }} /></span>
+                <h1 className="text-md md:text-lg text-black font-bold">Persentase {label}</h1>
             </div>
             <div className='space-y-3 px-3 py-1'>
                 {percentageData.map((item, index) => (
