@@ -26,7 +26,6 @@ export default function ConfigurationComponent() {
                         <tr>
                             <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">No.</th>
                             <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">Nama</th>
-                            <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">Email</th>
                             <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">Role</th>
                             <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">Dibuat Pada</th>
                         </tr>
@@ -37,7 +36,6 @@ export default function ConfigurationComponent() {
                                 <tr key={user.id} className="report-row">
                                     <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">{index + 1}</td>
                                     <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">{user.username}</td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">{user.email}</td>
                                     <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">{user.role}</td>
                                     <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">
                                         {new Date(user.created_at).toLocaleDateString("id-ID")}
