@@ -34,8 +34,9 @@ export default function ExportComponent() {
     }
 
     const filteredReportData: ReportData[] = reportData.filter((value) => {
-      const startDatePassed = dateRange[0] ? dateRange[0] <= new Date(value.created_at) : true;
-      const endDatePassed = dateRange[1] ? dateRange[1] >= new Date(value.created_at) : true;
+      const reportDate = new Date(value.created_at);
+      const startDatePassed = dateRange[0] ? dateRange[0] <= reportDate : true;
+      const endDatePassed = dateRange[1] ? new Date(dateRange[1].valueOf() + 1000 * 60 * 60 * 24) >= reportDate : true;
 
       return startDatePassed && endDatePassed;
     });

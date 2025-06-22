@@ -108,7 +108,7 @@ export type Report_Location = {
 export const table_rows: {
     [key: string]: (keyof ReportData)
 } = {
-    "Tanggal": "report_date",
+    "Tanggal": "created_at",
     "Nama Pelapor": "submitted_by",
     "Laporan": "message",
     "Lokasi": "location_name",
