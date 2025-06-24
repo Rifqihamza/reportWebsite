@@ -72,7 +72,7 @@ export default function ExportComponent() {
     
     // Output the result depends on the selected output file type
     if (selectedOutputType === ExportOutputType.CSV) {
-      const csvContent = (resultData.map((value) => value.join(",")).join("\n"));
+      const csvContent = (resultData.map((value) => value.map(value2 => `"${value2}"`).join(",")).join("\n"));
       const blob = new Blob([csvContent], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
       
