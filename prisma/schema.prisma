@@ -94,14 +94,14 @@ model Report_Location {
 
 model Report {
   id              String       @id @default(uuid())
-  submitted_by    String
-  message         String
+  submitted_by    String       @db.VarChar(30)
+  message         String       @db.VarChar(200)
   type            ReportType
   follow_up       AccountType?
-  follow_up_name  String?
+  follow_up_name  String?      @db.VarChar(30)
   status          ReportStatus @default(NotStarted)
   image           String?
-  detail_location String?
+  detail_location String?      @db.VarChar(200)
   campus          Campus
 
   created_at DateTime @default(now())
@@ -126,14 +126,14 @@ model VerifiedCaptcha {
 }
 
 model RecordedActivity {
-  id String @id @default(uuid())
-  message String
-  url String
+  id            String       @id @default(uuid())
+  message       String
+  url           String
   activity_type ActivityType
 
   created_at DateTime @default(now())
-  
+
   // Relations
-  account Users @relation(references: [username], fields: [account_name], onDelete: Restrict)
+  account      Users  @relation(references: [username], fields: [account_name], onDelete: Restrict)
   account_name String
 }
