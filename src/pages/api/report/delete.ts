@@ -1,19 +1,19 @@
 import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
-import { create_response_status, get_cookies_from_request, process_server_token, verify_teacher_token } from "../../../utils/api_helper";
-import { Prisma } from "@prisma/client";
+import { create_response_status, get_cookies_from_request, process_server_token, record_activity, verify_teacher_token } from "../../../utils/api_helper";
+import { ActivityType, Prisma } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
 
 export async function DELETE({ request }: APIContext) {
     // Verify user_token
     const cookies = get_cookies_from_request(request);
       
-    const verification_result = await verify_teacher_token(cookies ? (cookies["user_token"] ?? "") : "");
-    if(verification_result !== true) {
-        if(verification_result === APIResultType.DatabaseError) {
+    const [verification_result, verification_output, user_data] = await verify_teacher_token(cookies ? (cookies["user_token"] ?? "") : "");
+    if(!verification_result) {
+        if(verification_output === APIResultType.DatabaseError) {
             return create_response_status(503);
         }
-        else if(verification_result === APIResultType.InternalServerError) {
+        else if(verification_output === APIResultType.InternalServerError) {
             return create_response_status(500);
         }
         
@@ -92,6 +92,28 @@ export async function DELETE({ request }: APIContext) {
             return create_response_status(503);
         }
         console.error(`There's an error when trying to delete report data. Error: ${err}`);
+        return create_response_status(500);
+    }
+    
+
+    // Record Activity
+    try {
+        await record_activity({
+            message: "Delete a report data",
+            url: request.url,
+            activity_type: ActivityType.DeleteReport,
+            user_id: user_data.id
+        });
+    }
+    catch(err) {
+        if (err instanceof Prisma.PrismaClientValidationError) {
+            return create_response_status(400);
+        }
+        else if(err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
+        }
+        
+        console.error(`There's an error when trying to add activity record data. Error: ${err}`);
         return create_response_status(500);
     }
 
