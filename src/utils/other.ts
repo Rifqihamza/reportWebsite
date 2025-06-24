@@ -12,3 +12,24 @@ export function formatDate(dateStr: string) {
 
   return `${formattedDate}, ${strftime("%H:%M", date)}`;
 }
+
+export function capitalize(text: string): string {
+  let result = "";
+  let uppercase = true;
+
+  text.split("").forEach((char: string) => {
+    if(uppercase) {
+      result += char.toUpperCase();
+      uppercase = false;
+      return;
+    }
+  
+    result += char;
+
+    if(char == " ") {
+      uppercase = true;
+    }
+  })
+
+  return result;
+}
