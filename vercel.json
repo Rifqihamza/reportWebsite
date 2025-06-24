@@ -1,0 +1,24 @@
+{
+  "redirects": [
+      {
+        "source": "/loginPage",
+        "destination": "/",
+        "permanent": false
+      },
+      {
+        "source": "/form",
+        "destination": "/",
+        "permanent": false
+      },
+      {
+        "source": "/dashboard",
+        "destination": "/",
+        "permanent": false
+      },
+      {
+        "source": "/captcha",
+        "destination": "/",
+        "permanent": false
+      }
+  ]
+}

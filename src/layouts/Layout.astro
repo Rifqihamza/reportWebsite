@@ -1,12 +1,5 @@
 ---
 import "../styles/global.css";
-import "primereact/resources/themes/saga-blue/theme.css"; // atau tema lain
-import "primereact/resources/primereact.min.css"; // komponen core
-import "primeicons/primeicons.css"; // icon
-
-import VerifyAuthentication from "../components/GlobalComponents/VerifyAuthentication/VerifyAuthentication";
-import ToastMessage from "../components/GlobalComponents/ToastMessage/ToastMessage";
-import CheckConnection from "../components/GlobalComponents/CheckConnection/CheckConnection";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
 
@@ -38,22 +31,6 @@ const { pageType = "form" } = Astro.props;
     }
 
     <slot />
-
-    {(() => {
-      const url = Astro.url.pathname.split("/")[1];
-
-      console.log(url);
-      if(url == "captcha" || url == "") {
-        return <></>;
-      }
-
-      return <>
-        <VerifyAuthentication client:load />
-        <ToastMessage client:only />
-      </>
-    })()}
-    <CheckConnection client:only />
-    
   </body>
 </html>
 
