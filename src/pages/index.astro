@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import AboutNavbar from "../components/AboutComponents/AboutNavbar/AboutNavbar";
 import FaqList from "../components/AboutComponents/FaqList/FaqList";
+import AboutFooter from "../components/AboutComponents/AboutFooter/AboutFooter.astro";
 ---
 
 <Layout pageType="faq">
@@ -43,6 +44,7 @@ import FaqList from "../components/AboutComponents/FaqList/FaqList";
     <p class="text-md md:text-xl text-center font-thin pb-10 text-white">Frequently Asked Question</p>
     <FaqList client:only />
   </div>
+  <AboutFooter />
 </Layout>
 
 <style is:global>

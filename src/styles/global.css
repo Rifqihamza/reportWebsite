@@ -33,12 +33,14 @@
 
 /* Scrollbar Track Background */
 ::-webkit-scrollbar-track {
-  background: #aaaaaaaa;
+  background: #fff;
   border-radius: 10px;
 }
 
 body {
   font-family: Saira;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .bg-form {

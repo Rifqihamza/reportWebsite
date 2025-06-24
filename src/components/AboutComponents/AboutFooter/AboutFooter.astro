@@ -1,0 +1,36 @@
+---
+
+---
+
+<footer class="p-8 flex flex-row justify-between">
+  <div>
+    <h1 class="font-thin text-2xl">E-LAPOR</h1>
+  </div>
+  <div class="flex flex-row gap-4">
+    <a class="p-2 flex justify-center items-center hover:border-b-black" href="https://instagram.com/iwan_wkwkw">Instagram</a>
+    <a class="p-2 flex justify-center items-center hover:border-b-black" href="mailto:iwansal42@gmail.com?subject=Terkait E-Lapor, ">Email</a>
+  </div>
+</footer>
+
+<style>
+  a {
+    position: relative;
+  }
+  
+  a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 2px;
+    background-color: black;
+    transition-duration: 500ms;
+  }
+
+  a:hover::after {
+    left: 0;
+    width: 100%;
+  }
+</style>
+
