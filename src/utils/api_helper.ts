@@ -2,7 +2,7 @@ import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
 import cookie from 'cookie';
 import { prisma } from "./db";
-import { AccountType, Prisma } from "@prisma/client";
+import { ActivityType, Prisma, type Users } from "@prisma/client";
 import type { Campus } from "../types/variables";
 import { APIResultType } from "./api_interface";
 
@@ -126,11 +126,11 @@ export function verify_user_token(token: string): string | undefined {
     }
 }
 
-export async function verify_teacher_token(token: string): Promise<boolean | undefined | APIResultType> {
+export async function verify_teacher_token(token: string): Promise<[true, true, Users] | [false, undefined | APIResultType, undefined]> {
     const result = verify_user_token(token);
 
     if (!result) {
-        return;
+        return [false, undefined, undefined];
     }
 
     let user_data;
@@ -143,13 +143,13 @@ export async function verify_teacher_token(token: string): Promise<boolean | und
     }
     catch(err) {
         if(err instanceof Prisma.PrismaClientInitializationError) {
-            return APIResultType.DatabaseError;
+            return [false, APIResultType.DatabaseError, undefined];
         }
         console.error(`There's an error when trying to get user data : ${err}`);
-        return APIResultType.InternalServerError;
+        return [false, APIResultType.InternalServerError, undefined];
     }
 
-    return user_data?.role === AccountType.Admin;
+    return user_data ? [true, true, user_data] : [false, undefined, undefined];
 }
 
 export function verify_admin_token(token?: string): boolean {
@@ -217,4 +217,19 @@ export function generate_captcha_token(): string {
     }
 
     return result;
+}
+
+export function record_activity({message, url, activity_type, user_id}: { message: string, url: string, activity_type: ActivityType, user_id: string }) {
+    return prisma.recordedActivity.create({
+        data: {
+            message: message,
+            url: url,
+            activity_type: activity_type,
+            account: {
+                connect: {
+                    id: user_id
+                }
+            }
+        }
+    });
 }

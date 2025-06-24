@@ -1,19 +1,19 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cookies_from_request, record_activity, verify_teacher_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
-import { Prisma, type Report } from "@prisma/client";
+import { ActivityType, Prisma, type Report } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
 
 export async function GET({ request }: APIContext) {
     // Verify teacher token
     const cookies = get_cookies_from_request(request);
           
-    const verification_result = await verify_teacher_token(cookies ? (cookies["user_token"] ?? "") : "");
-    if(verification_result !== true) {
-        if(verification_result === APIResultType.DatabaseError) {
+    const [verification_result, verification_output, user_data] = await verify_teacher_token(cookies ? (cookies["user_token"] ?? "") : "");
+    if(!verification_result) {
+        if(verification_output === APIResultType.DatabaseError) {
             return create_response_status(503);
         }
-        else if(verification_result === APIResultType.InternalServerError) {
+        else if(verification_output === APIResultType.InternalServerError) {
             return create_response_status(500);
         }
         
@@ -31,6 +31,27 @@ export async function GET({ request }: APIContext) {
       }
       console.error(`There's an error when trying to get report data. Error: ${err}`);
       return create_response_status(500);
+    }
+        
+    // Record Activity
+    try {
+        await record_activity({
+            message: "Get all report data",
+            url: request.url,
+            activity_type: ActivityType.GetReport,
+            user_id: user_data.id
+        });
+    }
+    catch(err) {
+        if (err instanceof Prisma.PrismaClientValidationError) {
+            return create_response_status(400);
+        }
+        else if(err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
+        }
+        
+        console.error(`There's an error when trying to add activity record data. Error: ${err}`);
+        return create_response_status(500);
     }
 
 
