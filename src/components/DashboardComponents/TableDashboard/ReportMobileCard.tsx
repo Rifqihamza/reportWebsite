@@ -18,7 +18,7 @@
                 <div className='z-50'>
                     <span className='bg-[#7FA1C3] absolute top-0 left-0 right-0 h-1/4'></span>
                     <div className="flex flex-col mb-2 text-center ">
-                        <h3 className="text-lg lg:text-2xl text-gray-900 truncate">Laporan terkait <span className="font-semibold">{reporttype_to_string(report.type)}</span></h3>
+                        <h3 className="text-lg lg:text-2xl text-gray-900 truncate z-1">Laporan terkait <span className="font-semibold">{reporttype_to_string(report.type)}</span></h3>
                         <p className="text-xs lg:text-md truncate">{formatDate(new Date(report.created_at).toISOString())}</p>
                     </div>
                     <hr />
