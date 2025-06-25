@@ -17,7 +17,7 @@ export default function RowOptions() {
         {rows.map((value) => {
           return <button className={`cursor-pointer text-sm lg:text-md px-2 py-4 border-2 hover:brightness-75 rounded-xl ${(selectedRows.includes(value) ? "bg-[#1f324d] text-white" : "bg-white text-[#1f324d] border-[#1f324d]")}`} onClick={() => { toggleRow(value) }}>{value}</button>;
         })}
-        <button className={`cursor-pointer text-sm lg:text-md px-2 py-4 border-2 hover:brightness-75 ${((selectedRows.length ===  Object.values(table_rows).length) ? "bg-[#1f324d] text-white" : "bg-white text-[#1f324d] border-[#1f324d]")} rounded-xl`} onClick={() => { toggleAllRow() }}>Add All</button>
+        <button className={`cursor-pointer text-sm lg:text-md px-2 py-4 border-2 hover:brightness-75 ${((selectedRows.length ===  Object.values(table_rows).length) ? "bg-[#1f324d] text-white" : "bg-white text-[#1f324d] border-[#1f324d]")} rounded-xl`} onClick={() => { toggleAllRow() }}>{selectedRows.length ===  Object.values(table_rows).length ? "Remove All" : "Add All"}</button>
       </div>
     </div>
   </>;
