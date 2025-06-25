@@ -7,7 +7,7 @@ export default function ReportTableToolbar() {
 
   return (
     <>
-      <div className="flex md:flex-row flex-col items-center gap-2">
+      <div className="flex flex-col md:flex-row gap-2">
         {/* Search Bar */}
         <div className="relative w-full flex items-center gap-4">
           <input

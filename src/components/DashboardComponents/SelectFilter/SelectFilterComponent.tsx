@@ -101,7 +101,7 @@ export default function FilterSelect() {
 
 
     return (
-        <div className="flex justify-content-center w-full md:w-fit" >
+        <div className="flex justify-content-center" >
             <TieredMenu model={items} popup ref={menu} breakpoint='4096px' className="mt-2" />
             <button className={`px-4 py-2 rounded-xl duration-200 w-full cursor-pointer ${selectedFilter.find((val) => val !== null) ? "bg-[#7fa1c3] text-white" : "bg-white text-black"}`} onClick={(e) => menu.current?.toggle(e)}>Filter</button>
         </div>

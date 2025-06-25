@@ -10,7 +10,7 @@ import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
 import { PrimeReactProvider } from "primereact/api";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import ExportPage from "./_ExportPage";
-import ConfigurationPage from "./_ConfigurationPage";
+import UsersPage from "./_UsersPage";
 
 export default function DashboardPage() {
     const { userData } = useUserDataHook();
@@ -51,12 +51,12 @@ export default function DashboardPage() {
                         <NavbarDashboard />
 
                         {/* Scrollable Content */}
-                        <div className="flex-1 overflow-y-auto px-2 ">
+                        <div className="flex-1 overflow-y-auto">
                             {activeTab === 0 && <WelcomePage />}
                             {activeTab === 1 && <TablePage />}
                             {activeTab === 2 && <GraphicPage />}
                             {activeTab === 3 && <ExportPage />}
-                            {activeTab === 4 && <ConfigurationPage />}
+                            {activeTab === 4 && <UsersPage />}
                             {activeTab === 5 && <SettingPage />}
                         </div>
                     </div>

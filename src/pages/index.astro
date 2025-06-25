@@ -8,49 +8,139 @@ import AboutFeedback from "../components/AboutComponents/AboutFeedback/AboutFeed
 
 <Layout pageType="faq">
   <AboutNavbar client:load />
-  <div class="bg-[#1f324d] text-white px-16 md:px-50 w-full min-h-[90vh] flex flex-col gap-2 justify-center items-center">
-    <h1 class="text-2xl md:text-5xl text-center font-thin pt-10">Apa itu e-Lapor?</h1>
-    <p class="text-md md:text-xl text-center font-thin pb-10">What is e-Lapor?</p>
-    <p class="text-md md:text-xl text-center font-thin">
-      <b>e-Lapor</b> adalah website yang memungkinkan kita melaporkan temuan yang ada di sekolah dan mengorganisir semua nya di dalam suatu sistem terkendali agar <b
-        >memudahkan kita untuk melihat, menganalisis, dan membuat keputusan berdasarkan data-data yang telah dikumpulkan</b
+  <div
+    class=" bg-white text-black px-10 md:px-40 w-full min-h-[90vh] md:min-h-[100vh] flex flex-col md:flex-row gap-2 md:gap-14 justify-evenly md:justify-between items-center"
+  >
+    <!-- Short Desc -->
+    <div class="z-10">
+      <h1 class="text-5xl text-center md:text-left font-extralight">e-Lapor</h1>
+      <p
+        class="text-md md:text-xl text-center md:text-left font-thin pt-1 pb-3"
       >
-    </p>
-  </div>
-  <div class="bg-transparent text-[#1f324d] px-4 md:px-34 py-42 w-full min-h-[100vh] flex flex-col gap-2 items-center">
-    <h1 class="text-2xl md:text-5xl text-center font-thin pt-10">Cara menggunakan <br class="inline md:hidden" />e-Lapor</h1>
-    <p class="text-md md:text-xl text-center font-thin pb-10">How to use e-Lapor</p>
-    <div class="flex flex-col md:flex-row gap-4 font-normal">
-      <div class="flex flex-col p-10">
-        <h1 class="text-2xl!"><i class="pi pi-user"></i> Sebagai Siswa</h1>
-        <ol class="list-decimal text-md mt-2">
-          <li>Siswa mengklik tombol login di kanan atas yang kemudian dikirim ke halaman login.</li>
-          <li>Siswa masukkan username dan password yang telah diberikan sebelumnya oleh guru. Jika sudah, siswa akan masuk ke form laporan</li>
-          <li>Siswa dapat masukkan data laporan yang ditemukan langsung di form tersebut. Lalu, siswa dapat menekan tombol "submit"</li>
-        </ol>
+        What is e-Lapor?
+      </p>
+      <p class="text-md md:text-xl font-thin max-w-md text-justify">
+        website yang memungkinkan kita melaporkan temuan yang ada di sekolah dan
+        mengorganisir semua nya di dalam suatu sistem terkendali agar <b
+          >memudahkan kita untuk melihat, menganalisis, dan membuat keputusan
+          berdasarkan data-data yang telah dikumpulkan</b
+        >
+      </p>
+    </div>
+
+    <!-- Img -->
+    <div
+      class="w-[70vw] h-[40vh] md:w-[30vw] md:h-[40vh] bg-[#1f324d] shadow-lg shadow-gray-600 py-7 px-2 rounded-xl relative"
+    >
+      <div>
+        <span class="w-3 h-3 bg-red-600 rounded-full absolute top-2 left-2 z-50"
+        ></span>
+        <span
+          class="w-3 h-3 bg-yellow-400 rounded-full absolute top-2 left-6 z-50"
+        ></span>
+        <span
+          class="w-3 h-3 bg-green-500 rounded-full absolute top-2 left-10 z-50"
+        ></span>
+        <span
+          class="text-center text-white text-sm absolute top-1 left-0 right-0"
+          >Report Form</span
+        >
       </div>
-      <div class="flex flex-col p-10">
-        <h1 class="text-2xl!"><i class="pi pi-user-plus"></i> Sebagai Admin</h1>
-        <ol class="list-decimal text-md mt-2">
-          <li>Admin mengklik tombol login di kanan atas dan akan pergi ke halaman login.</li>
-          <li>Admin masukkan username dan password khusus admin yang telah diberikan sebelumnya. Jika sudah, admin akan masuk ke dashboard admin</li>
-          <li>Admin dapat melihat, mengedit, dan mengubah status dari laporan yang telah di-submit user di tab "Table Report"</li>
-          <li>Admin juga dapat menganalisis data laporan di tab "Statistics" untuk melihat data yang sudah diolah</li>
-        </ol>
+      <img
+        src="/img/reportScreenshot.png"
+        class="w-fit h-full mx-auto object-cover aspect-square rounded-xl"
+        alt=""
+      />
+    </div>
+  </div>
+
+  <div
+    class="bg-[#1f324d] text-white px-4 md:px-34 py-10 w-full min-h-[70vh] flex flex-col gap-2 items-center"
+  >
+    <h1 class="text-2xl md:text-5xl text-center font-thin pt-4">
+      Cara menggunakan <br class="inline md:hidden" />e-Lapor
+    </h1>
+    <p class="text-md md:text-xl text-center font-thin pb-10">
+      How to use e-Lapor
+    </p>
+    <div class="flex flex-col md:flex-row md:gap-8 gap-16 font-normal">
+      <!-- As Student -->
+      <div
+        class="bg-white text-black rounded-2xl flex flex-col p-10 w-full max-w-md relative"
+      >
+        <div
+          class="bg-[#1f324d] rounded-full flex items-center justify-center w-20 h-20 mx-auto absolute -top-10 left-0 right-0"
+        >
+          <i class="pi pi-user text-white text-2xl!"></i>
+        </div>
+        <div>
+          <h1 class="text-center text-2xl mt-3">as Student</h1>
+          <ol class="list-decimal text-md space-y-4 mt-3">
+            <li>
+              Siswa mengklik tombol login di kanan atas yang kemudian dikirim ke
+              halaman login.
+            </li>
+            <li>
+              Siswa masukkan username dan password yang telah diberikan
+              sebelumnya oleh guru. Jika sudah, siswa akan masuk ke form laporan
+            </li>
+            <li>
+              Siswa dapat masukkan data laporan yang ditemukan langsung di form
+              tersebut. Lalu, siswa dapat menekan tombol "submit"
+            </li>
+          </ol>
+        </div>
+      </div>
+      <!-- As Admin -->
+      <div
+        class="bg-white text-black rounded-2xl flex flex-col p-10 w-full max-w-md relative"
+      >
+        <div
+          class="bg-[#1f324d] rounded-full flex items-center justify-center w-20 h-20 mx-auto absolute -top-10 left-0 right-0"
+        >
+          <i class="pi pi-user-plus text-white text-2xl!"></i>
+        </div>
+        <div>
+          <h1 class="text-center text-2xl mt-3">as Admin</h1>
+          <ol class="list-decimal text-md space-y-4 mt-3">
+            <li>
+              Admin mengklik tombol login di kanan atas dan akan pergi ke
+              halaman login.
+            </li>
+            <li>
+              Admin masukkan username dan password khusus admin yang telah
+              diberikan sebelumnya. Jika sudah, admin akan masuk ke dashboard
+              admin.
+            </li>
+            <li>
+              Admin dapat melihat, mengedit, dan mengubah status dari laporan
+              yang telah di-submit user di tab "Table Report".
+            </li>
+            <li>
+              Admin juga dapat menganalisis data laporan di tab "Statistics"
+              untuk melihat data yang sudah diolah.
+            </li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
-  <div class="py-42 px-10 md:px-50 bg-[#1f324d] h-dvh">
-    <h1 class="text-2xl md:text-5xl text-center font-thin pt-10 text-white">FAQ</h1>
-    <p class="text-md md:text-xl text-center font-thin pb-10 text-white">Frequently Asked Question</p>
-    <FaqList client:only />
+  <div class="py-10 px-10 md:px-50 bg-white h-full">
+    <div class="text-[#1f324d] p-4 rounded-2xl">
+      <h1 class="text-2xl md:text-5xl text-center font-thin pt-10">FAQ</h1>
+      <p class="text-md md:text-xl text-center font-thin pb-10">
+        Frequently Asked Question
+      </p>
+      <FaqList client:only />
+    </div>
   </div>
   <AboutFeedback />
   <AboutFooter />
 </Layout>
 
-<style is:global>
-  body {
-    background-color: #e3e3e3;
-  }
-</style>
+  <style is:global>
+    body {
+      background-color: #e3e3e3;
+    }
+  </style>
+</Layout>

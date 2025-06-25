@@ -16,26 +16,27 @@ export default function ReportDetailModal() {
 
     const report_data = reportData?.find(value => value.id === detailId) || null;
     const backgroundElement = useRef(null as HTMLDivElement | null);
-    
+
     const closeOnBlank = () => {
         handleClose();
     };
-    
+
     // Close detail modal after tapping background
     useEffect(() => {
-        if(!backgroundElement.current) {
+        if (!backgroundElement.current) {
             return;
         }
 
         backgroundElement.current.addEventListener("click", closeOnBlank);
         return (() => {
-            if(backgroundElement.current) {
+            if (backgroundElement.current) {
                 backgroundElement.current.removeEventListener("click", closeOnBlank);
             }
         });
     }, [backgroundElement]);
 
-    
+
+
     const ImageComponent = () => (
         <div className="flex flex-col justify-center items-center w-full h-full">
             <Image
@@ -53,7 +54,7 @@ export default function ReportDetailModal() {
     return (
         <>
             {/* Modal backdrop */}
-            <div ref={backgroundElement} className={`bg-black/50 z-20 h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-opacity ${!detailId && "hidden"}`} />
+            <div ref={backgroundElement} className={`bg-black/70 z-20 h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-opacity ${!detailId && "hidden"}`} />
 
             {/* Modal content */}
             <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") +
