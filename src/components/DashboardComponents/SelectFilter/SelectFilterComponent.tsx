@@ -1,6 +1,6 @@
 
 import { useRef, type Dispatch, type SetStateAction } from 'react';
-import { ReportType, ReportStatus, reporttype_to_string } from "../../../types/variables";
+import { ReportType, ReportStatus, reporttype_to_string, Campus } from "../../../types/variables";
 import { TieredMenu } from 'primereact/tieredmenu';
 import type { MenuItem } from 'primereact/menuitem';
 
@@ -15,14 +15,14 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { useReportFilterHook } from '../../../hooks/useReportHook';
 
 export default function FilterSelect() {
-    const { selectedFilter, setSelectedFilter } = useReportFilterHook();
+    const { selectedFilter, setCampusFilter, setReportStatusFilter, setReportTypeFilter, resetFilter } = useReportFilterHook();
     
     const menu = useRef<TieredMenu>(null);
     const items: MenuItem[] = [
         {
             label: "No Filter",
             command: () => {
-                setSelectedFilter(null);
+                resetFilter();
             }
         },
         {
@@ -31,7 +31,7 @@ export default function FilterSelect() {
                 return {
                     label: status.toString(),
                     template: () => (
-                        <div className={"flex align-items-center gap-2" + (selectedFilter == status ? " text-[#1d4ed8]" : "")}>
+                        <div className={`flex align-items-center gap-2 w-full h-full p-3 ${(selectedFilter[1] == status ? "text-white bg-[#7fa1c3] rounded-xl" : "")}`}>
                             {(() => {
                                 switch (status) {
                                     case ReportStatus.Complete:
@@ -49,7 +49,7 @@ export default function FilterSelect() {
                         </div>
                     ),
                     command: () => {
-                        setSelectedFilter(selectedFilter == status ? null : status);
+                        setReportStatusFilter(selectedFilter[1] == status ? null : status);
                     }
                 }
             })
@@ -60,7 +60,7 @@ export default function FilterSelect() {
                 return {
                     label: reporttype_to_string(type),
                     template: () => (
-                        <div className={"flex align-items-center gap-2" + (selectedFilter == type ? " text-[#1d4ed8]" : "")}>
+                        <div className={`flex align-items-center gap-2 w-full h-full p-3 ${(selectedFilter[0] == type ? "text-white bg-[#7fa1c3] rounded-xl" : "")}`}>
                             {(() => {
                                 switch (type) {
                                     case ReportType.Abnormality:
@@ -76,7 +76,23 @@ export default function FilterSelect() {
                         </div>
                     ),
                     command: () => {
-                        setSelectedFilter(selectedFilter == type ? null : type);
+                        setReportTypeFilter(selectedFilter[0] == type ? null : type);
+                    }
+                }
+            })
+        },
+        {
+            label: 'Campus',
+            items: Object.values(Campus).map(campus => {
+                return {
+                    label: campus,
+                    template: () => (
+                        <div className={`flex align-items-center gap-2 w-full h-full p-3 ${(selectedFilter[2] == campus ? "text-white bg-[#7fa1c3] rounded-xl" : "")}`}>
+                            {campus}
+                        </div>
+                    ),
+                    command: () => {
+                        setCampusFilter(selectedFilter[2] == campus ? null : campus);
                     }
                 }
             })
@@ -87,8 +103,7 @@ export default function FilterSelect() {
     return (
         <div className="flex justify-content-center w-full md:w-fit" >
             <TieredMenu model={items} popup ref={menu} breakpoint='4096px' className="mt-2" />
-            <button className='bg-white px-4 py-2 rounded-xl text-black duration-200 w-full' onClick={(e) => menu.current?.toggle(e)
-            }>{selectedFilter ? (reporttype_to_string(selectedFilter) ?? selectedFilter.toString()) : "Filter"}</button>
+            <button className={`px-4 py-2 rounded-xl duration-200 w-full cursor-pointer ${selectedFilter.find((val) => val !== null) ? "bg-[#7fa1c3] text-white" : "bg-white text-black"}`} onClick={(e) => menu.current?.toggle(e)}>Filter</button>
         </div>
     )
 }

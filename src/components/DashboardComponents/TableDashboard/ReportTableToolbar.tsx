@@ -23,7 +23,7 @@ export default function ReportTableToolbar() {
         <div className="flex items-center gap-2 w-full">
           <FloatLabel className="overflow-x-hidden w-full">
             <Calendar
-              className="w-full"
+              className="w-full *:cursor-pointer"
               inputId="from-date"
               value={dateFilter ? dateFilter[0] : null}
               onChange={(e) => setDateFilter([e.value?.getTime() === dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])}
@@ -37,7 +37,7 @@ export default function ReportTableToolbar() {
           <span className="text-white text-4xl">-</span>
           <FloatLabel className="overflow-x-hidden w-full">
             <Calendar
-              className="w-full"
+              className="w-full *:cursor-pointer"
               inputId="until-date"
               value={dateFilter ? dateFilter[1] : null}
               onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() === dateFilter[1]?.getTime() ? null : e.value ?? null])}

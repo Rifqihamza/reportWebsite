@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import {
   AccountType,
+  Campus,
   ReportStatus,
   ReportType,
   string_to_reportstatus,
@@ -153,8 +154,11 @@ export const useReportEditHook = create<useReportEditType>((set) => {
 
 // --/ Report Filter Hook
 type useReportFilterType = {
-  selectedFilter: null | ReportType | ReportStatus;
-  setSelectedFilter: (newSelectedFilter: null | ReportType | ReportStatus) => void;
+  selectedFilter: [null | ReportType, null | ReportStatus, null | Campus];
+  setReportTypeFilter: (newReportTypeFilter: null | ReportType) => void;
+  setReportStatusFilter: (newReportStatusFilter: null | ReportStatus) => void;
+  setCampusFilter: (newCampusFilter: null | Campus) => void;
+  resetFilter: () => void;
 
   dateFilter: (Date | null)[];
   setDateFilter: (newDateFilter: (Date | null)[]) => void;
@@ -168,9 +172,18 @@ type useReportFilterType = {
 
 export const useReportFilterHook = create<useReportFilterType>((set) => {
   return {
-    selectedFilter: null,
-    setSelectedFilter(newSelectedFilter) {
-      set(() => ({ selectedFilter: newSelectedFilter }));
+    selectedFilter: [null, null, null],
+    setReportTypeFilter(newReportTypeFilter) {
+      set((state) => ({ selectedFilter: [newReportTypeFilter, state.selectedFilter[1], state.selectedFilter[2]] }));
+    },
+    setReportStatusFilter(newReportStatusFilter) {
+      set((state) => ({ selectedFilter: [state.selectedFilter[0], newReportStatusFilter, state.selectedFilter[2]] }));
+    },
+    setCampusFilter(newCampusFilter) {
+      set((state) => ({ selectedFilter: [state.selectedFilter[0], state.selectedFilter[1], newCampusFilter] }));
+    },
+    resetFilter() {
+      set(() => ({ selectedFilter: [null, null, null] }));
     },
 
     dateFilter: [],
@@ -224,13 +237,21 @@ export function ReportHookEffect() {
     }
     
     // Filter Categories and Status
-    let result_data = reportData.filter((value) =>
-      selectedFilter
-        ? string_to_reportstatus(selectedFilter)
-          ? value.status == selectedFilter
-          : value.type == selectedFilter
-        : true
-    );
+    let result_data = reportData.filter((value) => {
+      if(selectedFilter[0] !== null && value.type !== selectedFilter[0]) {
+        return false;
+      }
+
+      if(selectedFilter[1] !== null && value.status !== selectedFilter[1]) {
+        return false;
+      }
+
+      if(selectedFilter[2] !== null && value.campus !== selectedFilter[2]) {
+        return false;
+      }
+
+      return true;
+    });
 
     // Filter Date
     if (dateFilter && (dateFilter[0] || dateFilter[1])) {
