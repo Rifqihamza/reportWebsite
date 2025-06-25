@@ -46,7 +46,7 @@ export default function GraphicChart() {
                 {/* Chart campus filter */}
                 <div className="md:hidden block w-full">
                     <Accordion>
-                        <AccordionTab header="Campus Filter">
+                        <AccordionTab header="Campus Filter" className="[&_.p-accordion-header-link]:bg-white!">
                             <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full">
                                 <ChartLineCampusFilter />
                             </div>
