@@ -1,75 +1,142 @@
-// src/components/ConfigurationComponent.tsx
 import { useEffect, useState } from "react";
-import { APIResultType, getAllUsers } from "../../../utils/api_interface"; // sesuaikan path
+import { APIResultType, getAllUsers, updateUser } from "../../../utils/api_interface"; // pastikan ada updateUser
 import { useUserAccount } from "../../../hooks/shared/useUserAccount";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
+import { Dialog } from "primereact/dialog";
 
 export default function UsersComponent() {
     const [doneFetching, setDoneFetching] = useState(false);
     const { showUserAccountData, setShowUserAccountData } = useUserAccount();
     const { showMessage } = useMessageToastHook();
     const { isConnected } = useNetworkConnectivityHook();
+    const [visibleDialog, setVisibleDialog] = useState(false);
+    const [editingUser, setEditingUser] = useState<{ id: string; username: string; password: string }>({
+        id: "",
+        username: "",
+        password: "",
+    });
 
     useEffect(() => {
-        if(!isConnected) return;
+        if (!isConnected) return;
         getAllUsers().then((result) => {
             if (Array.isArray(result)) {
                 setShowUserAccountData(result);
-            } else if(result === false) {
+            } else if (result === false) {
                 showMessage("There's a network error.", "error", "Please reload the website once you connected.");
-            } else if(result === APIResultType.InternalServerError) {
+            } else if (result === APIResultType.InternalServerError) {
                 showMessage("Terjadi error di server.", "error", "Reload website setelah beberapa waktu");
             }
-        }).catch((err) => {
+        }).catch(() => {
             showMessage("There's a network error.", "error", "Please reload the website once you connected.");
         }).finally(() => {
             setDoneFetching(true);
         });
     }, []);
 
+    const handleEditClick = (user: any) => {
+        setEditingUser({
+            id: user.id,
+            username: user.username,
+            password: user.password || "", // asumsikan password bisa diambil, jika tidak hapus ini
+        });
+        setVisibleDialog(true);
+    };
+
+    const handleUpdateUser = async () => {
+        const result = await updateUser(editingUser.id, {
+            username: editingUser.username,
+            password: editingUser.password,
+        });
+
+        if (result === true) {
+            showMessage("Berhasil update user", "success", "Data pengguna berhasil diperbarui.");
+            // refresh data
+            const updatedUsers = await getAllUsers();
+            if (Array.isArray(updatedUsers)) {
+                setShowUserAccountData(updatedUsers);
+            }
+            setVisibleDialog(false);
+        } else {
+            showMessage("Gagal update user", "error", "Terjadi kesalahan saat memperbarui data pengguna.");
+        }
+    };
+
     return (
         <section>
-            {/* TODO Haven't created mobile page responsiveness yet */}
             <div className="block overflow-auto relative bg-white rounded-xl px-6 py-4">
                 <h2 className="text-2xl font-bold mb-4">Daftar Akun Pengguna</h2>
-                <table className="w-full h-[70vh] max-h-[65vh]">
+                <table className="w-full h-[70vh] max-h-[70vh]">
                     <thead>
                         <tr>
-                            <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">No.</th>
-                            <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">Nama</th>
-                            <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">Role</th>
-                            <th className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate">Dibuat Pada</th>
+                            <th colSpan={5} className="border-b border-gray-300">No.</th>
+                            <th colSpan={5} className="border-b border-gray-300">Nama</th>
+                            <th colSpan={5} className="border-b border-gray-300">Role</th>
+                            <th colSpan={5} className="border-b border-gray-300">Created At</th>
+                            <th colSpan={5} className="border-b border-gray-300">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {showUserAccountData.length > 0 ? (
                             showUserAccountData.map((user, index) => (
-                                <tr key={user.id} className="report-row">
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">{index + 1}</td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">{user.username}</td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">{user.role}</td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 max-w-[13rem] truncate">
+                                <tr key={user.id}>
+                                    <td colSpan={5} className="text-center border-b border-gray-300">{index + 1}</td>
+                                    <td colSpan={5} className="text-center border-b border-gray-300">{user.username}</td>
+                                    <td colSpan={5} className="text-center border-b border-gray-300">{user.role}</td>
+                                    <td colSpan={5} className="text-center border-b border-gray-300">
                                         {new Date(user.created_at).toLocaleDateString("id-ID")}
+                                    </td>
+                                    <td colSpan={5} className="flex flex-row items-center justify-center gap-2 border-b border-gray-300 h-full">
+                                        <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl">Edit</button>
+                                        <span>|</span>
+                                        <button className="bg-red-400 text-white px-4 py-1 rounded-xl">Delete</button>
                                     </td>
                                 </tr>
                             ))
-                        ) : (doneFetching ? (
-                            <tr>
-                                <td colSpan={5} className="py-4 text-center text-gray-500">
-                                    Tidak ada data pengguna yang tersedia.
-                                </td>
-                            </tr>
-                        ) : <tr>
-                                <td colSpan={5} className="w-full">
-                                    <LoadingAnimation />
-                                </td>
-                            </tr>
+                        ) : doneFetching ? (
+                            <tr><td colSpan={25} className="text-center py-4">Tidak ada data pengguna yang tersedia.</td></tr>
+                        ) : (
+                            <tr><td colSpan={25}><LoadingAnimation /></td></tr>
                         )}
                     </tbody>
                 </table>
             </div>
+
+            <Dialog
+                visible={visibleDialog}
+                onHide={() => setVisibleDialog(false)}
+                className="w-full max-w-xl mx-4"
+                header="Edit Users"
+                draggable={false}
+            >
+                <div className="space-y-4">
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="username">Username</label>
+                        <input
+                            id="username"
+                            type="text"
+                            value={editingUser.username}
+                            onChange={(e) => setEditingUser({ ...editingUser, username: e.target.value })}
+                            className="w-full px-4 py-2 rounded-xl border border-gray-300"
+                        />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            id="password"
+                            type="text"
+                            value={editingUser.password}
+                            onChange={(e) => setEditingUser({ ...editingUser, password: e.target.value })}
+                            className="w-full px-4 py-2 rounded-xl border border-gray-300"
+                        />
+                    </div>
+                    <div className="flex flex-row gap-4 justify-end">
+                        <button onClick={() => setVisibleDialog(false)} className="px-4 py-2 border border-gray-300 rounded-lg">Batal</button>
+                        <button onClick={handleUpdateUser} className="px-4 py-2 bg-[#1f324d] text-white rounded-lg">Simpan</button>
+                    </div>
+                </div>
+            </Dialog>
         </section>
     );
 }

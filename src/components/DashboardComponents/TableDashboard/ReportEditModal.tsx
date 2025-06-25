@@ -1,7 +1,7 @@
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
-import { AccountType, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype, type ReportData } from '../../../types/variables';
+import { AccountType, ReportStatus, ReportType, reporttype_to_string} from '../../../types/variables';
 import { APIResultType, updateReport } from '../../../utils/api_interface';
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import { useReportDetailHook, useReportEditHook } from "../../../hooks/useReportHook";
@@ -70,10 +70,10 @@ export default function ReportEditModal() {
     };
 
     const handleSave = async () => {
-        if(!isConnected) {
+        if (!isConnected) {
             showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
         }
-        
+
         if (disableSave || !report || !isChange) return;
         setDisableSave(true);
 
@@ -163,7 +163,7 @@ export default function ReportEditModal() {
                         return <DropdownField
                             filter
                             label="Lokasi"
-                            options={[{label: report?.location_name ?? "", value: report?.location_name ?? ""}]}
+                            options={[{ label: report?.location_name ?? "", value: report?.location_name ?? "" }]}
                             value={report?.location_name ?? ""}
                             disabled
                         />
@@ -233,7 +233,8 @@ function InputField({ label, value, onChange, disabled = false }: {
                     :
                     ""
                 }
-            </div>            <input
+            </div>
+            <input
                 type="text"
                 value={value}
                 onChange={onChange}

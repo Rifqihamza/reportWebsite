@@ -8,19 +8,23 @@ export default function ReportTableToolbar() {
 
   return (
     <>
-      <div className="flex md:flex-row flex-col items-center gap-2">
+      <div className="flex flex-col md:flex-row gap-2">
         {/* Search Bar */}
-        <div className="relative w-full flex items-center gap-4">
-          <input
-            type="text"
-            id="search-input"
-            placeholder="Cari laporan..."
-            className="w-full pl-9 pr-4 py-2 bg-white rounded-xl placeholder-black"
-            onChange={(e) => setSearchKeyword(e.target.value)}
-          />
-          <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black" />
+        <div className="flex flex-row gap-2 w-full">
+          <div className="relative w-full flex items-center gap-4">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Cari laporan..."
+              className="w-full pl-9 pr-4 py-2 bg-white rounded-xl placeholder-black"
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            />
+            <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black" />
+          </div>
+          <FilterSelect />
         </div>
-        <div className="flex items-center gap-2 w-full">
+
+        <div className="flex items-center gap-2 w-fit">
           <FloatLabel className="overflow-x-hidden w-full">
             <Calendar
               className="w-full"
@@ -49,7 +53,6 @@ export default function ReportTableToolbar() {
             </label>
           </FloatLabel>
         </div>
-        <FilterSelect />
       </div>
     </>
   );

@@ -222,7 +222,7 @@ export async function getAllUsers(): Promise<User | boolean | APIResultType> {
             credentials: "include"
         })
     }
-    catch(err) {
+    catch (err) {
         return false;
     }
 
@@ -238,6 +238,22 @@ export async function getAllUsers(): Promise<User | boolean | APIResultType> {
 
     return APIResultType.InternalServerError
 }
+
+export async function updateUser(userId: string, data: { username: string; password: string }) {
+    try {
+        const response = await fetch(`/api/users/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        if (response.ok) return true;
+        return false;
+    } catch (error) {
+        return false;
+    }
+}
+
 
 type updatedDataType = {
     pic_name: string,
@@ -290,7 +306,7 @@ export async function getFormConfiguration() {
             credentials: "include",
         });
     }
-    catch(err) {
+    catch (err) {
         return false;
     }
 
