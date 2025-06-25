@@ -42,8 +42,8 @@ export default function ReportDesktopTable() {
                         // If there's no data
                         if (showedReportData.length === 0) {
                             return <tr>
-                                <td className="w-fit" colSpan={8}>
-                                    <h1 className="p-2 opacity-75 text-center">Tidak ada laporan...</h1>
+                                <td className="w-fit py-4" colSpan={9}>
+                                    <h1 className="p-2 opacity-75 text-center">{reportData.length == 0 ? "Tidak ada laporan..." : "Tidak ada laporan yang sesuai dengan filter"}</h1>
                                 </td>
                             </tr>
                         }
