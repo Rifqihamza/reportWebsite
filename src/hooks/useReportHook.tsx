@@ -13,7 +13,7 @@ import { useMessageToastHook } from "./shared/useMessageToast";
 import { useEffect } from "react";
 import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
 
-const maxReportDataPerPage: number = 5;
+const maxReportDataPerPage: number = 10;
 
 // --/ Report Detail Hook
 type useReportDetailHookType = {

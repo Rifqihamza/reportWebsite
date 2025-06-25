@@ -108,6 +108,7 @@ export type Report_Location = {
 export const table_rows: {
     [key: string]: (keyof ReportData)
 } = {
+    "Status": "status",
     "Tanggal": "created_at",
     "Nama Pelapor": "submitted_by",
     "Laporan": "message",
@@ -115,7 +116,6 @@ export const table_rows: {
     "PIC": "pic_name",
     "Kategori": "type",
     "Kampus": "campus",
-    "Status": "status",
 }
 
 // Other things
