@@ -89,8 +89,6 @@ export default function ReportDetailModal() {
                         </div>
                         <hr />
 
-                        <>{console.log(report_data)}</>
-
                         {/* Report Details */}
                         <DetailField label="Pelapor:" value={report_data?.submitted_by} />
                         <DetailField label="Lokasi:" value={report_data?.location_name + (report_data?.detail_location ? (", " + report_data?.detail_location) : "")} />

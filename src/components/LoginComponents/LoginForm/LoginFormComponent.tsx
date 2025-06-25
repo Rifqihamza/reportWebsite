@@ -25,8 +25,6 @@ export default function LoginFormComponent() {
 
     try {
       const result = await userLogin(username, password);
-      console.log(result.toString());
-      console.log(Object.values(AccountType));
       if(Object.values(AccountType).includes(result as AccountType)) {
         showMessage("Welcome!", "success", "You've successfully login! You'll be redirected in a second..");
         setIsPasswordCorrect(true);

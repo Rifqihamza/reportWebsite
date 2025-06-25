@@ -94,8 +94,6 @@ export default function ReportFormComponent() {
       showMessage("Unauthroized report detected!", "error", "You've been detected using a service without proper authorization. Please login again.");
     } else if (result == APIResultType.InternalServerError) {
       showMessage("There's an unexpected error occured in the server side!", "error", "Sorry for the inconvenient, please try again later.");
-    } else {
-      console.log(result);
     }
 
     toastProgress.current!.clear();
