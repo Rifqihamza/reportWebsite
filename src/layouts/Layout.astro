@@ -42,7 +42,6 @@ const { pageType = "form" } = Astro.props;
     {(() => {
       const url = Astro.url.pathname.split("/")[1];
 
-      console.log(url);
       if(url == "captcha" || url == "") {
         return <></>;
       }

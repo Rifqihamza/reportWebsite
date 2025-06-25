@@ -94,8 +94,6 @@ export default function ReportFormComponent() {
       showMessage("Unauthroized report detected!", "error", "You've been detected using a service without proper authorization. Please login again.");
     } else if (result == APIResultType.InternalServerError) {
       showMessage("There's an unexpected error occured in the server side!", "error", "Sorry for the inconvenient, please try again later.");
-    } else {
-      console.log(result);
     }
 
     toastProgress.current!.clear();
@@ -136,7 +134,7 @@ export default function ReportFormComponent() {
                 className="resize-none outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setMessage(e.target.value)}
                 value={message}
-                maxLength={191}
+                maxLength={200}
                 required
               ></textarea>
             </div>
@@ -161,7 +159,7 @@ export default function ReportFormComponent() {
                 className=" outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setSubmittedBy(e.target.value)}
                 value={submitted_by}
-                maxLength={191}
+                maxLength={30}
                 required
               />
             </div>
@@ -199,7 +197,7 @@ export default function ReportFormComponent() {
                 className=" outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setDetailLocation(e.target.value)}
                 value={detailLocation}
-                maxLength={191}
+                maxLength={200}
                 required
               />
             </div>
