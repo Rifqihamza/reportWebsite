@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Image } from 'primereact/image';
 import { reporttype_to_string } from '../../../types/variables';
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import { statusColors, useReportDetailHook, useReportEditHook } from "../../../hooks/useReportHook";
 import { formatDate } from "../../../utils/other";
+import { Accordion, AccordionTab } from "primereact/accordion";
 
 export default function ReportDetailModal() {
+    const [accordionIndex, setAccordionIndex] = useState(0);
+    
     const { reportData } = useReportDataHook();
     const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
 
@@ -34,13 +37,13 @@ export default function ReportDetailModal() {
 
     
     const ImageComponent = () => (
-        <div className="flex flex-col justify-center items-center w-fit h-fit">
+        <div className="flex flex-col justify-center items-center w-full h-full">
             <Image
                 src={report_data?.image}
                 imageClassName="object-cover rounded-lg max-h-[50vh]"
                 alt="Foto Bukti Laporan"
                 preview={true}
-                width="800"
+                width="600"
                 loading="lazy"
             />
             <p className="mx-auto text-xs mt-2">Klik Gambar Untuk Melihat Preview</p>
@@ -54,8 +57,8 @@ export default function ReportDetailModal() {
 
             {/* Modal content */}
             <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") +
-                " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] h-fit " +
-                "lg:max-h-[100vh] max-h-[90vh] px-4 p-8 rounded-t-3xl z-50 flex flex-col space-y-5"}>
+                " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] " +
+                "lg:max-h-[100vh] min-h-[90vh] max-h-[90vh] px-4 p-8 rounded-t-3xl z-50 flex flex-col space-y-5 overflow-x-hidden overflow-y-auto md:overflow-y-hidden"}>
 
                 {/* Close Button Modal */}
                 <div className="absolute top-4 right-4 md:top-7 md:right-7">
@@ -66,7 +69,7 @@ export default function ReportDetailModal() {
 
                 {/* Header Laporan */}
                 <div className="flex flex-col px-0 py-0 lg:px-6 lg:py-2">
-                    <h1 className="font-bold lg:text-2xl text-lg text-black tracking-wide">Details Temuan</h1>
+                    <h1 className="font-bold lg:text-2xl text-lg text-black tracking-wide">Detail Temuan</h1>
                     <p>Status:
                         <span className={`${report_data ? statusColors[report_data.status] : ""} font-medium uppercase md:text-md md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2`}>
                             {report_data?.status}
@@ -74,30 +77,32 @@ export default function ReportDetailModal() {
                     </p>
                 </div>
 
-                <div className="mt-4 flex flex-col md:flex-row gap-6 mx-4 h-full overflow-auto lg:overflow-hidden">
+                <div className="mt-4 flex flex-col md:flex-row gap-6 mx-4 h-max">
                     {/* Image Render */}
                     <div>
                         {report_data?.image ? <ImageComponent /> : <h1 className="opacity-50">Tidak ada gambar untuk laporan ini.</h1>}
                     </div>
 
                     {/* Details */}
-                    <div className="space-y-2 w-full flex flex-col">
-                        {/* Description Laporan */}
-                        <div className="flex flex-col items-start">
-                            <h1 className="text-xl font-bold tracking-wide">Deskripsi Laporan</h1>
-                            <p className="break-all">{report_data?.message}</p>
-                        </div>
-                        <hr />
-
-                        {/* Report Details */}
-                        <DetailField label="Pelapor:" value={report_data?.submitted_by} />
-                        <DetailField label="Lokasi:" value={report_data?.location_name + (report_data?.detail_location ? (", " + report_data?.detail_location) : "")} />
-                        <DetailField label="Kategori:" value={report_data ? reporttype_to_string(report_data.type)! : ""} />
-                        <DetailField label="Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
-                        <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
-                        <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : ""} fallback="Belum ditentukan" />
-                        <DetailField label="Due Date:" value={report_data?.due_date ? formatDate(report_data.due_date) : undefined} fallback="Belum ditentukan" />
-                        <DetailField label="Follow Up Oleh:" value={report_data?.follow_up_name} fallback="Belum ditentukan" />
+                    <div className="w-full flex flex-col gap-4">
+                        <Accordion activeIndex={accordionIndex} onTabChange={(e) => setAccordionIndex(Array.isArray(e.index) ? e.index[0] : e.index)} className="">
+                            <AccordionTab header="Pesan Laporan" className={`${accordionIndex == 0 ? "md:pointer-events-none" : ""} [&.p-toggleable-content]:*:h-[30vh]`}>
+                                <p className="break-words whitespace-pre-line w-full overflow-y-auto overflow-x-auto">{report_data?.message}</p>
+                            </AccordionTab>
+                            <AccordionTab header="Detail Laporan" className={`${accordionIndex == 1 ? "[&.p-accordion-header]:pointer-events-none" : ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-content]:overflow-y-auto`}>
+                                <div className="w-full flex flex-col space-y-2 overflow-y-auto">
+                                    {/* Report Details */}
+                                    <DetailField label="Pelapor:" value={report_data?.submitted_by} />
+                                    <DetailField label="Lokasi:" value={report_data?.location_name + (report_data?.detail_location ? (", " + report_data?.detail_location) : "")} />
+                                    <DetailField label="Kategori:" value={report_data ? reporttype_to_string(report_data.type)! : ""} />
+                                    <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
+                                    <DetailField label="Follow Up Oleh:" value={report_data?.follow_up_name} fallback="Belum ditentukan" />
+                                    <DetailField label="Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
+                                    <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : ""} fallback="Belum ditentukan" />
+                                    <DetailField label="Due Date:" value={report_data?.due_date ? formatDate(report_data.due_date) : undefined} fallback="Belum ditentukan" />
+                                </div>
+                            </AccordionTab>
+                        </Accordion>
                     </div>
                     {/* End Details */}
                 </div>
