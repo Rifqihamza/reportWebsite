@@ -1,11 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-return Astro.redirect("/");
 ---
 
 <Layout>
-  <div class="flex justify-center items-center w-[100vw] h-[100vh]">
-    <h1 class="text-center text-white text-5xl font-thin">This page doesn't exists.</h1>
+  <div class="flex flex-col justify-center items-center w-[100vw] h-[100vh]">
+    <h1 class="text-white text-3xl text-center font-thin">Sorry, but your targeted page is not found : /</h1>
+    <a href="/" class="text-white mt-4 text-md cursor-pointer p-2 relative after:bg-white after:absolute after:bottom-0 after:right-0 after:w-0 after:h-[1px] after:duration-300 hover:after:w-full hover:after:left-0">Go back to homepage</a>
   </div>
 </Layout>
