@@ -1,8 +1,10 @@
 import React, { Suspense } from "react";
-import { ReportType, reporttype_to_string, statusColorHex } from '../../../types/variables';
+import { Campus, ReportType, reporttype_to_string, statusColorHex } from '../../../types/variables';
 import { Dropdown } from "primereact/dropdown";
-import { LineChartFilterOption, UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../hooks/useChartHook";
+import { LineChartTimeCategoryOption, UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../hooks/useChartHook";
 import UseReportDataHookEffect from "../../../hooks/shared/useReportData";
+import { Accordion, AccordionTab } from 'primereact/accordion';
+import ChartLineCampusFilter from "../ChartLineCampusFilter/ChartLineCampusFilter";
 
 const LineChart = React.lazy(() => import("../../DashboardComponents/ChartLine/LineChartComponent"));
 const PieChart = React.lazy(() => import("../../DashboardComponents/ChartPie/PieChartComponent"));
@@ -11,41 +13,57 @@ const PercenComp = React.lazy(() => import("../../DashboardComponents/PercentCon
 export default function GraphicChart() {
     const { lineChartCategoryFilter: chartCategoryFilter, percentStatus } = usePieChartHook();
     const { insight } = useInsightHook();
-    const { currentYearReports, chartFilter, setChartFilter } = useLineChartHook();
+    const { lineChartFilteredReports, chartTimeCategoryFilter, setChartTimeCategoryFilter } = useLineChartHook();
     const { percentCategory } = usePercentChartHook();
-    const options = Object.values(LineChartFilterOption);
+    const options = Object.values(LineChartTimeCategoryOption);
 
     return (
         <>
             <UseReportDataHookEffect />
             <UseChartHookEffect />
             <div className='flex flex-col gap-4 mx-4'>
+                {/* Time selection */}
                 <div className="md:hidden block w-full">
                     <Dropdown
                         className="px-4 py-2 rounded-xl! [&_.p-dropdown-label]:text-[#1f324d]! [&_.p-dropdown-trigger]:text-[#1f324d]! bg-white! [&_.p-dropdown]:bg-white! [&_.p-dropdown-label]:bg-white! [&_.p-dropdown-trigger]:bg-white! md:[&_.p-dropdown-label]:text-white! md:[&_.p-dropdown-trigger]:text-white! md:bg-[#1f324d]! md:[&_.p-dropdown]:bg-[#1f324d]! md:[&_.p-dropdown-label]:bg-[#1f324d]! md:[&_.p-dropdown-trigger]:bg-[#1f324d]!"
-                        value={chartFilter}
-                        onChange={(e) => setChartFilter(e.value)}
-                        options={Object.values(LineChartFilterOption)} />
+                        value={chartTimeCategoryFilter}
+                        onChange={(e) => setChartTimeCategoryFilter(e.value)}
+                        options={Object.values(LineChartTimeCategoryOption)} />
                 </div>
                 <div className="w-full hidden md:flex md:flex-row md:justify-between md:gap-3 bg-white px-4 py-3 rounded-2xl">
                     {options.map((option) => (
                         <button
                             key={option}
-                            onClick={() => setChartFilter(option)}
-                            className={`p-4 rounded-lg w-full ${chartFilter === option ? 'bg-[#1f324d] text-white' : 'bg-gray-200 hover:bg-[#1f324d]/20 text-black'
+                            onClick={() => setChartTimeCategoryFilter(option)}
+                            className={`p-4 rounded-lg w-full ${chartTimeCategoryFilter === option ? 'bg-[#1f324d] text-white' : 'bg-gray-200 hover:bg-[#1f324d]/20 text-black'
                                 }`}
                         >
                             {option}
                         </button>
                     ))}
                 </div>
+
+                {/* Chart campus filter */}
+                <div className="md:hidden block w-full">
+                    <Accordion>
+                        <AccordionTab header="Campus Filter">
+                            <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full">
+                                <ChartLineCampusFilter />
+                            </div>
+                        </AccordionTab>
+                    </Accordion>
+                </div>
+                <div className="md:flex hidden flex-row gap-4 p-4 bg-white justify-between">
+                    <ChartLineCampusFilter />
+                </div>
+                
                 {/* Line Chart */}
                 <div className="w-full px-4 py-2 rounded-2xl bg-white shadow">
                     <div className="px-4 w-full flex flex-col items-start gap-2">
                         <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
                     </div>
                     <Suspense fallback={<>Loading..</>}>
-                        <LineChart reports={currentYearReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
+                        <LineChart reports={lineChartFilteredReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
                     </Suspense>
                 </div>
 
