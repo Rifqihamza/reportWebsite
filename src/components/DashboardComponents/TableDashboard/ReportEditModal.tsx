@@ -197,6 +197,7 @@ export default function ReportEditModal() {
                     label="Nama Follow Up"
                     value={formState.follow_up_name}
                     onChange={(e) => updateField("follow_up_name", e.target.value)}
+                    max={30}
                 />
                 <CalendarField
                     label="Tanggal Temuan"
@@ -215,11 +216,12 @@ export default function ReportEditModal() {
 }
 
 // Input Text Field
-function InputField({ label, value, onChange, disabled = false }: {
+function InputField({ label, value, onChange, disabled = false, max = 191 }: {
     label: string;
     value: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
+    max?: number;
 }) {
     return (
         <div className="flex flex-col">
@@ -239,6 +241,7 @@ function InputField({ label, value, onChange, disabled = false }: {
                 onChange={onChange}
                 className="outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg disabled:border-gray-300"
                 disabled={disabled}
+                maxLength={max}
             />
         </div>
     );
