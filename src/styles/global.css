@@ -37,7 +37,7 @@
   border-radius: 10px;
 }
 
-body {
+body, html {
   font-family: Saira;
   overflow-x: hidden;
   overflow-y: auto;

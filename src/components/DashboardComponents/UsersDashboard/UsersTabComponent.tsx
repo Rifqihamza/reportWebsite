@@ -64,8 +64,8 @@ export default function UsersComponent() {
     };
 
     return (
-        <section>
-            <div className="block overflow-auto relative bg-white rounded-xl px-6 py-4">
+        <section className="overflow-y-auto overflow-x-hidden w-[90vw]">
+            <div className="hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
                 <h2 className="text-2xl font-bold mb-4">Daftar Akun Pengguna</h2>
                 <table className="w-full h-[70vh] max-h-[70vh]">
                     <thead>
@@ -101,6 +101,32 @@ export default function UsersComponent() {
                         )}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="md:hidden h-max flex flex-col items-center gap-4 w-full pr-4 box-border!">
+                {showUserAccountData.length > 0 ? (
+                    showUserAccountData.map((user, index) => (
+                        <div key={user.id} className="flex flex-col p-6 gap-2 bg-white w-full rounded-2xl">
+                            <p className="">{index + 1}. {user.username}</p>
+                            <div className="mt-2 flex flex-col gap-1">
+                                <p className=""><span>Role:</span> {user.role}</p>
+                                <p className="">
+                                    <span>Created At:</span>
+                                    {new Date(user.created_at).toLocaleDateString("id-ID")}
+                                </p>
+                            </div>
+                            <div className="flex flex-row items-center justify-center py-2 gap-2 border-b border-gray-300 h-full">
+                                <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl w-full">Edit</button>
+                                <span>|</span>
+                                <button className="bg-red-400 text-white px-4 py-1 rounded-xl w-full">Delete</button>
+                            </div>
+                        </div>
+                    ))
+                ) : doneFetching ? (
+                    <p>Tidak ada data pengguna yang tersedia</p>
+                ) : (
+                    <LoadingAnimation />
+                )}
             </div>
 
             <Dialog
