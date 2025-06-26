@@ -7,7 +7,7 @@ import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
 import { Dialog } from "primereact/dialog";
 
 export default function UsersComponent() {
-    const { setUsernameFilter, usernameFilter, showUserAccountData, setShowedUserAccountData: setShowUserAccountData, doneFetching } = useUserAccountHook();
+    const { setUsernameFilter, usernameFilter, showUserAccountData, setShowedUserAccountData: setShowUserAccountData, doneFetching, userAccountData } = useUserAccountHook();
     const { showMessage } = useMessageToastHook();
     const { isConnected } = useNetworkConnectivityHook();
     
@@ -122,7 +122,7 @@ export default function UsersComponent() {
                             </div>
                         ))
                     ) : doneFetching ? (
-                        <p>Tidak ada data pengguna yang tersedia</p>
+                        <p className="text-white text-center">{userAccountData.length > 0 ? "Tidak ada data pengguna yang cocok dengan pencarian." : "Tidak ada data pengguna yang tersedia."}</p>
                     ) : (
                         <LoadingAnimation />
                     )}
