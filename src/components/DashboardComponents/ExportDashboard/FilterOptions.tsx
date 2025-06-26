@@ -12,8 +12,8 @@ export default function FilterOptions() {
         <h1 className="text-white font-medium">2</h1>
       </div>
       <h1 className="text-xl text-white py-3 px-6 text-center">Opsi Filter</h1>
-      <div className="bg-[#ededed] h-full rounded-xl flex justify-center p-2  overflow-auto">
-        <Accordion activeIndex={0} className="w-full [&_a]:bg-white! p-4">
+      <div className="bg-[#ededed] h-full rounded-xl flex justify-center p-2 overflow-auto">
+        <Accordion activeIndex={0} className="w-full [&_a]:bg-white!">
           {(() => {
             const filterOptionsLength = Object.keys(filterOptions).length - 1;
             
@@ -23,7 +23,7 @@ export default function FilterOptions() {
               }
               const current_filter = filter[key as keyof ReportData] ?? [];
 
-              return <AccordionTab key={index} header={capitalize(key)} className={`flex flex-col border-2 border-black ${index < filterOptionsLength ? "[&.p-accordion-header]:border-b-0" : "[&.p-toggleable-content]:border-t-0"}`}>
+              return <AccordionTab key={index} header={capitalize(key)} className={`flex flex-col border-2 border-black ${index === 0 ? "[&.p-accordion-header]:rounded-t-2xl [&.p-accordion-header]:*:rounded-t-2xl!" : ""} ${index === filterOptionsLength ? "[&.p-toggleable-content]:rounded-b-2xl [&.p-toggleable-content]:*:rounded-b-2xl!" : ""} ${index < filterOptionsLength ? "[&.p-accordion-header]:border-b-0" : "[&.p-toggleable-content]:border-t-0"}`}>
                 {options.map((value, index) => {
                   return <button 
                     key={index} 

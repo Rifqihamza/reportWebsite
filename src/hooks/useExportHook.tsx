@@ -33,7 +33,7 @@ type UseExportType = {
 export const useExportHook = create<UseExportType>((set) => {
   return {
     // Default values
-    selectedRows: [],
+    selectedRows: Object.values(table_rows),
     selectedOutputType: ExportOutputType.CSV,
     dateRange: [null, null],
     filter: {...filterOptions, "key": [""]},
@@ -72,7 +72,7 @@ export const useExportHook = create<UseExportType>((set) => {
 
         // If not, add the row
         return {
-          selectedRows: Object.keys(table_rows) as (keyof ReportData)[],
+          selectedRows: Object.values(table_rows) as (keyof ReportData)[],
         };
       });
     },

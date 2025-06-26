@@ -2,7 +2,7 @@ import strftime from "strftime";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import UseReportDataHookEffect, { useReportDataHook } from "../../../hooks/shared/useReportData";
 import UseExportHookEffect, { useExportHook } from "../../../hooks/useExportHook";
-import { ExportOutputType, reporttype_to_string, table_rows, type ReportData } from "../../../types/variables";
+import { ExportOutputType, keyto_table_rows, reporttype_to_string, table_rows, type ReportData } from "../../../types/variables";
 import DateRangeOptions from "./DateRangeOptions";
 import OutputOptions from "./OutputOptions";
 import RowOptions from "./RowOptions";
@@ -49,10 +49,10 @@ export default function ExportComponent() {
     });
 
     // Filter out rows
-    const resultData: string[][] = [["No.", ...(selectedRows as string[])], ...(filteredReportData.map((value, index) => {
+    const resultData: string[][] = [["No.", ...(selectedRows.map((value) => keyto_table_rows[value]) as string[])], ...(filteredReportData.map((value, index) => {
       let result: string[] = [(index + 1).toString()];
       selectedRows.forEach((row) => {
-        result.push((table_rows[row] === "type" ? reporttype_to_string(value[table_rows[row]]) : value[table_rows[row]]) ?? "");
+        result.push((row === "type" ? reporttype_to_string(value[row]) : value[row]) ?? "");
       })
       return result;
     }))]
