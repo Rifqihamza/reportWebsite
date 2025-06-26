@@ -11,7 +11,7 @@ const PieChart = React.lazy(() => import("../../DashboardComponents/ChartPie/Pie
 const PercenComp = React.lazy(() => import("../../DashboardComponents/PercentContainer/PercentContComponent"));
 
 export default function GraphicChart() {
-    const { lineChartCategoryFilter: chartCategoryFilter, percentStatus } = usePieChartHook();
+    const { lineChartCategoryFilter, percentStatus } = usePieChartHook();
     const { insight } = useInsightHook();
     const { lineChartFilteredReports, chartTimeCategoryFilter, setChartTimeCategoryFilter } = useLineChartHook();
     const { percentCategory } = usePercentChartHook();
@@ -63,7 +63,7 @@ export default function GraphicChart() {
                         <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
                     </div>
                     <Suspense fallback={<>Loading..</>}>
-                        <LineChart reports={lineChartFilteredReports} colors={chartCategoryFilter ? [statusColorHex[reporttype_to_string(chartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
+                        <LineChart reports={lineChartFilteredReports} colors={lineChartCategoryFilter ? [statusColorHex[reporttype_to_string(lineChartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
                     </Suspense>
                 </div>
 
@@ -75,7 +75,7 @@ export default function GraphicChart() {
                         <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-white shadow">
                             <h1 className='font-bold uppercase tracking-wider'>Kategori</h1>
                             <Suspense fallback={<>Loading..</>}>
-                                <PieChart reportType={chartCategoryFilter} category={true} />
+                                <PieChart reportType={lineChartCategoryFilter} category={true} />
                             </Suspense>
                         </div>
 

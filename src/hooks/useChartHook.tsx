@@ -378,8 +378,16 @@ export function UseChartHookEffect() {
       return;
     }
     
-    const categoryStats: CategoryType[] = [];
-    const statusStats: CategoryType[] = [];
+    // Give early value for each stats
+    const categoryStats: CategoryType[] = Object.keys(ReportType).map((value) => ({
+      labels: value,
+      value: 0
+    }));
+    const statusStats: CategoryType[] = Object.keys(ReportStatus).map((value) => ({
+      labels: value,
+      value: 0
+    }));
+    
     const percenStats: Record<string, number> = {};
 
     reportData.forEach((data) => {
