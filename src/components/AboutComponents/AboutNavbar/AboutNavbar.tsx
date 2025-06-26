@@ -21,7 +21,7 @@ export default function AboutNavbar() {
         ${isScrolled ? 'fixed top-0 bg-white shadow-md shadow-gray-300 translate-0 px-6 py-4' : 'relative bg-white px-6 py-2'}`}
       >
         <a className="text-2xl font-thin tracking-wide cursor-pointer" href="#">E-LAPOR</a>
-        <button onClick={() => { window.location.href = "/loginPage" }} className="cursor-pointer font-extralight md:text-lg text-xl uppercase tracking-wider hover:bg-slate-900 hover:text-white py-2 px-8 rounded-lg duration-300 transition-colors">Login</button>
+        <button onClick={() => { window.location.href = "/loginPage" }} className="cursor-pointer font-extralight md:text-lg text-xl uppercase tracking-wider hover:bg-slate-900 hover:text-white py-2 px-4 rounded-lg duration-300 transition-colors">Login</button>
       </nav>
     </> 
   );
