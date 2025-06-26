@@ -10,41 +10,42 @@ import AboutFeedback from "../components/AboutComponents/AboutFeedback/AboutFeed
 <Layout pageType="faq">
   <AboutNavbar client:load />
   <div
-    class="overflow-hidden relative bg-white text-black px-10 md:px-30 w-full min-h-[90vh] md:min-h-[100vh] flex flex-col md:flex-row gap-2 md:gap-14 justify-evenly md:justify-between items-center"
+    class="overflow-hidden relative bg-white text-black py-2 px-10 md:px-30 w-full min-h-[90vh] md:min-h-[100vh] flex flex-col md:flex-row gap-4 md:gap-14 justify-evenly md:justify-between items-center transition-all duration-400"
   >
-    <div class="w-full h-full bg-slate-900 absolute top-0 left-1/2 bottom-0 rounded-full"></div>
+    <div
+      class="w-full h-full bg-slate-900 absolute md:top-0 md:left-1/2 md:bottom-0 -bottom-[30rem] md:rounded-full rounded-[6rem]"
+    >
+    </div>
     <!-- Short Desc -->
     <div class="z-10 text-[#1f324d]">
-      <h1 class="text-5xl text-center md:text-left font-extralight">e-Lapor</h1>
-      <p
-        class="text-md md:text-lg text-center md:text-left font-thin pt-1 pb-3"
-      >
+      <h1 class="text-4xl md:text-5xl text-center md:text-left font-extralight">
+        e-Lapor
+      </h1>
+      <p class="text-md md:text-lg text-center md:text-left font-thin pb-4">
         What is e-Lapor?
       </p>
       <p class="text-md md:text-xl font-thin max-w-md text-justify">
-        website yang memungkinkan kita melaporkan temuan yang ada di sekolah dan
-        mengorganisir semua nya di dalam suatu sistem terkendali agar <b
-          >memudahkan kita untuk melihat, menganalisis, dan membuat keputusan
-          berdasarkan data-data yang telah dikumpulkan</b
-        >
+        Platform ini dirancang untuk memfasilitasi pelaporan temuan di
+        lingkungan sekolah dan mengelolanya dalam satu sistem terintegrasi, guna
+        mendukung melihat, menganalisis dan pengambilan keputusan berbasis data.
       </p>
-      <div class="flex items-center gap-4 mt-0 md:mt-5">
+      <div
+        class="flex items-center md:justify-start justify-center mt-4 md:mt-5"
+      >
         <DirectButton label="Laporkan Sekarang!" client:only />
       </div>
     </div>
 
     <!-- Img -->
     <div
-      class="w-[70vw] h-[40vh] md:w-[30vw] md:h-[40vh] bg-[#1f324d] shadow-lg shadow-gray-600 py-7 px-2 rounded-xl relative"
+      class="w-[70vw] h-[40vh] md:w-[30vw] md:h-[40vh] bg-[#1f324d] shadow-lg shadow-gray-600 py-6 px-2 rounded-xl relative"
     >
       <div>
-        <span class="w-3 h-3 bg-red-600 rounded-full absolute top-2 left-2 z-50"
+        <span class="w-3 h-3 bg-red-600 rounded-full absolute top-2 left-2"
         ></span>
-        <span
-          class="w-3 h-3 bg-yellow-400 rounded-full absolute top-2 left-6 z-50"
+        <span class="w-3 h-3 bg-yellow-400 rounded-full absolute top-2 left-6"
         ></span>
-        <span
-          class="w-3 h-3 bg-green-500 rounded-full absolute top-2 left-10 z-50"
+        <span class="w-3 h-3 bg-green-500 rounded-full absolute top-2 left-10"
         ></span>
         <span
           class="text-center text-white text-sm absolute top-1 left-0 right-0"
@@ -60,9 +61,9 @@ import AboutFeedback from "../components/AboutComponents/AboutFeedback/AboutFeed
   </div>
 
   <div
-    class="bg-[#1f324d] text-white px-4 md:px-34 py-10 w-full min-h-[70vh] flex flex-col gap-2 items-center"
+    class="bg-slate-900 text-white px-10 md:px-34 py-10 w-full min-h-[70vh] flex flex-col gap-2 items-center"
   >
-    <h1 class="text-2xl md:text-5xl text-center font-thin pt-4">
+    <h1 class="text-2xl md:text-4xl text-center font-thin pt-4">
       Cara menggunakan <br class="inline md:hidden" />e-Lapor
     </h1>
     <p class="text-md md:text-xl text-center font-thin pb-10">
@@ -71,16 +72,16 @@ import AboutFeedback from "../components/AboutComponents/AboutFeedback/AboutFeed
     <div class="flex flex-col md:flex-row md:gap-8 gap-16 font-normal">
       <!-- As Student -->
       <div
-        class="bg-white/5 backdrop-blur-lg border border-white text-white rounded-2xl flex flex-col p-10 w-full max-w-md relative"
+        class="bg-white/5 backdrop-blur-lg border border-white/50 text-white shadow shadow-white rounded-2xl flex flex-col p-10 w-full max-w-md relative"
       >
         <div
-          class="bg-[#1f324d] border border-white rounded-full flex items-center justify-center w-20 h-20 mx-auto absolute -top-10 left-0 right-0"
+          class="bg-[#1f324d] border border-white/50 rounded-full flex items-center justify-center w-20 h-20 mx-auto absolute -top-10 left-0 right-0"
         >
           <i class="pi pi-user text-white text-2xl!"></i>
         </div>
         <div>
           <h1 class="text-center text-2xl mt-3">as Student</h1>
-          <ol class="list-decimal text-md space-y-4 mt-3">
+          <ol class="list-decimal text-md space-y-4 mt-3 text-sm md:text-lg">
             <li>
               Siswa mengklik tombol login di kanan atas yang kemudian dikirim ke
               halaman login.
@@ -98,16 +99,16 @@ import AboutFeedback from "../components/AboutComponents/AboutFeedback/AboutFeed
       </div>
       <!-- As Admin -->
       <div
-        class="bg-white/5 backdrop-blur-lg border border-white text-white rounded-2xl flex flex-col p-10 w-full max-w-md relative"
+        class="bg-white/5 backdrop-blur-lg border border-white/50 text-white shadow shadow-white rounded-2xl flex flex-col p-10 w-full max-w-md relative"
       >
         <div
-          class="bg-[#1f324d] border border-white rounded-full flex items-center justify-center w-20 h-20 mx-auto absolute -top-10 left-0 right-0"
+          class="bg-[#1f324d] border border-white/50 rounded-full flex items-center justify-center w-20 h-20 mx-auto absolute -top-10 left-0 right-0"
         >
           <i class="pi pi-user-plus text-white text-2xl!"></i>
         </div>
         <div>
           <h1 class="text-center text-2xl mt-3">as Admin</h1>
-          <ol class="list-decimal text-md space-y-4 mt-3">
+          <ol class="list-decimal text-md space-y-4 mt-3 text-sm md:text-lg">
             <li>
               Admin mengklik tombol login di kanan atas dan akan pergi ke
               halaman login.
@@ -143,9 +144,8 @@ import AboutFeedback from "../components/AboutComponents/AboutFeedback/AboutFeed
   <AboutFooter />
 </Layout>
 
-  <style is:global>
-    body {
-      background-color: #e3e3e3;
-    }
-  </style>
-</Layout>
+<style is:global>
+  body {
+    background-color: #e3e3e3;
+  }
+</style>
