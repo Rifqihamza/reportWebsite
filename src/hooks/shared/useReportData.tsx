@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { APIResultType, getReport } from "../../utils/api_interface";
 import { useMessageToastHook } from "./useMessageToast";
 import { useNetworkConnectivityHook } from "./useNetworkConnectivity";
+import UseUserAccountHookEffect, { useUserAccountHook } from "../useUserAccount";
 
 type UseReportDataType = {
   reportData: ReportData[] | null;
@@ -38,7 +39,7 @@ export default function UseReportDataHookEffect() {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       }
     });
-  }, []);
+  }, [isConnected]);
 
   return <></> ;
 }
