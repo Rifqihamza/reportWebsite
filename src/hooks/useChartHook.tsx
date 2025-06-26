@@ -285,7 +285,6 @@ export function UseChartHookEffect() {
       : Object.values(ReportType);
 
     if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Year) {
-      console.log("YEAR");
       listOfMonths.forEach((month) => {
         showedReportType.forEach((type) => {
           result.push({
@@ -371,7 +370,7 @@ export function UseChartHookEffect() {
       if (index !== -1) result[index].value += 1;
     });
 
-    if(result !== lineChartFilteredReports) setLineChartFilteredReports(result);
+    if(result !== lineChartFilteredReports) setLineChartFilteredReports([...result]);
   }, [reportData, chartTimeCategoryFilter, chartCategoryFilter, chartCampusFilter]);
 
   useEffect(() => {
