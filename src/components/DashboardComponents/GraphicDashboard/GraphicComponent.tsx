@@ -46,19 +46,19 @@ export default function GraphicChart() {
                 {/* Chart campus filter */}
                 <div className="md:hidden block w-full">
                     <Accordion>
-                        <AccordionTab header="Campus Filter" className="[&_.p-accordion-header-link]:bg-white!">
-                            <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full">
+                        <AccordionTab header="Campus Filter" className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:border-0! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4">
+                            <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full mt-4">
                                 <ChartLineCampusFilter />
                             </div>
                         </AccordionTab>
                     </Accordion>
                 </div>
-                <div className="md:flex hidden flex-row gap-4 p-4 bg-white justify-between">
+                <div className="md:flex hidden flex-row gap-4 p-4 bg-white justify-between rounded-2xl">
                     <ChartLineCampusFilter />
                 </div>
                 
                 {/* Line Chart */}
-                <div className="w-full px-4 py-2 rounded-2xl bg-white shadow">
+                <div className="w-full px-4 pb-2 pt-6 rounded-2xl bg-white shadow">
                     <div className="px-4 w-full flex flex-col items-start gap-2">
                         <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
                     </div>
