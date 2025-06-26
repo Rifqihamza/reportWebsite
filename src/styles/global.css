@@ -189,20 +189,20 @@ body {
 /* Mengatur elemen utama dropdown */
 .p-dropdown {
   width: 100%;
-  background-color: #E2DAD6 !important;
+  background-color: #e2dad6 !important;
   border: none;
   box-shadow: none;
 }
 
 /* Label teks di dalam dropdown */
 .p-dropdown-label {
-  background-color: #E2DAD6 !important;
+  background-color: #e2dad6 !important;
   color: black; /* ubah sesuai kebutuhan */
 }
 
 /* Trigger (ikon panah bawah) */
 .p-dropdown-trigger {
-  background-color: #E2DAD6 !important;
+  background-color: #e2dad6 !important;
   border-left: none;
 }
 
@@ -237,12 +237,12 @@ body {
 }
 
 .p-progressbar {
-  background-color: #F5EDED;
+  background-color: #f5eded;
   border-radius: 0.75rem;
 }
 
 .p-progressbar-value {
-  background-color: #7FA1C3;
+  background-color: #7fa1c3;
   border-radius: 0.75rem;
 }
 
