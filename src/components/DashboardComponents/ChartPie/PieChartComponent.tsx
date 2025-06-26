@@ -46,7 +46,7 @@ const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
         chart: {
             type: 'pie' as const,
             data: series,
-            events: {
+            events: category ?{
                 dataPointSelection: function(event: MouseEvent, chartContext: ApexCharts, config: {
                     seriesIndex: number;
                     dataPointIndex: number;
@@ -58,7 +58,7 @@ const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
 
                     setChartCategoryFilter((selectedLabel && selectedLabel != reportType) ? selectedLabel : null);
                 }
-            },
+            } : {} // Prevent data point selection events if its not category pie chart,
         },
         labels,
         colors,
