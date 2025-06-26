@@ -6,6 +6,7 @@ export default function AboutNavbar() {
   useEffect(() => {
     function handleScroll() {
       setIsScrolled(window.scrollY > 0);
+      console.log(window.scrollY);
     }
 
     window.addEventListener("scroll", handleScroll);
@@ -22,6 +23,6 @@ export default function AboutNavbar() {
         <a className="text-2xl font-thin tracking-wide cursor-pointer" href="#">E-LAPOR</a>
         <button onClick={() => { window.location.href = "/loginPage" }} className="cursor-pointer font-extralight md:text-lg text-xl uppercase tracking-wider hover:bg-slate-900 hover:text-white py-2 px-8 rounded-lg duration-300 transition-colors">Login</button>
       </nav>
-    </>
+    </> 
   );
 }
