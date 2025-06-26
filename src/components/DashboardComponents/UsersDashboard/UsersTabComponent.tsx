@@ -53,7 +53,7 @@ export default function UsersComponent() {
     return (
         <>
             <UseUserAccountHookEffect />
-            <section className="overflow-y-auto overflow-x-hidden w-[90vw]">
+            <section className="overflow-y-auto overflow-x-hidden w-full">
                 <div className="mb-4 w-full">
                     <input
                         type="text"
@@ -66,27 +66,27 @@ export default function UsersComponent() {
                 
                 <div className="hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
                     <h2 className="text-2xl font-bold mb-4">Daftar Akun Pengguna</h2>
-                    <table className="w-full h-[70vh] max-h-[70vh]">
+                    <table className="w-full">
                         <thead>
                             <tr>
-                            <th colSpan={5} className="border-b border-gray-300">No.</th>
-                                <th colSpan={5} className="border-b border-gray-300">Nama</th>
-                                <th colSpan={5} className="border-b border-gray-300">Role</th>
-                                <th colSpan={5} className="border-b border-gray-300">Created At</th>
-                                <th colSpan={5} className="border-b border-gray-300">Action</th>
+                            <th className="border-b border-gray-300 w-10">No.</th>
+                                <th className="p-4 text-left border-b border-gray-300">Nama</th>
+                                <th className="p-4 text-left border-b border-gray-300">Role</th>
+                                <th className="p-4 text-left border-b border-gray-300">Created At</th>
+                                <th className="p-4 text-center border-b border-gray-300">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {showUserAccountData.length > 0 ? (
                                 showUserAccountData.map((user, index) => (
-                                    <tr key={user.id}>
-                                        <td colSpan={5} className="text-center border-b border-gray-300">{index + 1}</td>
-                                        <td colSpan={5} className="text-center border-b border-gray-300">{user.username}</td>
-                                        <td colSpan={5} className="text-center border-b border-gray-300">{user.role}</td>
-                                        <td colSpan={5} className="text-center border-b border-gray-300">
+                                    <tr key={user.id} className="border-b border-gray-300">
+                                        <td className="p-4 text-center">{index + 1}</td>
+                                        <td className="p-4 text-left truncate">{user.username}</td>
+                                        <td className="p-4 text-left">{user.role}</td>
+                                        <td className="p-4 text-left">
                                             {new Date(user.created_at).toLocaleDateString("id-ID")}
                                         </td>
-                                        <td colSpan={5} className="flex flex-row items-center justify-center gap-2 border-b border-gray-300 h-full">
+                                        <td className="flex flex-row items-center justify-center gap-2 p-4 h-full">
                                             <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl">Edit</button>
                                             <span>|</span>
                                             <button className="bg-red-400 text-white px-4 py-1 rounded-xl">Delete</button>
@@ -94,9 +94,9 @@ export default function UsersComponent() {
                                     </tr>
                                 ))
                             ) : doneFetching ? (
-                                <tr><td colSpan={25} className="text-center py-4">Tidak ada data pengguna yang tersedia.</td></tr>
+                                <tr><td colSpan={5} className="text-center py-4">Tidak ada data pengguna yang tersedia.</td></tr>
                             ) : (
-                                <tr><td colSpan={25}><LoadingAnimation /></td></tr>
+                                <tr><td colSpan={5}><LoadingAnimation /></td></tr>
                             )}
                         </tbody>
                     </table>
