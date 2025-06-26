@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import AboutNavbar from "../components/AboutComponents/AboutNavbar/AboutNavbar";
 import DirectButton from "../components/GlobalComponents/DirectButton/DirectButton";
 import FaqList from "../components/AboutComponents/FaqList/FaqList";
+import AboutFooter from "../components/AboutComponents/AboutFooter/AboutFooter.astro";
+import AboutFeedback from "../components/AboutComponents/AboutFeedback/AboutFeedback.astro";
 ---
 
 <Layout pageType="faq">
@@ -137,6 +139,9 @@ import FaqList from "../components/AboutComponents/FaqList/FaqList";
       <FaqList client:only />
     </div>
   </div>
+  <AboutFeedback />
+  <AboutFooter />
+</Layout>
 
   <style is:global>
     body {

@@ -78,7 +78,6 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
   }
 
   function handleError(event: string) {
-    console.log("ERROR : " + event);
     onError ? onError() : "";
   }
 
