@@ -94,8 +94,6 @@ export default function ReportFormComponent() {
       showMessage("Unauthroized report detected!", "error", "You've been detected using a service without proper authorization. Please login again.");
     } else if (result == APIResultType.InternalServerError) {
       showMessage("There's an unexpected error occured in the server side!", "error", "Sorry for the inconvenient, please try again later.");
-    } else {
-      console.log(result);
     }
 
     toastProgress.current!.clear();
@@ -265,11 +263,11 @@ export default function ReportFormComponent() {
                   <p className={`mb-1 text-sm text-${image ? "black" : "black"}`} id="file-name-display">
                     {image ? image.name : "Klik untuk upload foto"}
                   </p>
-                  <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 5MB)"}</p>
+                  <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 8MB)"}</p>
                 </div>
 
                 <input
-                  autoComplete="off" id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < 5000000) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", "Please put an image smaller than 5MB"))) : "" }} />
+                  autoComplete="off" id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < 8000000) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", "Please put an image smaller than 8MB"))) : "" }} />
               </label>
             </div>
           </div>

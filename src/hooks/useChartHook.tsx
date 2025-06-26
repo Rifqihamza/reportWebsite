@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import { ReportStatus, ReportType, reporttype_to_string, string_to_reporttype } from "../types/variables";
+import { Campus, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype } from "../types/variables";
 import { useReportDataHook } from "./shared/useReportData";
 import { useEffect } from "react";
 import strftime from "strftime";
 import { useReportConfigHook } from "./useReportConfig";
 
-export enum LineChartFilterOption {
+export enum LineChartTimeCategoryOption {
   Year = "This Year",
   Month = "This Month",
   Week = "This Week",
@@ -86,23 +86,36 @@ export const usePieChartHook = create<UsePieChartype>((set) => {
 
 // -- Line Chart States
 type UseLineChartType = {
-  currentYearReports: LineChartValueType[];
-  setCurrentYearReports: (newCurrentYearReports: LineChartValueType[]) => void;
+  lineChartFilteredReports: LineChartValueType[];
+  setLineChartFilteredReports: (newCurrentYearReports: LineChartValueType[]) => void;
 
-  chartFilter: LineChartFilterOption;
-  setChartFilter: (newChartFilter: LineChartFilterOption) => void;
+  chartTimeCategoryFilter: LineChartTimeCategoryOption;
+  setChartTimeCategoryFilter: (newChartFilter: LineChartTimeCategoryOption) => void;
+
+  chartCampusFilter: Campus[]
+  toggleChartCampusFilter: (selectedCampus: Campus) => void
 };
 
 export const useLineChartHook = create<UseLineChartType>((set) => {
   return {
-    currentYearReports: [],
-    setCurrentYearReports(newCurrentYearReports) {
-      set(() => ({ currentYearReports: newCurrentYearReports }));
+    lineChartFilteredReports: [],
+    setLineChartFilteredReports(newCurrentYearReports) {
+      set(() => ({ lineChartFilteredReports: newCurrentYearReports }));
     },
 
-    chartFilter: LineChartFilterOption.Year,
-    setChartFilter(newChartFilter) {
-      set(() => ({ chartFilter: newChartFilter }));
+    chartTimeCategoryFilter: LineChartTimeCategoryOption.Year,
+    setChartTimeCategoryFilter(newChartFilter) {
+      set(() => ({ chartTimeCategoryFilter: newChartFilter }));
+    },
+
+    chartCampusFilter: [...Object.values(Campus)],
+    toggleChartCampusFilter(selectedCampus) {
+        set((state) => {
+
+          return {
+            chartCampusFilter: state.chartCampusFilter.includes(selectedCampus) ? state.chartCampusFilter.filter((value) => value !== selectedCampus) : [...state.chartCampusFilter, selectedCampus]
+          }
+        });
     },
   };
 });
@@ -141,7 +154,7 @@ export const useInsightHook = create<UseInsightType>((set) => {
 
 
 // -- REACT GLOBAL USE EFFECT COMPONENT
-const listOfMonths = [
+export const listOfMonths = [
   "Jan",
   "Feb",
   "Mar",
@@ -156,7 +169,7 @@ const listOfMonths = [
   "Des",
 ];
 const listOfNumOfDates = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
-const listOfDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+export const listOfDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const listOfHari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 
 export function UseChartHookEffect() {
@@ -168,7 +181,7 @@ export function UseChartHookEffect() {
     setPieStatus,
   } = usePieChartHook();
   const { setInsight } = useInsightHook();
-  const { chartFilter, setCurrentYearReports, currentYearReports } = useLineChartHook();
+  const { chartTimeCategoryFilter, setLineChartFilteredReports, lineChartFilteredReports, chartCampusFilter } = useLineChartHook();
   const { setPercentCategory } = usePercentChartHook();
   const { picNamesOptions } = useReportConfigHook();
 
@@ -271,7 +284,7 @@ export function UseChartHookEffect() {
       ? [chartCategoryFilter]
       : Object.values(ReportType);
 
-    if (chartFilter === LineChartFilterOption.Year) {
+    if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Year) {
       listOfMonths.forEach((month) => {
         showedReportType.forEach((type) => {
           result.push({
@@ -281,7 +294,7 @@ export function UseChartHookEffect() {
           });
         });
       });
-    } else if (chartFilter === LineChartFilterOption.Month) {
+    } else if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Month) {
       for (let i = 1; i <= listOfNumOfDates[currentDate.getMonth()]; i++) {
         showedReportType.forEach((type) => {
           result.push({
@@ -291,7 +304,7 @@ export function UseChartHookEffect() {
           });
         });
       }
-    } else if (chartFilter === LineChartFilterOption.Week) {
+    } else if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Week) {
       listOfDay.forEach((day) => {
         showedReportType.forEach((type) => {
           result.push({
@@ -301,7 +314,7 @@ export function UseChartHookEffect() {
           });
         });
       });
-    } else if (chartFilter === LineChartFilterOption.Today) {
+    } else if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Today) {
       for (let hour = 0; hour < 24; hour++) {
         showedReportType.forEach((type) => {
           result.push({
@@ -312,32 +325,44 @@ export function UseChartHookEffect() {
         });
       }
     }
-
+    
     const filtered = reportData.filter((value) => {
+      // Category Filter
       if (chartCategoryFilter && value.type !== chartCategoryFilter) {
-        return;
+        return false;
       }
 
+      // Campus Filter
+      if(!value.campus || !chartCampusFilter.includes(value.campus)) {
+        return false;
+      }
+
+      // Date Filter
       const reportDate = new Date(value.created_at);
       let format = "";
 
-      if (chartFilter === LineChartFilterOption.Today) format = "%d%m";
-      else if (chartFilter === LineChartFilterOption.Month) format = "%m";
-      else if (chartFilter === LineChartFilterOption.Week) format = "%W";
+      if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Today) format = "%d%m";
+      else if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Month) format = "%m";
+      else if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Week) format = "%W";
 
       format += "%y";
 
-      return strftime(format, reportDate) === strftime(format, currentDate);
-    });
+      if(strftime(format, reportDate) !== strftime(format, currentDate)) {
+        return false;
+      }
+
+      // Pass all of the filter
+      return true;
+    })
 
     filtered.forEach((data) => {
       const date = new Date(data.created_at);
       let label = "";
 
-      if (chartFilter === LineChartFilterOption.Year) label = listOfMonths[date.getMonth()];
-      else if (chartFilter === LineChartFilterOption.Month) label = date.getDate().toString();
-      else if (chartFilter === LineChartFilterOption.Week) label = strftime("%a", date);
-      else if (chartFilter === LineChartFilterOption.Today) label = strftime("%k", date);
+      if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Year) label = listOfMonths[date.getMonth()];
+      else if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Month) label = date.getDate().toString();
+      else if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Week) label = strftime("%a", date);
+      else if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Today) label = strftime("%k", date);
 
       const index = result.findIndex(
         (r) => r.labels === label && r.type === reporttype_to_string(data.type)
@@ -345,20 +370,24 @@ export function UseChartHookEffect() {
       if (index !== -1) result[index].value += 1;
     });
 
-    if (chartFilter === LineChartFilterOption.Year) {
-      result.sort((a, b) => listOfMonths.indexOf(a.labels) - listOfMonths.indexOf(b.labels));
-    }
-
-    setCurrentYearReports(result);
-  }, [reportData, chartFilter, chartCategoryFilter]);
+    if(result !== lineChartFilteredReports) setLineChartFilteredReports([...result]);
+  }, [reportData, chartTimeCategoryFilter, chartCategoryFilter, chartCampusFilter]);
 
   useEffect(() => {
     if(!reportData) {
       return;
     }
     
-    const categoryStats: CategoryType[] = [];
-    const statusStats: CategoryType[] = [];
+    // Give early value for each stats
+    const categoryStats: CategoryType[] = Object.keys(ReportType).map((value) => ({
+      labels: value,
+      value: 0
+    }));
+    const statusStats: CategoryType[] = Object.keys(ReportStatus).map((value) => ({
+      labels: value,
+      value: 0
+    }));
+    
     const percenStats: Record<string, number> = {};
 
     reportData.forEach((data) => {

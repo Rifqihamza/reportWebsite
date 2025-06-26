@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+
+const maxYAxisSnapLength = 10;
 
 interface Report {
     type: string;
@@ -13,8 +15,9 @@ interface LineChartProps {
 }
 
 const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
-
-    const categories = Array.from(new Set(reports.map(r => r.labels)));
+    const categories = Array.from(new Set([...reports].map(r => {
+        return r.labels
+    })));
     const types = Array.from(new Set(reports.map(r => r.type)));
 
     const grouped: Record<string, Record<string, number>> = {};
@@ -49,7 +52,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
             categories,
         },
         yaxis: {
-            max: reports.length > 0 ? ((reports.length > 50 ? 5 : 2) * Math.ceil((reports.sort((a, b) => b.value - a.value)[0].value / (reports.length > 50 ? 5 : 2)) + 0.1)) : 0
+            max: reports.length > 0 ? (maxYAxisSnapLength * Math.ceil((reports.sort((a, b) => b.value - a.value)[0].value / maxYAxisSnapLength) + 0.1)) : 0
         },
         markers: {
             size: 4,

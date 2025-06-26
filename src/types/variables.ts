@@ -118,6 +118,19 @@ export const table_rows: {
     "Kampus": "campus",
 }
 
+export const keyto_table_rows: Partial<{
+    [key in (keyof ReportData)]: string
+}> = {
+    "status": "Status",
+    "created_at": "Tanggal",
+    "submitted_by": "Nama Pelapor",
+    "message": "Laporan",
+    "location_name": "Lokasi",
+    "pic_name": "PIC",
+    "type": "Kategori",
+    "campus": "Kampus",
+}
+
 // Other things
 export const statusColorHex: Record<string, string> = {
     NotStarted: "#fca5a5", // Tailwind bg-red-300
