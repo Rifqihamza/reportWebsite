@@ -53,8 +53,8 @@ export default function UsersComponent() {
     return (
         <>
             <UseUserAccountHookEffect />
-            <section className="overflow-y-auto overflow-x-hidden w-full">
-                <div className="mb-4 w-full">
+            <section className="overflow-y-auto overflow-x-hidden w-full h-full flex flex-col">
+                <div className="mb-4 w-full h-fit">
                     <input
                         type="text"
                         id="search-input"
@@ -64,7 +64,7 @@ export default function UsersComponent() {
                     />
                 </div>
                 
-                <div className="hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4">
+                <div className="hidden md:block h-full overflow-auto relative bg-white rounded-xl px-6 py-4">
                     <h2 className="text-2xl font-bold mb-4">Daftar Akun Pengguna</h2>
                     <table className="w-full">
                         <thead>
