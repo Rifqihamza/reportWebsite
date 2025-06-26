@@ -9,6 +9,7 @@ import ToastMessage from "../components/GlobalComponents/ToastMessage/ToastMessa
 import CheckConnection from "../components/GlobalComponents/CheckConnection/CheckConnection";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
+import Analytics from '@vercel/analytics/astro'
 
 const { pageType = "form" } = Astro.props;
 ---
@@ -57,3 +58,4 @@ const { pageType = "form" } = Astro.props;
 </html>
 
 <SpeedInsights />
+<Analytics />

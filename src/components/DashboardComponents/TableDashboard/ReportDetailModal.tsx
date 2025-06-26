@@ -57,9 +57,9 @@ export default function ReportDetailModal() {
             <div ref={backgroundElement} className={`bg-black/70 z-20 h-full fixed top-0 left-0 right-0 bottom-0 duration-1000 transition-opacity ${!detailId && "hidden"}`} />
 
             {/* Modal content */}
-            <div className={(detailId ? "visible pointer-events-auto bottom-0" : "invisible pointer-events-none -bottom-[50rem]") +
-                " left-1/2 translate-y-[1rem] -translate-x-1/2 duration-1000 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] " +
-                "lg:max-h-[100vh] min-h-[90vh] max-h-[90vh] px-4 p-8 rounded-t-3xl z-50 flex flex-col space-y-5 overflow-x-hidden overflow-y-auto md:overflow-y-hidden"}>
+            <div className={(detailId ? "visible pointer-events-auto top-0 scale-100 opacity-100" : "invisible pointer-events-none top-0 scale-50 opacity-0") +
+                " left-1/2 translate-y-[2rem] -translate-x-1/2 duration-200 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] " +
+                "lg:max-h-[100vh] min-h-[90vh] max-h-[90vh] px-4 p-8 rounded-3xl z-50 flex flex-col space-y-5 overflow-x-hidden overflow-y-auto md:overflow-y-hidden"}>
 
                 {/* Close Button Modal */}
                 <div className="absolute top-4 right-4 md:top-7 md:right-7">
