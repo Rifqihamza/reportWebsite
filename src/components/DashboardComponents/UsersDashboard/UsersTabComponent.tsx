@@ -102,15 +102,15 @@ export default function UsersComponent() {
                     </table>
                 </div>
 
-                <div className="md:hidden h-max flex flex-col items-center gap-4 w-full pr-4 box-border!">
+                <div className="md:hidden h-max flex flex-col items-center gap-4 w-full box-border!">
                     {showUserAccountData.length > 0 ? (
-                        showUserAccountData.map((user, index) => (
+                        showUserAccountData.map((user) => (
                             <div key={user.id} className="flex flex-col p-6 gap-2 bg-white w-full rounded-2xl">
-                                <p className="">{index + 1}. {user.username}</p>
-                                <div className="mt-2 flex flex-col gap-1">
-                                    <p className=""><span>Role:</span> {user.role}</p>
-                                    <p className="">
-                                        <span>Created At:</span>
+                                <p><span className="font-medium">Nama:</span> {user.username}</p>
+                                <div className="flex flex-col gap-1">
+                                    <p><span className="font-medium">Role:</span> {user.role}</p>
+                                    <p>
+                                        <span className="font-medium">Created At:</span>
                                         {new Date(user.created_at).toLocaleDateString("id-ID")}
                                     </p>
                                 </div>

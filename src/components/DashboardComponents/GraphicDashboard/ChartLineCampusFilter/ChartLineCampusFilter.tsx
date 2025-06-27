@@ -1,5 +1,5 @@
-import { useLineChartHook } from "../../../hooks/useChartHook";
-import { Campus } from "../../../types/variables";
+import { useLineChartHook } from "../../../../hooks/useChartHook";
+import { Campus } from "../../../../types/variables";
 
 export default function ChartLineCampusFilter() {
   const { chartCampusFilter, toggleChartCampusFilter } = useLineChartHook();

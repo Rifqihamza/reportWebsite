@@ -109,13 +109,10 @@ export const table_rows: {
     [key: string]: (keyof ReportData)
 } = {
     "Status": "status",
-    "Tanggal": "created_at",
-    "Nama Pelapor": "submitted_by",
+    "Nama": "submitted_by",
     "Laporan": "message",
-    "Lokasi": "location_name",
-    "PIC": "pic_name",
-    "Kategori": "type",
     "Kampus": "campus",
+    "Tanggal": "created_at",
 }
 
 export const keyto_table_rows: Partial<{
@@ -143,6 +140,6 @@ export const statusColorHex: Record<string, string> = {
 };
 
 export enum ExportOutputType {
-  Excel = "Excel",
-  CSV = "CSV",
+    Excel = "Excel",
+    CSV = "CSV",
 }

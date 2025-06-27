@@ -1,7 +1,7 @@
 import React, { type Dispatch, type SetStateAction } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { statusColorHex, string_to_reporttype, type ReportType } from "../../../types/variables";
-import { usePieChartHook } from "../../../hooks/useChartHook";
+import { statusColorHex, string_to_reporttype, type ReportType } from "../../../../types/variables";
+import { usePieChartHook } from "../../../../hooks/useChartHook";
 interface ApexInternalConfig {
   config: {
     labels: string[];

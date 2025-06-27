@@ -52,35 +52,27 @@ export default function ReportDesktopTable() {
                         return <>
                             {showedReportData.map((report, index) => (
                                 <tr key={index} className="" data-report-id={report.id}>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap min-w-[13rem] max-w-[13rem]">
+
+                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap">
                                         <span
                                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                                         >
                                             {report.status}
                                         </span>
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm min-w-[13rem] max-w-[13rem] text-gray-600">
-                                        {formatDate(report.created_at)}
-                                    </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 min-w-[13rem] max-w-[13rem] truncate">
+                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 truncate">
                                         {report.submitted_by}
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 min-w-[13rem] max-w-[13rem] truncate">
+                                    <td className="px-2 py-3 border-b border-gray-300 text-sm text-gray-600 truncate">
                                         {report.message}
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm text-gray-600 min-w-[13rem] max-w-[13rem] truncate">
-                                        {report.location_name}
-                                    </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm text-gray-600 min-w-[13rem] max-w-[13rem] truncate">
-                                        {report.pic_name || "Belum ditentukan"}
-                                    </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm text-gray-600 min-w-[13rem] max-w-[13rem]">
-                                        {reporttype_to_string(report.type)}
-                                    </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap min-w-[13rem] max-w-[13rem]">
+                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap">
                                         {report.campus}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center border-b border-gray-300 min-w-[13rem] max-w-[13rem]">
+                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm text-gray-600">
+                                        {formatDate(report.created_at)}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center border-b border-gray-300">
                                         <button
                                             className="bg-[#1f324d] hover:bg-[#6FA9E3] px-3 py-1 rounded-xl duration-300"
                                             onClick={() => handleDetail(report.id)}

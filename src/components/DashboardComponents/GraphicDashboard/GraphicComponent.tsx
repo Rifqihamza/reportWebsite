@@ -4,10 +4,10 @@ import { Dropdown } from "primereact/dropdown";
 import { LineChartTimeCategoryOption, UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../hooks/useChartHook";
 import UseReportDataHookEffect from "../../../hooks/shared/useReportData";
 import { Accordion, AccordionTab } from 'primereact/accordion';
-import ChartLineCampusFilter from "../ChartLineCampusFilter/ChartLineCampusFilter";
+import ChartLineCampusFilter from "./ChartLineCampusFilter/ChartLineCampusFilter";
 
-const LineChart = React.lazy(() => import("../../DashboardComponents/ChartLine/LineChartComponent"));
-const PieChart = React.lazy(() => import("../../DashboardComponents/ChartPie/PieChartComponent"));
+const LineChart = React.lazy(() => import("./ChartLine/LineChartComponent"));
+const PieChart = React.lazy(() => import("./ChartPie/PieChartComponent"));
 const PercenComp = React.lazy(() => import("../../DashboardComponents/PercentContainer/PercentContComponent"));
 
 export default function GraphicChart() {
@@ -21,7 +21,7 @@ export default function GraphicChart() {
         <>
             <UseReportDataHookEffect />
             <UseChartHookEffect />
-            <div className='flex flex-col gap-4 mx-4'>
+            <div className='flex flex-col gap-4'>
                 {/* Time selection */}
                 <div className="md:hidden block w-full">
                     <Dropdown
