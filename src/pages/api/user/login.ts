@@ -20,7 +20,7 @@ export async function POST({ request }: APIContext) {
         user = await prisma.users.findFirst({
             where: {
                 username: {
-                    equals: username,
+                    equals: username.toLowerCase(),
                 }
             },
         })
@@ -44,7 +44,7 @@ export async function POST({ request }: APIContext) {
     }
 
     // Generate and Send user token
-    const user_token = generate_user_token(user.username);
+    const user_token = generate_user_token(user.username.toLowerCase());
     const user_token_cookie = cookie.serialize("user_token", user_token, {
         httpOnly: true,
         path: '/',

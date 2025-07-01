@@ -9,59 +9,13 @@ import { APIResultType } from "./api_interface";
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// REMOVE THIS AFTER DONE OKAY? :D
-const location_data: {
-    [key in Campus]: string[]
-} = {
-    "MM": [
-
-    ],
-    "PD": [
-
-    ],
-    "PATI": [
-
-    ],
-    "AMI": [
-
-    ],
-    "MOJO": [
-
-    ],
-    "SM": [
-
-    ],
-    "BBL": [
-
-    ],
-    "KLTN": [
-
-    ]
-}
-
 // First Initialization
 export async function first_initialization() {
     if (done_initialization) {
         return;
     }
-    
-    // const result: {
-    //     location: string,
-    //     campus_name: Campus
-    // }[] = [];
-    // Object.entries(location_data).forEach(([campus, location_names]) => {
-    //     location_names.forEach((location_name) => {
-    //         result.push({
-    //             location: location_name,
-    //             campus_name: (campus as Campus)
-    //         });
-    //     })
-    // });
-    
-    // await prisma.report_Location.createMany({
-    //     data: result
-    // })
-    
+
+    console.log("SERVER INITALIZATION IS DONE!");
     done_initialization = true;
 
     configDotenv();
