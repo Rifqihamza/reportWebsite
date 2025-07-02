@@ -36,9 +36,9 @@ import SidebarToggle from "./DashboardPage/_SideBarToggle";
           {/* Scrollable Content */}
           <div class="flex-1 overflow-y-auto">
               <WelcomePage client:load />
-              <ReportTablePage client:load />
-              <StatisticsPage client:load />
-              <ExportPage client:load />
+              <ReportTablePage client:only />
+              <StatisticsPage client:only />
+              <ExportPage client:only />
               <UsersPage client:load />
               <SettingPage client:load />
           </div>
