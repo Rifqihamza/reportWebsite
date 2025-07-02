@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useExportHook } from "../../../hooks/useExportHook";
-import { table_rows, type ReportData } from '../../../types/variables';
+import { useExportHook } from "../../../../hooks/useExportHook";
+import { table_rows, type ReportData } from '../../../../types/variables';
 
 
 export default function RowOptions() {
@@ -9,10 +9,6 @@ export default function RowOptions() {
     value: keyof ReportData
   })[] = Object.entries(table_rows).map((value) => ({ label: value[0], value: value[1] }));
   const { toggleAllRow, toggleRow, selectedRows } = useExportHook();
-
-  useEffect(() => {
-    console.log(selectedRows);
-  }, [selectedRows]);
   
   return <>
     <div className="bg-[#1f324d] w-full h-full rounded-xl shadow-md shadow-gray-400 row-span-3 flex flex-col relative">

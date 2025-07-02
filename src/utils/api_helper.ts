@@ -15,7 +15,7 @@ export async function first_initialization() {
         return;
     }
 
-    console.log("SERVER INITALIZATION IS DONE!");
+    console.info("SERVER INITALIZATION IS DONE!");
     done_initialization = true;
 
     configDotenv();

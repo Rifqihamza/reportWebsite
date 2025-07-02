@@ -5,8 +5,10 @@ import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
 import { Dialog } from "primereact/dialog";
+import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 
-export default function UsersComponent() {
+export default function UsersPage() {
+    const { activeTab } = useDashboardNavbarHook();
     const { setUsernameFilter, usernameFilter, showUserAccountData, setShowedUserAccountData: setShowUserAccountData, doneFetching, userAccountData } = useUserAccountHook();
     const { showMessage } = useMessageToastHook();
     const { isConnected } = useNetworkConnectivityHook();
@@ -17,7 +19,7 @@ export default function UsersComponent() {
         username: "",
         password: "",
     });
-
+    
     useEffect(() => {
         if (!isConnected) return;
     }, []);
@@ -49,6 +51,11 @@ export default function UsersComponent() {
             showMessage("Gagal update user", "error", "Terjadi kesalahan saat memperbarui data pengguna.");
         }
     };
+    
+
+    if(activeTab !== 4) {
+        return <></>;
+    }
 
     return (
         <>

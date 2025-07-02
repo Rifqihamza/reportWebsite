@@ -1,13 +1,20 @@
-import ReportDesktopTable from "./ReportDesktopTable";
-import ReportDetailModal from "./ReportDetailModal";
-import ReportPagination from "./ReportPagination";
-import ReportEditModal from "./ReportEditModal";
-import ReportMobileTable from "./ReportMobileTable";
+import ReportDesktopTable from "./Desktop/ReportDesktopTable";
+import ReportDetailModal from "./Modals/ReportDetailModal";
+import ReportPagination from "./Toolbar/ReportPagination";
+import ReportEditModal from "./Modals/ReportEditModal";
+import ReportMobileTable from "./Mobile/ReportMobileTable";
+
+
+import { ReportHookEffect } from "../../../hooks/useReportHook";
 
 
 export default function ReportListComponent() {
   return (
     <>
+      {/* Reload Report Data */}
+      <ReportHookEffect />
+
+    
       {/* Desktop Table View */}
       <ReportDesktopTable />
 

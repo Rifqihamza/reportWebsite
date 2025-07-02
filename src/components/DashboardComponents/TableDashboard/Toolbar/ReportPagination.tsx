@@ -1,5 +1,5 @@
 import React from 'react';
-import { useReportPaginationHook } from "../../../hooks/useReportHook";
+import { useReportPaginationHook } from "../../../../hooks/useReportHook";
 
 interface ReportPaginationProps {
 }

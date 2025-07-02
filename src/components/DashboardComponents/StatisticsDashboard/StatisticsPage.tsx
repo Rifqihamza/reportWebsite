@@ -4,18 +4,27 @@ import { Dropdown } from "primereact/dropdown";
 import { LineChartTimeCategoryOption, UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../hooks/useChartHook";
 import UseReportDataHookEffect from "../../../hooks/shared/useReportData";
 import { Accordion, AccordionTab } from 'primereact/accordion';
-import ChartLineCampusFilter from "../ChartLineCampusFilter/ChartLineCampusFilter";
+import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 
-const LineChart = React.lazy(() => import("../../DashboardComponents/ChartLine/LineChartComponent"));
-const PieChart = React.lazy(() => import("../../DashboardComponents/ChartPie/PieChartComponent"));
-const PercenComp = React.lazy(() => import("../../DashboardComponents/PercentContainer/PercentContComponent"));
+const LineChart = React.lazy(() => import("./LineChartComponent"));
+const PieChart = React.lazy(() => import("./PieChartComponent"));
+const PercenComp = React.lazy(() => import("./PercentContComponent"));
 
-export default function GraphicChart() {
+export default function StatisticsPage() {
+    const { activeTab } = useDashboardNavbarHook();
     const { lineChartCategoryFilter, percentStatus } = usePieChartHook();
     const { insight } = useInsightHook();
-    const { lineChartFilteredReports, chartTimeCategoryFilter, setChartTimeCategoryFilter } = useLineChartHook();
+    const { chartCampusFilter, toggleChartCampusFilter, lineChartFilteredReports, chartTimeCategoryFilter, setChartTimeCategoryFilter } = useLineChartHook();
     const { percentCategory } = usePercentChartHook();
+
     const options = Object.values(LineChartTimeCategoryOption);
+    const LineChartFilter = <>{Object.values(Campus).map((campus, index) => {
+        return <button key={index} className={`hover:bg-gray-500 p-4 rounded-2xl duration-200 w-full border-2 border-[#1f324d] ${chartCampusFilter.includes(campus) ? "bg-[#1f324d]! text-white!" : ""}`} onClick={() => toggleChartCampusFilter(campus)}>{campus}</button>
+    })}</>;
+
+    if(activeTab !== 2) {
+        return <></>;
+    }
 
     return (
         <>
@@ -48,13 +57,13 @@ export default function GraphicChart() {
                     <Accordion>
                         <AccordionTab header="Campus Filter" className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:border-0! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4">
                             <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full mt-4">
-                                <ChartLineCampusFilter />
+                                {LineChartFilter}
                             </div>
                         </AccordionTab>
                     </Accordion>
                 </div>
                 <div className="md:flex hidden flex-row gap-4 p-4 bg-white justify-between rounded-2xl">
-                    <ChartLineCampusFilter />
+                    {LineChartFilter}
                 </div>
                 
                 {/* Line Chart */}

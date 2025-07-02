@@ -1,6 +1,6 @@
 
-import { useRef, type Dispatch, type SetStateAction } from 'react';
-import { ReportType, ReportStatus, reporttype_to_string, Campus } from "../../../types/variables";
+import { useRef } from 'react';
+import { ReportType, ReportStatus, reporttype_to_string, Campus } from "../../../../types/variables";
 import { TieredMenu } from 'primereact/tieredmenu';
 import type { MenuItem } from 'primereact/menuitem';
 
@@ -12,7 +12,7 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import ShieldIcon from '@mui/icons-material/Shield';
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import { useReportFilterHook } from '../../../hooks/useReportHook';
+import { useReportFilterHook } from '../../../../hooks/useReportHook';
 
 export default function FilterSelect() {
     const { selectedFilter, setCampusFilter, setReportStatusFilter, setReportTypeFilter, resetFilter } = useReportFilterHook();
