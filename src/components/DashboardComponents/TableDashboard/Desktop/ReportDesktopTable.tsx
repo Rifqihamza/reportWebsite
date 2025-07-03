@@ -19,7 +19,7 @@ export default function ReportDesktopTable() {
                             return <th
                                 key={key}
                                 scope="col"
-                                className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
+                                className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-left text-sm font-semibold text-black uppercase tracking-wider truncate"
                             >
                                 {key}
                             </th>;
@@ -53,23 +53,23 @@ export default function ReportDesktopTable() {
                             {showedReportData.map((report, index) => (
                                 <tr key={index} className="" data-report-id={report.id}>
 
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-24! max-w-24!">
                                         <span
                                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                                         >
                                             {report.status}
                                         </span>
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 truncate">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24!">
                                         {report.submitted_by}
                                     </td>
-                                    <td className="px-2 py-3 border-b border-gray-300 text-sm text-gray-600 truncate">
+                                    <td className="px-2 py-3 border-b border-gray-300 text-sm text-gray-600 truncate min-w-48! max-w-48!">
                                         {report.message}
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
                                         {report.campus}
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm text-gray-600">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap text-sm text-gray-600">
                                         {formatDate(report.created_at)}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center border-b border-gray-300">
