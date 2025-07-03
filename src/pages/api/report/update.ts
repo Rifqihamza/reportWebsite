@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_status, get_cookies_from_request, record_activity, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_status, get_cookies_from_request, record_activity, verify_user_data_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { ActivityType, Prisma, type Report } from "@prisma/client";
 import type { ReportData } from "../../../types/variables";
@@ -9,7 +9,7 @@ export async function PUT({ request }: APIContext) {
     // Verify user_token
     const cookies = get_cookies_from_request(request);
           
-    const [verification_result, verification_output, user_data] = await verify_teacher_token(cookies ? (cookies["user_token"] ?? "") : "");
+    const [verification_result, verification_output, user_data] = await verify_user_data_token(cookies ? (cookies["user_token"] ?? "") : "");
     if(verification_result !== true) {
         if(verification_output === APIResultType.DatabaseError) {
             return create_response_status(503);

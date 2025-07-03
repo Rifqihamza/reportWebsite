@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, verify_user_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cookies_from_request, verify_token_valid } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma } from "@prisma/client";
 
@@ -10,7 +10,7 @@ export async function GET({ request }: APIContext) {
         return create_response_status(401);
     }
 
-    const username = verify_user_token(cookies["user_token"]);
+    const username = verify_token_valid(cookies["user_token"]);
     if(!username) {
         return create_response_status(401);
     }
@@ -21,10 +21,11 @@ export async function GET({ request }: APIContext) {
     try {
         user_data = await prisma.users.findUnique({
             where: {
-                username: username
+                lowercased_username: username.toLowerCase()
             },
             omit: {
                 password: true,
+                lowercased_username: true
             }
         });
     }

@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_status, record_activity, verify_teacher_token } from "../../../../utils/api_helper";
+import { create_response_status, record_activity, verify_user_data_token } from "../../../../utils/api_helper";
 import { prisma } from "../../../../utils/db";
 import { campuscode_to_campus } from "../../../../types/variables";
 import { ActivityType, Prisma } from "@prisma/client";
@@ -14,7 +14,7 @@ export async function POST({ request, cookies }: APIContext) {
   // Verify the request coming from an admin
   const user_cookies = cookies.get("user_token")?.value;
   
-  const [verification_result, verification_output, user_data] = await verify_teacher_token(user_cookies ?? "");
+  const [verification_result, verification_output, user_data] = await verify_user_data_token(user_cookies ?? "");
   if(!verification_result) {
     if(verification_output === APIResultType.DatabaseError) {
       return create_response_status(503);

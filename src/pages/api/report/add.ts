@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, process_server_token, record_activity, verify_user_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, process_server_token, record_activity, verify_token_valid } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report, type Report_Location, ActivityType } from "@prisma/client";
 import { ReportType, string_to_campus } from "../../../types/variables";
@@ -19,7 +19,7 @@ const ReportBodyType = z.object({
 
 export async function POST({ request, cookies }: APIContext) {
     const user_token = cookies.get("user_token")?.value;
-    const username = verify_user_token(user_token??"");
+    const username = verify_token_valid(user_token??"");
 
     // If the token invalid
     if(!username) {

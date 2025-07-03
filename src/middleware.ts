@@ -1,6 +1,6 @@
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { MiddlewareHandler } from 'astro';
-import { check_database_connection, create_response_cookie, create_response_status, first_initialization, verify_captcha_token, verify_user_token } from "./utils/api_helper";
+import { check_database_connection, create_response_cookie, create_response_status, first_initialization, verify_captcha_token, verify_token_valid } from "./utils/api_helper";
 import cookie from 'cookie';
 import { APIResultType } from "./utils/api_interface";
 
@@ -50,7 +50,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 
         // Now, Let's verify the user is already log in or not.
         const user_login_token = context.cookies.get("user_token")?.value;
-        if(!user_login_token || !verify_user_token(user_login_token)) {
+        if(!user_login_token || !verify_token_valid(user_login_token)) {
             return create_response_status(401);
         }
     }

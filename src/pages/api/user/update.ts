@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_status, record_activity, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_status, record_activity, verify_user_data_token } from "../../../utils/api_helper";
 import { APIResultType } from "../../../utils/api_interface";
 import { prisma } from "../../../utils/db";
 import sha3 from "js-sha3";
@@ -13,7 +13,7 @@ export async function PUT({ request, cookies }: APIContext) {
     return create_response_status(401);
   }
 
-  const [verification_result, verification_output, user_data] = await verify_teacher_token(user_token);
+  const [verification_result, verification_output, user_data] = await verify_user_data_token(user_token);
   if (verification_result !== true) {
     if (verification_output === APIResultType.DatabaseError) {
       return create_response_status(503);

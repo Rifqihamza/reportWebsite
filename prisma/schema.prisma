@@ -54,10 +54,11 @@ enum Campus {
 
 // Database model
 model Users {
-  id       String      @id @default(uuid())
-  username String      @unique
-  password String
-  role     AccountType
+  id                  String      @id @default(uuid())
+  username            String      @unique
+  lowercased_username String      @unique
+  password            String
+  role                AccountType
 
   created_at DateTime @default(now())
 

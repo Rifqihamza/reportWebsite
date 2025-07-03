@@ -3,7 +3,7 @@ import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
 import {
     get_cookies_from_request,
-    verify_user_token,
+    verify_token_valid,
     create_response_status,
     create_response_json,
 } from "../../../utils/api_helper";
@@ -14,7 +14,7 @@ export async function GET({ request }: APIContext) {
     const token = cookies?.["user_token"];
     if (!token) return create_response_status(401);
 
-    const username = verify_user_token(token);
+    const username = verify_token_valid(token);
     if (!username) return create_response_status(401);
 
     let users;

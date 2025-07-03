@@ -19,7 +19,7 @@ export async function POST({ request }: APIContext) {
     try {
         user = await prisma.users.findFirst({
             where: {
-                username: {
+                lowercased_username: {
                     equals: username.toLowerCase(),
                 }
             },

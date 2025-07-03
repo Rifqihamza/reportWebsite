@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import cookie from 'cookie';
 import { prisma } from "./db";
 import { ActivityType, Prisma, type Users } from "@prisma/client";
-import type { Campus } from "../types/variables";
 import { APIResultType } from "./api_interface";
 
 let done_initialization = false;
@@ -66,7 +65,7 @@ export function generate_user_token(username: string): string {
     return jwt.sign({ username }, process.env.JWT_SECRET!);
 }
 
-export function verify_user_token(token: string): string | undefined {
+export function verify_token_valid(token: string): string | undefined {
     try {
         const result = jwt.verify(token, process.env.JWT_SECRET!);
         if (typeof result == "string") {
@@ -80,9 +79,11 @@ export function verify_user_token(token: string): string | undefined {
     }
 }
 
-// Return Information: [verified, error_state, user_data]
-export async function verify_teacher_token(token: string): Promise<[true, true, Users] | [false, undefined | APIResultType, undefined]> {
-    const result = verify_user_token(token);
+/**
+ * Return Information: [verified, error_state, user_data]
+ */
+export async function verify_user_data_token(token: string): Promise<[true, true, Users] | [false, undefined | APIResultType, undefined]> {
+    const result = verify_token_valid(token);
 
     if (!result) {
         return [false, undefined, undefined];
