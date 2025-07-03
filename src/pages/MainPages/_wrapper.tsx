@@ -20,7 +20,7 @@ export default function WrapperPage() {
             {(() => {
                 // If the user should see the welcome animation
                 if(showWelcome) {
-                    return <WelcomeComponent onFinish={() => setShowWelcome(true)} />;
+                    return <WelcomeComponent onFinish={() => setShowWelcome(false)} />;
                 }
                 
                 // If user hasn't select any campus
