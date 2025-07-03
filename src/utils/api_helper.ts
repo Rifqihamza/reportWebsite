@@ -80,6 +80,7 @@ export function verify_user_token(token: string): string | undefined {
     }
 }
 
+// Return Information: [verified, error_state, user_data]
 export async function verify_teacher_token(token: string): Promise<[true, true, Users] | [false, undefined | APIResultType, undefined]> {
     const result = verify_user_token(token);
 

@@ -241,10 +241,14 @@ export async function getAllUsers(): Promise<User | boolean | APIResultType> {
 
 export async function updateUser(userId: string, data: { username: string; password: string }) {
     try {
-        const response = await fetch(`/api/users/${userId}`, {
+        const response = await fetch(`/api/user/update`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+                id: userId,
+                username: data.username,
+                password: data.password,
+            }),
         });
 
         if (response.ok) return true;

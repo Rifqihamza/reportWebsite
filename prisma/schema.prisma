@@ -13,6 +13,7 @@ enum ActivityType {
   CreateReport
   GetReport
   UpdateReport
+  UpdateUser
   DeleteReport
   CreatePIC
   LoginUser
