@@ -26,11 +26,12 @@ export default function SelectCampusOverlay() {
         autoplay={{
           delay: 1500,
           disableOnInteraction: true,
+          
         }}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
-          depth: 500,
+          depth: 100,
           modifier: 1,
           slideShadows: false,
         }}
@@ -39,7 +40,7 @@ export default function SelectCampusOverlay() {
         }}
         navigation={true}
         loop={true}
-        spaceBetween={-700}
+        spaceBetween={-600}
         slidesPerView={1}
         centeredSlides={true}
         modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
