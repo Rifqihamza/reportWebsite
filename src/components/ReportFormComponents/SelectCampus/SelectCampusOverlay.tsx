@@ -39,20 +39,11 @@ export default function SelectCampusOverlay() {
         }}
         navigation={true}
         loop={true}
+        spaceBetween={-700}
         slidesPerView={1}
-        spaceBetween={-950}
         centeredSlides={true}
         modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
-        className="w-full [&_.swiper-button-prev,_.swiper-button-next]:z-100 md:[&_.swiper-button-prev]:translate-x-10 md:[&_.swiper-button-next]:-translate-x-10"
-        style={
-          {
-            "--swiper-pagination-color": "#FFBA08",
-            "--swiper-pagination-bullet-inactive-color": "#fff",
-            "--swiper-pagination-bullet-inactive-opacity": "1",
-            "--swiper-pagination-bottom": "15px",
-            "--swiper-navigation-color": "#fff",
-          } as any
-        }
+        className="w-full swiper"
       >
         {Object.values(Campus).map((value) => (
           <SwiperSlide key={value}>
