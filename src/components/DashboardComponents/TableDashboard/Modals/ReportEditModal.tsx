@@ -1,5 +1,4 @@
 import { Dialog } from "primereact/dialog";
-import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
 import { AccountType, ReportStatus, ReportType, reporttype_to_string } from "../../../../types/variables";
 import { APIResultType, updateReport } from "../../../../utils/api_interface";
@@ -10,6 +9,7 @@ import { useReportConfigHook } from "../../../../hooks/useReportConfig";
 import { Calendar } from "primereact/calendar";
 import { useNetworkConnectivityHook } from "../../../../hooks/shared/useNetworkConnectivity";
 import { PrimeReactProvider } from "primereact/api";
+import DropdownComponent from "../../../GlobalComponents/DropdownComponent/DropdownComponent";
 
 const reportTypeOptions = [
   ...Object.keys(ReportType)
@@ -243,14 +243,13 @@ function DropdownField({
           ""
         )}
       </div>
-      <Dropdown
+      <DropdownComponent
         filter={filter}
         disabled={disabled}
         value={value}
         options={options}
         onChange={onChange}
-        className="w-full rounded-lg! bg-transparent! [&_.p-dropdown]:disabled:border-gray-300! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!"
-        placeholder={`Pilih ${label}`}
+        label={label}
       />
     </div>
   );

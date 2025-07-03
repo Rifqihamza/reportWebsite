@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { create_response_status, record_activity, verify_user_data_token } from "../../../utils/api_helper";
+import { create_response_status, record_activity, verify_user_data_token, create_response_json } from '../../../utils/api_helper';
 import { APIResultType } from "../../../utils/api_interface";
 import { prisma } from "../../../utils/db";
 import sha3 from "js-sha3";
@@ -79,7 +79,7 @@ export async function PUT({ request, cookies }: APIContext) {
 
   // Update the user data
   try {
-    await prisma.users.update({
+    const updated_user_data = await prisma.users.update({
       where: {
         id: id
       },
@@ -87,6 +87,13 @@ export async function PUT({ request, cookies }: APIContext) {
         username: username,
         password: sha3.sha3_256(password)
       }
+    });
+    
+    return create_response_json({
+      id: updated_user_data.id,
+      created_at: updated_user_data.created_at,
+      username: updated_user_data.username,
+      role: updated_user_data.role,
     });
   }
   catch(err) {
@@ -96,7 +103,4 @@ export async function PUT({ request, cookies }: APIContext) {
     console.error(`There's an error when trying to get report data for verification: ${err}`);
     return create_response_status(500);
   }
-  
-
-  return create_response_status(200);
 }

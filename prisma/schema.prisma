@@ -10,14 +10,15 @@ datasource db {
 
 // Enum
 enum ActivityType {
+  UpdateUser
+  LoginUser
+  LogoutUser
+  CreateUser
   CreateReport
   GetReport
   UpdateReport
-  UpdateUser
   DeleteReport
   CreatePIC
-  LoginUser
-  LogoutUser
 }
 
 enum AccountType {

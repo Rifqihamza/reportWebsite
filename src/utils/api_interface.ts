@@ -10,7 +10,25 @@ export enum APIResultType {
     Unauthorized = "Unauthorized",
     NeedCaptchaAuthentication = "Need Captcha Authentication",
     InternalServerError = "Internal Server Error",
-    DatabaseError = "Database Error"
+    DatabaseError = "Database Error",
+    Conflict = "Conflict"
+}
+
+function status_to_apiresult(status: number): APIResultType {
+    switch (status) {
+        case 511:
+            return APIResultType.NeedCaptchaAuthentication;
+        case 500:
+            return APIResultType.InternalServerError;
+        case 503:
+            return APIResultType.DatabaseError;
+        case 401:
+            return APIResultType.Unauthorized;
+        case 409:
+            return APIResultType.Conflict
+        default:
+            return APIResultType.NoError;
+    }
 }
 
 // Backend Functionalities
@@ -117,22 +135,35 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
         credentials: "include",
     });
 
-    // Check the response
-    if (response.ok) {
+    
+    const api_result = status_to_apiresult(response.status);
+    if(api_result === APIResultType.NoError) {
         // Sorting report data by date
         let result = (await response.json()) as ReportData[];
         result = result.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
         return result;
     }
-    else if (response.status == 500) {
-        return APIResultType.InternalServerError;
+
+    return api_result;
+}
+
+export async function addUser(data: {username: string, password: string, role: AccountType}): Promise<APIResultType|User> {
+    // Fetch API
+    const response = await fetch(`${base_url_endpoint}/api/user/create`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    const api_result = status_to_apiresult(response.status);
+    if(api_result === APIResultType.NoError) {
+        return (await response.json()) as User;
     }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError;
-    }
-    else {
-        return APIResultType.Unauthorized;
-    }
+
+    return api_result;
 }
 
 export async function checkAuthentication(): Promise<APIResultType> {
@@ -141,19 +172,8 @@ export async function checkAuthentication(): Promise<APIResultType> {
         method: "GET",
         credentials: "include",
     });
-
-    switch (response.status) {
-        case 511:
-            return APIResultType.NeedCaptchaAuthentication;
-        case 500:
-            return APIResultType.InternalServerError;
-        case 503:
-            return APIResultType.DatabaseError;
-        case 401:
-            return APIResultType.Unauthorized;
-        default:
-            return APIResultType.NoError;
-    }
+    
+    return status_to_apiresult(response.status);
 }
 
 export async function deleteReport(report_id: string): Promise<APIResultType> {
@@ -169,19 +189,7 @@ export async function deleteReport(report_id: string): Promise<APIResultType> {
         })
     });
 
-    // Check the response
-    if (response.ok) {
-        return APIResultType.NoError;
-    }
-    else if (response.status == 500) {
-        return APIResultType.InternalServerError;
-    }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError;
-    }
-    else {
-        return APIResultType.Unauthorized;
-    }
+    return status_to_apiresult(response.status);
 }
 
 export async function userLogout(): Promise<boolean> {
@@ -202,17 +210,13 @@ export async function getUser(): Promise<User | APIResultType> {
         credentials: "include",
     });
 
-    if (response.ok) {
+
+    const api_result = status_to_apiresult(response.status);
+    if(api_result === APIResultType.NoError) {
         return (await response.json()) as User;
     }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError;
-    }
-    else if (response.status == 401) {
-        return APIResultType.Unauthorized;
-    }
 
-    return APIResultType.InternalServerError;
+    return api_result;
 }
 export async function getAllUsers(): Promise<User | boolean | APIResultType> {
     let response;
@@ -226,20 +230,16 @@ export async function getAllUsers(): Promise<User | boolean | APIResultType> {
         return false;
     }
 
-    if (response.ok) {
-        return (await response.json())
-    }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError;
-    }
-    else if (response.status === 401) {
-        return APIResultType.Unauthorized
+
+    const api_result = status_to_apiresult(response.status);
+    if(api_result === APIResultType.NoError) {
+        return (await response.json()) as User;
     }
 
-    return APIResultType.InternalServerError
+    return api_result;
 }
 
-export async function updateUser(userId: string, data: { username: string; password: string }) {
+export async function updateUser(userId: string, data: { username: string; password: string }): Promise<APIResultType | User | false> {
     try {
         const response = await fetch(`/api/user/update`, {
             method: "PUT",
@@ -251,9 +251,15 @@ export async function updateUser(userId: string, data: { username: string; passw
             }),
         });
 
-        if (response.ok) return true;
-        return false;
+        
+        const api_result = status_to_apiresult(response.status);
+        if(api_result === APIResultType.NoError) {
+            return (await response.json()) as User;
+        }
+
+        return api_result;
     } catch (error) {
+        console.error(error);
         return false;
     }
 }
@@ -267,32 +273,25 @@ type updatedDataType = {
     status: ReportStatus,
 };
 
-export async function updateReport(report_id: string, updated_data: updatedDataType) {
+export async function updateReport(report_id: string, updated_data: updatedDataType): Promise<APIResultType | false> {
     // Fetch to API
-    const response = await fetch(base_url_endpoint + "/api/report/update", {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "report_id": report_id,
-            "report_data": updated_data
-        })
-    });
+    try {
+        const response = await fetch(base_url_endpoint + "/api/report/update", {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "report_id": report_id,
+                "report_data": updated_data
+            })
+        });
 
-    // Check the response
-    if (response.ok) {
-        return APIResultType.NoError;
+        return status_to_apiresult(response.status);
     }
-    else if (response.status == 500) {
-        return APIResultType.InternalServerError;
-    }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError;
-    }
-    else {
-        return APIResultType.Unauthorized;
+    catch(err) {
+        return false;
     }
 }
 
@@ -301,7 +300,7 @@ export type formConfigurationResponse = {
     location_data: Report_Location[]
 }
 
-export async function getFormConfiguration() {
+export async function getFormConfiguration(): Promise<APIResultType | formConfigurationResponse | false> {
     // Fetch to API
     let response;
     try {
@@ -314,17 +313,13 @@ export async function getFormConfiguration() {
         return false;
     }
 
-    if (response.ok) {
+        
+    const api_result = status_to_apiresult(response.status);
+    if(api_result === APIResultType.NoError) {
         return (await response.json()) as formConfigurationResponse;
     }
-    else if (response.status == 401) {
-        return APIResultType.Unauthorized;
-    }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError;
-    }
 
-    return APIResultType.InternalServerError;
+    return api_result;
 }
 
 export function string_to_reporttype(data: string): ReportType | undefined {

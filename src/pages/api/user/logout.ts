@@ -6,14 +6,16 @@ import { APIResultType } from "../../../utils/api_interface";
 
 export async function POST({ request, cookies }: APIContext) {
     const user_token = cookies.get("user_token")?.value;
-    const [is_verified, error_code, user_data] = await verify_user_data_token(user_token ?? "");
+    if (!user_token) {
+        return create_response_status(401);
+    }
 
-    // If the token invalid
-    if (!is_verified) {
-        if (error_code === APIResultType.DatabaseError) {
+    const [verification_result, verification_output, user_data] = await verify_user_data_token(user_token);
+    if (verification_result !== true) {
+        if (verification_output === APIResultType.DatabaseError) {
             return create_response_status(503);
         }
-        else if (error_code === APIResultType.InternalServerError) {
+        else if (verification_output === APIResultType.InternalServerError) {
             return create_response_status(500);
         }
 

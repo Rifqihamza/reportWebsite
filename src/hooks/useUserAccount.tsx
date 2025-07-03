@@ -7,7 +7,7 @@ import { APIResultType, getAllUsers } from "../utils/api_interface";
 import { useMessageToastHook } from "./shared/useMessageToast";
 
 type UserAccountData = {
-    showUserAccountData: User[];
+    showedUserAccountData: User[];
     setShowedUserAccountData: (users: User[]) => void;
 
     userAccountData: User[],
@@ -23,8 +23,8 @@ type UserAccountData = {
 let initialized = false;
 
 export const useUserAccountHook = create<UserAccountData>((set) => ({
-    showUserAccountData: [],
-    setShowedUserAccountData: (users) => set({ showUserAccountData: users }),
+    showedUserAccountData: [],
+    setShowedUserAccountData: (users) => set({ showedUserAccountData: users }),
     
     userAccountData: [],
     setUserAccountData: (users) => set({ userAccountData: users }),
