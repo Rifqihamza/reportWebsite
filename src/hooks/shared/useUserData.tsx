@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { User } from "../../types/variables";
+import { AccountType, type User } from "../../types/variables";
 import { useEffect } from "react";
 import { APIResultType, getUser } from "../../utils/api_interface";
 import { useMessageToastHook } from "./useMessageToast";
@@ -21,7 +21,7 @@ export const useUserDataHook = create<useUserDataType>((set) => ({
 // Setting up for one-time logic
 let initalized = false;
 
-export default function UseUserDataHookEffect(props: { onResolve?: (res: { userData: User | null, isAuthorized: boolean }) => void }) {
+export default function UseUserDataHookEffect(props: { onResolve?: (res: { userData: User | null, isAuthorized: boolean }) => void, adminOnly?: boolean }) {
   const { setUserData } = useUserDataHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
@@ -36,6 +36,10 @@ export default function UseUserDataHookEffect(props: { onResolve?: (res: { userD
     // Get user data
     getUser().then(user_data => {
       if (typeof user_data === "object") {
+        if(props.adminOnly && user_data.role !== AccountType.Admin) {
+          window.location.href = "/form";
+        }
+        
         setUserData(user_data);
         props.onResolve ? props.onResolve({ isAuthorized: true, userData: user_data }) : "";
       }

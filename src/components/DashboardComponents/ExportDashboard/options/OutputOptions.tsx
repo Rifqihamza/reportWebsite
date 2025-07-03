@@ -1,5 +1,5 @@
-import { useExportHook } from "../../../hooks/useExportHook";
-import { ExportOutputType } from "../../../types/variables";
+import { useExportHook } from "../../../../hooks/useExportHook";
+import { ExportOutputType } from "../../../../types/variables";
 
 
 export default function OutputOptions() {

@@ -1,8 +1,8 @@
-import { reporttype_to_string, table_rows } from '../../../types/variables';
-import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../hooks/useReportHook";
-import { formatDate } from "../../../utils/other";
-import { useReportDataHook } from "../../../hooks/shared/useReportData";
-import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
+import { reporttype_to_string, table_rows } from '../../../../types/variables';
+import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/useReportHook";
+import { formatDate } from "../../../../utils/other";
+import { useReportDataHook } from "../../../../hooks/shared/useReportData";
+import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 
 export default function ReportDesktopTable() {
     const { showedReportData } = useReportPaginationHook();
