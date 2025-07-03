@@ -9,13 +9,18 @@ function QuickNavigationButton(props: { icon: string, title: string, description
     </button>;
 }
 
-export default function WelcomeComponent() {
+export default function WelcomePage() {
+    const { setActiveTab, activeTab } = useDashboardNavbarHook();
+    
     const { userData } = useUserDataHook();
-    const { setActiveTab } = useDashboardNavbarHook();
 
     const currentHour = (new Date()).getHours();
     const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 12 ? (currentHour >= 15 ? "Selamat Sore" : "Selamat Siang") : "Selamat Pagi");
 
+    if(activeTab !== 0) {
+        return <></>;
+    }
+    
     return (
         <div className="h-fit md:h-full w-full bg-white rounded-2xl relative px-4 py-10 md:py-20 flex flex-col text-center">
             {/* Welcome message */}

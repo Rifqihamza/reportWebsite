@@ -3,8 +3,9 @@ import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { userLogout } from "../../../utils/api_interface";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
+import { PrimeReactProvider } from "primereact/api";
 
-export default function NavbarDashboard() {
+export default function SidebarDashboard() {
 
     const [shouldRender, setShouldRender] = useState(false)
     const { showSidebar, setShowSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();

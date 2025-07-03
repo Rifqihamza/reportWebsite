@@ -3,14 +3,16 @@ import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import UseReportDataHookEffect, { useReportDataHook } from "../../../hooks/shared/useReportData";
 import UseExportHookEffect, { useExportHook } from "../../../hooks/useExportHook";
 import { ExportOutputType, keyto_table_rows, reporttype_to_string, table_rows, type ReportData } from "../../../types/variables";
-import DateRangeOptions from "./DateRangeOptions";
-import OutputOptions from "./OutputOptions";
-import RowOptions from "./RowOptions";
+import DateRangeOptions from "./options/DateRangeOptions";
+import OutputOptions from "./options/OutputOptions";
+import RowOptions from "./options/RowOptions";
 import * as XLSX from 'xlsx';
-import FilterOptions from "./FilterOptions";
+import FilterOptions from "./options/FilterOptions";
 import { useState } from "react";
+import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 
-export default function ExportComponent() {
+export default function ExportPage() {
+  const { activeTab } = useDashboardNavbarHook();
   const { reportData } = useReportDataHook();
   const { dateRange, selectedOutputType, selectedRows, filter } = useExportHook();
   const { showMessage } = useMessageToastHook();
@@ -101,6 +103,11 @@ export default function ExportComponent() {
     }
   };
 
+
+  if(activeTab !== 3) {
+      return <></>;
+  }
+  
   return (
     <>
       <UseReportDataHookEffect />
