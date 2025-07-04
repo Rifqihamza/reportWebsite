@@ -9,12 +9,14 @@ import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar
 import { PrimeReactProvider } from "primereact/api";
 import { AccountType, type User } from "../../../types/variables";
 import DropdownComponent from "../../GlobalComponents/DropdownComponent/DropdownComponent";
+import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
 
 export default function UsersPage() {
   const { activeTab } = useDashboardNavbarHook();
-  const { setUsernameFilter, usernameFilter, showedUserAccountData, setShowedUserAccountData, setUserAccountData, doneFetching, userAccountData } = useUserAccountHook();
+  const { setUsernameFilter, usernameFilter, showedUserAccountData, setUserAccountData, doneFetching, userAccountData, isAuthorized: isAuhtorizedGetAllUsers } = useUserAccountHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
+  const { userData } = useUserDataHook();
 
   const [visibleDialog, setVisibleDialog] = useState(false);
   const [editingUser, setEditingUser] = useState<{ id: string|null; username: string; password: string, role: AccountType|null }>({
@@ -57,6 +59,9 @@ export default function UsersPage() {
       if(result === APIResultType.Conflict) {
         showMessage("Gagal update user", "warn", "Ada user yang mempunyai username yang sama (Jika tidak ada di tabel mungkin user tersebut adalah admin).");
       }
+      else if (result === APIResultType.Unauthorized) {
+        showMessage("Unauthorized", "error", `${userData?.role} tidak diperbolehkan mengedit data user!`);
+      }
       else if(result === APIResultType.DatabaseError) {
         showMessage("Gagal update user", "error", "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
       }
@@ -90,6 +95,9 @@ export default function UsersPage() {
       if(result === APIResultType.Conflict) {
         showMessage("Gagal menambahkan user", "warn", "Ada user yang mempunyai username yang sama (Jika tidak ada di tabel mungkin user tersebut adalah admin).");
       }
+      else if (result === APIResultType.Unauthorized) {
+        showMessage("Unauthorized", "error", `${userData?.role} tidak diperbolehkan menambahkan data user!`);
+      }
       else if(result === APIResultType.DatabaseError) {
         showMessage("Gagal menambahkan user", "error", "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
       }
@@ -114,7 +122,10 @@ export default function UsersPage() {
       setUserAccountData(userAccountData.filter((user) => user.id !== target_user.id));
     }
     else {
-      if(result === APIResultType.DatabaseError) {
+      if (result === APIResultType.Unauthorized) {
+        showMessage("Unauthorized", "error", `${userData?.role} tidak diperbolehkan menghapus data user!`);
+      } 
+      else if(result === APIResultType.DatabaseError) {
         showMessage("Gagal menghapus user", "error", "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
       }
       else {
@@ -131,6 +142,7 @@ export default function UsersPage() {
 
   return (
     <>
+      <UseUserDataHookEffect adminOnly />
       <UseUserAccountHookEffect />
       <section className="overflow-y-auto overflow-x-hidden w-full h-full flex flex-col">
         <div className="flex flex-col md:flex-row gap-2 mb-4 w-full h-fit">
@@ -157,8 +169,44 @@ export default function UsersPage() {
               </tr>
             </thead>
             <tbody>
-              {showedUserAccountData.length > 0 ? (
-                showedUserAccountData.map((user, index) => (
+              {(() => {
+                // If the fetch is not done yet.
+                if(!doneFetching) {
+                  return <tr>
+                    <td colSpan={5}>
+                      <LoadingAnimation />
+                    </td>
+                  </tr>;
+                }
+
+                // If the user doesn't have access to users data
+                if(!isAuhtorizedGetAllUsers) {
+                  return <tr>
+                    <td colSpan={5} className="text-center py-4">
+                      Maaf, anda tidak mendapat akses untuk melihat data pengguna.
+                    </td>
+                  </tr>
+                }
+
+                // If the user account data is empty
+                if(userAccountData.length == 0) {
+                  return <tr>
+                    <td colSpan={5} className="text-center py-4">
+                      Tidak ada data pengguna yang tersedia.
+                    </td>
+                  </tr>
+                }
+
+                // If the user account data is not empty but, the filter makes them looks empty
+                if(showedUserAccountData.length == 0) {
+                  return <tr>
+                    <td colSpan={5} className="text-center py-4">
+                      Tidak ada data pengguna sesuai pencarian.
+                    </td>
+                  </tr>
+                }
+
+                return showedUserAccountData.map((user, index) => (
                   <tr key={user.id} className="border-b border-gray-300">
                     <td className="p-4 text-center">{index + 1}</td>
                     <td className="p-4 text-left truncate">{user.username}</td>
@@ -172,26 +220,14 @@ export default function UsersPage() {
                       <button className="cursor-pointer bg-red-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-50" onClick={() => handleDelete(user)} disabled={deletedUserIDProcess ? true : false}>Delete</button>
                     </td>
                   </tr>
-                ))
-              ) : doneFetching ? (
-                <tr>
-                  <td colSpan={5} className="text-center py-4">
-                    Tidak ada data pengguna yang tersedia.
-                  </td>
-                </tr>
-              ) : (
-                <tr>
-                  <td colSpan={5}>
-                    <LoadingAnimation />
-                  </td>
-                </tr>
-              )}
+                ));
+              })()}
             </tbody>
           </table>
         </div>
 
         <div className="md:hidden h-max flex flex-col items-center gap-4 w-full pr-4 box-border!">
-          {showedUserAccountData.length > 0 ? (
+          {(showedUserAccountData.length > 0 && userData) ? (
             showedUserAccountData.map((user, index) => (
               <div key={user.id} className="flex flex-col p-6 gap-2 bg-white w-full rounded-2xl">
                 <p className="">
@@ -215,7 +251,7 @@ export default function UsersPage() {
                 </div>
               </div>
             ))
-          ) : doneFetching ? (
+          ) : (doneFetching && userData) ? (
             <p className="text-white text-center">{userAccountData.length > 0 ? "Tidak ada data pengguna yang cocok dengan pencarian." : "Tidak ada data pengguna yang tersedia."}</p>
           ) : (
             <LoadingAnimation />

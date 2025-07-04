@@ -16,6 +16,9 @@ type UserAccountData = {
     doneFetching: boolean,
     setDoneFetching: (newState: boolean) => void,
 
+    isAuthorized: boolean,
+    setIsAuthorized: (newState: boolean) => void,
+
     usernameFilter: string,
     setUsernameFilter: (newUsernameFilter: string) => void
 };
@@ -31,6 +34,9 @@ export const useUserAccountHook = create<UserAccountData>((set) => ({
 
     doneFetching: false,
     setDoneFetching: (newState) => set(() => ({ doneFetching: newState })),
+
+    isAuthorized: true,
+    setIsAuthorized: (newState) => set(() => ({ isAuthorized: newState })),
     
     usernameFilter: "",
     setUsernameFilter(newUsernameFilter) {
@@ -40,7 +46,7 @@ export const useUserAccountHook = create<UserAccountData>((set) => ({
 
 export default function UseUserAccountHookEffect() {
     const { isConnected } = useNetworkConnectivityHook();
-    const { setUserAccountData, userAccountData, setShowedUserAccountData, setDoneFetching, usernameFilter } = useUserAccountHook();
+    const { setUserAccountData, userAccountData, setShowedUserAccountData, setDoneFetching, usernameFilter, setIsAuthorized } = useUserAccountHook();
     const { showMessage } = useMessageToastHook();
     
     useEffect(() => {
@@ -54,6 +60,8 @@ export default function UseUserAccountHookEffect() {
                 setUserAccountData(result);
             } else if (result === false) {
                 showMessage("There's a network error.", "error", "Please reload the website once you connected.");
+            } else if (result === APIResultType.Unauthorized) {
+                setIsAuthorized(false);
             } else if (result === APIResultType.InternalServerError) {
                 showMessage("Terjadi error di server.", "error", "Reload website setelah beberapa waktu");
             }

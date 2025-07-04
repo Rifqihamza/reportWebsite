@@ -2,7 +2,7 @@ import type { APIContext } from "astro";
 import { create_response_status, get_cookies_from_request, record_activity, verify_user_data_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { ActivityType, Prisma, type Report } from "@prisma/client";
-import type { ReportData } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, type ReportData } from "../../../types/variables";
 import { APIResultType } from "../../../utils/api_interface";
 
 export async function PUT({ request }: APIContext) {
@@ -18,6 +18,11 @@ export async function PUT({ request }: APIContext) {
             return create_response_status(500);
         }
         
+        return create_response_status(401);
+    }
+      
+    // Verify user role
+    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.UpdateReport)) {
         return create_response_status(401);
     }
 

@@ -2,7 +2,7 @@ import type { APIContext } from "astro";
 import { apiresult_to_status, create_response_json, create_response_status, process_server_token, record_activity, verify_user_data_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report, type Report_Location, ActivityType } from "@prisma/client";
-import { ReportType, string_to_campus } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, ReportType, string_to_campus } from "../../../types/variables";
 import { z } from 'zod';
 
 
@@ -24,6 +24,11 @@ export async function POST({ request, cookies }: APIContext) {
     // If the token invalid
     if(!verification_result) {
         return apiresult_to_status(verification_output);
+    }
+      
+    // Verify user role
+    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.CreateReport)) {
+        return create_response_status(401);
     }
 
 

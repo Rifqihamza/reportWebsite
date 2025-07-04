@@ -3,12 +3,13 @@ import { create_response_json, create_response_status, get_cookies_from_request,
 import { prisma } from "../../../utils/db";
 import { ActivityType, Prisma, type Report } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
+import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
 export async function GET({ request }: APIContext) {
-    // Verify teacher token
+    // Verify user token
     const cookies = get_cookies_from_request(request);
           
-    const [verification_result, verification_output, user_data] = await verify_user_data_token(cookies ? (cookies["user_token"] ?? "") : "");
+    const [verification_result, verification_output, user_data] = await verify_user_data_token(cookies ? (cookies["user_token"] ?? "") :  "");
     if(!verification_result) {
         if(verification_output === APIResultType.DatabaseError) {
             return create_response_status(503);
@@ -19,6 +20,13 @@ export async function GET({ request }: APIContext) {
         
         return create_response_status(401);
     }
+
+
+    // Verify user role
+    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.GetReport)) {
+        return create_response_status(401);
+    }
+    
 
     // Get the report data
     let report_data: Report[];

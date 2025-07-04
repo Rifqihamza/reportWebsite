@@ -4,6 +4,7 @@ import { create_response_json, create_response_status, get_cookies_from_request,
 import { ActivityType, Prisma } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
 import sha3 from "js-sha3";
+import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
 export async function POST({ request, cookies }: APIContext) {
     // Get the user data
@@ -29,9 +30,11 @@ export async function POST({ request, cookies }: APIContext) {
         return create_response_status(401);
     }
 
-    if (user_data.role !== "Admin") {
+    // Verify user role
+    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.CreateUser)) {
         return create_response_status(401);
     }
+
 
     // Update RecordedActivity
     try {

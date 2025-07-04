@@ -3,14 +3,16 @@ import { useReportDetailHook, useReportPaginationHook, statusColors } from "../.
 import { formatDate } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
+import UseUserDataHookEffect, { useUserDataHook } from "../../../../hooks/shared/useUserData";
 
 export default function ReportDesktopTable() {
     const { showedReportData } = useReportPaginationHook();
     const { handleDetail } = useReportDetailHook();
-    const { reportData } = useReportDataHook();
+    const { reportData, isAuthorized: isAuthorizedGetReport } = useReportDataHook();
+    const { userData } = useUserDataHook();
 
     return <>
-
+        <UseUserDataHookEffect />
         <div className='hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4 h-[70vh]'>
             <table className="w-full">
                 <thead>
@@ -34,6 +36,11 @@ export default function ReportDesktopTable() {
                 </thead>
                 <tbody>
                     {(() => {
+                        // If unaothorized
+                        if (!isAuthorizedGetReport) {
+                            return <tr><td colSpan={9}>{userData?.role} tidak diperbolehkan melihat data laporan.</td></tr>
+                        }
+                        
                         // If the data is not loaded returns loading animation
                         if (reportData === null) {
                             return <tr><td><LoadingAnimation /></td></tr>

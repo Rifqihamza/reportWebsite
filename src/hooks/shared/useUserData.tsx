@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { AccountType, type User } from "../../types/variables";
+import { account_to_api_privillage, AccountType, has_access_to_dashboard, privillage_for_dashboard, type User } from "../../types/variables";
 import { useEffect } from "react";
 import { APIResultType, getUser } from "../../utils/api_interface";
 import { useMessageToastHook } from "./useMessageToast";
@@ -36,7 +36,7 @@ export default function UseUserDataHookEffect(props: { onResolve?: (res: { userD
     // Get user data
     getUser().then(user_data => {
       if (typeof user_data === "object") {
-        if(props.adminOnly && user_data.role !== AccountType.Admin) {
+        if(props.adminOnly && !has_access_to_dashboard(user_data.role)) {
           window.location.href = "/form";
         }
         

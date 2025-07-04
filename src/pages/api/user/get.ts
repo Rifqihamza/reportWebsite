@@ -1,8 +1,5 @@
 import type { APIContext } from "astro";
 import { apiresult_to_status, create_response_json, create_response_status, get_cookies_from_request, verify_user_data_token } from "../../../utils/api_helper";
-import { prisma } from "../../../utils/db";
-import { Prisma } from "@prisma/client";
-import { APIResultType } from "../../../utils/api_interface";
 
 export async function GET({ request }: APIContext) {
     // Get the username from cookies

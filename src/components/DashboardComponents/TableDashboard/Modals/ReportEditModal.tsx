@@ -78,11 +78,11 @@ export default function ReportEditModal() {
     if (disableSave || !report || !isChange) return;
     setDisableSave(true);
 
-    let result: APIResultType | null;
+    let result: APIResultType | false;
     try {
       result = await updateReport(report.id, formState);
     } catch {
-      showMessage("Success", "success", "Successfully update data!");
+      showMessage("Success", "success", "Data berhasil diedit!");
       return;
     } finally {
       setDisableSave(false);
@@ -95,11 +95,13 @@ export default function ReportEditModal() {
 
       // Close the dialog component and trigger success function
       setEditVisible(false);
-      showMessage("Success", "success", "Successfully update data!");
+      showMessage("Success", "success", "Data berhasil diedit!");
     } else if (result === APIResultType.Unauthorized) {
       showMessage("Unauthorized", "error", "Unauthorized attempt detected!");
     } else if (result === APIResultType.InternalServerError) {
-      showMessage("Error", "error", "There's an error!");
+      showMessage("Error", "error", "Terjadi error!");
+    } else if (result === APIResultType.DatabaseError) {
+      showMessage("Error", "error", "Database sedang bermasalah. Mohon tunggu, lalu coba lagi!");
     }
   };
   return (

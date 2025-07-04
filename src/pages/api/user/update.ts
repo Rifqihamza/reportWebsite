@@ -4,6 +4,7 @@ import { APIResultType } from "../../../utils/api_interface";
 import { prisma } from "../../../utils/db";
 import sha3 from "js-sha3";
 import { ActivityType, Prisma } from "@prisma/client";
+import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
 export async function PUT({ request, cookies }: APIContext) {
   // Get the cookie
@@ -25,9 +26,10 @@ export async function PUT({ request, cookies }: APIContext) {
     return create_response_status(401);
   }
 
-  // Verify admin
-  if(user_data.role !== "Admin") {
-    return create_response_status(401);
+  
+  // Verify user role
+  if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.UpdateUser)) {
+      return create_response_status(401);
   }
 
 

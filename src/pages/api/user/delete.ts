@@ -3,6 +3,7 @@ import { create_response_json, create_response_status, verify_user_data_token } 
 import { APIResultType } from "../../../utils/api_interface";
 import { prisma } from "../../../utils/db";
 import { Prisma } from "@prisma/client";
+import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
 export async function DELETE({ request, cookies }: APIContext) {
   // Verify user token
@@ -22,11 +23,11 @@ export async function DELETE({ request, cookies }: APIContext) {
 
     return create_response_status(401);
   }
-
-  if(user_data.role !== "Admin") {
-    return create_response_status(401);
+  
+  // Verify user role
+  if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.DeleteUser)) {
+      return create_response_status(401);
   }
-
 
   // Get the required data
   const { id } = await request.json();

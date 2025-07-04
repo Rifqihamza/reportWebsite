@@ -72,8 +72,6 @@ export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
 
         setPicNamesOptions(resultPicNamesOptions);
         setLocationOptions(resultLocationOptions);
-      } else if (result === APIResultType.Unauthorized) {
-        window.location.href = "/loginPage";
       } else if (result === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       } else if (result === false) {
