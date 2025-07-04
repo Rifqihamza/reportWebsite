@@ -8,6 +8,17 @@ import { APIResultType } from "./api_interface";
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+export function apiresult_to_status(api_result: any): Response {
+    switch(api_result) {
+        case APIResultType.DatabaseError:
+            return create_response_status(503);
+        case APIResultType.InternalServerError:
+            return create_response_status(500);
+        default:
+            return create_response_status(401);
+    }
+}
+
 // First Initialization
 export async function first_initialization() {
     if (done_initialization) {
@@ -93,7 +104,7 @@ export async function verify_user_data_token(token: string): Promise<[true, true
     try {
         user_data = await prisma.users.findUnique({
             where: {
-                username: result
+                username: result,
             }
         });
     }
@@ -105,7 +116,8 @@ export async function verify_user_data_token(token: string): Promise<[true, true
         return [false, APIResultType.InternalServerError, undefined];
     }
 
-    return user_data ? [true, true, user_data] : [false, undefined, undefined];
+    console.log(user_data && !user_data.inactive);
+    return (user_data && !user_data.inactive) ? [true, true, user_data] : [false, undefined, undefined];
 }
 
 export function verify_admin_token(token?: string): boolean {

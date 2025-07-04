@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { addUser, APIResultType, getAllUsers, updateUser } from "../../../utils/api_interface"; // pastikan ada updateUser
+import { addUser, APIResultType, deleteUser, getAllUsers, updateUser } from "../../../utils/api_interface"; // pastikan ada updateUser
 import UseUserAccountHookEffect, { useUserAccountHook } from "../../../hooks/useUserAccount";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
@@ -23,6 +23,7 @@ export default function UsersPage() {
     password: "",
     role: null
   });
+  const [deletedUserIDProcess, setDeletedUserIDProcess] = useState<string|null>(null);
 
   useEffect(() => {
     if (!isConnected) return;
@@ -83,7 +84,6 @@ export default function UsersPage() {
 
     if (typeof result === "object") {
       showMessage("Berhasil menambahkan user", "success", "Data pengguna berhasil ditambahkan.");
-      console.log(result);
       setUserAccountData([...userAccountData, result]);
       setVisibleDialog(false);
     } else {
@@ -97,6 +97,32 @@ export default function UsersPage() {
         showMessage("Gagal menambahkan user", "error", "Terjadi kesalahan saat menambahkan data pengguna.");
       }
     }
+  }
+
+  const handleDelete = async (target_user: User) => {
+    if(!confirm(`Konfirmasi hapus user dengan username: ${target_user.username}`)) {
+      showMessage("Batal menghapus user", "info", "")
+      return;
+    }
+    setDeletedUserIDProcess(target_user.id);
+
+
+    const result = await deleteUser(target_user.id);
+
+    if(result === APIResultType.NoError) {
+      showMessage("Berhasil menghapus user", "success", "Pengguna berhasil dihapus!")
+      setUserAccountData(userAccountData.filter((user) => user.id !== target_user.id));
+    }
+    else {
+      if(result === APIResultType.DatabaseError) {
+        showMessage("Gagal menghapus user", "error", "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
+      }
+      else {
+        showMessage("Gagal menghapus user", "error", "Terjadi kesalahan saat menghapus data pengguna.");
+      }
+    }
+
+    setDeletedUserIDProcess(null);
   }
 
   if (activeTab !== 4) {
@@ -139,11 +165,11 @@ export default function UsersPage() {
                     <td className="p-4 text-left">{user.role}</td>
                     <td className="p-4 text-left">{new Date(user.created_at).toLocaleDateString("id-ID")}</td>
                     <td className="flex flex-row items-center justify-center gap-2 p-4 h-full">
-                      <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl">
+                      <button onClick={() => handleEditClick(user)} className="cursor-pointer bg-blue-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75">
                         Edit
                       </button>
                       <span>|</span>
-                      <button className="bg-red-400 text-white px-4 py-1 rounded-xl">Delete</button>
+                      <button className="cursor-pointer bg-red-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-50" onClick={() => handleDelete(user)} disabled={deletedUserIDProcess ? true : false}>Delete</button>
                     </td>
                   </tr>
                 ))
@@ -181,11 +207,11 @@ export default function UsersPage() {
                   </p>
                 </div>
                 <div className="flex flex-row items-center justify-center py-2 gap-2 border-b border-gray-300 h-full">
-                  <button onClick={() => handleEditClick(user)} className="cursor-pointer bg-blue-400 text-white px-4 py-1 rounded-xl w-full">
+                  <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl w-full">
                     Edit
                   </button>
                   <span>|</span>
-                  <button className="cursor-pointer bg-red-400 text-white px-4 py-1 rounded-xl w-full">Delete</button>
+                  <button className="bg-red-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-50" onClick={() => handleDelete(user)} disabled={deletedUserIDProcess ? true : false}>Delete</button>
                 </div>
               </div>
             ))

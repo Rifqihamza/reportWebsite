@@ -21,7 +21,7 @@ export async function POST({ request }: APIContext) {
             where: {
                 lowercased_username: {
                     equals: username.toLowerCase(),
-                }
+                },
             },
         })
     }
@@ -34,7 +34,7 @@ export async function POST({ request }: APIContext) {
     }
     
 
-    if(!user) {
+    if(!user || user.inactive) {
         return create_response_status(404);
     }
 

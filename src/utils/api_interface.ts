@@ -322,6 +322,23 @@ export async function getFormConfiguration(): Promise<APIResultType | formConfig
     return api_result;
 }
 
+export async function deleteUser(id: string): Promise<APIResultType> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/user/delete", {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "id": id
+        })
+    });
+
+    return status_to_apiresult(response.status);
+}
+
+
 export function string_to_reporttype(data: string): ReportType | undefined {
     return Object.values(ReportType).find(value => value.toString() == data);
 }

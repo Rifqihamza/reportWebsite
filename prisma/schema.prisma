@@ -62,6 +62,7 @@ model Users {
   role                AccountType
 
   created_at DateTime @default(now())
+  inactive   Boolean  @default(false)
 
   // Relation
   recorded_activities RecordedActivity[]
@@ -137,6 +138,6 @@ model RecordedActivity {
   created_at DateTime @default(now())
 
   // Relations
-  account      Users  @relation(references: [username], fields: [account_name], onDelete: Restrict)
+  account      Users  @relation(references: [username], fields: [account_name], onDelete: Cascade)
   account_name String
 }
