@@ -8,6 +8,7 @@ import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
 import TimeChartFilter from "./filters/TimeChartFilter";
 import CampusChartFilter from "./filters/CampusChartFilter";
 import LocationChartFilter from "./filters/LocationChartFilter";
+import ApplyFilterButton from "./filters/ApplyFilterButton";
 
 const LineChart = React.lazy(() => import("./outputs/LineChartComponent"));
 const PieChart = React.lazy(() => import("./outputs/PieChartComponent"));
@@ -39,6 +40,8 @@ export default function StatisticsPage() {
                     {/* Location Filter */}
                     <LocationChartFilter />
 
+                    {/* Apply Filter Button */}
+                    <ApplyFilterButton />
                     
                     {/* Line Chart */}
                     <div className="w-full px-4 pb-2 pt-6 rounded-2xl bg-white shadow">

@@ -3,13 +3,11 @@ import { LineChartTimeCategoryOption, useLineChartHook } from "../../../../hooks
 import { Accordion, AccordionTab } from "primereact/accordion";
 
 export default function TimeChartFilter() {
-  const options = Object.values(LineChartTimeCategoryOption);
-
-  const { chartTimeCategoryFilter, setChartTimeCategoryFilter } = useLineChartHook();
+  const { chartTimeFilter, setChartTimeCategoryFilter } = useLineChartHook();
 
   
   const LineChartTimeFilter = <>{Object.values(LineChartTimeCategoryOption).map((timeInfo, index) => {
-      return <button key={index} className={`hover:bg-gray-500 p-4 rounded-2xl duration-200 w-full border-2 border-[#1f324d] ${chartTimeCategoryFilter === timeInfo ? "bg-[#1f324d] text-white" : ""}`} onClick={() => setChartTimeCategoryFilter(timeInfo)}>{timeInfo}</button>
+      return <button key={index} className={`hover:bg-gray-500 p-4 rounded-2xl duration-200 w-full border-2 border-[#1f324d] ${chartTimeFilter === timeInfo ? "bg-[#1f324d] text-white" : ""}`} onClick={() => setChartTimeCategoryFilter(timeInfo)}>{timeInfo}</button>
   })}</>;
   
   return <>

@@ -51,10 +51,6 @@ export default function LocationChartFilter() {
     </div>
   })}</>;
 
-  useEffect(() => {
-    console.log(chartLocationFilter);
-  }, [chartLocationFilter]);
-
   return (
     <>
       <div>
