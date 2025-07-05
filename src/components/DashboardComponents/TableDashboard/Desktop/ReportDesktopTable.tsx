@@ -1,5 +1,5 @@
 import { reporttype_to_string, table_rows } from '../../../../types/variables';
-import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/useReportHook";
+import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { formatDate } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";

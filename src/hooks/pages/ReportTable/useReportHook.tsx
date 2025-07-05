@@ -4,16 +4,15 @@ import {
   Campus,
   ReportStatus,
   ReportType,
-  string_to_reportstatus,
   table_rows,
   type ReportData,
-} from "../types/variables";
-import UseReportDataHookEffect, { useReportDataHook } from "./shared/useReportData";
-import { useUserDataHook } from "./shared/useUserData";
-import { APIResultType, deleteReport } from "../utils/api_interface";
-import { useMessageToastHook } from "./shared/useMessageToast";
+} from "../../../types/variables";
+import UseReportDataHookEffect, { useReportDataHook } from "../../shared/useReportData";
+import { useUserDataHook } from "../../shared/useUserData";
+import { APIResultType, deleteReport } from "../../../utils/api_interface";
+import { useMessageToastHook } from "../../shared/useMessageToast";
 import { useEffect } from "react";
-import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
+import { useNetworkConnectivityHook } from "../../shared/useNetworkConnectivity";
 
 const maxReportDataPerPage: number = 10;
 

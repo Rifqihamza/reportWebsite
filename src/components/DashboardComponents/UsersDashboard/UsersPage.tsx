@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { addUser, APIResultType, deleteUser, getAllUsers, updateUser } from "../../../utils/api_interface"; // pastikan ada updateUser
-import UseUserAccountHookEffect, { useUserAccountHook } from "../../../hooks/useUserAccount";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
@@ -10,6 +9,7 @@ import { PrimeReactProvider } from "primereact/api";
 import { account_to_api_privillage, AccountAPIPrivillage, AccountType, type User } from "../../../types/variables";
 import DropdownComponent from "../../GlobalComponents/DropdownComponent/DropdownComponent";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
+import UseUserAccountHookEffect, { useUserAccountHook } from "../../../hooks/pages/UsersTab/useUserAccount";
 
 export default function UsersPage() {
   const { activeTab } = useDashboardNavbarHook();

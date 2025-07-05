@@ -1,10 +1,10 @@
 // src/hooks/shared/useUserAccount.ts
 import { useEffect } from "react";
-import type { User } from "../types/variables";
+import type { User } from "../../../types/variables";
 import { create } from "zustand";
-import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
-import { APIResultType, getAllUsers } from "../utils/api_interface";
-import { useMessageToastHook } from "./shared/useMessageToast";
+import { useNetworkConnectivityHook } from "../../shared/useNetworkConnectivity";
+import { APIResultType, getAllUsers } from "../../../utils/api_interface";
+import { useMessageToastHook } from "../../shared/useMessageToast";
 
 type UserAccountData = {
     showedUserAccountData: User[];

@@ -1,4 +1,4 @@
-import { useCampusDataHook } from "../../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../../hooks/pages/ReportForm/useCampusData";
 import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { AccountType } from "../../../types/variables";
 

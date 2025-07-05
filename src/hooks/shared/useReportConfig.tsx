@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../utils/api_interface";
-import { useCampusDataHook } from "./shared/useCampusData";
-import { useMessageToastHook } from "./shared/useMessageToast";
-import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
+import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../../utils/api_interface";
+import { useCampusDataHook } from "../pages/ReportForm/useCampusData";
+import { useMessageToastHook } from "./useMessageToast";
+import { useNetworkConnectivityHook } from "./useNetworkConnectivity";
 
 type useReportConfigType = {
   picNamesOptions: { [key: string]: string[] };

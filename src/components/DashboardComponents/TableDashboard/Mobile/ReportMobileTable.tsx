@@ -1,5 +1,5 @@
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
-import { useReportFilterHook, useReportPaginationHook } from "../../../../hooks/useReportHook";
+import { useReportFilterHook, useReportPaginationHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 import ReportMobileCard from "./ReportMobileCard";
 

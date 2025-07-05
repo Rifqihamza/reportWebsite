@@ -1,5 +1,5 @@
-import { useLineChartHook } from "../../../../hooks/useChartHook";
-import { useReportConfigHook } from "../../../../hooks/useReportConfig";
+import { useLineChartHook } from "../../../../hooks/pages/Statistics/useChartHook";
+import { useReportConfigHook } from "../../../../hooks/shared/useReportConfig";
 import { Campus, campuscode_to_campus } from "../../../../types/variables";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { useEffect } from "react";

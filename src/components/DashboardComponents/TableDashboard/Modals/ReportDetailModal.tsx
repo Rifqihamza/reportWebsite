@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Image } from "primereact/image";
 import { AccountAPIPrivillage, reporttype_to_string } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
-import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/useReportHook";
+import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { formatDate } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useExportHook } from "../../../../hooks/useExportHook";
+import { useExportHook } from "../../../../hooks/pages/Export/useExportHook";
 import { table_rows, type ReportData } from '../../../../types/variables';
 
 

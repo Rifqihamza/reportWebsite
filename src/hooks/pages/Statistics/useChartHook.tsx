@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { Campus, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype } from "../types/variables";
-import { useReportDataHook } from "./shared/useReportData";
+import { Campus, ReportStatus, ReportType, reporttype_to_string, string_to_reporttype } from "../../../types/variables";
+import { useReportDataHook } from "../../shared/useReportData";
 import { useEffect } from "react";
 import strftime from "strftime";
-import { useReportConfigHook } from "./useReportConfig";
+import { useReportConfigHook } from "../../shared/useReportConfig";
 
 export enum LineChartTimeCategoryOption {
   Year = "Tahun ini",

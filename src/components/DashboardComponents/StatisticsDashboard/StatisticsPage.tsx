@@ -1,10 +1,10 @@
 import React, { Suspense } from "react";
 import { ReportType, reporttype_to_string, statusColorHex } from '../../../types/variables';
-import { UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../hooks/useChartHook";
+import { UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../hooks/pages/Statistics/useChartHook";
 import UseReportDataHookEffect from "../../../hooks/shared/useReportData";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { PrimeReactProvider } from 'primereact/api';
-import UseReportConfigHookEffect from "../../../hooks/useReportConfig";
+import UseReportConfigHookEffect from "../../../hooks/shared/useReportConfig";
 import TimeChartFilter from "./filters/TimeChartFilter";
 import CampusChartFilter from "./filters/CampusChartFilter";
 import LocationChartFilter from "./filters/LocationChartFilter";

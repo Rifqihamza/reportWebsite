@@ -1,5 +1,5 @@
 import { Calendar } from "primereact/calendar";
-import { useReportFilterHook } from "../../../../hooks/useReportHook";
+import { useReportFilterHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import FilterSelect from "./SelectFilterComponent";
 import { PrimeReactProvider } from "primereact/api";
 

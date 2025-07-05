@@ -5,7 +5,7 @@ import ReportEditModal from "./Modals/ReportEditModal";
 import ReportMobileTable from "./Mobile/ReportMobileTable";
 
 
-import { ReportHookEffect } from "../../../hooks/useReportHook";
+import { ReportHookEffect } from "../../../hooks/pages/ReportTable/useReportHook";
 
 
 export default function ReportListComponent() {
