@@ -44,7 +44,6 @@ export default function UseReportConfigHookEffect(props: { useAllCampus?: boolea
     }
     initialized = true;
     
-    console.log("TEST");
     // If not used all campus is not selected yet
     if (!props.useAllCampus && !selectedCampus) {
       return;
