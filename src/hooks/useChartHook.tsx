@@ -6,10 +6,10 @@ import strftime from "strftime";
 import { useReportConfigHook } from "./useReportConfig";
 
 export enum LineChartTimeCategoryOption {
-  Year = "This Year",
-  Month = "This Month",
-  Week = "This Week",
-  Today = "Today",
+  Year = "Tahun ini",
+  Month = "Bulan ini",
+  Week = "Minggu ini",
+  Today = "Hari ini",
 }
 
 type CategoryType = {

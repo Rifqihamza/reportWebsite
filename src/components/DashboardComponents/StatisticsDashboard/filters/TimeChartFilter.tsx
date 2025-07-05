@@ -1,30 +1,27 @@
 import { Dropdown } from "primereact/dropdown";
 import { LineChartTimeCategoryOption, useLineChartHook } from "../../../../hooks/useChartHook";
+import { Accordion, AccordionTab } from "primereact/accordion";
 
 export default function TimeChartFilter() {
   const options = Object.values(LineChartTimeCategoryOption);
 
   const { chartTimeCategoryFilter, setChartTimeCategoryFilter } = useLineChartHook();
 
+  
+  const LineChartTimeFilter = <>{Object.values(LineChartTimeCategoryOption).map((timeInfo, index) => {
+      return <button key={index} className={`hover:bg-gray-500 p-4 rounded-2xl duration-200 w-full border-2 border-[#1f324d] ${chartTimeCategoryFilter === timeInfo ? "bg-[#1f324d] text-white" : ""}`} onClick={() => setChartTimeCategoryFilter(timeInfo)}>{timeInfo}</button>
+  })}</>;
+  
   return <>
-    <div className="md:hidden block w-full">
-        <Dropdown
-            className="px-4 py-2 rounded-xl! [&_.p-dropdown-label]:text-[#1f324d]! [&_.p-dropdown-trigger]:text-[#1f324d]! bg-white! [&_.p-dropdown]:bg-white! [&_.p-dropdown-label]:bg-white! [&_.p-dropdown-trigger]:bg-white! md:[&_.p-dropdown-label]:text-white! md:[&_.p-dropdown-trigger]:text-white! md:bg-[#1f324d]! md:[&_.p-dropdown]:bg-[#1f324d]! md:[&_.p-dropdown-label]:bg-[#1f324d]! md:[&_.p-dropdown-trigger]:bg-[#1f324d]!"
-            onChange={(e) => setChartTimeCategoryFilter(e.value)}
-            value={chartTimeCategoryFilter}
-            options={Object.values(LineChartTimeCategoryOption)} />
-    </div>
-    <div className="w-full hidden md:flex md:flex-row md:justify-between md:gap-3 bg-white px-4 py-3 rounded-2xl">
-        {options.map((option) => (
-            <button
-                key={option}
-                onClick={() => setChartTimeCategoryFilter(option)}
-                className={`p-4 rounded-lg w-full ${chartTimeCategoryFilter === option ? 'bg-[#1f324d] text-white' : 'bg-gray-200 hover:bg-[#1f324d]/20 text-black'
-                    }`}
-            >
-                {option}
-            </button>
-        ))}
+    <div className="w-full">
+        <Accordion>
+          <AccordionTab
+            header="Rentang Waktu"
+            className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:border-0! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4"
+          >
+            <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full mt-4">{LineChartTimeFilter}</div>
+          </AccordionTab>
+        </Accordion>
     </div>
   </>;
 }

@@ -11,17 +11,16 @@ export default function CampusChartFilter() {
   
   return (
     <>
-      <div className="md:hidden block w-full">
+      <div className="w-full">
         <Accordion>
           <AccordionTab
-            header="Campus Filter"
+            header="Filter Kampus"
             className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:border-0! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4"
           >
             <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full mt-4">{LineChartCampusFilter}</div>
           </AccordionTab>
         </Accordion>
       </div>
-      <div className="md:flex hidden flex-row gap-4 p-4 bg-white justify-between rounded-2xl">{LineChartCampusFilter}</div>
     </>
   );
 }
