@@ -1,7 +1,7 @@
 import strftime from "strftime";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import UseReportDataHookEffect, { useReportDataHook } from "../../../hooks/shared/useReportData";
-import UseExportHookEffect, { useExportHook } from "../../../hooks/useExportHook";
+import UseExportHookEffect, { useExportHook } from "../../../hooks/pages/Export/useExportHook";
 import { ExportOutputType, keyto_table_rows, reporttype_to_string, table_rows, type ReportData } from "../../../types/variables";
 import DateRangeOptions from "./options/DateRangeOptions";
 import OutputOptions from "./options/OutputOptions";

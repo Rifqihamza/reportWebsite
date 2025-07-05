@@ -1,4 +1,4 @@
-import { useCampusDataHook } from "../../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../../hooks/pages/ReportForm/useCampusData";
 import { Campus } from "../../../types/variables";
 import SelectCampusButton from "./SelectCampusButton";
 
@@ -26,11 +26,12 @@ export default function SelectCampusOverlay() {
         autoplay={{
           delay: 1500,
           disableOnInteraction: true,
+          
         }}
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
-          depth: 500,
+          depth: 100,
           modifier: 1,
           slideShadows: false,
         }}
@@ -39,20 +40,11 @@ export default function SelectCampusOverlay() {
         }}
         navigation={true}
         loop={true}
+        spaceBetween={-600}
         slidesPerView={1}
-        spaceBetween={-950}
         centeredSlides={true}
         modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
-        className="w-full [&_.swiper-button-prev,_.swiper-button-next]:z-100 md:[&_.swiper-button-prev]:translate-x-10 md:[&_.swiper-button-next]:-translate-x-10"
-        style={
-          {
-            "--swiper-pagination-color": "#FFBA08",
-            "--swiper-pagination-bullet-inactive-color": "#fff",
-            "--swiper-pagination-bullet-inactive-opacity": "1",
-            "--swiper-pagination-bottom": "15px",
-            "--swiper-navigation-color": "#fff",
-          } as any
-        }
+        className="w-full swiper"
       >
         {Object.values(Campus).map((value) => (
           <SwiperSlide key={value}>

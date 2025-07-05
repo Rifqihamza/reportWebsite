@@ -2,12 +2,22 @@ import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
 import cookie from 'cookie';
 import { prisma } from "./db";
-import { ActivityType, Prisma, type Users } from "@prisma/client";
-import type { Campus } from "../types/variables";
+import { AccountType, ActivityType, Prisma, type Users } from "@prisma/client";
 import { APIResultType } from "./api_interface";
 
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+export function apiresult_to_status(api_result: any): Response {
+    switch(api_result) {
+        case APIResultType.DatabaseError:
+            return create_response_status(503);
+        case APIResultType.InternalServerError:
+            return create_response_status(500);
+        default:
+            return create_response_status(401);
+    }
+}
 
 // First Initialization
 export async function first_initialization() {
@@ -66,7 +76,7 @@ export function generate_user_token(username: string): string {
     return jwt.sign({ username }, process.env.JWT_SECRET!);
 }
 
-export function verify_user_token(token: string): string | undefined {
+export function verify_token_valid(token: string): string | undefined {
     try {
         const result = jwt.verify(token, process.env.JWT_SECRET!);
         if (typeof result == "string") {
@@ -75,13 +85,16 @@ export function verify_user_token(token: string): string | undefined {
 
         return result.username;
     }
-    catch {
+    catch(err) {
         return undefined;
     }
 }
 
-export async function verify_teacher_token(token: string): Promise<[true, true, Users] | [false, undefined | APIResultType, undefined]> {
-    const result = verify_user_token(token);
+/**
+ * Return Information: [verified, error_state, user_data]
+ */
+export async function verify_user_data_token(token: string): Promise<[true, true, Users] | [false, undefined | APIResultType, undefined]> {
+    const result = verify_token_valid(token);
 
     if (!result) {
         return [false, undefined, undefined];
@@ -91,7 +104,7 @@ export async function verify_teacher_token(token: string): Promise<[true, true, 
     try {
         user_data = await prisma.users.findUnique({
             where: {
-                username: result
+                lowercased_username: result,
             }
         });
     }
@@ -103,7 +116,7 @@ export async function verify_teacher_token(token: string): Promise<[true, true, 
         return [false, APIResultType.InternalServerError, undefined];
     }
 
-    return user_data ? [true, true, user_data] : [false, undefined, undefined];
+    return (user_data && !user_data.inactive) ? [true, true, user_data] : [false, undefined, undefined];
 }
 
 export function verify_admin_token(token?: string): boolean {

@@ -1,4 +1,4 @@
-import { useExportHook } from "../../../../hooks/useExportHook";
+import { useExportHook } from "../../../../hooks/pages/Export/useExportHook";
 import { ExportOutputType } from "../../../../types/variables";
 
 

@@ -2,28 +2,40 @@
 import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
 import {
-    get_cookies_from_request,
-    verify_user_token,
     create_response_status,
     create_response_json,
+    verify_user_data_token,
+    apiresult_to_status,
 } from "../../../utils/api_helper";
 import { Prisma } from "@prisma/client";
+import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
-export async function GET({ request }: APIContext) {
-    const cookies = get_cookies_from_request(request);
-    const token = cookies?.["user_token"];
+export async function GET({ cookies }: APIContext) {
+    // Verify tokenn
+    const token = cookies.get("user_token")?.value;
     if (!token) return create_response_status(401);
 
-    const username = verify_user_token(token);
-    if (!username) return create_response_status(401);
+    const [verification_result, verification_output, user_data] = await verify_user_data_token(token);
+    if(!verification_result) {
+        return apiresult_to_status(verification_output);
+    }
+    
 
+    // Verify user role
+    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.GetAllUsers)) {
+        return create_response_status(401);
+    }
+    
+
+    // Get all user data
     let users;
     try {
         users = await prisma.users.findMany({
             where: {
                 NOT: {
-                    role: "Admin"
-                }
+                    role: "Admin",
+                },
+                inactive: false
             },
             select: {
                 id: true,

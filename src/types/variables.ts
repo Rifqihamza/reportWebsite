@@ -109,13 +109,11 @@ export const table_rows: {
     [key: string]: (keyof ReportData)
 } = {
     "Status": "status",
-    "Tanggal": "created_at",
-    "Nama Pelapor": "submitted_by",
+    "Nama": "submitted_by",
     "Laporan": "message",
-    "Lokasi": "location_name",
-    "PIC": "pic_name",
-    "Kategori": "type",
     "Kampus": "campus",
+    "Lokasi": "location_name",
+    "Tanggal": "created_at",
 }
 
 export const keyto_table_rows: Partial<{
@@ -143,6 +141,64 @@ export const statusColorHex: Record<string, string> = {
 };
 
 export enum ExportOutputType {
-  Excel = "Excel",
-  CSV = "CSV",
+    Excel = "Excel",
+    CSV = "CSV",
+}
+
+
+export enum AccountAPIPrivillage {
+    AllPrivillages = "AllPrivillages",
+    
+    // User Related Privillage
+    CreateUser = "CreateUser",
+    UpdateUser = "UpdateUser",
+    DeleteUser = "DeleteUser",
+    GetAllUsers = "GetAllUsers",
+    SettingProfile = "SettingProfile",
+
+    // Report Related Privillage
+    CreateReport = "CreateReport",
+    UpdateReport = "UpdateReport",
+    DeleteReport = "DeleteReport",
+    GetReport = "GetReport",
+}
+
+export const account_to_api_privillage: {
+    [key in AccountType]: AccountAPIPrivillage[]
+} = {
+    "Admin": Object.values(AccountAPIPrivillage),
+    "Guru": [
+        AccountAPIPrivillage.GetAllUsers,
+        AccountAPIPrivillage.CreateReport,
+        AccountAPIPrivillage.GetReport,
+        AccountAPIPrivillage.UpdateReport,
+        AccountAPIPrivillage.SettingProfile
+    ],
+    "Siswa": [
+        AccountAPIPrivillage.CreateReport,
+        AccountAPIPrivillage.SettingProfile
+    ],
+    "Vendor": [
+        AccountAPIPrivillage.CreateReport
+    ],
+    "Tukang": [
+        AccountAPIPrivillage.CreateReport
+    ]
+};
+
+export const privillage_for_dashboard = [
+    AccountAPIPrivillage.AllPrivillages,
+    AccountAPIPrivillage.GetReport,
+    AccountAPIPrivillage.GetAllUsers,
+    AccountAPIPrivillage.UpdateReport,
+    AccountAPIPrivillage.UpdateUser,
+    AccountAPIPrivillage.DeleteReport,
+    AccountAPIPrivillage.DeleteUser,
+    AccountAPIPrivillage.CreateUser,
+];
+
+export function has_access_to_dashboard(role: AccountType) {
+    const privillages = account_to_api_privillage[role];
+    console.log(`Has access to dashboard: ${privillage_for_dashboard.findIndex(x => privillages.includes(x)) > -1}`);
+    return privillage_for_dashboard.findIndex(x => privillages.includes(x)) > -1;
 }

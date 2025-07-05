@@ -1,5 +1,5 @@
 import { useUserDataHook } from "../../../hooks/shared/useUserData";
-import { AccountType } from "../../../types/variables";
+import { AccountType, has_access_to_dashboard } from "../../../types/variables";
 
 export default function DashboardButton() {
   const { userData } = useUserDataHook();
@@ -8,7 +8,7 @@ export default function DashboardButton() {
     window.location.href = "/dashboard";
   }
   
-  if(userData && userData.role === AccountType.Admin) {
+  if(userData && has_access_to_dashboard(userData.role)) {
     return <>
       
         <button

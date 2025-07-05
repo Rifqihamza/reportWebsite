@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../utils/api_interface";
-import { useCampusDataHook } from "./shared/useCampusData";
-import { useMessageToastHook } from "./shared/useMessageToast";
-import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
+import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../../utils/api_interface";
+import { useCampusDataHook } from "../pages/ReportForm/useCampusData";
+import { useMessageToastHook } from "./useMessageToast";
+import { useNetworkConnectivityHook } from "./useNetworkConnectivity";
 
 type useReportConfigType = {
   picNamesOptions: { [key: string]: string[] };
@@ -29,19 +29,23 @@ export const useReportConfigHook = create<useReportConfigType>((set) => {
   };
 });
 
-export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
+
+let initialized = false;
+
+export default function UseReportConfigHookEffect(props: { useAllCampus?: boolean }) {
   const { selectedCampus } = useCampusDataHook();
   const { setLocationOptions, setPicNamesOptions } = useReportConfigHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
-    if(!isConnected) {
-        showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
+    if(initialized || !isConnected) {
+      return;
     }
+    initialized = true;
     
     // If not used all campus is not selected yet
-    if (!props.useAll && !selectedCampus) {
+    if (!props.useAllCampus && !selectedCampus) {
       return;
     }
 
@@ -72,8 +76,6 @@ export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
 
         setPicNamesOptions(resultPicNamesOptions);
         setLocationOptions(resultLocationOptions);
-      } else if (result === APIResultType.Unauthorized) {
-        window.location.href = "/loginPage";
       } else if (result === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       } else if (result === false) {

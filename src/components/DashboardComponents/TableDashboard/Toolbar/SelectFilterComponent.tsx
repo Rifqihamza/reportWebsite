@@ -12,7 +12,7 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import ShieldIcon from '@mui/icons-material/Shield';
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import { useReportFilterHook } from '../../../../hooks/useReportHook';
+import { useReportFilterHook } from '../../../../hooks/pages/ReportTable/useReportHook';
 
 export default function FilterSelect() {
     const { selectedFilter, setCampusFilter, setReportStatusFilter, setReportTypeFilter, resetFilter } = useReportFilterHook();

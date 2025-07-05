@@ -1,13 +1,13 @@
 // src/hooks/shared/useUserAccount.ts
 import { useEffect } from "react";
-import type { User } from "../types/variables";
+import type { User } from "../../../types/variables";
 import { create } from "zustand";
-import { useNetworkConnectivityHook } from "./shared/useNetworkConnectivity";
-import { APIResultType, getAllUsers } from "../utils/api_interface";
-import { useMessageToastHook } from "./shared/useMessageToast";
+import { useNetworkConnectivityHook } from "../../shared/useNetworkConnectivity";
+import { APIResultType, getAllUsers } from "../../../utils/api_interface";
+import { useMessageToastHook } from "../../shared/useMessageToast";
 
 type UserAccountData = {
-    showUserAccountData: User[];
+    showedUserAccountData: User[];
     setShowedUserAccountData: (users: User[]) => void;
 
     userAccountData: User[],
@@ -16,6 +16,9 @@ type UserAccountData = {
     doneFetching: boolean,
     setDoneFetching: (newState: boolean) => void,
 
+    isAuthorized: boolean,
+    setIsAuthorized: (newState: boolean) => void,
+
     usernameFilter: string,
     setUsernameFilter: (newUsernameFilter: string) => void
 };
@@ -23,14 +26,17 @@ type UserAccountData = {
 let initialized = false;
 
 export const useUserAccountHook = create<UserAccountData>((set) => ({
-    showUserAccountData: [],
-    setShowedUserAccountData: (users) => set({ showUserAccountData: users }),
+    showedUserAccountData: [],
+    setShowedUserAccountData: (users) => set({ showedUserAccountData: users }),
     
     userAccountData: [],
     setUserAccountData: (users) => set({ userAccountData: users }),
 
     doneFetching: false,
     setDoneFetching: (newState) => set(() => ({ doneFetching: newState })),
+
+    isAuthorized: true,
+    setIsAuthorized: (newState) => set(() => ({ isAuthorized: newState })),
     
     usernameFilter: "",
     setUsernameFilter(newUsernameFilter) {
@@ -40,7 +46,7 @@ export const useUserAccountHook = create<UserAccountData>((set) => ({
 
 export default function UseUserAccountHookEffect() {
     const { isConnected } = useNetworkConnectivityHook();
-    const { setUserAccountData, userAccountData, setShowedUserAccountData, setDoneFetching, usernameFilter } = useUserAccountHook();
+    const { setUserAccountData, userAccountData, setShowedUserAccountData, setDoneFetching, usernameFilter, setIsAuthorized } = useUserAccountHook();
     const { showMessage } = useMessageToastHook();
     
     useEffect(() => {
@@ -54,6 +60,8 @@ export default function UseUserAccountHookEffect() {
                 setUserAccountData(result);
             } else if (result === false) {
                 showMessage("There's a network error.", "error", "Please reload the website once you connected.");
+            } else if (result === APIResultType.Unauthorized) {
+                setIsAuthorized(false);
             } else if (result === APIResultType.InternalServerError) {
                 showMessage("Terjadi error di server.", "error", "Reload website setelah beberapa waktu");
             }

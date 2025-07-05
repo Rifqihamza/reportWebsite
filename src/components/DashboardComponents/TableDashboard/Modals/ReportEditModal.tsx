@@ -1,15 +1,15 @@
 import { Dialog } from "primereact/dialog";
-import { Dropdown } from "primereact/dropdown";
 import { useEffect, useState } from "react";
 import { AccountType, ReportStatus, ReportType, reporttype_to_string } from "../../../../types/variables";
 import { APIResultType, updateReport } from "../../../../utils/api_interface";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
-import { useReportDetailHook, useReportEditHook } from "../../../../hooks/useReportHook";
+import { useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { useMessageToastHook } from "../../../../hooks/shared/useMessageToast";
-import { useReportConfigHook } from "../../../../hooks/useReportConfig";
+import { useReportConfigHook } from "../../../../hooks/shared/useReportConfig";
 import { Calendar } from "primereact/calendar";
 import { useNetworkConnectivityHook } from "../../../../hooks/shared/useNetworkConnectivity";
 import { PrimeReactProvider } from "primereact/api";
+import DropdownComponent from "../../../GlobalComponents/DropdownComponent/DropdownComponent";
 
 const reportTypeOptions = [
   ...Object.keys(ReportType)
@@ -78,11 +78,11 @@ export default function ReportEditModal() {
     if (disableSave || !report || !isChange) return;
     setDisableSave(true);
 
-    let result: APIResultType | null;
+    let result: APIResultType | false;
     try {
       result = await updateReport(report.id, formState);
     } catch {
-      showMessage("Success", "success", "Successfully update data!");
+      showMessage("Success", "success", "Data berhasil diedit!");
       return;
     } finally {
       setDisableSave(false);
@@ -95,11 +95,13 @@ export default function ReportEditModal() {
 
       // Close the dialog component and trigger success function
       setEditVisible(false);
-      showMessage("Success", "success", "Successfully update data!");
+      showMessage("Success", "success", "Data berhasil diedit!");
     } else if (result === APIResultType.Unauthorized) {
       showMessage("Unauthorized", "error", "Unauthorized attempt detected!");
     } else if (result === APIResultType.InternalServerError) {
-      showMessage("Error", "error", "There's an error!");
+      showMessage("Error", "error", "Terjadi error!");
+    } else if (result === APIResultType.DatabaseError) {
+      showMessage("Error", "error", "Database sedang bermasalah. Mohon tunggu, lalu coba lagi!");
     }
   };
   return (
@@ -243,14 +245,13 @@ function DropdownField({
           ""
         )}
       </div>
-      <Dropdown
+      <DropdownComponent
         filter={filter}
         disabled={disabled}
         value={value}
         options={options}
         onChange={onChange}
-        className="w-full rounded-lg! bg-transparent! [&_.p-dropdown]:disabled:border-gray-300! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!"
-        placeholder={`Pilih ${label}`}
+        label={label}
       />
     </div>
   );

@@ -10,13 +10,15 @@ datasource db {
 
 // Enum
 enum ActivityType {
+  UpdateUser
+  LoginUser
+  LogoutUser
+  CreateUser
   CreateReport
   GetReport
   UpdateReport
   DeleteReport
   CreatePIC
-  LoginUser
-  LogoutUser
 }
 
 enum AccountType {
@@ -53,12 +55,14 @@ enum Campus {
 
 // Database model
 model Users {
-  id       String      @id @default(uuid())
-  username String      @unique
-  password String
-  role     AccountType
+  id                  String      @id @default(uuid())
+  username            String      @unique
+  lowercased_username String      @unique
+  password            String
+  role                AccountType
 
   created_at DateTime @default(now())
+  inactive   Boolean  @default(false)
 
   // Relation
   recorded_activities RecordedActivity[]
@@ -134,6 +138,6 @@ model RecordedActivity {
   created_at DateTime @default(now())
 
   // Relations
-  account      Users  @relation(references: [username], fields: [account_name], onDelete: Restrict)
+  account      Users  @relation(references: [username], fields: [account_name], onDelete: Cascade)
   account_name String
 }

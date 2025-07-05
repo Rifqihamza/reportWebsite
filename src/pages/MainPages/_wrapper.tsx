@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import MainPage from './_index';
-import WelcomeComponent from '../../components/ReportFormComponents/WelcomeOverlay/WelcomeComponent';
+import WelcomeComponent from '../../components/ReportFormComponents/WelcomeAnimation/WelcomeAnimation';
 import SelectCampusOverlay from "../../components/ReportFormComponents/SelectCampus/SelectCampusOverlay";
-import { useCampusDataHook } from "../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../hooks/pages/ReportForm/useCampusData";
 
 export default function WrapperPage() {
     const [showWelcome, setShowWelcome] = useState(false);

@@ -213,6 +213,26 @@ body {
   box-shadow: none;
 }
 
+.swiper {
+  --swiper-navigation-size: 100px;
+  --swiper-navigation-top-offset: 50%;
+  --swiper-navigation-sides-offset: 26%;
+  --swiper-navigation-color: #ffffff;
+  --swiper-pagination-color: #ffba08;
+  --swiper-pagination-bullet-inactive-color: #fff;
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .swiper {
+    --swiper-navigation-size: 60px;
+    --swiper-navigation-top-offset: 50%;
+    --swiper-navigation-sides-offset: 10%;
+    --swiper-pagination-bottom: 15px;
+  }
+}
+
 .MyGradient {
   mask-image: linear-gradient(
     to right,
@@ -221,19 +241,6 @@ body {
     rgba(0, 0, 0, 1) 80%,
     rgba(0, 0, 0, 0)
   );
-}
-
-/* style.css atau global.css */
-.swiper-pagination-bullet {
-  background-color: white;
-  opacity: 1;
-  width: 10px;
-  height: 10px;
-  margin: 0 5px !important;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: #ffba08;
 }
 
 .p-progressbar {

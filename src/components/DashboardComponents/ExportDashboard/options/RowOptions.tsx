@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useExportHook } from "../../../../hooks/useExportHook";
+import { useExportHook } from "../../../../hooks/pages/Export/useExportHook";
 import { table_rows, type ReportData } from '../../../../types/variables';
 
 
@@ -18,8 +18,8 @@ export default function RowOptions() {
       <h1 className="text-md lg:text-xl text-white py-3 px-6 w-full text-center">Opsi Barisan</h1>
       <div className="bg-[#ededed] w-full h-full rounded-xl flex flex-col justify-between gap-2 p-2 overflow-auto">
         <div className="flex flex-col gap-2">
-          {rows.map(({value, label}) => {
-            return <button className={`cursor-pointer text-sm lg:text-md px-2 py-4 border-2 hover:brightness-75 rounded-xl ${(selectedRows.includes(value) ? "bg-[#1f324d] text-white" : "bg-white text-[#1f324d] border-[#1f324d]")}`} onClick={() => { toggleRow(value) }}>{label}</button>;
+          {rows.map(({value, label}, index) => {
+            return <button key={index} className={`cursor-pointer text-sm lg:text-md px-2 py-4 border-2 hover:brightness-75 rounded-xl ${(selectedRows.includes(value) ? "bg-[#1f324d] text-white" : "bg-white text-[#1f324d] border-[#1f324d]")}`} onClick={() => { toggleRow(value) }}>{label}</button>;
           })}
         </div>
         <button className={`cursor-pointer text-sm lg:text-md px-2 py-4 border-2 hover:brightness-75 ${((selectedRows.length ===  Object.values(table_rows).length) ? "bg-[#1f324d] text-white" : "bg-white text-[#1f324d] border-[#1f324d]")} rounded-xl`} onClick={() => { toggleAllRow() }}>{selectedRows.length ===  Object.values(table_rows).length ? "Remove All" : "Add All"}</button>

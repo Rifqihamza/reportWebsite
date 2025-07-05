@@ -1,6 +1,6 @@
 import React from "react";
 import { reporttype_to_string, type ReportData } from "../../../../types/variables";
-import { statusColors, useReportDetailHook } from "../../../../hooks/useReportHook";
+import { statusColors, useReportDetailHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { formatDate } from "../../../../utils/other";
 
 interface ReportMobileCardProps {
