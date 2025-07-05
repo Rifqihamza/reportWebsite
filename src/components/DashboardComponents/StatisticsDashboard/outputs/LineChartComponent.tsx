@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { LineChartTimeCategoryOption, listOfDay, listOfMonths, useLineChartHook } from '../../../../hooks/useChartHook';
 
 const maxYAxisSnapLength = 10;
 
@@ -15,6 +16,21 @@ interface LineChartProps {
 }
 
 const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
+    const { chartTimeCategoryFilter } = useLineChartHook();
+    reports.sort((a, b) => {
+        if(chartTimeCategoryFilter === LineChartTimeCategoryOption.Year) {
+            return listOfMonths.indexOf(a.labels) - listOfMonths.indexOf(b.labels);
+        }
+        else if(chartTimeCategoryFilter === LineChartTimeCategoryOption.Month) {
+            return Number.parseInt(a.labels) - Number.parseInt(b.labels);
+        }
+        else if(chartTimeCategoryFilter === LineChartTimeCategoryOption.Week) {
+            return listOfDay.indexOf(a.labels) - listOfDay.indexOf(b.labels);
+        }
+        else {
+            return Number.parseInt(a.labels) - Number.parseInt(b.labels);
+        }
+    })
     const categories = Array.from(new Set([...reports].map(r => {
         return r.labels
     })));
