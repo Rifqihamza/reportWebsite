@@ -43,7 +43,7 @@ export default function VersionTracker() {
           <h1>What's new?</h1>
           <p className="text-sm italic font-thin">Version: {changes.version} [{changes.date}]</p>
         </div>
-      } style={{ width: '50vw' }} className="" visible={true} onHide={() => setChanges(null)}>
+      } className="w-[100vw] max-h-[80vh] overflow-y-auto md:w-[50vw]" visible={true} onHide={() => setChanges(null)}>
         {changes.changes.features.length > 0 ? <ChangesGroup label="Features" changes={changes.changes.features} /> : <></>}
         {changes.changes.improvements.length > 0 ? <ChangesGroup label="Improvements" changes={changes.changes.improvements} /> : <></>}
         {changes.changes.fixes.length > 0 ? <ChangesGroup label="Fixes" changes={changes.changes.fixes} /> : <></>}
