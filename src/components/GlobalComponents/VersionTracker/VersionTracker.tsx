@@ -2,6 +2,7 @@ import { Dialog } from "primereact/dialog";
 import { useEffect, useState } from "react";
 import changelog from "../../../changelog.json";
 import { which_latest_version } from "../../../utils/other";
+import { PrimeReactProvider } from "primereact/api";
 
 type ChangesType = {
   "version": string,
@@ -36,16 +37,18 @@ export default function VersionTracker() {
   }
 
   return <>
-    <Dialog header={
-      <div>
-        <h1>What's new?</h1>
-        <p className="text-sm italic font-thin">Version: {changes.version} [{changes.date}]</p>
-      </div>
-    } style={{ width: '50vw' }} className="" visible={true} onHide={() => setChanges(null)}>
-      {changes.changes.features.length > 0 ? <ChangesGroup label="Features" changes={changes.changes.features} /> : <></>}
-      {changes.changes.improvements.length > 0 ? <ChangesGroup label="Improvements" changes={changes.changes.improvements} /> : <></>}
-      {changes.changes.fixes.length > 0 ? <ChangesGroup label="Fixes" changes={changes.changes.fixes} /> : <></>}
-    </Dialog>
+    <PrimeReactProvider>
+      <Dialog header={
+        <div>
+          <h1>What's new?</h1>
+          <p className="text-sm italic font-thin">Version: {changes.version} [{changes.date}]</p>
+        </div>
+      } style={{ width: '50vw' }} className="" visible={true} onHide={() => setChanges(null)}>
+        {changes.changes.features.length > 0 ? <ChangesGroup label="Features" changes={changes.changes.features} /> : <></>}
+        {changes.changes.improvements.length > 0 ? <ChangesGroup label="Improvements" changes={changes.changes.improvements} /> : <></>}
+        {changes.changes.fixes.length > 0 ? <ChangesGroup label="Fixes" changes={changes.changes.fixes} /> : <></>}
+      </Dialog>
+    </PrimeReactProvider>
   </>
 }
 
