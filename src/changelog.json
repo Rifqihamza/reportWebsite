@@ -41,7 +41,7 @@
     "changes": {
       "features": ["Admin can change username and password", "Admin can delete user", "Admin can add user", "Add location filter inside statistics section", "Teacher now can use dashboard for seeing report data and user data"],
       "fixes": ["Fix sidebar in admin dashboard can't be opened in mobile view", "Fix user data in welcome page can't be loaded", "Fix navbar in about page doesn't react when user scrolling the website"],
-      "improvements": ["Users username now can be capitalized"]
+      "improvements": ["Users username now can be capitalized", "Improve performance in statistics section"]
     }
   }
 ]
