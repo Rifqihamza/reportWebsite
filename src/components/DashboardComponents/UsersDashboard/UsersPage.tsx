@@ -7,7 +7,7 @@ import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
 import { Dialog } from "primereact/dialog";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { PrimeReactProvider } from "primereact/api";
-import { AccountType, type User } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, AccountType, type User } from "../../../types/variables";
 import DropdownComponent from "../../GlobalComponents/DropdownComponent/DropdownComponent";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
 
@@ -16,7 +16,7 @@ export default function UsersPage() {
   const { setUsernameFilter, usernameFilter, showedUserAccountData, setUserAccountData, doneFetching, userAccountData, isAuthorized: isAuhtorizedGetAllUsers } = useUserAccountHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
-  const { userData } = useUserDataHook();
+  const { userData, userDataPrivillages } = useUserDataHook();
 
   const [visibleDialog, setVisibleDialog] = useState(false);
   const [editingUser, setEditingUser] = useState<{ id: string|null; username: string; password: string, role: AccountType|null }>({
@@ -153,7 +153,7 @@ export default function UsersPage() {
             className={`w-full pl-4 pr-6 py-2 rounded-xl placeholder-black ${usernameFilter.length > 0 ? "bg-[#7fa1c3] text-white" : "bg-white"}`}
             onChange={(e) => setUsernameFilter(e.target.value.toLowerCase())}
           />
-          <button className="w-full md:w-max flex flex-row gap-2 items-center justify-center cursor-pointer duration-200 hover:brightness-75 bg-white text-black p-2 rounded-xl" onClick={() => { setEditingUser({id: null, username:"", password:"", role: AccountType.Siswa}); setVisibleDialog(true); }}><i className="pi pi-user-plus"></i><p className="w-max">Tambah Pengguna</p></button>
+          <button className="w-full md:w-max flex flex-row gap-2 items-center justify-center cursor-pointer duration-200 hover:brightness-75 bg-white text-black p-2 rounded-xl disabled:brightness-75 disabled:cursor-not-allowed disabled:opacity-50" onClick={() => { setEditingUser({id: null, username:"", password:"", role: AccountType.Siswa}); setVisibleDialog(true); }} disabled={!userDataPrivillages.includes(AccountAPIPrivillage.CreateUser)}><i className="pi pi-user-plus"></i><p className="w-max">Tambah Pengguna</p></button>
         </div>
 
         <div className="hidden md:block h-full overflow-auto relative bg-white rounded-xl px-6 py-4">
@@ -213,11 +213,11 @@ export default function UsersPage() {
                     <td className="p-4 text-left">{user.role}</td>
                     <td className="p-4 text-left">{new Date(user.created_at).toLocaleDateString("id-ID")}</td>
                     <td className="flex flex-row items-center justify-center gap-2 p-4 h-full">
-                      <button onClick={() => handleEditClick(user)} className="cursor-pointer bg-blue-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75">
+                      <button onClick={() => handleEditClick(user)} className="cursor-pointer bg-blue-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateUser)}>
                         Edit
                       </button>
                       <span>|</span>
-                      <button className="cursor-pointer bg-red-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-50" onClick={() => handleDelete(user)} disabled={deletedUserIDProcess ? true : false}>Delete</button>
+                      <button className="cursor-pointer bg-red-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => handleDelete(user)} disabled={(!userDataPrivillages.includes(AccountAPIPrivillage.DeleteUser) || deletedUserIDProcess) ? true : false}>Delete</button>
                     </td>
                   </tr>
                 ));
@@ -243,11 +243,13 @@ export default function UsersPage() {
                   </p>
                 </div>
                 <div className="flex flex-row items-center justify-center py-2 gap-2 border-b border-gray-300 h-full">
-                  <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl w-full">
+                  <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateUser)}>
                     Edit
                   </button>
                   <span>|</span>
-                  <button className="bg-red-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-50" onClick={() => handleDelete(user)} disabled={deletedUserIDProcess ? true : false}>Delete</button>
+                  <button className="bg-red-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => handleDelete(user)} disabled={(!userDataPrivillages.includes(AccountAPIPrivillage.DeleteUser) || deletedUserIDProcess) ? true : false}>
+                    Delete
+                  </button>
                 </div>
               </div>
             ))

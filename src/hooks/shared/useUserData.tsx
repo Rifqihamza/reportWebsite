@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { account_to_api_privillage, AccountType, has_access_to_dashboard, privillage_for_dashboard, type User } from "../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, AccountType, has_access_to_dashboard, privillage_for_dashboard, type User } from "../../types/variables";
 import { useEffect } from "react";
 import { APIResultType, getUser } from "../../utils/api_interface";
 import { useMessageToastHook } from "./useMessageToast";
@@ -10,12 +10,14 @@ type useUserDataType = {
   userData: User | null,
   isAuthorized: boolean | null,
   setUserData: (data?: User) => void,
+  userDataPrivillages: AccountAPIPrivillage[]
 }
 
 export const useUserDataHook = create<useUserDataType>((set) => ({
   userData: null,
   isAuthorized: null,
-  setUserData: (data?: User) => set(() => ({ userData: data, isAuthorized: (data ? true : false) }))
+  setUserData: (data?: User) => set(() => ({ userData: data, isAuthorized: (data ? true : false), userDataPrivillages: data ? account_to_api_privillage[data.role] : [] })),
+  userDataPrivillages: [],
 }));
 
 // Setting up for one-time logic

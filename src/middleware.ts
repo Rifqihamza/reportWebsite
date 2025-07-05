@@ -51,8 +51,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
         // Now, Let's verify the user is already log in or not.
         const user_login_token = context.cookies.get("user_token")?.value;
         if(!user_login_token) {
-            return create_response_status(408);
+            return create_response_status(401);
         }
+        
         const [verification_result, verification_output, user_data] = await verify_user_data_token(user_login_token);
         if(!verification_result || user_data.inactive) {
             return create_response_status(401);

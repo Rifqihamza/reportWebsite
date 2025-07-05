@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "primereact/image";
-import { reporttype_to_string } from "../../../../types/variables";
+import { AccountAPIPrivillage, reporttype_to_string } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/useReportHook";
 import { formatDate } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";
+import { useUserDataHook } from "../../../../hooks/shared/useUserData";
 
 export default function ReportDetailModal() {
   const [accordionIndex, setAccordionIndex] = useState(0);
@@ -14,6 +15,7 @@ export default function ReportDetailModal() {
   const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
 
   const { setEditVisible } = useReportEditHook();
+  const { userDataPrivillages } = useUserDataHook();
 
   const report_data = reportData?.find((value) => value.id === detailId) || null;
   const backgroundElement = useRef(null as HTMLDivElement | null);
@@ -111,13 +113,14 @@ export default function ReportDetailModal() {
             <button
               className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#1f324d] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => setEditVisible(true)}
+              disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateReport)}
             >
               Edit
             </button>
             <button
               className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 text-white rounded-xl bg-[#1f324d] hover:bg-[#6FA9E3] duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => (report_data ? handleDelete(report_data.id) : null)}
-              disabled={deleteDisabled}
+              disabled={deleteDisabled||!userDataPrivillages.includes(AccountAPIPrivillage.DeleteReport)}
             >
               {deleteDisabled && <i className="pi pi-spin pi-spinner" style={{ fontSize: "1rem", marginRight: "10px" }}></i>}
               Hapus
