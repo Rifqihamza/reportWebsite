@@ -5,6 +5,7 @@ import {
   ReportStatus,
   ReportType,
   string_to_reportstatus,
+  table_rows,
   type ReportData,
 } from "../types/variables";
 import UseReportDataHookEffect, { useReportDataHook } from "./shared/useReportData";
@@ -266,17 +267,7 @@ export function ReportHookEffect() {
     // Filter Keyword
     if (searchKeyword) {
       result_data = result_data.filter((value) => {
-        const search_data = (
-          value.submitted_by +
-          ":" +
-          value.pic_name +
-          ":" +
-          value.message +
-          ":" +
-          value.location_name +
-          ":" + 
-          (value.campus ?? "").toString()
-        ).toLowerCase();
+        const search_data = (Object.values(table_rows).map((key) => value[key]).join("+")).toLowerCase();
         return search_data.includes(searchKeyword.toLowerCase());
       });
     }

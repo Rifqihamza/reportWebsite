@@ -76,6 +76,9 @@ export default function ReportDesktopTable() {
                                     <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
                                         {report.campus}
                                     </td>
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
+                                        {report.location_name}
+                                    </td>
                                     <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap text-sm text-gray-600">
                                         {formatDate(report.created_at)}
                                     </td>

@@ -112,6 +112,7 @@ export const table_rows: {
     "Nama": "submitted_by",
     "Laporan": "message",
     "Kampus": "campus",
+    "Lokasi": "location_name",
     "Tanggal": "created_at",
 }
 
