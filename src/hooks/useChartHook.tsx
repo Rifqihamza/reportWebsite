@@ -117,8 +117,8 @@ export const useLineChartHook = create<UseLineChartType>((set) => {
       set(() => ({ chartTimeFilter: newChartFilter }));
     },
 
-    chartCampusFilter: [...Object.values(Campus)],
-    appliedChartCampusFilter: [...Object.values(Campus)],
+    chartCampusFilter: [],
+    appliedChartCampusFilter: [],
     toggleChartCampusFilter(selectedCampus) {
       set((state) => {
         return {
@@ -329,7 +329,7 @@ export function UseChartHookEffect() {
       }
 
       // Campus Filter
-      if (!value.campus || !appliedChartCampusFilter.includes(value.campus)) {
+      if (appliedChartCampusFilter.length > 0 && (!value.campus || !appliedChartCampusFilter.includes(value.campus))) {
         return false;
       }
 

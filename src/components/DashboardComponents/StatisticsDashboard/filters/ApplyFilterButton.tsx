@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useLineChartHook } from "../../../../hooks/useChartHook";
 
 export default function ApplyFilterButton() {
@@ -16,7 +15,7 @@ export default function ApplyFilterButton() {
       onClick={() => applyFilter()}
       disabled={!isChange}
     >
-      Apply
+      Terapkan Filter
     </button>
   </>;
 }

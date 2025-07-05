@@ -18,7 +18,7 @@ export default function LocationChartFilter() {
 
   Object.entries(locationOptions).forEach(([campus, locations], index) => {
     const verified_campus = campuscode_to_campus(campus);
-    if (!verified_campus || !chartCampusFilter.includes(verified_campus)) {
+    if (!verified_campus || (chartCampusFilter.length > 0 && !chartCampusFilter.includes(verified_campus))) {
       return;
     }
 
