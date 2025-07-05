@@ -94,6 +94,7 @@ export default function ReportDetailModal() {
                   <div className="w-full flex flex-col space-y-2 overflow-y-auto">
                     {/* Report Details */}
                     <DetailField label="Pelapor:" value={report_data?.submitted_by} />
+                    <DetailField label="Kampus:" value={report_data?.campus} />
                     <DetailField label="Lokasi:" value={report_data?.location_name + (report_data?.detail_location ? ", " + report_data?.detail_location : "")} />
                     <DetailField label="Kategori:" value={report_data ? reporttype_to_string(report_data.type)! : ""} />
                     <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
