@@ -29,19 +29,24 @@ export const useReportConfigHook = create<useReportConfigType>((set) => {
   };
 });
 
-export default function UseReportConfigHookEffect(props: { useAll?: boolean }) {
+
+let initialized = false;
+
+export default function UseReportConfigHookEffect(props: { useAllCampus?: boolean }) {
   const { selectedCampus } = useCampusDataHook();
   const { setLocationOptions, setPicNamesOptions } = useReportConfigHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
-    if(!isConnected) {
-        showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
+    if(initialized || !isConnected) {
+      return;
     }
+    initialized = true;
     
+    console.log("TEST");
     // If not used all campus is not selected yet
-    if (!props.useAll && !selectedCampus) {
+    if (!props.useAllCampus && !selectedCampus) {
       return;
     }
 

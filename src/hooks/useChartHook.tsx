@@ -93,7 +93,10 @@ type UseLineChartType = {
   setChartTimeCategoryFilter: (newChartFilter: LineChartTimeCategoryOption) => void;
 
   chartCampusFilter: Campus[]
-  toggleChartCampusFilter: (selectedCampus: Campus) => void
+  toggleChartCampusFilter: (selectedCampus: Campus) => void,
+
+  chartLocationFilter: [Campus, string][],
+  setChartLocationFilter: (locationList: [Campus, string][]) => void
 };
 
 export const useLineChartHook = create<UseLineChartType>((set) => {
@@ -116,6 +119,11 @@ export const useLineChartHook = create<UseLineChartType>((set) => {
             chartCampusFilter: state.chartCampusFilter.includes(selectedCampus) ? state.chartCampusFilter.filter((value) => value !== selectedCampus) : [...state.chartCampusFilter, selectedCampus]
           }
         });
+    },
+    
+    chartLocationFilter: [],
+    setChartLocationFilter(locationList) {
+        set(() => ({ chartLocationFilter: locationList }));
     },
   };
 });
@@ -181,7 +189,7 @@ export function UseChartHookEffect() {
     setPieStatus,
   } = usePieChartHook();
   const { setInsight } = useInsightHook();
-  const { chartTimeCategoryFilter, setLineChartFilteredReports, lineChartFilteredReports, chartCampusFilter } = useLineChartHook();
+  const { chartTimeCategoryFilter, setLineChartFilteredReports, lineChartFilteredReports, chartCampusFilter, chartLocationFilter } = useLineChartHook();
   const { setPercentCategory } = usePercentChartHook();
   const { picNamesOptions } = useReportConfigHook();
 
@@ -274,16 +282,20 @@ export function UseChartHookEffect() {
   }, [reportData]);
 
   useEffect(() => {
+    // If there's no report data
     if(!reportData) {
       return;
     }
     
+    // Prepare for Line Chart filter
     const result: LineChartValueType[] = [];
     const currentDate = new Date();
     const showedReportType = chartCategoryFilter
       ? [chartCategoryFilter]
       : Object.values(ReportType);
 
+
+    // Prepare specifically for Date Filter in Line Chart
     if (chartTimeCategoryFilter === LineChartTimeCategoryOption.Year) {
       listOfMonths.forEach((month) => {
         showedReportType.forEach((type) => {
@@ -326,6 +338,7 @@ export function UseChartHookEffect() {
       }
     }
     
+    // Start to filter report data
     const filtered = reportData.filter((value) => {
       // Category Filter
       if (chartCategoryFilter && value.type !== chartCategoryFilter) {
@@ -334,6 +347,11 @@ export function UseChartHookEffect() {
 
       // Campus Filter
       if(!value.campus || !chartCampusFilter.includes(value.campus)) {
+        return false;
+      }
+
+      // Location Filter
+      if(chartLocationFilter.length > 0 && (!value.location_name || !chartLocationFilter.find(([campus, location]) => (value.location_name === location && value.campus === campus)))) {
         return false;
       }
 
@@ -371,7 +389,7 @@ export function UseChartHookEffect() {
     });
 
     if(result !== lineChartFilteredReports) setLineChartFilteredReports([...result]);
-  }, [reportData, chartTimeCategoryFilter, chartCategoryFilter, chartCampusFilter]);
+  }, [reportData, chartTimeCategoryFilter, chartCategoryFilter, chartCampusFilter, chartLocationFilter]);
 
   useEffect(() => {
     if(!reportData) {
