@@ -11,9 +11,9 @@ import {
 import { Toast } from "primereact/toast";
 import { ProgressBar } from "primereact/progressbar";
 import ReportFormDropdown from "../ReportFormDropdown/ReportFormDropdown";
-import UseReportConfigHookEffect, { useReportConfigHook } from "../../../hooks/useReportConfig";
+import UseReportConfigHookEffect, { useReportConfigHook } from "../../../hooks/shared/useReportConfig";
 import { useThanksModalHook } from "../../../hooks/shared/useThanksModal";
-import { useCampusDataHook } from "../../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../../hooks/pages/ReportForm/useCampusData";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 

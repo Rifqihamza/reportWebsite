@@ -1,16 +1,18 @@
 import { reporttype_to_string, table_rows } from '../../../../types/variables';
-import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/useReportHook";
+import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { formatDate } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
+import UseUserDataHookEffect, { useUserDataHook } from "../../../../hooks/shared/useUserData";
 
 export default function ReportDesktopTable() {
     const { showedReportData } = useReportPaginationHook();
     const { handleDetail } = useReportDetailHook();
-    const { reportData } = useReportDataHook();
+    const { reportData, isAuthorized: isAuthorizedGetReport } = useReportDataHook();
+    const { userData } = useUserDataHook();
 
     return <>
-
+        <UseUserDataHookEffect />
         <div className='hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4 h-[70vh]'>
             <table className="w-full">
                 <thead>
@@ -19,7 +21,7 @@ export default function ReportDesktopTable() {
                             return <th
                                 key={key}
                                 scope="col"
-                                className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
+                                className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-left text-sm font-semibold text-black uppercase tracking-wider truncate"
                             >
                                 {key}
                             </th>;
@@ -34,6 +36,11 @@ export default function ReportDesktopTable() {
                 </thead>
                 <tbody>
                     {(() => {
+                        // If unaothorized
+                        if (!isAuthorizedGetReport) {
+                            return <tr><td colSpan={9}>{userData?.role} tidak diperbolehkan melihat data laporan.</td></tr>
+                        }
+                        
                         // If the data is not loaded returns loading animation
                         if (reportData === null) {
                             return <tr><td><LoadingAnimation /></td></tr>
@@ -53,23 +60,26 @@ export default function ReportDesktopTable() {
                             {showedReportData.map((report, index) => (
                                 <tr key={index} className="" data-report-id={report.id}>
 
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-24! max-w-24!">
                                         <span
                                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                                         >
                                             {report.status}
                                         </span>
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 text-sm text-gray-600 truncate">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24!">
                                         {report.submitted_by}
                                     </td>
-                                    <td className="px-2 py-3 border-b border-gray-300 text-sm text-gray-600 truncate">
+                                    <td className="px-2 py-3 border-b border-gray-300 text-sm text-gray-600 truncate min-w-48! max-w-48!">
                                         {report.message}
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
                                         {report.campus}
                                     </td>
-                                    <td className="px-2 py-3 text-center border-b border-gray-300 whitespace-nowrap text-sm text-gray-600">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
+                                        {report.location_name}
+                                    </td>
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap text-sm text-gray-600">
                                         {formatDate(report.created_at)}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center border-b border-gray-300">

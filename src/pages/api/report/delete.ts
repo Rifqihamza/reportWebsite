@@ -1,14 +1,15 @@
 import type { APIContext } from "astro";
 import { prisma } from "../../../utils/db";
-import { create_response_status, get_cookies_from_request, process_server_token, record_activity, verify_teacher_token } from "../../../utils/api_helper";
+import { create_response_status, get_cookies_from_request, process_server_token, record_activity, verify_user_data_token } from "../../../utils/api_helper";
 import { ActivityType, Prisma } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
+import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
 export async function DELETE({ request }: APIContext) {
     // Verify user_token
     const cookies = get_cookies_from_request(request);
       
-    const [verification_result, verification_output, user_data] = await verify_teacher_token(cookies ? (cookies["user_token"] ?? "") : "");
+    const [verification_result, verification_output, user_data] = await verify_user_data_token(cookies ? (cookies["user_token"] ?? "") : "");
     if(!verification_result) {
         if(verification_output === APIResultType.DatabaseError) {
             return create_response_status(503);
@@ -17,6 +18,11 @@ export async function DELETE({ request }: APIContext) {
             return create_response_status(500);
         }
         
+        return create_response_status(401);
+    }
+      
+    // Verify user role
+    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.DeleteReport)) {
         return create_response_status(401);
     }
 

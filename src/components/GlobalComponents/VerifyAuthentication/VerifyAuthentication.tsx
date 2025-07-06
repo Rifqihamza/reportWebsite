@@ -12,10 +12,10 @@ export default function VerifyAuthentication() {
       return;
     }
 
-    if (!Cookies.get("captcha_token")) {
-      // window.location.href = "/captcha/";
-      return;
-    }
+    // if (!Cookies.get("captcha_token")) {
+    //   window.location.href = "/captcha/";
+    //   return;
+    // }
 
     checkAuthentication().then((result) => {
       if (result == APIResultType.NeedCaptchaAuthentication && !window.location.href.includes("captcha")) {

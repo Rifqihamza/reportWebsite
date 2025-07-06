@@ -1,4 +1,4 @@
-import { useCampusDataHook } from "../../../hooks/shared/useCampusData";
+import { useCampusDataHook } from "../../../hooks/pages/ReportForm/useCampusData";
 import { Campus, string_to_campus } from "../../../types/variables";
 
 interface Props {

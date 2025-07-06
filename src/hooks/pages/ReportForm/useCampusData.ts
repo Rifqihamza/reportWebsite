@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { Campus } from "../../types/variables";
+import type { Campus } from "../../../types/variables";
 
 
 type UseCampusDataType = {

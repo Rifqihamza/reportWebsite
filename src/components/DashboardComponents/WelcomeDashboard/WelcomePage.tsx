@@ -1,5 +1,6 @@
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
-import { useUserDataHook } from "../../../hooks/shared/useUserData";
+import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
+import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
 
 function QuickNavigationButton(props: { icon: string, title: string, description: string, onClick: () => void }) {
     return <button className="flex flex-col p-4 gap-4 justify-center items-center bg-gray-100 w-full *:text-[#1f324d] border-[#1f324d] border-2 rounded-2xl cursor-pointer duration-200 hover:bg-gray-200" onClick={props.onClick}>
@@ -23,9 +24,10 @@ export default function WelcomePage() {
     
     return (
         <div className="h-fit md:h-full w-full bg-white rounded-2xl relative px-4 py-10 md:py-20 flex flex-col text-center">
+            <UseUserDataHookEffect adminOnly />
             {/* Welcome message */}
-            <h1 className="text-3xl tracking-wide text-[#1f324d]">{greeting}, <b>{userData?.username}</b>!</h1>
-            <p>Selamat datang di <b>Dashboard Admin</b>! Disini adalah tempat kita melihat, mengelola, dan menganalisa data laporan yang telah direkam oleh sistem</p>
+            <h1 className="text-3xl tracking-wide text-[#1f324d]">{greeting}, {userData ? <><b>{userData?.username}</b>!</> : <i className="pi pi-spinner pi-spin" style={{ fontSize: 18 }} />}</h1>
+            <p>Selamat datang di Dashboard! Disini adalah tempat kita melihat, mengelola, dan menganalisa data laporan yang telah direkam oleh sistem</p>
 
             {/* Quick Navigation */}
             <div className="w-full h-fit p-4 mt-4 grid md:grid-cols-2 grid-cols-1 gap-4">

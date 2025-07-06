@@ -1,0 +1,47 @@
+[
+  {
+    "version": "1.1.8",
+    "date": "2025-06-25",
+    "changes": {
+      "features": ["Added filter options in Statistics tab"],
+      "fixes": ["Fix bug when exporting data to Excel"],
+      "improvements": ["Change maximum length of some field to an appropriate length", "Change some FAQ contents", "Improve style for FAQ"]
+    }
+  },
+  {
+    "version": "1.1.9",
+    "date": "2025-06-26",
+    "changes": {
+      "features": ["Added filter options in Statistics tab"],
+      "fixes": ["Fix title of report table not showing in mobile view"],
+      "improvements": ["Report detail message now supports multi-line paragraph", "Add campus filtering in statistics tab", "Change from 5MB to 8MB of image in report form"]
+    }
+  },
+  {
+    "version": "1.1.10",
+    "date": "2025-06-26",
+    "changes": {
+      "features": [],
+      "fixes": [],
+      "improvements": ["Add mobile view responsiveness in users page", "Add search username in users page", "Improve users page UI"]
+    }
+  },
+  {
+    "version": "1.1.11",
+    "date": "2025-07-03",
+    "changes": {
+      "features": [],
+      "fixes": [],
+      "improvements": ["Case-insensitivity for username in login page", "Improve website performance"]
+    }
+  },
+  {
+    "version": "1.1.15",
+    "date": "2025-07-07",
+    "changes": {
+      "features": ["Admin can change username and password", "Admin can delete user", "Admin can add user", "Add location filter inside statistics section", "Teacher now can use dashboard for seeing report data and user data"],
+      "fixes": ["Fix sidebar in admin dashboard can't be opened in mobile view", "Fix user data in welcome page can't be loaded", "Fix navbar in about page doesn't react when user scrolling the website"],
+      "improvements": ["Users username now can be capitalized", "Improve performance in statistics section"]
+    }
+  }
+]

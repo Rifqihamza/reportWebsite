@@ -1,27 +1,26 @@
 import React, { Suspense } from "react";
-import { Campus, ReportType, reporttype_to_string, statusColorHex } from '../../../types/variables';
-import { Dropdown } from "primereact/dropdown";
-import { LineChartTimeCategoryOption, UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../hooks/useChartHook";
+import { ReportType, reporttype_to_string, statusColorHex } from '../../../types/variables';
+import { UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../hooks/pages/Statistics/useChartHook";
 import UseReportDataHookEffect from "../../../hooks/shared/useReportData";
-import { Accordion, AccordionTab } from 'primereact/accordion';
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { PrimeReactProvider } from 'primereact/api';
+import UseReportConfigHookEffect from "../../../hooks/shared/useReportConfig";
+import TimeChartFilter from "./filters/TimeChartFilter";
+import CampusChartFilter from "./filters/CampusChartFilter";
+import LocationChartFilter from "./filters/LocationChartFilter";
+import ApplyFilterButton from "./filters/ApplyFilterButton";
 
-const LineChart = React.lazy(() => import("./LineChartComponent"));
-const PieChart = React.lazy(() => import("./PieChartComponent"));
-const PercenComp = React.lazy(() => import("./PercentContComponent"));
+const LineChart = React.lazy(() => import("./outputs/LineChartComponent"));
+const PieChart = React.lazy(() => import("./outputs/PieChartComponent"));
+const PercenComp = React.lazy(() => import("./outputs/PercentContComponent"));
 
 export default function StatisticsPage() {
     const { activeTab } = useDashboardNavbarHook();
     const { lineChartCategoryFilter, percentStatus } = usePieChartHook();
     const { insight } = useInsightHook();
-    const { chartCampusFilter, toggleChartCampusFilter, lineChartFilteredReports, chartTimeCategoryFilter, setChartTimeCategoryFilter } = useLineChartHook();
+    const { lineChartFilteredReports } = useLineChartHook();
     const { percentCategory } = usePercentChartHook();
 
-    const options = Object.values(LineChartTimeCategoryOption);
-    const LineChartFilter = <>{Object.values(Campus).map((campus, index) => {
-        return <button key={index} className={`hover:bg-gray-500 p-4 rounded-2xl duration-200 w-full border-2 border-[#1f324d] ${chartCampusFilter.includes(campus) ? "bg-[#1f324d]! text-white!" : ""}`} onClick={() => toggleChartCampusFilter(campus)}>{campus}</button>
-    })}</>;
 
     if(activeTab !== 2) {
         return <></>;
@@ -29,42 +28,20 @@ export default function StatisticsPage() {
 
     return (
         <>
+            <UseReportConfigHookEffect useAllCampus />
             <PrimeReactProvider>
                 <div className='flex flex-col gap-4 mx-4'>
-                    {/* Time selection */}
-                    <div className="md:hidden block w-full">
-                        <Dropdown
-                            className="px-4 py-2 rounded-xl! [&_.p-dropdown-label]:text-[#1f324d]! [&_.p-dropdown-trigger]:text-[#1f324d]! bg-white! [&_.p-dropdown]:bg-white! [&_.p-dropdown-label]:bg-white! [&_.p-dropdown-trigger]:bg-white! md:[&_.p-dropdown-label]:text-white! md:[&_.p-dropdown-trigger]:text-white! md:bg-[#1f324d]! md:[&_.p-dropdown]:bg-[#1f324d]! md:[&_.p-dropdown-label]:bg-[#1f324d]! md:[&_.p-dropdown-trigger]:bg-[#1f324d]!"
-                            value={chartTimeCategoryFilter}
-                            onChange={(e) => setChartTimeCategoryFilter(e.value)}
-                            options={Object.values(LineChartTimeCategoryOption)} />
-                    </div>
-                    <div className="w-full hidden md:flex md:flex-row md:justify-between md:gap-3 bg-white px-4 py-3 rounded-2xl">
-                        {options.map((option) => (
-                            <button
-                                key={option}
-                                onClick={() => setChartTimeCategoryFilter(option)}
-                                className={`p-4 rounded-lg w-full ${chartTimeCategoryFilter === option ? 'bg-[#1f324d] text-white' : 'bg-gray-200 hover:bg-[#1f324d]/20 text-black'
-                                    }`}
-                            >
-                                {option}
-                            </button>
-                        ))}
-                    </div>
+                    {/* Time Filter */}
+                    <TimeChartFilter />
 
-                    {/* Chart campus filter */}
-                    <div className="md:hidden block w-full">
-                        <Accordion>
-                            <AccordionTab header="Campus Filter" className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:border-0! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4">
-                                <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full mt-4">
-                                    {LineChartFilter}
-                                </div>
-                            </AccordionTab>
-                        </Accordion>
-                    </div>
-                    <div className="md:flex hidden flex-row gap-4 p-4 bg-white justify-between rounded-2xl">
-                        {LineChartFilter}
-                    </div>
+                    {/* Campus Filter */}
+                    <CampusChartFilter />
+
+                    {/* Location Filter */}
+                    <LocationChartFilter />
+
+                    {/* Apply Filter Button */}
+                    <ApplyFilterButton />
                     
                     {/* Line Chart */}
                     <div className="w-full px-4 pb-2 pt-6 rounded-2xl bg-white shadow">

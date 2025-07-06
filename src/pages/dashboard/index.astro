@@ -11,37 +11,39 @@ import SettingPage from "../../components/DashboardComponents/SettingDashboard/S
 import Layout from "../../layouts/Layout.astro";
 import SidebarDashboard from "../../components/DashboardComponents/SidebarAdmin/SidebarAdmin";
 import UseUserDataHookEffect from "../../hooks/shared/useUserData";
-import UseReportConfigHookEffect from "../../hooks/useReportConfig";
+import UseReportConfigHookEffect from "../../hooks/shared/useReportConfig";
 import SidebarToggle from "./DashboardPage/_SideBarToggle";
+import VersionTracker from "../../components/GlobalComponents/VersionTracker/VersionTracker";
 ---
 
 <Layout pageType="dashboard">
-  <UseUserDataHookEffect client:load adminOnly />
-  <UseReportConfigHookEffect client:load useAll />
-  
-  <div class="flex flex-col h-screen p-4 border 2">
-      {/* Top Navbar */}
-      <div class="bg-white rounded-2xl shadow shadow-gray-500 z-10 flex justify-between items-center px-4 py-1 sticky top-0">
-          <div>
-              <SidebarToggle client:load />
-              <img src="/img/logoSekolah.png" class="w-10 h-auto ring-2 ring-white rounded-full" alt="" />
-          </div>
-      </div>
+  <VersionTracker client:only />
+  <UseUserDataHookEffect client:load />
+  <UseReportConfigHookEffect client:load useAllCampus />
 
-      {/* Main Area: Sidebar + Scrollable Content */}
-      <div class="flex gap-4 py-4 px-1 h-full overflow-y-auto">
-          {/* Sidebar */}
-          <SidebarDashboard client:load />
-
-          {/* Scrollable Content */}
-          <div class="flex-1 overflow-y-auto">
-              <WelcomePage client:load />
-              <ReportTablePage client:only />
-              <StatisticsPage client:only />
-              <ExportPage client:only />
-              <UsersPage client:only />
-              <SettingPage client:load />
-          </div>
+  <div class="flex flex-col h-screen p-4 w-screen absolute left-0 top-0">
+    {/* Top Navbar */}
+    <div class="bg-white rounded-2xl shadow shadow-gray-500 z-10 flex justify-between items-center px-4 py-1 sticky top-0 box-border">
+      <div>
+        <SidebarToggle client:load />
+        <img src="/img/logoSekolah.png" class="hidden md:block w-10 h-auto ring-2 ring-white rounded-full" alt="" />
       </div>
+    </div>
+
+    {/* Main Area: Sidebar + Scrollable Content */}
+    <div class="flex gap-4 py-4 px-1 h-full overflow-y-auto">
+      {/* Sidebar */}
+      <SidebarDashboard client:load />
+
+      {/* Scrollable Content */}
+      <div class="flex-1 overflow-y-auto">
+        <WelcomePage client:load />
+        <ReportTablePage client:only />
+        <StatisticsPage client:only />
+        <ExportPage client:only />
+        <UsersPage client:only />
+        <SettingPage client:load />
+      </div>
+    </div>
   </div>
 </Layout>

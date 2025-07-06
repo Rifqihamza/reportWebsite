@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Campus, ExportOutputType, ReportStatus, ReportType, reporttype_to_string, table_rows, type ReportData } from "../types/variables";
+import { Campus, ExportOutputType, ReportStatus, ReportType, reporttype_to_string, table_rows, type ReportData } from "../../../types/variables";
 import { useEffect } from "react";
 
 export const filterOptions: Partial<{

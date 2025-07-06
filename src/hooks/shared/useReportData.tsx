@@ -4,11 +4,12 @@ import { useEffect } from "react";
 import { APIResultType, getReport } from "../../utils/api_interface";
 import { useMessageToastHook } from "./useMessageToast";
 import { useNetworkConnectivityHook } from "./useNetworkConnectivity";
-import UseUserAccountHookEffect, { useUserAccountHook } from "../useUserAccount";
 
 type UseReportDataType = {
   reportData: ReportData[] | null;
   setReportData: (reportData: ReportData[] | null) => void;
+  isAuthorized: boolean;
+  setIsAuthorized: (newIsAuthorized: boolean) => void
 };
 
 export const useReportDataHook = create<UseReportDataType>((set) => ({
@@ -16,12 +17,16 @@ export const useReportDataHook = create<UseReportDataType>((set) => ({
   setReportData: (reportData) => {
     set(() => ({ reportData: reportData }));
   },
+  isAuthorized: true,
+  setIsAuthorized(newIsAuthorized) {
+    set(() => ({ isAuthorized: newIsAuthorized }));
+  },
 }));
 
 let initialized = false;
 
 export default function UseReportDataHookEffect() {
-  const { setReportData } = useReportDataHook();
+  const { setReportData, setIsAuthorized } = useReportDataHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
@@ -34,6 +39,9 @@ export default function UseReportDataHookEffect() {
     getReport().then((report_data_array) => {
       if (typeof report_data_array === "object") {
         setReportData(report_data_array);
+      }
+      else if (report_data_array === APIResultType.Unauthorized) {
+        setIsAuthorized(true);
       }
       else if (report_data_array === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");

@@ -1,8 +1,8 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, process_server_token, record_activity, verify_user_token } from "../../../utils/api_helper";
+import { apiresult_to_status, create_response_json, create_response_status, process_server_token, record_activity, verify_user_data_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report, type Report_Location, ActivityType } from "@prisma/client";
-import { ReportType, string_to_campus } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, ReportType, string_to_campus } from "../../../types/variables";
 import { z } from 'zod';
 
 
@@ -19,23 +19,18 @@ const ReportBodyType = z.object({
 
 export async function POST({ request, cookies }: APIContext) {
     const user_token = cookies.get("user_token")?.value;
-    const username = verify_user_token(user_token??"");
+    const [verification_result, verification_output, user_data] = await verify_user_data_token(user_token??"");
 
     // If the token invalid
-    if(!username) {
+    if(!verification_result) {
+        return apiresult_to_status(verification_output);
+    }
+      
+    // Verify user role
+    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.CreateReport)) {
         return create_response_status(401);
     }
 
-    const user_data = await prisma.users.findUnique({
-        where: {
-            username: username
-        }
-    });
-    
-    // If the user data is not found
-    if(!user_data) {
-        return create_response_status(404);
-    }
 
     // Get the required data
     let result: {

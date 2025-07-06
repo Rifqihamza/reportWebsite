@@ -33,3 +33,33 @@ export function capitalize(text: string): string {
 
   return result;
 }
+
+export function which_latest_version(version1: string, version2: string): string | null {
+  const version1_value = version1.split(".").map(version_number => Number.parseInt(version_number));
+  const version2_value = version2.split(".").map(version_number => Number.parseInt(version_number));
+
+  
+  let result: string | null = null;
+  
+  (version1_value.length <= version2_value.length ? version1_value : version2_value).forEach((value, index) => {
+    if(version1_value[index] > version2_value[index]) {
+      result = version1;
+    }
+    else if(version2_value[index] > version1_value[index]) {
+      result = version2;
+    }
+  });
+
+  if(result) {
+    return result;
+  }
+  
+  if(version1_value.length > version2_value.length) {
+    return version1;
+  }
+  else if(version2_value.length > version1_value.length) {
+    return version2;
+  }
+  
+  return null;
+}
