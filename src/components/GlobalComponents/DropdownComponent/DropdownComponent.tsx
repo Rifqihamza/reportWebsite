@@ -1,5 +1,4 @@
 import { Dropdown } from "primereact/dropdown";
-import type { AccountType } from "../../../types/variables";
 
 interface Props {
   label: string;
@@ -19,6 +18,7 @@ export default function DropdownComponent(props: Props) {
         options={props.options}
         onChange={props.onChange}
         className="w-full rounded-lg! bg-transparent! [&_.p-dropdown]:disabled:border-gray-300! border! border-gray-400! focus:border-gray-800! [&_.p-dropdown]:bg-transparent! [&_.p-dropdown-label]:bg-transparent!  [&_.p-dropdown-label]:text-black! [&_.p-dropdown-trigger]:bg-transparent!"
+        panelClassName="[&_.p-dropdown-header]:rounded-lg! rounded-lg!"
         placeholder={`Pilih ${props.label}`}
       />
   </>;
