@@ -99,9 +99,9 @@ export default function ReportDetailModal() {
                     <DetailField label="Kategori:" value={report_data ? reporttype_to_string(report_data.type)! : ""} />
                     <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
                     <DetailField label="Follow Up Oleh:" value={report_data?.follow_up_name} fallback="Belum ditentukan" />
-                    <DetailField label="Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
+                    <DetailField label="Jenis Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
                     <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : ""} fallback="Belum ditentukan" />
-                    <DetailField label="Due Date:" value={report_data?.due_date ? formatDate(report_data.due_date) : undefined} fallback="Belum ditentukan" />
+                    <DetailField label="Tenggat Waktu:" value={report_data?.due_date ? formatDate(report_data.due_date) : undefined} fallback="Belum ditentukan" />
                   </div>
                 </AccordionTab>
               </Accordion>
