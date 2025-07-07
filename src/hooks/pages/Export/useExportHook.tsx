@@ -6,7 +6,7 @@ export const filterOptions: Partial<{
   [key in keyof ReportData]: string[];
 }> = {
   status: Object.values(ReportStatus),
-  type: Object.values(ReportType).map(value => reporttype_to_string(value)),
+  type: Object.values(ReportType).map((value) => reporttype_to_string(value)),
   campus: Object.values(Campus),
 };
 
@@ -18,7 +18,7 @@ type UseExportType = {
     [key in keyof ReportData]: string[];
   }>;
 
-  toggleRow: (row: keyof ReportData) => void;
+  setRow: (newRow: (keyof ReportData)[]) => void;
   toggleAllRow: () => void;
 
   setSelectedOutput: (output: ExportOutputType) => void;
@@ -36,28 +36,12 @@ export const useExportHook = create<UseExportType>((set) => {
     selectedRows: Object.values(table_rows),
     selectedOutputType: ExportOutputType.CSV,
     dateRange: [null, null],
-    filter: {...filterOptions, "key": [""]},
+    filter: { ...filterOptions, key: [""] },
 
     // Row Functionality
-    toggleRow(row) {
-      set((state) => {
-        const result = state.selectedRows;
-
-        // If the row that user wants to insert is already in result
-        if (result.includes(row)) {
-          // Remove the row
-          return {
-            selectedRows: result.filter((value) => value !== row),
-          };
-        }
-
-        // If not, add the row
-        return {
-          selectedRows: [...result, row],
-        };
-      });
+    setRow(newRow) {
+      set(() => ({ selectedRows: newRow }));
     },
-
     toggleAllRow() {
       set((state) => {
         const result = state.selectedRows;
@@ -112,14 +96,14 @@ export const useExportHook = create<UseExportType>((set) => {
     },
 
     setFilter(key, value) {
-        set((state) => {
-          const result = state.filter;
-          result[key] = value;
+      set((state) => {
+        const result = state.filter;
+        result[key] = value;
 
-          return {
-            filter: result,
-          };
-        })
+        return {
+          filter: result,
+        };
+      });
     },
   };
 });
