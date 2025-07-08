@@ -73,13 +73,13 @@ export default function ReportDesktopTable() {
                                     <td className="px-2 py-3 border-b border-gray-300 text-sm text-gray-600 truncate min-w-48! max-w-48!">
                                         {report.message}
                                     </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap truncate min-w-12! max-w-12!">
                                         {report.campus}
                                     </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap truncate min-w-12! max-w-12!">
                                         {report.location_name}
                                     </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap text-sm text-gray-600">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap truncate text-sm text-gray-600">
                                         {formatDate(report.created_at)}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center border-b border-gray-300">

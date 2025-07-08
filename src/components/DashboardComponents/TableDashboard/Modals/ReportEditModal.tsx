@@ -145,14 +145,15 @@ export default function ReportEditModal() {
           <div className="grid grid-cols-2 gap-4 items-center">
             <InputField label="Pelapor" value={report ? report.submitted_by : ""} disabled />
             {(() => {
-              const disabled = Object.values(picNamesOptions).length == 0;
+              const picNameIsNotLoaded = Object.values(picNamesOptions).length == 0;
               return (
                 <DropdownField
                   label="PIC"
-                  options={report?.campus && !disabled ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
+                  options={report?.campus && !picNameIsNotLoaded ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
                   value={formState.pic_name}
                   onChange={(e) => updateField("pic_name", e.target.value)}
-                  disabled={disabled}
+                  disabled={picNameIsNotLoaded}
+                  filter
                 />
               );
             })()}
