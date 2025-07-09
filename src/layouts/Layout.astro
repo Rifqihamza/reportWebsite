@@ -26,6 +26,8 @@ const { pageType = "form" } = Astro.props;
     <link rel="icon" href="/img/logoSekolah.png" />
     <meta name="generator" content={Astro.generator} />
     <title>Report Website | SMK Mitra Industri MM2100</title>
+    <SpeedInsights />
+    <Analytics />
   </head>
   <body class={pageType === "dashboard" ? "bg-dashboard" : (pageType === "form" ? "bg-form" : "")}>
     {
@@ -56,6 +58,3 @@ const { pageType = "form" } = Astro.props;
     
   </body>
 </html>
-
-<SpeedInsights />
-<Analytics />
