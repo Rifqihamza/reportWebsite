@@ -29,7 +29,7 @@ export async function PUT({ request, cookies }: APIContext) {
 
   // Get the required data
   const { id, username, password } = await request.json();
-  if(!id || (!username && !password)) {
+  if(!id || (!username && !password) || (typeof username !== "string" || typeof password !== "string")) {
     return create_response_status(401);
   }
   
@@ -87,6 +87,7 @@ export async function PUT({ request, cookies }: APIContext) {
       },
       data: {
         username: username ? username : undefined,
+        lowercased_username: username ? username.toLowerCase() : undefined,
         password: password ? sha3.sha3_256(password) : undefined
       }
     });

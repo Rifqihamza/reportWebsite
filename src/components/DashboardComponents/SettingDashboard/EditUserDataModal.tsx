@@ -15,6 +15,7 @@ interface Props {
 
 export default function EditUserDataModal(props: Props) {
   const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
   
   const { userData, setUserData } = useUserDataHook();
   const { showMessage } = useMessageToastHook();
@@ -24,6 +25,7 @@ export default function EditUserDataModal(props: Props) {
       return;
     }
     
+    setLoading(true);
     updateUser(userData.id, {
       username: props.editKey === "username" ? value : "",
       password: props.editKey === "password" ? value : "",
@@ -47,6 +49,8 @@ export default function EditUserDataModal(props: Props) {
           showMessage("Server error!", "error", "Mohon maaf, terjadi kesalahan dari sisi server.");
         }
       }
+    }).finally(() => {
+      setLoading(false);
     });
   };
 
@@ -77,8 +81,9 @@ export default function EditUserDataModal(props: Props) {
               className="w-full px-4 py-2 rounded-xl border border-gray-300"
             />
           </div>
-          <button onClick={handleEditUserData} className="cursor-pointer px-4 py-2 bg-[#1f324d] text-white rounded-lg">
-            Submit
+          <button onClick={handleEditUserData} className="flex flex-row items-center justify-center cursor-pointer px-4 py-2 bg-[#1f324d] text-white rounded-lg disabled:opacity-50" disabled={loading}>
+            <p>Submit</p>
+            {loading && <i className="ml-4 pi pi-spinner pi-spin" />}
           </button>
         </div>
       </Dialog>

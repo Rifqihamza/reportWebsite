@@ -104,7 +104,7 @@ export async function verify_user_data_token(token: string): Promise<[true, true
     try {
         user_data = await prisma.users.findUnique({
             where: {
-                lowercased_username: result,
+                lowercased_username: result.toLowerCase(),
             }
         });
     }
