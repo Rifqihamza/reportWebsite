@@ -16,7 +16,7 @@ export default function UsersPage() {
   const { setUsernameFilter, usernameFilter, showedUserAccountData, setUserAccountData, doneFetching, userAccountData, isAuthorized: isAuhtorizedGetAllUsers } = useUserAccountHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
-  const { userData, userDataPrivillages } = useUserDataHook();
+  const { userData, userPrivillages: userDataPrivillages } = useUserDataHook();
 
   const [visibleDialog, setVisibleDialog] = useState(false);
   const [editingUser, setEditingUser] = useState<{ id: string|null; username: string; password: string, role: AccountType|null }>({

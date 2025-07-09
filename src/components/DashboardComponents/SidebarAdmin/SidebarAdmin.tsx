@@ -4,6 +4,7 @@ import { userLogout } from "../../../utils/api_interface";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 import { PrimeReactProvider } from "primereact/api";
+import { AccountAPIPrivillage } from "../../../types/variables";
 
 export default function SidebarDashboard() {
 
@@ -25,7 +26,7 @@ export default function SidebarDashboard() {
         setShowSidebar(false);
     }, [activeTab]);
 
-    const { userData } = useUserDataHook();
+    const { userData, userPrivillages } = useUserDataHook();
     const { isConnected } = useNetworkConnectivityHook();
 
     async function handle_logout() {
@@ -62,6 +63,7 @@ export default function SidebarDashboard() {
                         </button>
                     </li>
                     <li>
+                        {userPrivillages.includes(AccountAPIPrivillage.GetReport) && 
                         <button
                             onClick={() => setActiveTab(1)}
                             className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 1 ? "text-[#1f324d]" : "text-black/50"
@@ -74,8 +76,10 @@ export default function SidebarDashboard() {
                                     }`}
                             ></span>
                         </button>
+                        }
                     </li>
                     <li>
+                        {userPrivillages.includes(AccountAPIPrivillage.StatisticsPage) && 
                         <button
                             onClick={() => setActiveTab(2)}
                             className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 2 ? "text-[#1f324d]" : "text-black/50"
@@ -88,8 +92,10 @@ export default function SidebarDashboard() {
                                     }`}
                             ></span>
                         </button>
+                        }
                     </li>
                     <li>
+                        {userPrivillages.includes(AccountAPIPrivillage.ExportPage) && 
                         <button
                             onClick={() => setActiveTab(3)}
                             className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 3 ? "text-[#1f324d]" : "text-black/50"
@@ -102,8 +108,10 @@ export default function SidebarDashboard() {
                                     }`}
                             ></span>
                         </button>
+                        }
                     </li>
                     <li>
+                        {userPrivillages.includes(AccountAPIPrivillage.UsersPage) && 
                         <button
                             onClick={() => setActiveTab(4)}
                             className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 4 ? "text-[#1f324d]" : "text-black/50"
@@ -116,8 +124,10 @@ export default function SidebarDashboard() {
                                     }`}
                             ></span>
                         </button>
+                        }
                     </li>
                     <li>
+                        {userPrivillages.includes(AccountAPIPrivillage.SettingProfile) && 
                         <button
                             onClick={() => setActiveTab(5)}
                             className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === 5 ? "text-[#1f324d]" : "text-black/50"
@@ -130,8 +140,10 @@ export default function SidebarDashboard() {
                                     }`}
                             ></span>
                         </button>
+                        }
                     </li>
                 </ul>
+                {userPrivillages.includes(AccountAPIPrivillage.CreateReport) &&
                 <button
                     onClick={() => window.location.href = "/form"}
                     className={`flex flex-row items-center justify-center gap-3 w-full font-semibold uppercase tracking-wider text-white bg-[#1f324d] px-4 py-2 rounded-lg hover:bg-[#7FA1C3] hover:brightness-120 duration-300 cursor-pointer`}
@@ -139,6 +151,7 @@ export default function SidebarDashboard() {
                     <i className="pi pi-search"></i>
                     Report a finding!
                 </button>
+                }
                 <button
                     onClick={() => handle_logout()}
                     className="flex flex-row items-center justify-center gap-3 w-full font-semibold uppercase tracking-wider text-white bg-[#1f324d] px-4 py-2 rounded-lg hover:bg-[#7FA1C3] duration-300 cursor-pointer"

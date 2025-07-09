@@ -10,14 +10,14 @@ type useUserDataType = {
   userData: User | null,
   isAuthorized: boolean | null,
   setUserData: (data?: User) => void,
-  userDataPrivillages: AccountAPIPrivillage[]
+  userPrivillages: AccountAPIPrivillage[]
 }
 
 export const useUserDataHook = create<useUserDataType>((set) => ({
   userData: null,
   isAuthorized: null,
-  setUserData: (data?: User) => set(() => ({ userData: data, isAuthorized: (data ? true : false), userDataPrivillages: data ? account_to_api_privillage[data.role] : [] })),
-  userDataPrivillages: [],
+  setUserData: (data?: User) => set(() => ({ userData: data, isAuthorized: (data ? true : false), userPrivillages: data ? account_to_api_privillage[data.role] : [] })),
+  userPrivillages: [],
 }));
 
 // Setting up for one-time logic
