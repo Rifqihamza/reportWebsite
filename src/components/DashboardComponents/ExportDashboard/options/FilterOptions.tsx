@@ -14,7 +14,7 @@ export default function FilterOptions() {
       </div>
       <h1 className="text-xl text-white py-3 px-6 text-center">Opsi Filter</h1>
       <div className="bg-[#ededed] h-full rounded-xl justify-center p-2 overflow-y-auto overflow-x-hidden relative">
-        <div className="w-full h-full overflow-y-auto flex flex-col gap-4 absolute top-0 left-0 ">
+        <div className="w-full h-full overflow-y-auto flex flex-col gap-4">
           <Accordion className="p-2 flex flex-col gap-2 [&_.p-accordion-content]:bg-transparent! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-header-link]:bg-[#fff]! [&_.p-accordion-header-link]:text-[#1f324d]! [&_.p-accordion-content]:rounded-xl! [&_.p-accordion-content]:border-none!">
             {Object.entries(filterOptions).map(([key, options]) => {
               const filterKey = key as keyof ReportData;
