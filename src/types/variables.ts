@@ -207,3 +207,61 @@ export function has_access_to_dashboard(role: AccountType) {
     console.log(`Has access to dashboard: ${privillage_for_dashboard.findIndex(x => privillages.includes(x)) > -1}`);
     return privillage_for_dashboard.findIndex(x => privillages.includes(x)) > -1;
 }
+
+
+// Menu Items (used for sidebar and welcome section)
+export interface MenuItem {
+    id: number;
+    label: string;
+    icon: string;
+    description: string;
+    privillage?: AccountAPIPrivillage
+}
+
+export const menuItems: MenuItem[] = [
+    { 
+        id: 0,
+        label: "Home",
+        icon: "pi pi-home",
+        description: "Kembali ke menu utama untuk melihat navigasi ke tempat-tempat lain"
+    },
+    { 
+        id: 1,
+        label: "Table",
+        icon: "pi pi-table",
+        privillage: AccountAPIPrivillage.GetReport,
+        description: "Lihat dan kelola data laporan yang disimpan"
+    },
+    { 
+        id: 2,
+        label: "Statistics",
+        icon: "pi pi-chart-bar",
+        privillage: AccountAPIPrivillage.StatisticsPage,
+        description: "Lihat dan analisa data laporan berdasarkan statistik"
+    },
+    { 
+        id: 3,
+        label: "Export",
+        icon: "pi pi-file-export",
+        privillage: AccountAPIPrivillage.ExportPage,
+        description: "Download data yang telah terekam sistem"
+    },
+    { 
+        id: 4,
+        label: "Users",
+        icon: "pi pi-user",
+        privillage: AccountAPIPrivillage.UsersPage,
+        description: "Lihat data pengguna yang menggunakan website ini"
+    },
+    { 
+        id: 5,
+        label: "Setting",
+        icon: "pi pi-cog",
+        privillage: AccountAPIPrivillage.SettingProfile,
+        description: "Sesuaikan akun yang sekarang anda gunakan"
+    },
+];
+
+
+
+

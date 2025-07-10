@@ -3,23 +3,8 @@ import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { userLogout } from "../../../utils/api_interface";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
-import { AccountAPIPrivillage } from "../../../types/variables";
+import { menuItems, type MenuItem } from "../../../types/variables";
 
-interface MenuItem {
-    id: number;
-    label: string;
-    icon: string;
-    privillage?: AccountAPIPrivillage
-}
-
-const menuItems: MenuItem[] = [
-    { id: 0, label: "Home", icon: "pi pi-home" },
-    { id: 1, label: "Table", icon: "pi pi-table", privillage: AccountAPIPrivillage.GetReport },
-    { id: 2, label: "Statistics", icon: "pi pi-chart-bar", privillage: AccountAPIPrivillage.StatisticsPage },
-    { id: 3, label: "Export", icon: "pi pi-file-export", privillage: AccountAPIPrivillage.ExportPage },
-    { id: 4, label: "Users", icon: "pi pi-user", privillage: AccountAPIPrivillage.UsersPage },
-    { id: 5, label: "Setting", icon: "pi pi-cog", privillage: AccountAPIPrivillage.SettingProfile },
-];
 
 export default function SidebarDashboard() {
     const { showSidebar, setShowSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();
