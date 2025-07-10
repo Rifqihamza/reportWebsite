@@ -17,7 +17,7 @@ export default function RowOptions() {
         <h1 className="text-white font-medium">1</h1>
       </div>
       <h1 className="text-md lg:text-xl text-white py-3 px-6 w-full text-center">Opsi Barisan</h1>
-      <div className="bg-[#ededed] w-full h-fit rounded-xl flex flex-col justify-between overflow-auto">
+      <div className="bg-[#ededed] w-full h-full rounded-xl flex flex-col justify-between overflow-auto">
         <ListBox
           className="w-full h-full [&_.p-listbox-list]:space-y-3! [&_.p-listbox-list-wrapper]:m-2!"
           value={selectedRows}
