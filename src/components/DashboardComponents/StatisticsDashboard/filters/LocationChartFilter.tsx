@@ -56,7 +56,7 @@ export default function LocationChartFilter() {
         <Accordion>
           <AccordionTab
             header="Filter Lokasi"
-            className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:border-0! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4"
+            className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4"
           >
             <div className="grid md:grid-cols-2 grid-cols-1 auto-cols-auto gap-4 w-full max-h-84 md:max-h-none overflow-auto mt-4">{LineChartLocationFilter}</div>
           </AccordionTab>

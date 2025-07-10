@@ -12,8 +12,8 @@ export default function ReportMobileTable() {
     {(() => {
       // If the data is not loaded returns loading animation
       if (reportData === null) {
-          return <div className="w-full h-full">
-            <LoadingAnimation dark_bg />
+          return <div className="w-full h-36 relative">
+            <LoadingAnimation />
           </div>
       }
       
