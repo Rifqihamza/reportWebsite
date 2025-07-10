@@ -9,7 +9,6 @@ import TimeChartFilter from "./filters/TimeChartFilter";
 import CampusChartFilter from "./filters/CampusChartFilter";
 import LocationChartFilter from "./filters/LocationChartFilter";
 import ApplyFilterButton from "./filters/ApplyFilterButton";
-import FiltersWrapper from "./filters/FiltersWrapper";
 
 const LineChart = React.lazy(() => import("./outputs/LineChartComponent"));
 const PieChart = React.lazy(() => import("./outputs/PieChartComponent"));
@@ -23,7 +22,7 @@ export default function StatisticsPage() {
     const { percentCategory } = usePercentChartHook();
 
 
-    if (activeTab !== 2) {
+    if(activeTab !== 2) {
         return <></>;
     }
 
@@ -32,11 +31,18 @@ export default function StatisticsPage() {
             <UseReportConfigHookEffect useAllCampus />
             <PrimeReactProvider>
                 <div className='flex flex-col gap-4 mx-4'>
-                    <FiltersWrapper />
+                    {/* Time Filter */}
+                    <TimeChartFilter />
+
+                    {/* Campus Filter */}
+                    <CampusChartFilter />
+
+                    {/* Location Filter */}
+                    <LocationChartFilter />
 
                     {/* Apply Filter Button */}
                     <ApplyFilterButton />
-
+                    
                     {/* Line Chart */}
                     <div className="w-full px-4 pb-2 pt-6 rounded-2xl bg-white shadow">
                         <div className="px-4 w-full flex flex-col items-start gap-2">
