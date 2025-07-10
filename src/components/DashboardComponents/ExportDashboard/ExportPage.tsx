@@ -113,7 +113,7 @@ export default function ExportPage() {
       <UseReportDataHookEffect />
       <UseExportHookEffect />
       <div className="h-full w-full p-4 bg-white rounded-2xl relative overflow-auto grid grid-flow-row grid-rows-[1fr_auto]">
-        <div className="w-full h-full flex flex-row gap-4 px-1 py-4">
+        <div className="w-full h-full flex flex-row gap-2 px-1 py-2">
           <div className="w-full h-full flex flex-col md:flex-row gap-4">
             <RowOptions />
             <FilterOptions />
