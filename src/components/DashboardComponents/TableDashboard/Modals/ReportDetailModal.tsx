@@ -15,7 +15,7 @@ export default function ReportDetailModal() {
   const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
 
   const { setEditVisible } = useReportEditHook();
-  const { userDataPrivillages } = useUserDataHook();
+  const { userPrivillages: userDataPrivillages } = useUserDataHook();
 
   const report_data = reportData?.find((value) => value.id === detailId) || null;
   const backgroundElement = useRef(null as HTMLDivElement | null);

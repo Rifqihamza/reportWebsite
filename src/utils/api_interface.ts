@@ -57,15 +57,8 @@ export async function userLogin(username: string, password: string): Promise<API
 
         return result;
     }
-    else if (response.status == 500) {
-        return APIResultType.InternalServerError;
-    }
-    else if (response.status == 503) {
-        return APIResultType.DatabaseError
-    }
-    else {
-        return APIResultType.Unauthorized;
-    }
+    
+    return status_to_apiresult(response.status);
 }
 
 function add_to_formdata(formData: FormData, key: string, value?: string) {

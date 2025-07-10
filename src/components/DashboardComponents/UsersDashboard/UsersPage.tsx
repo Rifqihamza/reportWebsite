@@ -16,7 +16,7 @@ export default function UsersPage() {
   const { setUsernameFilter, usernameFilter, showedUserAccountData, setUserAccountData, doneFetching, userAccountData, isAuthorized: isAuhtorizedGetAllUsers } = useUserAccountHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
-  const { userData, userDataPrivillages } = useUserDataHook();
+  const { userData, userPrivillages: userDataPrivillages } = useUserDataHook();
 
   const [visibleDialog, setVisibleDialog] = useState(false);
   const [editingUser, setEditingUser] = useState<{ id: string|null; username: string; password: string, role: AccountType|null }>({
@@ -156,109 +156,94 @@ export default function UsersPage() {
           <button className="w-full md:w-max flex flex-row gap-2 items-center justify-center cursor-pointer duration-200 hover:brightness-75 bg-white text-black p-2 rounded-xl disabled:brightness-75 disabled:cursor-not-allowed disabled:opacity-50" onClick={() => { setEditingUser({id: null, username:"", password:"", role: AccountType.Siswa}); setVisibleDialog(true); }} disabled={!userDataPrivillages.includes(AccountAPIPrivillage.CreateUser)}><i className="pi pi-user-plus"></i><p className="w-max">Tambah Pengguna</p></button>
         </div>
 
-        <div className="hidden md:block h-full overflow-auto relative bg-white rounded-xl px-6 py-4">
-          <h2 className="text-2xl font-bold mb-4">Daftar Akun Pengguna</h2>
-          <table className="w-full">
-            <thead>
-              <tr>
-                <th className="border-b border-gray-300 w-10">No.</th>
-                <th className="p-4 text-left border-b border-gray-300">Nama</th>
-                <th className="p-4 text-left border-b border-gray-300">Role</th>
-                <th className="p-4 text-left border-b border-gray-300">Created At</th>
-                <th className="p-4 text-center border-b border-gray-300">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(() => {
-                // If the fetch is not done yet.
-                if(!doneFetching) {
-                  return <tr>
-                    <td colSpan={5}>
-                      <LoadingAnimation />
-                    </td>
-                  </tr>;
-                }
 
-                // If the user doesn't have access to users data
-                if(!isAuhtorizedGetAllUsers) {
-                  return <tr>
-                    <td colSpan={5} className="text-center py-4">
-                      Maaf, anda tidak mendapat akses untuk melihat data pengguna.
-                    </td>
+        {(() => {
+          // If the fetch is not done yet.
+          if(!doneFetching) {
+            return <div className="w-full h-full flex justify-center items-center z-100 relative bg-white rounded-xl"><LoadingAnimation /></div>;
+          }
+
+          // If the user doesn't have access to users data
+          if(!isAuhtorizedGetAllUsers) {
+            return <div className="w-full h-full flex justify-center items-center z-100 bg-white rounded-xl"><p>Maaf, anda tidak mendapat akses untuk melihat data pengguna.</p></div>;
+          }
+
+          // If the user account data is empty
+          if(userAccountData.length == 0) {
+            return <div className="w-full h-full flex justify-center items-center z-100 bg-white rounded-xl"><p>Tidak ada data pengguna yang tersedia.</p></div>;
+          }
+
+          // If the user account data is not empty but, the filter makes them looks empty
+          if(showedUserAccountData.length == 0) {
+            return <tr>
+              <td colSpan={5} className="text-center py-4">
+                Tidak ada data pengguna sesuai pencarian.
+              </td>
+            </tr>
+          }
+
+          return <>
+            <div className="hidden md:block h-full overflow-auto relative bg-white rounded-xl px-6 py-4">
+              <h2 className="text-2xl font-bold mb-4">Daftar Akun Pengguna</h2>
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    <th className="border-b border-gray-300 w-10">No.</th>
+                    <th className="p-4 text-left border-b border-gray-300">Nama</th>
+                    <th className="p-4 text-left border-b border-gray-300">Role</th>
+                    <th className="p-4 text-left border-b border-gray-300">Created At</th>
+                    <th className="p-4 text-center border-b border-gray-300">Action</th>
                   </tr>
-                }
+                </thead>
+                <tbody>
+                  {showedUserAccountData.map((user, index) => (
+                      <tr key={user.id} className="border-b border-gray-300">
+                        <td className="p-4 text-center">{index + 1}</td>
+                        <td className="p-4 text-left truncate">{user.username}</td>
+                        <td className="p-4 text-left">{user.role}</td>
+                        <td className="p-4 text-left">{new Date(user.created_at).toLocaleDateString("id-ID")}</td>
+                        <td className="flex flex-row items-center justify-center gap-2 p-4 h-full">
+                          <button onClick={() => handleEditClick(user)} className="cursor-pointer bg-blue-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateUser)}>
+                            Edit
+                          </button>
+                          <span>|</span>
+                          <button className="cursor-pointer bg-red-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => handleDelete(user)} disabled={(!userDataPrivillages.includes(AccountAPIPrivillage.DeleteUser) || deletedUserIDProcess) ? true : false}>Delete</button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
 
-                // If the user account data is empty
-                if(userAccountData.length == 0) {
-                  return <tr>
-                    <td colSpan={5} className="text-center py-4">
-                      Tidak ada data pengguna yang tersedia.
-                    </td>
-                  </tr>
-                }
-
-                // If the user account data is not empty but, the filter makes them looks empty
-                if(showedUserAccountData.length == 0) {
-                  return <tr>
-                    <td colSpan={5} className="text-center py-4">
-                      Tidak ada data pengguna sesuai pencarian.
-                    </td>
-                  </tr>
-                }
-
-                return showedUserAccountData.map((user, index) => (
-                  <tr key={user.id} className="border-b border-gray-300">
-                    <td className="p-4 text-center">{index + 1}</td>
-                    <td className="p-4 text-left truncate">{user.username}</td>
-                    <td className="p-4 text-left">{user.role}</td>
-                    <td className="p-4 text-left">{new Date(user.created_at).toLocaleDateString("id-ID")}</td>
-                    <td className="flex flex-row items-center justify-center gap-2 p-4 h-full">
-                      <button onClick={() => handleEditClick(user)} className="cursor-pointer bg-blue-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateUser)}>
+            <div className="md:hidden h-max flex flex-col items-center gap-4 w-full pr-4 box-border!">
+              {showedUserAccountData.map((user, index) => (
+                  <div key={user.id} className="flex flex-col p-6 gap-2 bg-white w-full rounded-2xl">
+                    <p className="">
+                      {index + 1}. {user.username}
+                    </p>
+                    <div className="mt-2 flex flex-col gap-1">
+                      <p className="">
+                        <span>Role:</span> {user.role}
+                      </p>
+                      <p className="">
+                        <span>Created At:</span>
+                        {new Date(user.created_at).toLocaleDateString("id-ID")}
+                      </p>
+                    </div>
+                    <div className="flex flex-row items-center justify-center py-2 gap-2 border-b border-gray-300 h-full">
+                      <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateUser)}>
                         Edit
                       </button>
                       <span>|</span>
-                      <button className="cursor-pointer bg-red-400 text-white px-4 py-1 rounded-xl duration-200 hover:brightness-75 disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => handleDelete(user)} disabled={(!userDataPrivillages.includes(AccountAPIPrivillage.DeleteUser) || deletedUserIDProcess) ? true : false}>Delete</button>
-                    </td>
-                  </tr>
-                ));
-              })()}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="md:hidden h-max flex flex-col items-center gap-4 w-full pr-4 box-border!">
-          {(showedUserAccountData.length > 0 && userData) ? (
-            showedUserAccountData.map((user, index) => (
-              <div key={user.id} className="flex flex-col p-6 gap-2 bg-white w-full rounded-2xl">
-                <p className="">
-                  {index + 1}. {user.username}
-                </p>
-                <div className="mt-2 flex flex-col gap-1">
-                  <p className="">
-                    <span>Role:</span> {user.role}
-                  </p>
-                  <p className="">
-                    <span>Created At:</span>
-                    {new Date(user.created_at).toLocaleDateString("id-ID")}
-                  </p>
-                </div>
-                <div className="flex flex-row items-center justify-center py-2 gap-2 border-b border-gray-300 h-full">
-                  <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateUser)}>
-                    Edit
-                  </button>
-                  <span>|</span>
-                  <button className="bg-red-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => handleDelete(user)} disabled={(!userDataPrivillages.includes(AccountAPIPrivillage.DeleteUser) || deletedUserIDProcess) ? true : false}>
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (doneFetching && userData) ? (
-            <p className="text-white text-center">{userAccountData.length > 0 ? "Tidak ada data pengguna yang cocok dengan pencarian." : "Tidak ada data pengguna yang tersedia."}</p>
-          ) : (
-            <LoadingAnimation />
-          )}
-        </div>
+                      <button className="bg-red-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => handleDelete(user)} disabled={(!userDataPrivillages.includes(AccountAPIPrivillage.DeleteUser) || deletedUserIDProcess) ? true : false}>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </>;
+        })()}
 
         <PrimeReactProvider>
           <Dialog visible={visibleDialog} onHide={() => setVisibleDialog(false)} className="w-full max-w-xl mx-4" header={editingUser.id ? "Edit Pengguna" : "Tambah Pengguna"} draggable={false}>

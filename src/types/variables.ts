@@ -161,6 +161,11 @@ export enum AccountAPIPrivillage {
     UpdateReport = "UpdateReport",
     DeleteReport = "DeleteReport",
     GetReport = "GetReport",
+    
+    // Umm Related Privillage
+    StatisticsPage = "StatisticsPage",
+    ExportPage = "ExportPage",
+    UsersPage = "UsersPage"
 }
 
 export const account_to_api_privillage: {

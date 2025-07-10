@@ -1,50 +1,48 @@
+import { useState } from "react";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
+import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
+import EditUserDataModal, { type EditKey } from "./EditUserDataModal";
 
 export default function SettingPage() {
   const { activeTab } = useDashboardNavbarHook();
+  const { userData } = useUserDataHook();
+
+  const [editKey, setEditKey] = useState<EditKey|undefined>();
+  
   if (activeTab !== 5) {
     return <></>;
   }
 
   return (
-    <section className="flex md:flex-row flex-col gap-4 w-full rounded-2xl">
-      {/* Gambar Profile */}
-      <div className="bg-white shadow shadow-gray-500 flex flex-col items-center gap-4 rounded-2xl p-4 md:w-1/3 w-full">
-        <div className="w-full aspect-square flex items-center justify-center">
-          <img src="/img/avatar.jpg" className="w-40 h-40 ring-2 ring-[#93BFCF] rounded-full object-cover" alt="User Avatar" />
+    <>
+      <UseUserDataHookEffect adminOnly />
+      <section className="flex md:flex-row flex-col gap-4 w-full rounded-2xl">
+        {/* Data Profile */}
+        <div className="w-full flex flex-col justify-between bg-white shadow shadow-gray-500 rounded-2xl px-8 py-6">
+          <ul className="flex flex-col">
+            {/* Username */}
+            <li className="flex flex-row gap-2 md:gap-6 items-center w-full p-2 md:p-8 cursor-pointer hover:bg-gray-100" onClick={() => setEditKey("username")}>
+              <div className="w-full">
+                <p className="text-left text-md font-medium">Name</p>
+                <p className="w-full text-xl font-medium">{userData?.username}</p>
+              </div>
+              <i className="pi pi-angle-right md:text-2xl!"></i>
+            </li>
+
+            <hr />
+
+            {/* Password */}
+            <li className="flex flex-row gap-2 md:gap-6 items-center w-full p-2 md:p-8 cursor-pointer hover:bg-gray-100" onClick={() => setEditKey("password")}>
+              <div className="w-full">
+                <p className="text-left text-md font-medium">Password</p>
+                <p className="w-full text-xl font-medium opacity-50">You know it. Right?</p>
+              </div>
+              <i className="pi pi-angle-right md:text-2xl!"></i>
+            </li>
+          </ul>
         </div>
-        <button className="bg-gray-300 px-4 py-2 rounded-2xl text-sm flex flex-row items-center gap-2">
-          <i className="pi pi-camera"></i>
-          Edit
-        </button>
-      </div>
-
-      {/* Data Profile */}
-      <div className="w-full flex flex-col justify-between bg-white shadow shadow-gray-500 rounded-2xl px-8 py-6">
-        <ul className="flex flex-col gap-6">
-          {/* Username */}
-          <li className="flex flex-col items-center gap-2">
-            <div className="flex flex-row items-center gap-3 w-full px-4">
-              <label htmlFor="username" className="text-xl font-medium w-full">
-                Username :
-              </label>
-              <button className="text-blue-500 font-medium">Edit</button>
-            </div>
-            <input type="text" id="username" className="outline-none border border-gray-400 rounded-2xl px-3 py-2 w-full" />
-          </li>
-
-          {/* Password */}
-          <li className="flex flex-col items-center justify-between">
-            <div className="flex flex-row items-center gap-3 w-full px-4">
-              <label htmlFor="password" className="text-xl font-medium w-full">
-                Password :
-              </label>
-              <button className="text-blue-500 font-medium">Edit</button>
-            </div>
-            <input type="password" id="password" className="outline-none border border-gray-400 rounded-2xl px-3 py-2 w-full" />
-          </li>
-        </ul>
-      </div>
-    </section>
+      </section>
+      <EditUserDataModal editKey={editKey} onDone={() => setEditKey(undefined)} />
+    </>
   );
 }
