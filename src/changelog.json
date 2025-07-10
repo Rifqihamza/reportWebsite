@@ -46,7 +46,7 @@
   },
   {
     "version": "1.1.16",
-    "date": "10 July 2025",
+    "date": "11 July 2025",
     "changes": {
       "features": ["Settings Page"],
       "fixes": ["Fix bug when an admin update user's username", "Fix a bug that there's no loading animation in users tab for mobile user"],
