@@ -11,16 +11,15 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
   const { handleDetail } = useReportDetailHook();
 
   return (
-    <div className="report-card relative bg-white p-4 shadow-sm border border-gray-200" data-report-id={report.id}>
+    <div className="report-card relative p-4 rounded-xl bg-white shadow shadow-gray-400" data-report-id={report.id}>
       <div className="z-50">
-        <span className="bg-[#7FA1C3] absolute top-0 left-0 right-0 h-1/4"></span>
         <div className="flex flex-col mb-2 text-center ">
           <h3 className="text-lg lg:text-2xl text-gray-900 truncate z-1">
             Laporan terkait <span className="font-semibold">{reporttype_to_string(report.type)}</span>
           </h3>
-          <p className="text-xs lg:text-md truncate">{formatDate(new Date(report.created_at).toISOString())}</p>
+          <p className="text-xs lg:text-md truncate text-gray-600">{formatDate(new Date(report.created_at).toISOString())}</p>
         </div>
-        <hr />
+        <hr className="bg-black h-0.5 border-none rounded-xl" />
         <div className="text-sm text-gray-500 space-y-2 break-all mt-4 *:font-medium">
           <p>
             <span className="font-bold">Nama Pelapor: </span> {report.submitted_by}
@@ -33,7 +32,10 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
             <span className="font-bold">Lokasi:</span> {report.location_name}
           </p>
           <p>
-            Status Laporan: <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}> {report.status}</span>
+            <span className="font-bold">Kampus:</span> {report.campus}
+          </p>
+          <p>
+            <span className="font-bold">Status Laporan:</span> <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}> {report.status}</span>
           </p>
         </div>
         <div className="mt-3 flex justify-end">

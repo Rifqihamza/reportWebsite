@@ -53,7 +53,9 @@ body {
 
 .bg-dashboard {
   background: #1f324d;
+  color: #fff;
 }
+
 
 .titlePage {
   font-size: 18px;
