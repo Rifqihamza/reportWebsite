@@ -60,7 +60,7 @@ export default function SidebarDashboard() {
 
     return (
         <div
-            className={`lg:relative lg:w-[12rem] lg:translate-x-0 h-full w-full fixed left-0 bg-[#1f324d] duration-500 z-20
+            className={`lg:relative lg:w-[14rem] lg:translate-x-0 h-full w-full fixed left-0 bg-[#1f324d] duration-500 z-20
                 ${showSidebar ? "translate-x-0" : "-translate-x-full"}`}>
             <div className="flex flex-col gap-2 h-full px-4 transform transition-all duration-300 ease-in-out whitespace-nowrap opacity-100 translate-x-0">
                 <ul className="relative h-full space-y-2">
@@ -73,6 +73,7 @@ export default function SidebarDashboard() {
                         >
                             <i className="pi pi-search"></i>
                             Report Page
+                            <i className="ml-4 pi pi-external-link text-xs! opacity-50"></i>
                             <span className="absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 w-0 group-hover:w-full group-hover:left-0"></span>
                         </button>
                     </li>
