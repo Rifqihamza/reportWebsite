@@ -59,29 +59,23 @@ export default function ReportDesktopTable() {
                         return <>
                             {showedReportData.map((report, index) => (
                                 <tr key={index} className="" data-report-id={report.id}>
+                                    {Object.values(table_rows).map((value) => {
+                                        if(value === "status") {
+                                            return <td className="px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24!">
+                                                <span
+                                                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
+                                                >
+                                                    {report.status}
+                                                </span>
+                                            </td>;
+                                        }
 
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-24! max-w-24!">
-                                        <span
-                                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
-                                        >
-                                            {report.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24!">
-                                        {report.submitted_by}
-                                    </td>
-                                    <td className="px-2 py-3 border-b border-gray-300 text-sm text-gray-600 truncate min-w-48! max-w-48!">
-                                        {report.message}
-                                    </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 text-gray-600 truncate min-w-12! max-w-12!">
-                                        {report.campus}
-                                    </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 text-gray-600 truncate min-w-12! max-w-12!">
-                                        {report.location_name}
-                                    </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap truncate text-sm text-gray-600 min-w-12! max-w-12!">
-                                        {formatDate(report.created_at)}
-                                    </td>
+                                        let isSpecified = report[value] !== null;
+                                        return <td className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
+                                            {isSpecified ? report[value] : "Belum Ditentukan"}
+                                        </td>;
+                                    })}
+                                    
                                     <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-gray-300 min-w-12! max-w-12!">
                                         <button
                                             className="border text-[#1f324d] hover:border-white hover:bg-[#1f324d] hover:text-white duration-500 px-3 py-1 rounded-xl"

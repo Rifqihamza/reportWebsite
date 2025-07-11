@@ -110,6 +110,7 @@ export const table_rows: {
 } = {
     "Status": "status",
     "Nama": "submitted_by",
+    "PIC": "pic_name",
     "Laporan": "message",
     "Kampus": "campus",
     "Lokasi": "location_name",
