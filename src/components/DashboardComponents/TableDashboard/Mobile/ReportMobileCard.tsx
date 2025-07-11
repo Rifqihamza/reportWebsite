@@ -1,5 +1,5 @@
 import React from "react";
-import { reporttype_to_string, type ReportData } from "../../../../types/variables";
+import { reporttype_to_string, table_rows, type ReportData } from "../../../../types/variables";
 import { statusColors, useReportDetailHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { formatDate } from "../../../../utils/other";
 
@@ -21,22 +21,17 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
         </div>
         <hr className="bg-black h-0.5 border-none rounded-xl" />
         <div className="text-sm text-gray-500 space-y-2 break-all mt-4 *:font-medium">
-          <p>
-            <span className="font-bold">Nama Pelapor: </span> {report.submitted_by}
-          </p>
-          <p>
-            <span className="font-bold">Laporan: </span>
-            {report.message}
-          </p>
-          <p>
-            <span className="font-bold">Lokasi:</span> {report.location_name}
-          </p>
-          <p>
-            <span className="font-bold">Kampus:</span> {report.campus}
-          </p>
-          <p>
-            <span className="font-bold">Status Laporan:</span> <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}> {report.status}</span>
-          </p>
+          {Object.entries(table_rows).map(([row, value]) => {
+            if(value === "status") {
+              return <p>
+                <span className="font-bold">{row}: </span> <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}>{report[value]}</span>
+              </p>
+            }
+
+            return <p>
+              <span className="font-bold">{row}: </span> {report[value]}
+            </p>
+          })}
         </div>
         <div className="mt-3 flex justify-end">
           <button className="mobile-detail-button text-white bg-[#7FA1C3] px-3 py-2 rounded-xl text-sm font-medium" onClick={() => handleDetail(report.id)}>
