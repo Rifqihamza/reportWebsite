@@ -70,13 +70,13 @@ export async function POST({ request, cookies }: APIContext) {
     }
     catch (err) {
         if (err instanceof Prisma.PrismaClientValidationError) {
-            return create_response_status(400);
+            return create_response_status(400); // Data not valid
         }
         else if (err instanceof Prisma.PrismaClientKnownRequestError) {
-            return create_response_status(409);
+            return create_response_status(409); // Conflict
         }
         else if (err instanceof Prisma.PrismaClientInitializationError) {
-            return create_response_status(503);
+            return create_response_status(503); // Database error
         }
 
         console.error(`There's an error when trying to create user: ${err}`);

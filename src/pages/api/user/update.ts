@@ -6,7 +6,7 @@ import sha3 from "js-sha3";
 import { ActivityType, Prisma } from "@prisma/client";
 import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
-export async function PUT({ request, cookies }: APIContext) {
+export async function PUT({ request, cookies }: APIContext) {  
   // Get the cookie
   const user_token = cookies.get("user_token")?.value;
 
@@ -26,16 +26,16 @@ export async function PUT({ request, cookies }: APIContext) {
     return create_response_status(401);
   }
 
-  
-  // Verify user role
-  if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.UpdateUser)) {
-      return create_response_status(401);
-  }
-
 
   // Get the required data
   const { id, username, password } = await request.json();
-  if(!id || !username || !password) {
+  if(!id || (!username && !password) || (typeof username !== "string" || typeof password !== "string")) {
+    return create_response_status(401);
+  }
+  
+  
+  // Verify user role
+  if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.UpdateUser) && (user_data.id !== id || !account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.SettingProfile))) {
     return create_response_status(401);
   }
 
@@ -64,7 +64,7 @@ export async function PUT({ request, cookies }: APIContext) {
   // Update RecordedActivity
   try {
     await record_activity({
-      message: "Update a user data",
+      message: user_data.id === id ? "Update their own data" : "Update a user data",
       url: request.url,
       activity_type: ActivityType.UpdateUser,
       user_id: user_data.id
@@ -86,8 +86,9 @@ export async function PUT({ request, cookies }: APIContext) {
         id: id
       },
       data: {
-        username: username,
-        password: sha3.sha3_256(password)
+        username: username ? username : undefined,
+        lowercased_username: username ? username.toLowerCase() : undefined,
+        password: password ? sha3.sha3_256(password) : undefined
       }
     });
     
@@ -100,7 +101,10 @@ export async function PUT({ request, cookies }: APIContext) {
   }
   catch(err) {
     if(err instanceof Prisma.PrismaClientInitializationError) {
-        return create_response_status(503);
+      return create_response_status(503); // Database error
+    }
+    else if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        return create_response_status(409); // Conflict
     }
     console.error(`There's an error when trying to get report data for verification: ${err}`);
     return create_response_status(500);

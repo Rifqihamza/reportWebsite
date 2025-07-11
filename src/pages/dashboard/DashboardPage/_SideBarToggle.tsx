@@ -7,7 +7,7 @@ export default function SidebarToggle() {
     onClick={() => setShowSidebar(!showSidebar)}
     className="w-full py-2 flex items-center justify-between gap-4 font-semibold lg:hidden text-white"
   >
-    <h1>
+    <h1 className="text-white">
       E-Lapor Dashboard
     </h1>
     {

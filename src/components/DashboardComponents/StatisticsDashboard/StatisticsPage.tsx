@@ -9,7 +9,7 @@ import TimeChartFilter from "./filters/TimeChartFilter";
 import CampusChartFilter from "./filters/CampusChartFilter";
 import LocationChartFilter from "./filters/LocationChartFilter";
 import ApplyFilterButton from "./filters/ApplyFilterButton";
-import FiltersWrapper from "./filters/FiltersWrapper";
+import { Accordion, AccordionTab } from 'primereact/accordion';
 
 const LineChart = React.lazy(() => import("./outputs/LineChartComponent"));
 const PieChart = React.lazy(() => import("./outputs/PieChartComponent"));
@@ -23,7 +23,7 @@ export default function StatisticsPage() {
     const { percentCategory } = usePercentChartHook();
 
 
-    if (activeTab !== 2) {
+    if(activeTab !== 2) {
         return <></>;
     }
 
@@ -32,10 +32,21 @@ export default function StatisticsPage() {
             <UseReportConfigHookEffect useAllCampus />
             <PrimeReactProvider>
                 <div className='flex flex-col gap-4 mx-4'>
-                    <FiltersWrapper />
+                    <Accordion>
+                        <AccordionTab header="Filter Grafik Laporan Temuan" className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-content]:flex [&_.p-accordion-content]:flex-col [&_.p-accordion-content]:gap-2">
+                            {/* Time Filter */}
+                            <TimeChartFilter />
 
-                    {/* Apply Filter Button */}
-                    <ApplyFilterButton />
+                            {/* Campus Filter */}
+                            <CampusChartFilter />
+
+                            {/* Location Filter */}
+                            <LocationChartFilter />
+                            
+                            {/* Apply Filter Button */}
+                            <ApplyFilterButton />
+                        </AccordionTab>
+                    </Accordion>
 
                     {/* Line Chart */}
                     <div className="w-full px-4 pb-2 pt-6 rounded-2xl bg-white shadow">

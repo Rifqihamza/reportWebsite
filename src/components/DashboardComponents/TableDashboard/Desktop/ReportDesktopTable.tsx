@@ -14,7 +14,7 @@ export default function ReportDesktopTable() {
     return <>
         <UseUserDataHookEffect />
         <div className='hidden md:block overflow-auto p-4'>
-            <table className="w-full">
+            <table className="w-full relative min-h-48">
                 <thead>
                     <tr>
                         {Object.keys(table_rows).map((key) => {

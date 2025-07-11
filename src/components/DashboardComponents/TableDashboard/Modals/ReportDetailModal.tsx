@@ -15,7 +15,7 @@ export default function ReportDetailModal() {
   const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
 
   const { setEditVisible } = useReportEditHook();
-  const { userDataPrivillages } = useUserDataHook();
+  const { userPrivillages: userDataPrivillages } = useUserDataHook();
 
   const report_data = reportData?.find((value) => value.id === detailId) || null;
   const backgroundElement = useRef(null as HTMLDivElement | null);
@@ -56,7 +56,7 @@ export default function ReportDetailModal() {
           className={
             (detailId ? "visible pointer-events-auto top-0 scale-100 opacity-100" : "invisible pointer-events-none top-0 scale-50 opacity-0") +
             " left-1/2 translate-y-[2rem] -translate-x-1/2 duration-200 fixed bg-white w-full max-w-[90vw] lg:max-w-[85vw] " +
-            "lg:max-h-[100vh] min-h-[90vh] max-h-[90vh] px-4 p-8 rounded-3xl z-50 flex flex-col justify-between space-y-5"
+            "lg:max-h-[100vh] min-h-[90vh] max-h-[90vh] overflow-y-auto px-4 p-8 rounded-3xl z-50 flex flex-col justify-between space-y-5"
           }
         >
           {/* Close Button Modal */}
@@ -84,12 +84,12 @@ export default function ReportDetailModal() {
             {/* Details */}
             <div className="w-full flex flex-col gap-5">
               <Accordion activeIndex={accordionIndex} onTabChange={(e) => setAccordionIndex(Array.isArray(e.index) ? e.index[0] : e.index)} className="">
-                <AccordionTab header="Pesan Laporan" className={`${accordionIndex == 0 ? "md:pointer-events-none" : ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-header-link]:bg-[#1f324d]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-4! [&_.p-accordion-content]:mb-4! [&_.p-accordion-content]:rounded-xl! [&_.p-accordion-content]:[box-shadow:0_0_4px_2px_#eee]!`}>
+                <AccordionTab header="Pesan Laporan" className={`${accordionIndex == 0 && "md:pointer-events-none"} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-header-link]:bg-[#1f324d]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-4! [&_.p-accordion-content]:mb-4! [&_.p-accordion-content]:rounded-xl! [&_.p-accordion-content]:[box-shadow:0_0_4px_2px_#eee]!`}>
                   <p className="break-words whitespace-pre-line w-full overflow-y-auto overflow-x-auto">{report_data?.message}</p>
                 </AccordionTab>
                 <AccordionTab
                   header="Detail Laporan"
-                  className={`${accordionIndex == 1 ? "[&.p-accordion-header]:pointer-events-none" : ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-content]:overflow-y-auto [&_.p-accordion-header-link]:bg-[#1f324d]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-4! [&_.p-accordion-content]:mb-4! [&_.p-accordion-content]:rounded-xl! [&_.p-accordion-content]:[box-shadow:0_0_4px_2px_#eee]!`}
+                  className={`${accordionIndex == 1 && "md:pointer-events-none"} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-content]:overflow-y-auto [&_.p-accordion-header-link]:bg-[#1f324d]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-4! [&_.p-accordion-content]:mb-4! [&_.p-accordion-content]:rounded-xl! [&_.p-accordion-content]:[box-shadow:0_0_4px_2px_#eee]!`}
                 >
                   <div className="w-full flex flex-col space-y-2 overflow-y-auto">
                     {/* Report Details */}
