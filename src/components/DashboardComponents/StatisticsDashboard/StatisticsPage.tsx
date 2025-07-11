@@ -49,7 +49,7 @@ export default function StatisticsPage() {
                         </AccordionTab>
                     </Accordion>
 
-                    <div className="flex flex-row-reverse gap-4">
+                    <div className="flex flex-col md:flex-row-reverse gap-4">
                         <div className="flex flex-col gap-4">
                             {/* Pie Chart Kategori */}
                             <div className="w-full h-fit px-2 py-5 text-center rounded-2xl flex flex-col items-center bg-white shadow-md shadow-gray-400">
