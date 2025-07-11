@@ -23,7 +23,7 @@ export default function StatisticsPage() {
     const { percentCategory } = usePercentChartHook();
 
 
-    if(activeTab !== 2) {
+    if (activeTab !== 2) {
         return <></>;
     }
 
@@ -33,8 +33,9 @@ export default function StatisticsPage() {
             <PrimeReactProvider>
                 <div className='flex flex-col gap-4 mx-4'>
                     <Accordion>
-                        <AccordionTab header="Filter Grafik Laporan Temuan" className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-content]:flex [&_.p-accordion-content]:flex-col [&_.p-accordion-content]:gap-2">
-                            {/* Time Filter */}
+                        <AccordionTab
+                            header="Filter Grafik Laporan Temuan"
+                            className="[&_.p-accordion-header-link]:bg-[#257180]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-2xl! [&_.p-accordion-content]:mt-3 [&_.p-accordion-content]:rounded-xl! [&_.p-accordion-content]:flex [&_.p-accordion-content]:flex-col [&_.p-accordion-content]:gap-2">                            {/* Time Filter */}
                             <TimeChartFilter />
 
                             {/* Campus Filter */}
@@ -42,28 +43,16 @@ export default function StatisticsPage() {
 
                             {/* Location Filter */}
                             <LocationChartFilter />
-                            
+
                             {/* Apply Filter Button */}
                             <ApplyFilterButton />
                         </AccordionTab>
                     </Accordion>
 
-                    {/* Line Chart */}
-                    <div className="w-full px-4 pb-2 pt-6 rounded-2xl bg-white shadow">
-                        <div className="px-4 w-full flex flex-col items-start gap-2">
-                            <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
-                        </div>
-                        <Suspense fallback={<>Loading..</>}>
-                            <LineChart reports={lineChartFilteredReports} colors={lineChartCategoryFilter ? [statusColorHex[reporttype_to_string(lineChartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
-                        </Suspense>
-                    </div>
-
-                    {/* Pie Charts and Percentage Boxes */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
-                        {/* Kiri: Pie Chart Kategori dan Status */}
+                    <div className="flex flex-row-reverse gap-4">
                         <div className="flex flex-col gap-4">
                             {/* Pie Chart Kategori */}
-                            <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-white shadow">
+                            <div className="w-full h-fit px-2 py-5 text-center rounded-2xl flex flex-col items-center bg-white shadow-md shadow-gray-400">
                                 <h1 className='font-bold uppercase tracking-wider'>Kategori</h1>
                                 <Suspense fallback={<>Loading..</>}>
                                     <PieChart reportType={lineChartCategoryFilter} category={true} />
@@ -71,18 +60,24 @@ export default function StatisticsPage() {
                             </div>
 
                             {/* Pie Chart Status */}
-                            <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center bg-white shadow">
+                            <div className="w-full h-fit px-2 py-5 text-center rounded-2xl flex flex-col items-center bg-white shadow-md shadow-gray-400">
                                 <h1 className='font-bold uppercase tracking-wider'>Status</h1>
                                 <Suspense fallback={<>Loading..</>}>
                                     <PieChart />
                                 </Suspense>
                             </div>
                         </div>
-
-                        {/* Kanan: Persen Components + Container Insight */}
-                        <div className="flex flex-col gap-4 w-full">
-                            {/* Grid untuk 2 PersenComp */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Line Chart */}
+                        <div className="flex flex-col w-full gap-4">
+                            <div className="w-full h-fit px-2 py-5 rounded-2xl bg-white shadow-md shadow-gray-400">
+                                <div className="px-4 w-full flex flex-col items-start gap-2">
+                                    <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
+                                </div>
+                                <Suspense fallback={<>Loading..</>}>
+                                    <LineChart reports={lineChartFilteredReports} colors={lineChartCategoryFilter ? [statusColorHex[reporttype_to_string(lineChartCategoryFilter)]] : Object.values(ReportType).map(type => statusColorHex[reporttype_to_string(type)])} />
+                                </Suspense>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
                                 <Suspense fallback={<>Loading..</>}>
                                     <PercenComp
                                         reports={percentStatus}
@@ -96,9 +91,15 @@ export default function StatisticsPage() {
                                     />
                                 </Suspense>
                             </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col md:flex-row gap-4 w-full">
+                        <div className="flex flex-col gap-4 w-full">
+                            {/* Grid untuk 2 PersenComp */}
 
                             {/* Container Insight di bawahnya */}
-                            <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-white shadow">
+                            <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-white shadow-md shadow-gray-400">
                                 <h2 className="font-semibold uppercase tracking-wider text-lg mb-2">Insights</h2>
                                 <div className="text-black">{!insight ? "Membuat insight.." :
                                     <ol className="list-decimal m-4">

@@ -51,10 +51,11 @@ body {
   display: none;
 }
 
-.bg-dashboard {
-  background: #1f324d;
+.bg-dashboard,
+.sidebarDashboard,
+.headerDashboard {
+  background: #257180;
 }
-
 
 .titlePage {
   font-size: 18px;

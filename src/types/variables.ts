@@ -131,10 +131,10 @@ export const keyto_table_rows: Partial<{
 
 // Other things
 export const statusColorHex: Record<string, string> = {
-    NotStarted: "#fca5a5", // Tailwind bg-red-300
-    InProcess: "#fde047",  // Tailwind bg-yellow-300
-    Complete: "#86efac",   // Tailwind bg-green-300
-    Hold: "#93c5fd",       // Tailwind bg-blue-300
+    NotStarted: "oklch(70.4% 0.191 22.216)", // Tailwind bg-red-300
+    InProcess: "oklch(85.2% 0.199 91.936)",  // Tailwind bg-yellow-300
+    Complete: "oklch(79.2% 0.209 151.711)",   // Tailwind bg-green-300
+    Hold: "oklch(70.7% 0.165 254.624)",       // Tailwind bg-blue-300
     Abnormality: "#f3d262",
     "5R": "#7750a5",
     Safety: "#ea8557"

@@ -82,7 +82,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
     };
 
     return (
-        <ReactApexChart options={options} series={series} type="line" height={300} />
+        <ReactApexChart options={options} series={series} type="line" height={230} />
     );
 };
 

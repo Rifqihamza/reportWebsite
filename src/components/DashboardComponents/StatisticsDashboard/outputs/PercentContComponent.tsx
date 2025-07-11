@@ -50,7 +50,7 @@ export default function PercenContComponent({ reports, label }: PercenContProps)
     );
 
     return (
-        <div className='bg-white px-6 py-4 rounded-xl  space-y-4'>
+        <div className='bg-white px-6 py-4 rounded-xl shadow shadow-gray-400 space-y-4'>
             <div className='flex flex-row justify-between items-center gap-10'>
                 <h1 className="text-md md:text-lg text-black font-bold">Persentase {label}</h1>
             </div>

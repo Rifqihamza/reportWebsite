@@ -60,9 +60,9 @@ export default function ReportDesktopTable() {
                             {showedReportData.map((report, index) => (
                                 <tr key={index} className="" data-report-id={report.id}>
 
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-24! max-w-24!">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-20! max-w-20!">
                                         <span
-                                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
+                                            className={`px-2 w-full inline-flex justify-center text-xs leading-6 font-semibold rounded-4xl ${statusColors[report.status]}`}
                                         >
                                             {report.status}
                                         </span>

@@ -97,7 +97,7 @@ const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
     };
 
     return (
-        <ReactApexChart options={options} series={series} type="pie" width="300" />
+        <ReactApexChart options={options} series={series} type="pie" height="250" />
     );
 };
 
