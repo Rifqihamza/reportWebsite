@@ -30,7 +30,7 @@ export default function SidebarDashboard() {
 
     const renderMenuItem = ({ id, label, icon, privillage }: MenuItem) => {
         if(privillage && !userPrivillages.includes(privillage)) {
-            return <></>;
+            return "";
         }
         
         return (

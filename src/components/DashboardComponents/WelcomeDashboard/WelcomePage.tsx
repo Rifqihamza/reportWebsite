@@ -18,10 +18,10 @@ function QuickNavigationButton(props: { icon: string, title: string, description
 
 function quickNavigationMapper(item: MenuItem, setActiveTab: (newActiveTab: number) => void, userPrivillages: AccountAPIPrivillage[]): React.ReactNode {
     if(item.privillage && !userPrivillages.includes(item.privillage)) {
-        return <></>;
+        return "";
     }
 
-    return <QuickNavigationButton title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />   
+    return <QuickNavigationButton key={item.id} title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />   
 }
 
 export default function WelcomePage() {
