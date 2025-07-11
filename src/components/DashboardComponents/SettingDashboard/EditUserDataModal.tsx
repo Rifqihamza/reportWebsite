@@ -75,7 +75,7 @@ export default function EditUserDataModal(props: Props) {
             <label htmlFor={props.editKey}>{capitalize(props.editKey??"")}</label>
             <input
               id={props.editKey}
-              type="text"
+              type={props.editKey === "password" ? "password" : "text"}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               className="w-full px-4 py-2 rounded-xl border border-gray-300"
