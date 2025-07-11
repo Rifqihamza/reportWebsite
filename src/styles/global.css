@@ -10,28 +10,24 @@
   src: url("/sairaFont/Saira-VariableFont_wdth\,wght.ttf");
 }
 
-/* Scrollbar Track */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-/* Scrollbar Thumb */
 ::-webkit-scrollbar-thumb {
-  background-color: #1f324d; /* warna thumb */
+  background-color: #1f324d;
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: content-box;
   transition: all 0.5s;
 }
 
-/* Thumb Hover */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #41689f; /* saat hover */
+  background-color: #41689f;
   transition: all 0.5s;
 }
 
-/* Scrollbar Track Background */
 ::-webkit-scrollbar-track {
   background: #fff;
   border-radius: 10px;
@@ -58,6 +54,7 @@ body {
 .bg-dashboard {
   background: #1f324d;
 }
+
 
 .titlePage {
   font-size: 18px;
@@ -125,7 +122,6 @@ body {
   color: white; /* Ganti warna icon zoom */
 }
 
-/* Container element */
 .p-tieredmenu {
   border-radius: 12px;
   background-color: #ffffff;
@@ -135,7 +131,6 @@ body {
   min-width: 10rem;
 }
 
-/* Menuitem element */
 .p-menuitem {
   padding: 0.2rem;
   border-radius: 8px;
@@ -162,19 +157,17 @@ body {
 
 .p-inputtext {
   background-color: #fff;
-  color: black; /* teks input putih */
+  color: black;
   padding: 0.5rem 0;
   border-radius: 0.75rem;
   border: none;
   text-align: center;
 }
 
-/* Agar placeholder juga putih */
 .p-inputtext::placeholder {
-  color: black; /* placeholder putih transparan */
+  color: black;
 }
 
-/* Opsional: untuk input yang disabled */
 .p-inputtext:disabled {
   color: black;
   background-color: rgba(255, 255, 255, 0.1);
@@ -194,21 +187,18 @@ body {
   box-shadow: none;
 }
 
-/* Label teks di dalam dropdown */
 .p-dropdown-label {
   background-color: #e2dad6 !important;
-  color: black; /* ubah sesuai kebutuhan */
+  color: black;
 }
 
-/* Trigger (ikon panah bawah) */
 .p-dropdown-trigger {
   background-color: #e2dad6 !important;
   border-left: none;
 }
 
-/* Dropdown wrapper saat terbuka */
 .p-dropdown-panel {
-  background-color: white; /* atau transparent jika ingin semuanya transparan */
+  background-color: white;
   border: none;
   box-shadow: none;
 }
@@ -253,8 +243,33 @@ body {
   border-radius: 0.75rem;
 }
 
-.p-dropdown-panel {
-  border-radius: var(--radius-xl);
-  margin-top: 5px;
+.p-listbox-header {
+  background: transparent;
+  border: none;
+  border-radius: 0.75rem;
+}
+
+.p-listbox {
+  border-radius: 0.75rem;
+  background: transparent;
+  border: none;
+}
+
+.p-listbox-item {
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.2s ease;
+  background-color: #fff;
   border: 2px solid #1f324d;
+}
+
+.p-listbox-item:hover {
+  background-color: #f0f4f8;
+  cursor: pointer;
+}
+
+.p-listbox-item.p-highlight {
+  background-color: #1f324d;
+  border: 2px solid #ffff;
+  color: #fff;
 }

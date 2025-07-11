@@ -13,8 +13,8 @@ export default function ReportDesktopTable() {
 
     return <>
         <UseUserDataHookEffect />
-        <div className='hidden md:block overflow-auto relative bg-white rounded-xl px-6 py-4 h-[70vh]'>
-            <table className="w-full">
+        <div className='hidden md:block overflow-auto p-4'>
+            <table className="w-full relative min-h-48">
                 <thead>
                     <tr>
                         {Object.keys(table_rows).map((key) => {
@@ -40,7 +40,7 @@ export default function ReportDesktopTable() {
                         if (!isAuthorizedGetReport) {
                             return <tr><td colSpan={9}>{userData?.role} tidak diperbolehkan melihat data laporan.</td></tr>
                         }
-                        
+
                         // If the data is not loaded returns loading animation
                         if (reportData === null) {
                             return <tr><td><LoadingAnimation /></td></tr>
@@ -73,18 +73,18 @@ export default function ReportDesktopTable() {
                                     <td className="px-2 py-3 border-b border-gray-300 text-sm text-gray-600 truncate min-w-48! max-w-48!">
                                         {report.message}
                                     </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 text-gray-600 truncate min-w-12! max-w-12!">
                                         {report.campus}
                                     </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap min-w-12! max-w-12!">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 text-gray-600 truncate min-w-12! max-w-12!">
                                         {report.location_name}
                                     </td>
-                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap text-sm text-gray-600">
+                                    <td className="px-2 py-3 text-left border-b border-gray-300 whitespace-nowrap truncate text-sm text-gray-600 min-w-12! max-w-12!">
                                         {formatDate(report.created_at)}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white text-center border-b border-gray-300">
+                                    <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-gray-300 min-w-12! max-w-12!">
                                         <button
-                                            className="bg-[#1f324d] hover:bg-[#6FA9E3] px-3 py-1 rounded-xl duration-300"
+                                            className="border text-[#1f324d] hover:border-white hover:bg-[#1f324d] hover:text-white duration-500 px-3 py-1 rounded-xl"
                                             onClick={() => handleDetail(report.id)}
                                         >
                                             Detail

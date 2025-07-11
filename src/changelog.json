@@ -1,7 +1,7 @@
 [
   {
     "version": "1.1.8",
-    "date": "2025-06-25",
+    "date": "25 June 2025",
     "changes": {
       "features": ["Added filter options in Statistics tab"],
       "fixes": ["Fix bug when exporting data to Excel"],
@@ -10,7 +10,7 @@
   },
   {
     "version": "1.1.9",
-    "date": "2025-06-26",
+    "date": "26 June 2025",
     "changes": {
       "features": ["Added filter options in Statistics tab"],
       "fixes": ["Fix title of report table not showing in mobile view"],
@@ -19,7 +19,7 @@
   },
   {
     "version": "1.1.10",
-    "date": "2025-06-26",
+    "date": "26 June 2025",
     "changes": {
       "features": [],
       "fixes": [],
@@ -28,7 +28,7 @@
   },
   {
     "version": "1.1.11",
-    "date": "2025-07-03",
+    "date": "3 July 2025",
     "changes": {
       "features": [],
       "fixes": [],
@@ -37,11 +37,20 @@
   },
   {
     "version": "1.1.15",
-    "date": "2025-07-07",
+    "date": "7 July 2025",
     "changes": {
       "features": ["Admin can change username and password", "Admin can delete user", "Admin can add user", "Add location filter inside statistics section", "Teacher now can use dashboard for seeing report data and user data"],
       "fixes": ["Fix sidebar in admin dashboard can't be opened in mobile view", "Fix user data in welcome page can't be loaded", "Fix navbar in about page doesn't react when user scrolling the website"],
       "improvements": ["Users username now can be capitalized", "Improve performance in statistics section"]
+    }
+  },
+  {
+    "version": "1.1.18",
+    "date": "12 July 2025",
+    "changes": {
+      "features": ["Settings Page"],
+      "fixes": ["Fix bug when an admin update user's username", "Fix a bug that there's no loading animation in users tab for mobile user"],
+      "improvements": ["Re-design dashboard page", "Better responsiveness in statistics tab for mobile view", "Add search filter in PIC dropdown when edit a report", "User can only see several tabs in dashboard that the user has access to"]
     }
   }
 ]

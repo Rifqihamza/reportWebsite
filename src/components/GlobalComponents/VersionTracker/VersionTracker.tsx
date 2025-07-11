@@ -41,7 +41,7 @@ export default function VersionTracker() {
       <Dialog header={
         <div>
           <h1>What's new?</h1>
-          <p className="text-sm italic font-thin">Version: {changes.version} [{changes.date}]</p>
+          <p className="text-sm italic font-thin">Version: {changes.version}  ( {changes.date} )</p>
         </div>
       } className="w-[100vw] max-h-[80vh] overflow-y-auto md:w-[50vw]" visible={true} onHide={() => setChanges(null)}>
         {changes.changes.features.length > 0 ? <ChangesGroup label="Features" changes={changes.changes.features} /> : <></>}

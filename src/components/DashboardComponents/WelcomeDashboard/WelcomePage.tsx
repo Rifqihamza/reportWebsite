@@ -1,40 +1,53 @@
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
-import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
+import { AccountAPIPrivillage, menuItems, type MenuItem } from "../../../types/variables";
 
 function QuickNavigationButton(props: { icon: string, title: string, description: string, onClick: () => void }) {
-    return <button className="flex flex-col p-4 gap-4 justify-center items-center bg-gray-100 w-full *:text-[#1f324d] border-[#1f324d] border-2 rounded-2xl cursor-pointer duration-200 hover:bg-gray-200" onClick={props.onClick}>
-            <h1 className="text-3xl">{props.title}</h1>
-            <i className={`pi ${props.icon}`} style={{ fontSize: "48px" }}></i>
-        <p>{props.description}</p>
-    </button>;
+    return (
+        <button
+            className="flex-1 w-max md:h-48 cursor-pointer aspect-video flex flex-col gap-2 justify-center items-center px-2 py-4 rounded-xl bg-[#1f324d] hover:bg-slate-500 text-white duration-300"
+            onClick={props.onClick}
+        >
+            <i className={`pi ${props.icon}`} style={{ fontSize: "28px" }}></i>
+            <h1 className="text-lg">{props.title}</h1>
+            <p className="hidden md:inline text-md font-thin w-48">{props.description}</p>
+        </button>
+    );
+}
+
+function quickNavigationMapper(item: MenuItem, setActiveTab: (newActiveTab: number) => void, userPrivillages: AccountAPIPrivillage[]): React.ReactNode {
+    if(item.privillage && !userPrivillages.includes(item.privillage)) {
+        return <></>;
+    }
+
+    return <QuickNavigationButton title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />   
 }
 
 export default function WelcomePage() {
     const { setActiveTab, activeTab } = useDashboardNavbarHook();
-    
-    const { userData } = useUserDataHook();
+    const { userData, userPrivillages } = useUserDataHook();
 
     const currentHour = (new Date()).getHours();
-    const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 12 ? (currentHour >= 15 ? "Selamat Sore" : "Selamat Siang") : "Selamat Pagi");
+    const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 11 ? (currentHour >= 15 ? "Selamat Sore" : "Selamat Siang") : "Selamat Pagi");
 
-    if(activeTab !== 0) {
+    if (activeTab !== 0) {
         return <></>;
     }
-    
-    return (
-        <div className="h-fit md:h-full w-full bg-white rounded-2xl relative px-4 py-10 md:py-20 flex flex-col text-center">
-            <UseUserDataHookEffect adminOnly />
-            {/* Welcome message */}
-            <h1 className="text-3xl tracking-wide text-[#1f324d]">{greeting}, {userData ? <><b>{userData?.username}</b>!</> : <i className="pi pi-spinner pi-spin" style={{ fontSize: 18 }} />}</h1>
-            <p>Selamat datang di Dashboard! Disini adalah tempat kita melihat, mengelola, dan menganalisa data laporan yang telah direkam oleh sistem</p>
 
-            {/* Quick Navigation */}
-            <div className="w-full h-fit p-4 mt-4 grid md:grid-cols-2 grid-cols-1 gap-4">
-                <QuickNavigationButton title="Report Table" description="Lihat dan kelola data laporan yang disimpan" icon="pi-table" onClick={() => setActiveTab(1)} />
-                <QuickNavigationButton title="Report Statistics" description="Lihat dan analisa data laporan berdasarkan statistik" icon="pi-chart-line" onClick={() => setActiveTab(2)} />
-                <QuickNavigationButton title="Export Data" description="Download data yang telah terekam sistem" icon="pi-file-export" onClick={() => setActiveTab(3)} />
-                <QuickNavigationButton title="Users" description="Lihat data pengguna yang menggunakan website ini" icon="pi-user" onClick={() => setActiveTab(4)} />
+    return (
+        <div className="h-full w-full relative px-4 py-10 md:py-10 flex flex-col items-center justify-center text-center overflow-auto">
+            <UseUserDataHookEffect adminOnly />
+            <div className="w-full space-y-4">
+                <div className="w-full max-w-3xl mx-auto text-center">
+                    {/* Welcome message */}
+                    <h1 className="text-3xl tracking-wide text-[#1f324d]">{greeting}, {userData ? <><b>{userData?.username}</b>!</> : <i className="pi pi-spinner pi-spin" style={{ fontSize: 18 }} />}</h1>
+                    <p className="text-lg w-full max-w-xl mx-auto text-[#1f324d]">Selamat datang di Dashboard! Disini adalah tempat kita melihat, mengelola, dan menganalisa data laporan yang telah direkam oleh sistem</p>
+
+                </div>
+                {/* Quick Navigation */}
+                <div className="w-full max-w-3xl flex flex-wrap items-center justify-center gap-3 mx-auto">
+                    {menuItems.filter((value) => value.id != 0).map((item) => quickNavigationMapper(item, setActiveTab, userPrivillages))}
+                </div>
             </div>
         </div>
     )

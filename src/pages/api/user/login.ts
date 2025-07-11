@@ -34,8 +34,9 @@ export async function POST({ request }: APIContext) {
     }
     
 
+    // Verify existance
     if(!user || user.inactive) {
-        return create_response_status(404);
+        return create_response_status(401);
     }
 
     // Verify password

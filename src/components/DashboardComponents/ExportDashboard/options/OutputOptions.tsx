@@ -13,8 +13,9 @@ export default function OutputOptions() {
       </div>
       <h1 className="text-md lg:text-xl text-white py-3 px-6 w-full text-center">Opsi Output</h1>
       <div className="bg-[#ededed] w-full h-full rounded-xl flex flex-col gap-2 p-2 overflow-auto">
-        {outputOptions.map((value) => {
+        {outputOptions.map((value, index) => {
           return <button
+            key={index}
             className={`w-full h-full cursor-pointer px-2 py-6 border-2 text-sm lg:text-md
                ${(selectedOutput === value ?
                 "bg-[#1f324d] text-white"
