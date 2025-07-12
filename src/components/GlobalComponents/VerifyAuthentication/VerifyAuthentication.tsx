@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import Cookies from 'js-cookie';
 import { APIResultType, checkAuthentication } from "../../../utils/api_interface";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
+import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 
 
 export default function VerifyAuthentication() {
   const { isConnected } = useNetworkConnectivityHook();
+  const { showMessage } = useMessageToastHook();
   
   useEffect(() => {
     if(!isConnected) {
@@ -25,7 +27,7 @@ export default function VerifyAuthentication() {
         window.location.href = "/loginPage/";
       }
       else if(result == APIResultType.DatabaseError) {
-        alert("Database sedang error. Mohon coba lagi.");
+        showMessage("Database sedang error. Mohon coba lagi.", "error", "");
       }
     })
   }, []);

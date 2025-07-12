@@ -4,15 +4,17 @@ import { userLogout } from "../../../utils/api_interface";
 import ChangeCampusButton from "../SelectCampus/ChangeCampusButton";
 import DashboardButton from "./DashboardButton";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
+import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 
 const NavbarComponents = () => {
   const { isConnected } = useNetworkConnectivityHook();
+  const { showMessage } = useMessageToastHook();
   
   async function handle_logout() {
     if(!isConnected) return;
     
     if (userData && !(await userLogout())) {
-      alert("Terjadi error saat ingin logout!");
+      showMessage("Terjadi error saat ingin logout!", "error");
       return;
     }
 

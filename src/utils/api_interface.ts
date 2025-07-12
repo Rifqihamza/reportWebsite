@@ -51,7 +51,6 @@ export async function userLogin(username: string, password: string): Promise<API
         const role = (await response.json()).role;
         const result = string_to_accounttype(role);
         if (!result) {
-            alert("There's something unexpected. Please send this code to the dev. error code: 001");
             return APIResultType.NoError;
         }
 

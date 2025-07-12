@@ -74,7 +74,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       set(() => ({ deleteDisabled: true }));
 
       if (reportData?.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
-        alert("Tidak bisa menghapus laporan yang sudah di follow up");
+        showMessage("Tidak bisa menghapus laporan yang sudah di follow up", "warn");
         set(() => ({ deleteDisabled: false }));
         return;
       }

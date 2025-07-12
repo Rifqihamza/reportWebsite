@@ -5,7 +5,7 @@ import { create } from "zustand";
 type useMessageToastType = {
   toastRef: React.RefObject<Toast | null>|null;
   setToastRef: (newToastRef: React.RefObject<Toast | null>) => void;
-  showMessage: (label: string, severity: ToastMessage["severity"], detail: string) => void;
+  showMessage: (label: string, severity: ToastMessage["severity"], detail?: string) => void;
 };
 
 export const useMessageToastHook = create<useMessageToastType>((set) => ({
