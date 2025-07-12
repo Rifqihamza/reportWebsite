@@ -12,7 +12,7 @@ export default function ReportTableWrapper() {
     }
 
     return <>
-        <div className="p-4 space-y-4">
+        <div className="p-4 space-y-4 w-full">
             <ReportTableToolbar />
             <Suspense fallback={<LoadingAnimation />}>
                 <ReportTableComponent />

@@ -31,11 +31,11 @@ export default function StatisticsPage() {
         <>
             <UseReportConfigHookEffect useAllCampus />
             <PrimeReactProvider>
-                <div className='flex flex-col gap-4 mx-4'>
+                <div className='flex flex-col gap-4 p-4'>
                     <Accordion>
                         <AccordionTab
                             header="Filter Grafik Laporan Temuan"
-                            className="[&_.p-accordion-header-link]:bg-[#257180]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-2xl! [&_.p-accordion-content]:mt-3 [&_.p-accordion-content]:rounded-xl! [&_.p-accordion-content]:flex [&_.p-accordion-content]:flex-col [&_.p-accordion-content]:gap-2">                            {/* Time Filter */}
+                            className="[&_.p-accordion-header-link]:bg-[#CA7842]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-2xl! [&_.p-accordion-content]:mt-3 [&_.p-accordion-content]:rounded-xl! [&_.p-accordion-content]:flex [&_.p-accordion-content]:flex-col [&_.p-accordion-content]:gap-2">                            {/* Time Filter */}
                             <TimeChartFilter />
 
                             {/* Campus Filter */}
@@ -52,7 +52,7 @@ export default function StatisticsPage() {
                     <div className="flex flex-col md:flex-row-reverse gap-4">
                         <div className="flex flex-col gap-4">
                             {/* Pie Chart Kategori */}
-                            <div className="w-full h-fit px-2 py-5 text-center rounded-2xl flex flex-col items-center bg-white shadow-md shadow-gray-400">
+                            <div className="w-full h-fit px-2 py-5 text-center rounded-2xl flex flex-col items-center text-white bg-[#257180] shadow-md shadow-gray-400">
                                 <h1 className='font-bold uppercase tracking-wider'>Kategori</h1>
                                 <Suspense fallback={<>Loading..</>}>
                                     <PieChart reportType={lineChartCategoryFilter} category={true} />
@@ -60,7 +60,7 @@ export default function StatisticsPage() {
                             </div>
 
                             {/* Pie Chart Status */}
-                            <div className="w-full h-fit px-2 py-5 text-center rounded-2xl flex flex-col items-center bg-white shadow-md shadow-gray-400">
+                            <div className="w-full h-fit px-2 py-5 text-center rounded-2xl flex flex-col items-center text-white bg-[#257180] shadow-md shadow-gray-400">
                                 <h1 className='font-bold uppercase tracking-wider'>Status</h1>
                                 <Suspense fallback={<>Loading..</>}>
                                     <PieChart />
@@ -69,7 +69,7 @@ export default function StatisticsPage() {
                         </div>
                         {/* Line Chart */}
                         <div className="flex flex-col w-full gap-4">
-                            <div className="w-full h-fit px-2 py-5 rounded-2xl bg-white shadow-md shadow-gray-400">
+                            <div className="w-full h-fit px-2 py-5 rounded-2xl text-white bg-[#257180] shadow-md shadow-gray-400">
                                 <div className="px-4 w-full flex flex-col items-start gap-2">
                                     <h1 className='font-bold text-xl'>Grafik Laporan Temuan</h1>
                                 </div>
@@ -99,7 +99,7 @@ export default function StatisticsPage() {
                             {/* Grid untuk 2 PersenComp */}
 
                             {/* Container Insight di bawahnya */}
-                            <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-white shadow-md shadow-gray-400">
+                            <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center text-white bg-[#257180] shadow-md shadow-gray-400">
                                 <h2 className="font-semibold uppercase tracking-wider text-lg mb-2">Insights</h2>
                                 <div className="text-black">{!insight ? "Membuat insight.." :
                                     <ol className="list-decimal m-4">

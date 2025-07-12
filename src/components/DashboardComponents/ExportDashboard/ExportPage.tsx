@@ -124,7 +124,7 @@ export default function ExportPage() {
           </div>
         </div>
         {/* Export button */}
-        <button className={`h-full p-4 bg-[#1f324d] border-2 text-white rounded-2xl hover:brightness-75 ${(processingState == 1) ? "bg-white text-[#1f324d]! border-[#1f324d] pointer-events-none" : ""}`} onClick={handleExport}>
+        <button className={`h-full p-4 bg-[#257180] text-white rounded-2xl hover:bg-[#FD8B51] duration-300 ${(processingState == 1) ? "bg-white text-[#1f324d]! border-[#1f324d] pointer-events-none" : ""}`} onClick={handleExport}>
           {(processingState == 1) ? "Processing..." : ((processingState == 2) ? "Done!" : "Process & Export")}
         </button>
       </div>

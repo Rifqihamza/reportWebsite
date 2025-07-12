@@ -260,17 +260,18 @@ body {
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
   transition: background-color 0.2s ease;
-  background-color: #fff;
-  border: 2px solid #1f324d;
+  background-color: #257180;
+  border: 2px solid #fff;
+  color: #fff;
 }
 
 .p-listbox-item:hover {
-  background-color: #f0f4f8;
+  background-color: #257180;
   cursor: pointer;
 }
 
 .p-listbox-item.p-highlight {
-  background-color: #1f324d;
+  background-color: #FD8B51;
   border: 2px solid #ffff;
   color: #fff;
 }
