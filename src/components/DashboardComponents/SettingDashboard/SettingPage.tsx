@@ -24,7 +24,7 @@ export default function SettingPage() {
             <li className="flex flex-row gap-2 md:gap-6 items-center w-full p-2 md:p-8 cursor-pointer hover:bg-gray-100" onClick={() => setEditKey("username")}>
               <div className="w-full">
                 <p className="text-left text-md font-medium">Name</p>
-                <p className="w-full text-xl font-medium">{userData?.username}</p>
+                <p className={`w-full text-xl font-medium ${userData === null && "opacity-50"}`}>{userData !== null ? userData?.username : "Loading.."}</p>
               </div>
               <i className="pi pi-angle-right md:text-2xl!"></i>
             </li>

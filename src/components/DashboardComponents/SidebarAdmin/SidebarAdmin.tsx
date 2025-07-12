@@ -4,12 +4,14 @@ import { userLogout } from "../../../utils/api_interface";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 import { menuItems, type MenuItem } from "../../../types/variables";
+import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 
 
 export default function SidebarDashboard() {
     const { showSidebar, setShowSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();
     const { userData, userPrivillages } = useUserDataHook();
     const { isConnected } = useNetworkConnectivityHook();
+    const { showMessage } = useMessageToastHook();
 
     useEffect(() => {
         setShowSidebar(false);
@@ -19,7 +21,7 @@ export default function SidebarDashboard() {
         if (!isConnected) return;
 
         if (userData && !(await userLogout())) {
-            alert("Terjadi error saat ingin logout!");
+            showMessage("Terjadi error saat ingin logout!", "error", "");
             return;
         }
 
@@ -30,7 +32,7 @@ export default function SidebarDashboard() {
 
     const renderMenuItem = ({ id, label, icon, privillage }: MenuItem) => {
         if(privillage && !userPrivillages.includes(privillage)) {
-            return <></>;
+            return "";
         }
         
         return (

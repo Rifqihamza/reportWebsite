@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { AccountAPIPrivillage, menuItems, type MenuItem } from "../../../types/variables";
@@ -17,18 +18,22 @@ function QuickNavigationButton(props: { icon: string, title: string, description
 
 function quickNavigationMapper(item: MenuItem, setActiveTab: (newActiveTab: number) => void, userPrivillages: AccountAPIPrivillage[]): React.ReactNode {
     if(item.privillage && !userPrivillages.includes(item.privillage)) {
-        return <></>;
+        return "";
     }
 
-    return <QuickNavigationButton title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />   
+    return <QuickNavigationButton key={item.id} title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />   
 }
 
 export default function WelcomePage() {
     const { setActiveTab, activeTab } = useDashboardNavbarHook();
     const { userData, userPrivillages } = useUserDataHook();
 
-    const currentHour = (new Date()).getHours();
-    const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 11 ? (currentHour >= 15 ? "Selamat Sore" : "Selamat Siang") : "Selamat Pagi");
+    const [greeting, setGreeting] = useState("");
+    useEffect(() => {
+        const currentHour = (new Date()).getHours();
+        const greeting = (currentHour > 18 || currentHour < 5) ? "Selamat Malam" : (currentHour > 11 ? (currentHour >= 15 ? "Selamat Sore" : "Selamat Siang") : "Selamat Pagi");
+        setGreeting(greeting);
+    }, [])
 
     if (activeTab !== 0) {
         return <></>;
@@ -42,7 +47,6 @@ export default function WelcomePage() {
                     {/* Welcome message */}
                     <h1 className="text-3xl tracking-wide text-[#1f324d]">{greeting}, {userData ? <><b>{userData?.username}</b>!</> : <i className="pi pi-spinner pi-spin" style={{ fontSize: 18 }} />}</h1>
                     <p className="text-lg w-full max-w-xl mx-auto text-[#1f324d]">Selamat datang di Dashboard! Disini adalah tempat kita melihat, mengelola, dan menganalisa data laporan yang telah direkam oleh sistem</p>
-
                 </div>
                 {/* Quick Navigation */}
                 <div className="w-full max-w-3xl flex flex-wrap items-center justify-center gap-3 mx-auto">

@@ -1,10 +1,11 @@
 import type { APIContext } from "astro";
-import { create_response_status, record_activity, verify_user_data_token, create_response_json } from '../../../utils/api_helper';
+import { create_response_status, record_activity, verify_user_data_token, create_response_json, create_response_cookie, generate_user_token } from '../../../utils/api_helper';
 import { APIResultType } from "../../../utils/api_interface";
 import { prisma } from "../../../utils/db";
 import sha3 from "js-sha3";
 import { ActivityType, Prisma } from "@prisma/client";
 import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
+import cookie from 'cookie';
 
 export async function PUT({ request, cookies }: APIContext) {  
   // Get the cookie
@@ -91,13 +92,21 @@ export async function PUT({ request, cookies }: APIContext) {
         password: password ? sha3.sha3_256(password) : undefined
       }
     });
+
+    const new_user_token = generate_user_token(updated_user_data.username.toLowerCase());
+    const new_user_token_cookie = cookie.serialize("user_token", new_user_token, {
+      httpOnly: true,
+      path: '/',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 2, // 2 hours
+    });
     
-    return create_response_json({
+    return create_response_cookie({
       id: updated_user_data.id,
       created_at: updated_user_data.created_at,
       username: updated_user_data.username,
       role: updated_user_data.role,
-    });
+    }, new_user_token_cookie);
   }
   catch(err) {
     if(err instanceof Prisma.PrismaClientInitializationError) {

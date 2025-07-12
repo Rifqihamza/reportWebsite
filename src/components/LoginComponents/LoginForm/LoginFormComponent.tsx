@@ -44,7 +44,7 @@ export default function LoginFormComponent() {
         showMessage("There's an error!", "error", "Unknown error detected please report to developer");
       }
     } catch (err) {
-      alert("There's an unexpected error..");
+      showMessage("There's an unexpected error..", "error", "");
     }
 
     setLoginDisabled(false);

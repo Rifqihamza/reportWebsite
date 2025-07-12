@@ -110,6 +110,7 @@ export const table_rows: {
 } = {
     "Status": "status",
     "Nama": "submitted_by",
+    "PIC": "pic_name",
     "Laporan": "message",
     "Kampus": "campus",
     "Lokasi": "location_name",
@@ -203,9 +204,7 @@ export const privillage_for_dashboard = [
 ];
 
 export function has_access_to_dashboard(role: AccountType) {
-    const privillages = account_to_api_privillage[role];
-    console.log(`Has access to dashboard: ${privillage_for_dashboard.findIndex(x => privillages.includes(x)) > -1}`);
-    return privillage_for_dashboard.findIndex(x => privillages.includes(x)) > -1;
+    return privillage_for_dashboard.findIndex(x => account_to_api_privillage[role].includes(x)) > -1;
 }
 
 
