@@ -21,14 +21,14 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
         </div>
         <hr className="bg-black h-0.5 border-none rounded-xl" />
         <div className="text-sm text-gray-500 space-y-2 break-all mt-4 *:font-medium">
-          {Object.entries(table_rows).map(([row, value]) => {
+          {Object.entries(table_rows).map(([row, value], index) => {
             if(value === "status") {
-              return <p>
+              return <p key={index}>
                 <span className="font-bold">{row}: </span> <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}>{report[value]}</span>
               </p>
             }
 
-            return <p>
+            return <p key={index}>
               <span className="font-bold">{row}: </span> {report[value]}
             </p>
           })}

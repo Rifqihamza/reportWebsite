@@ -59,9 +59,9 @@ export default function ReportDesktopTable() {
                         return <>
                             {showedReportData.map((report, index) => (
                                 <tr key={index} className="" data-report-id={report.id}>
-                                    {Object.values(table_rows).map((value) => {
+                                    {Object.values(table_rows).map((value, index) => {
                                         if(value === "status") {
-                                            return <td className="px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24!">
+                                            return <td key={index} className="px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24!">
                                                 <span
                                                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                                                 >
@@ -71,7 +71,7 @@ export default function ReportDesktopTable() {
                                         }
 
                                         let isSpecified = report[value] !== null;
-                                        return <td className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
+                                        return <td key={index} className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
                                             {isSpecified ? report[value] : "Belum Ditentukan"}
                                         </td>;
                                     })}
