@@ -42,7 +42,7 @@ export default function SidebarDashboard() {
             }
             
             const isActive = menu.items.some((item) => activeTab === item.id);
-            const isGroupOpened = !(openedMenuTab.find((item) => item.id === index)?.isOpen);
+            const isGroupOpened = (openedMenuTab.find((item) => item.id === index)?.isOpen);
             
             return <li key={index}>
                 <div className="">
@@ -63,8 +63,9 @@ export default function SidebarDashboard() {
                     </button>
                     <div data-is-open={isGroupOpened} className="overflow-hidden flex flex-col gap-1 bg-transparent text-white duration-500 h-28 p-2 data-[is-open=false]:h-0! data-[is-open=false]:p-0">
                         {
-                            menu.items.map((item) => {
+                            menu.items.map((item, index) => {
                                 return <button
+                                        key={index}
                                         onClick={() => setActiveTab(item.id)}
                                         className={`p-3 relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === item.id ? "text-white bg-black/50" : "text-gray-300"
                                             }`}

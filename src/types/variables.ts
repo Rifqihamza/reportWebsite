@@ -220,11 +220,11 @@ export interface MenuItem {
 
 export interface MenuItemGroup {
     label: string;
-    icon: string;
-    description: string;
     items: {
         id: number;
         label: string;
+        icon: string;
+        description: string;
         privillage?: AccountAPIPrivillage
     }[]
 }
@@ -245,16 +245,20 @@ export const menuItems: (MenuItem|MenuItemGroup)[] = [
     },
     { 
         label: "Statistics",
-        icon: "pi pi-chart-bar",
-        description: "Lihat dan analisa data laporan berdasarkan statistik",
         items: [
             {
                 id: 2,
-                label: "Report Statistics"
+                label: "Report Statistics",
+                icon: "pi pi-chart-line",
+                privillage: AccountAPIPrivillage.ReportStatisticsPage,
+                description: "Lihat dan analisa data laporan berdasarkan statistik"
             },
             {
                 id: 6,
-                label: "PIC Statistics"
+                label: "PIC Statistics",
+                icon: "pi pi-chart-bar",
+                privillage: AccountAPIPrivillage.PICStatisticsPage,
+                description: "Lihat dan analisa PIC beserta laporan nya"
             }
         ]
     },

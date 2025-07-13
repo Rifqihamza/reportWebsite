@@ -1,4 +1,4 @@
-import { useLineChartHook } from "../../../../hooks/pages/Statistics/useChartHook";
+import { useLineChartHook } from "../../../../../hooks/pages/Statistics/useChartHook";
 
 export default function ApplyFilterButton() {
   const { appliedChartCampusFilter, chartCampusFilter, appliedChartLocationFilter, chartLocationFilter, appliedChartTimeFilter, chartTimeFilter, applyFilter } = useLineChartHook();

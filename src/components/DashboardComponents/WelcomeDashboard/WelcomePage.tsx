@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
-import { AccountAPIPrivillage, menuItems, type MenuItem } from "../../../types/variables";
+import { AccountAPIPrivillage, menuItems, type MenuItem, type MenuItemGroup } from "../../../types/variables";
 
 function QuickNavigationButton(props: { icon: string, title: string, description: string, onClick: () => void }) {
     return (
@@ -16,12 +16,27 @@ function QuickNavigationButton(props: { icon: string, title: string, description
     );
 }
 
-function quickNavigationMapper(item: MenuItem, setActiveTab: (newActiveTab: number) => void, userPrivillages: AccountAPIPrivillage[]): React.ReactNode {
-    if(item.privillage && !userPrivillages.includes(item.privillage)) {
+function quickNavigationMapper(menuItem: MenuItem|MenuItemGroup, setActiveTab: (newActiveTab: number) => void, userPrivillages: AccountAPIPrivillage[]): React.ReactNode {
+    if((menuItem as any).items) {
+        menuItem = menuItem as MenuItemGroup;
+        
+        return <>
+            {menuItem.items.map((item) => {
+                if(item.privillage && !userPrivillages.includes(item.privillage)) {
+                    return "";
+                }
+                
+                return <QuickNavigationButton key={item.id} title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />
+            })}
+        </>
+    }
+
+    menuItem = menuItem as MenuItem;
+    if(menuItem.privillage && !userPrivillages.includes(menuItem.privillage)) {
         return "";
     }
 
-    return <QuickNavigationButton key={item.id} title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />   
+    return <QuickNavigationButton key={menuItem.id} title={menuItem.label} description={menuItem.description} icon={menuItem.icon} onClick={() => setActiveTab(menuItem.id)} />   
 }
 
 export default function WelcomePage() {
@@ -50,7 +65,7 @@ export default function WelcomePage() {
                 </div>
                 {/* Quick Navigation */}
                 <div className="w-full max-w-3xl flex flex-wrap items-center justify-center gap-3 mx-auto">
-                    {menuItems.filter((value) => value.id != 0).map((item) => quickNavigationMapper(item, setActiveTab, userPrivillages))}
+                    {menuItems.filter((value, index) => index !== 0).map((item) => quickNavigationMapper(item, setActiveTab, userPrivillages))}
                 </div>
             </div>
         </div>
