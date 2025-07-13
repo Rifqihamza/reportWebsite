@@ -164,7 +164,8 @@ export enum AccountAPIPrivillage {
     GetReport = "GetReport",
     
     // Umm Related Privillage
-    StatisticsPage = "StatisticsPage",
+    ReportStatisticsPage = "ReportStatisticsPage",
+    PICStatisticsPage = "PICStatisticsPage",
     ExportPage = "ExportPage",
     UsersPage = "UsersPage"
 }
@@ -217,7 +218,18 @@ export interface MenuItem {
     privillage?: AccountAPIPrivillage
 }
 
-export const menuItems: MenuItem[] = [
+export interface MenuItemGroup {
+    label: string;
+    icon: string;
+    description: string;
+    items: {
+        id: number;
+        label: string;
+        privillage?: AccountAPIPrivillage
+    }[]
+}
+
+export const menuItems: (MenuItem|MenuItemGroup)[] = [
     { 
         id: 0,
         label: "Home",
@@ -232,11 +244,19 @@ export const menuItems: MenuItem[] = [
         description: "Lihat dan kelola data laporan yang disimpan"
     },
     { 
-        id: 2,
         label: "Statistics",
         icon: "pi pi-chart-bar",
-        privillage: AccountAPIPrivillage.StatisticsPage,
-        description: "Lihat dan analisa data laporan berdasarkan statistik"
+        description: "Lihat dan analisa data laporan berdasarkan statistik",
+        items: [
+            {
+                id: 2,
+                label: "Report Statistics"
+            },
+            {
+                id: 6,
+                label: "PIC Statistics"
+            }
+        ]
     },
     { 
         id: 3,
