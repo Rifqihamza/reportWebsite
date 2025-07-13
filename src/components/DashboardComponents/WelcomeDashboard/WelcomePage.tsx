@@ -1,8 +1,9 @@
-import { useReportPaginationHook } from "../../../hooks/pages/ReportTable/useReportHook";
+import { Suspense } from "react";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { useReportDataHook } from "../../../hooks/shared/useReportData";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { ReportStatus, statusColorHex } from "../../../types/variables";
+import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
 
 function QuickNavigationButton(props: { icon: string, title: string, description: string, onClick: () => void }) {
     return (
@@ -86,11 +87,21 @@ export default function WelcomePage() {
 
             {/* Report Summary */}
             <div className="text-white flex flex-col md:flex-row gap-4">
-                <DataReport status="Default" title="Total" value={reportData?.length || 0} icon="pi-file" />
-                <DataReport status="Complete" title="Complete" value={reportData?.filter(r => r.status === ReportStatus.Complete).length || 0} icon="pi-check-circle" />
-                <DataReport status="Hold" title="Hold" value={reportData?.filter(r => r.status === ReportStatus.Hold).length || 0} icon="pi-refresh" />
-                <DataReport status="InProcess" title="Process" value={reportData?.filter(r => r.status === ReportStatus.InProcess).length || 0} icon="pi-spinner" />
-                <DataReport status="NotStarted" title="Not Started" value={reportData?.filter(r => r.status === ReportStatus.NotStarted).length || 0} icon="pi-ban" />
+                <Suspense fallback={<LoadingAnimation />}>
+                    <DataReport status="Default" title="Total" value={reportData?.length || 0} icon="pi-file" />
+                </Suspense>
+                <Suspense fallback={<LoadingAnimation />}>
+                    <DataReport status="Complete" title="Complete" value={reportData?.filter(r => r.status === ReportStatus.Complete).length || 0} icon="pi-check-circle" />
+                </Suspense>
+                <Suspense fallback={<LoadingAnimation />}>
+                    <DataReport status="Hold" title="Hold" value={reportData?.filter(r => r.status === ReportStatus.Hold).length || 0} icon="pi-refresh" />
+                </Suspense>
+                <Suspense fallback={<LoadingAnimation />}>
+                    <DataReport status="InProcess" title="Process" value={reportData?.filter(r => r.status === ReportStatus.InProcess).length || 0} icon="pi-spinner" />
+                </Suspense>
+                <Suspense fallback={<LoadingAnimation />}>
+                    <DataReport status="NotStarted" title="Not Started" value={reportData?.filter(r => r.status === ReportStatus.NotStarted).length || 0} icon="pi-ban" />
+                </Suspense>
             </div>
         </section>
     );
