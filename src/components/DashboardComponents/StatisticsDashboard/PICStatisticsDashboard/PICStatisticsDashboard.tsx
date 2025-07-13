@@ -1,8 +1,10 @@
 import { PrimeReactProvider } from "primereact/api";
 import { useDashboardNavbarHook } from "../../../../hooks/shared/useDashboardNavbar";
-import ReportCountChart from "./outputs/ReportCountChart";
 import CompactBoxData from "./outputs/CompactBoxData";
+import React, { Suspense } from "react";
+import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 
+const ReportCountChart = React.lazy(() => import("./outputs/ReportCountChart"));
 
 export default function PICStatisticsDashboard() {
   const { activeTab } = useDashboardNavbarHook();
@@ -25,7 +27,9 @@ export default function PICStatisticsDashboard() {
         
         {/* Reports Count Chart */}
         <h1 className="mt-4 text-xl">Report Count</h1>
-        <ReportCountChart />
+        <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
+          <ReportCountChart />
+        </Suspense>
 
         {/* Ranking Table */}
 

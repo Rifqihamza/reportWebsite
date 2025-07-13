@@ -21,7 +21,6 @@ export default function ReportCountChart() {
     },
   ];
   const options: ApexCharts.ApexOptions = {
-    series: series,
     chart: {
       type: "bar",
       stacked: true,
@@ -29,7 +28,7 @@ export default function ReportCountChart() {
     plotOptions: {
       bar: {
         horizontal: true,
-        barHeight: "100%",
+        barHeight: "90%",
       },
     },
     dataLabels: {
@@ -65,7 +64,7 @@ export default function ReportCountChart() {
 
   return (
     <>
-      <ReactApexChart options={options} height={500} type="bar" />
+      <ReactApexChart options={options} height={500} type="bar" series={series} />
     </>
   );
 }
