@@ -58,13 +58,15 @@ export default function ReportCountChart() {
       colors: [statusColorHex[ReportStatus.Complete], statusColorHex[ReportStatus.Hold], statusColorHex[ReportStatus.NotStarted], statusColorHex[ReportStatus.InProcess]],
     },
     legend: {
-      position: "bottom",
+      position: "top",
     },
   };
 
   return (
     <>
-      <ReactApexChart options={options} height={500} type="bar" series={series} />
+      <div className="shadow p-2">
+        <ReactApexChart options={options} height={500} type="bar" series={series} />
+      </div>
     </>
   );
 }
