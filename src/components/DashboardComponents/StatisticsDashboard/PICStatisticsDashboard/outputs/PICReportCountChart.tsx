@@ -1,25 +1,9 @@
 import ReactApexChart from "react-apexcharts";
 import { ReportStatus, statusColorHex } from "../../../../../types/variables";
+import UsePICReportCountHookEffect, { usePICReportCountHook } from "../../../../../hooks/pages/Statistics/usePICReportCountHook";
 
 export default function ReportCountChart() {
-  const series = [
-    {
-      name: "Completed",
-      data: [4, 2, 4, 3, 4, 2, 4, 3, 4, 2, 4, 3, 4, 2, 4, 3],
-    },
-    {
-      name: "Hold",
-      data: [1, 0, 2, 4, 1, 0, 2, 4, 1, 0, 2, 4, 1, 0, 2, 4],
-    },
-    {
-      name: "Not Started",
-      data: [2, 3, 1, 1, 2, 3, 1, 1, 2, 3, 1, 1, 2, 3, 1, 1],
-    },
-    {
-      name: "In Process",
-      data: [2, 3, 0, 0, 2, 3, 0, 0, 2, 3, 0, 0, 2, 3, 0, 0],
-    },
-  ];
+  const { picReportCountSeries, picReportCountNames } = usePICReportCountHook();
   const options: ApexCharts.ApexOptions = {
     chart: {
       type: "bar",
@@ -29,6 +13,15 @@ export default function ReportCountChart() {
       bar: {
         horizontal: true,
         barHeight: "90%",
+        colors: {
+          ranges: [
+            {
+              from: 0,
+              to: 0,
+              color: "#fff"
+            }
+          ]
+        }
       },
     },
     dataLabels: {
@@ -38,7 +31,7 @@ export default function ReportCountChart() {
       width: 12,
     },
     xaxis: {
-      categories: ["Pak Heas", "Pak Okta", "Pak Ambar", "Pak Dodi", "Pak Heas", "Pak Okta", "Pak Ambar", "Pak Dodi", "Pak Heas", "Pak Okta", "Pak Ambar", "Pak Dodi", "Pak Heas", "Pak Okta", "Pak Ambar", "Pak Dodi"],
+      categories: picReportCountNames,
     },
     yaxis: {
       title: {
@@ -49,6 +42,7 @@ export default function ReportCountChart() {
       shared: false,
       y: {
         formatter: function (val) {
+          if(val === 0) return "";
           return val + " laporan";
         },
       },
@@ -64,8 +58,9 @@ export default function ReportCountChart() {
 
   return (
     <>
+      <UsePICReportCountHookEffect />
       <div className="shadow p-2 rounded-2xl">
-        <ReactApexChart options={options} height={500} type="bar" series={series} />
+        <ReactApexChart options={options} height={500} type="bar" series={picReportCountSeries} />
       </div>
     </>
   );
