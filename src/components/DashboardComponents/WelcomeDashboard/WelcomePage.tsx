@@ -1,14 +1,13 @@
-import { Suspense } from "react";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
-import { useReportDataHook } from "../../../hooks/shared/useReportData";
+import UseReportDataHookEffect, { useReportDataHook } from "../../../hooks/shared/useReportData";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { ReportStatus, statusColorHex } from "../../../types/variables";
-import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
+import { useEffect } from "react";
 
 function QuickNavigationButton(props: { icon: string, title: string, description: string, onClick: () => void }) {
     return (
         <button
-            className="cursor-pointer w-fit md:h-18 h-13 aspect-square p-2 rounded-xl bg-[#CB6040] hover:bg-[#FD8B51] text-white font-semibold duration-300"
+            className="cursor-pointer w-fit md:h-18 h-13 aspect-square p-2 rounded-xl bg-[#257180] hover:bg-[#FD8B51] text-white font-semibold duration-300"
             onClick={props.onClick}
         >
             <i className={`pi ${props.icon}`} style={{ fontSize: "18px" }}></i>
@@ -18,7 +17,7 @@ function QuickNavigationButton(props: { icon: string, title: string, description
 }
 
 function DataReport(props: { title: string; value: number; icon: string; status: string }) {
-    const bgColor = statusColorHex[props.status] || "#CB6040";  // fallback ke warna default
+    const bgColor = statusColorHex[props.status] || "#CB6040";
 
     return (
         <div
@@ -30,7 +29,12 @@ function DataReport(props: { title: string; value: number; icon: string; status:
                 <i className={`pi ${props.icon}`}></i>
             </div>
             <p className="text-2xl md:text-4xl whitespace-nowrap md:whitespace-normal">
-                {props.value} <span className="text-lg">Laporan</span>
+                {typeof props.value === "number" && !isNaN(props.value) ? (
+                    props.value
+                ) : (
+                    <i className="pi pi-spinner pi-spin" style={{ fontSize: 18 }} />
+                )}{" "}
+                <span className="text-lg">Laporan</span>
             </p>
         </div>
     );
@@ -41,26 +45,31 @@ function DataReport(props: { title: string; value: number; icon: string; status:
 export default function WelcomePage() {
     const { setActiveTab, activeTab } = useDashboardNavbarHook();
     const { userData } = useUserDataHook();
-    const { reportData } = useReportDataHook();
+    const { reportData } = useReportDataHook()
+    UseReportDataHookEffect()
 
     const currentHour = new Date().getHours();
     const greeting =
         currentHour > 18 || currentHour < 5
-            ? "Selamat Malam"
+            ? "Selamat Malam 🌙"
             : currentHour > 12
                 ? currentHour >= 15
-                    ? "Selamat Sore"
-                    : "Selamat Siang"
-                : "Selamat Pagi";
+                    ? "Selamat Sore 🌤️"
+                    : "Selamat Siang ☀️"
+                : "Selamat Pagi 🌞";
 
     if (activeTab !== 0) return null;
-
+    const getCount = (status: ReportStatus | "Total") => {
+        if (!reportData) return 0;
+        if (status === "Total") return reportData.length;
+        return reportData.filter((r) => r.status === status).length;
+    };
     return (
         <section className="px-5 py-10 md:py-6 overflow-auto space-y-4">
             <UseUserDataHookEffect adminOnly />
 
             {/* Header */}
-            <div className="w-full h-fit bg-[#257180] shadow-md shadow-gray-400 flex flex-col md:flex-row items-center justify-between gap-4 px-3 md:px-6 py-4 rounded-xl">
+            <div className="w-full h-fit bg-[#CB6040] shadow-md shadow-gray-400 flex flex-col md:flex-row items-center justify-between gap-4 px-3 md:px-6 py-4 rounded-xl">
                 <header>
                     <div className="text-white">
                         <h1 className="text-md">{greeting}, <span className="font-semibold">{userData?.username || "User"}!</span></h1>
@@ -76,7 +85,7 @@ export default function WelcomePage() {
                         Quick Navigation
                     </h1>
                     <div className="flex flex-wrap justify-center md:justify-end gap-2 md:gap-4">
-                        <QuickNavigationButton icon="pi-file" title="Table" description="Buat laporan baru" onClick={() => setActiveTab(1)} />
+                        <QuickNavigationButton icon="pi-table" title="Table" description="Buat laporan baru" onClick={() => setActiveTab(1)} />
                         <QuickNavigationButton icon="pi-chart-bar" title="Analytics" description="Kelola pengguna sistem" onClick={() => setActiveTab(2)} />
                         <QuickNavigationButton icon="pi-download" title="Exports" description="Pengaturan sistem" onClick={() => setActiveTab(3)} />
                         <QuickNavigationButton icon="pi-user" title="Users" description="Lihat statistik laporan" onClick={() => setActiveTab(4)} />
@@ -87,21 +96,11 @@ export default function WelcomePage() {
 
             {/* Report Summary */}
             <div className="text-white flex flex-col md:flex-row gap-4">
-                <Suspense fallback={<LoadingAnimation />}>
-                    <DataReport status="Default" title="Total" value={reportData?.length || 0} icon="pi-file" />
-                </Suspense>
-                <Suspense fallback={<LoadingAnimation />}>
-                    <DataReport status="Complete" title="Complete" value={reportData?.filter(r => r.status === ReportStatus.Complete).length || 0} icon="pi-check-circle" />
-                </Suspense>
-                <Suspense fallback={<LoadingAnimation />}>
-                    <DataReport status="Hold" title="Hold" value={reportData?.filter(r => r.status === ReportStatus.Hold).length || 0} icon="pi-refresh" />
-                </Suspense>
-                <Suspense fallback={<LoadingAnimation />}>
-                    <DataReport status="InProcess" title="Process" value={reportData?.filter(r => r.status === ReportStatus.InProcess).length || 0} icon="pi-spinner" />
-                </Suspense>
-                <Suspense fallback={<LoadingAnimation />}>
-                    <DataReport status="NotStarted" title="Not Started" value={reportData?.filter(r => r.status === ReportStatus.NotStarted).length || 0} icon="pi-ban" />
-                </Suspense>
+                <DataReport status="Default" title="Total" icon="pi-file" value={getCount("Total")} />
+                <DataReport status="Complete" title="Complete" icon="pi-check-circle" value={getCount(ReportStatus.Complete)} />
+                <DataReport status="Hold" title="Hold" icon="pi-refresh" value={getCount(ReportStatus.Hold)} />
+                <DataReport status="InProcess" title="Process" icon="pi-spinner" value={getCount(ReportStatus.InProcess)} />
+                <DataReport status="NotStarted" title="Not Started" icon="pi-ban" value={getCount(ReportStatus.NotStarted)} />
             </div>
         </section>
     );

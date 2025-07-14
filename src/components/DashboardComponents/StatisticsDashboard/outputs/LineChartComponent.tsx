@@ -2,7 +2,7 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { LineChartTimeCategoryOption, listOfDay, listOfMonths, useLineChartHook } from '../../../../hooks/pages/Statistics/useChartHook';
 
-const maxYAxisSnapLength = 10;
+const maxYAxisSnapLength = 2;
 
 interface Report {
     type: string;

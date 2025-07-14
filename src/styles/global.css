@@ -256,22 +256,23 @@ body {
   border: none;
 }
 
-.p-listbox-item {
-  padding: 1rem 1.5rem;
-  border-radius: 0.75rem;
-  transition: background-color 0.2s ease;
+
+.p-listbox-item.p-highlight {
   background-color: #257180;
   border: 2px solid #fff;
   color: #fff;
 }
 
-.p-listbox-item:hover {
+.p-listbox-item {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.2s ease;
   background-color: #257180;
-  cursor: pointer;
+  border: 2px solid transparent;
+  color: #fff;
 }
 
-.p-listbox-item.p-highlight {
-  background-color: #FD8B51;
-  border: 2px solid #ffff;
-  color: #fff;
+.p-listbox-item:hover {
+  background-color: #CB6040;
+  cursor: pointer;
 }

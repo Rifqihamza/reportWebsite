@@ -10,18 +10,26 @@ type UseReportDataType = {
   setReportData: (reportData: ReportData[] | null) => void;
   isAuthorized: boolean;
   setIsAuthorized: (newIsAuthorized: boolean) => void
+  fetchReportData: () => Promise<void>; 
+
 };
 
 export const useReportDataHook = create<UseReportDataType>((set) => ({
   reportData: null,
   setReportData: (reportData) => {
-    set(() => ({ reportData: reportData }));
+    set(() => ({ reportData }));
   },
   isAuthorized: true,
   setIsAuthorized(newIsAuthorized) {
     set(() => ({ isAuthorized: newIsAuthorized }));
   },
+  fetchReportData: async () => {
+    const res = await fetch("/api/report/get"); // sesuaikan dengan endpoint kamu
+    const data = await res.json();
+    set(() => ({ reportData: data }));
+  }
 }));
+
 
 let initialized = false;
 
@@ -31,7 +39,7 @@ export default function UseReportDataHookEffect() {
   const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
-    if(initialized || !isConnected) {
+    if (initialized || !isConnected) {
       return;
     }
     initialized = true;
@@ -49,5 +57,5 @@ export default function UseReportDataHookEffect() {
     });
   }, [isConnected]);
 
-  return <></> ;
+  return <></>;
 }

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { statusColorHex } from '../../../../types/variables';
 
 interface Report {
     labels: string;
@@ -10,21 +11,8 @@ interface PercenContProps {
     label: string;
 }
 
-const statusColors: {
-    [key: string]: string
-} = {
-    NotStarted: "bg-red-100 text-red-800",
-    InProcess: "bg-yellow-100 text-yellow-800",
-    Complete: "bg-green-100 text-green-800",
-    Hold: "bg-blue-100 text-blue-800",
-    Abnormality: "text-white bg-yellow-500",
-    "5R": "text-white bg-indigo-400",
-    Safety: "text-white bg-orange-400"
-};
-
-export default function PercenContComponent({ reports, label }: PercenContProps) {
-
-    // Normalize label "VR" ke "5R" dan kelompokkan
+export default function PercenConstComponent({ reports, label }: PercenContProps) {
+    // Normalisasi dan kelompokkan data
     const groupedReports = useMemo(() => {
         const result: Record<string, number> = {};
         for (const report of reports) {
@@ -34,7 +22,6 @@ export default function PercenContComponent({ reports, label }: PercenContProps)
         return result;
     }, [reports]);
 
-    // Hitung total dan persentase
     const total = useMemo(() =>
         Object.values(groupedReports).reduce((sum, val) => sum + val, 0),
         [groupedReports]
@@ -50,18 +37,21 @@ export default function PercenContComponent({ reports, label }: PercenContProps)
     );
 
     return (
-        <div className='bg-[#257180] px-6 py-4 rounded-xl shadow shadow-gray-400 space-y-4'>
-            <div className='flex flex-row justify-between items-center gap-10'>
-                <h1 className="text-md md:text-lg text-white font-bold">Persentase {label}</h1>
-            </div>
-            <div className='space-y-3 px-3 py-1'>
+        <div className="px-6 py-4 rounded-xl space-y-4 w-full h-full bg-[#CB6040] shadow-md shadow-white text-white">
+            <h1 className="text-md md:text-lg font-bold">Persentase {label}</h1>
+            <div className="space-y-3 px-3 py-1">
                 {percentageData.map((item, index) => (
-                    <div key={index} className="flex justify-between text-sm">
-                        <span className={`${statusColors[item.name]} px-2 py-0.5 rounded-xl text-sm`}>{item.name}</span>
-                        <span className='font-semibold text-white'>{item.percent}</span>
+                    <div key={index} className="flex justify-between text-sm items-center">
+                        <span
+                            className="px-2 py-0.5 rounded-xl text-sm text-white"
+                            style={{ backgroundColor: statusColorHex[item.name] || '#aaa' }}
+                        >
+                            {item.name}
+                        </span>
+                        <span className="font-semibold">{item.percent}</span>
                     </div>
                 ))}
             </div>
         </div>
     );
-};
+}
