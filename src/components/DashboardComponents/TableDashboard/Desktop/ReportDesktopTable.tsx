@@ -58,7 +58,7 @@ export default function ReportDesktopTable() {
                         // Return a normal report data
                         return <>
                             {showedReportData.map((report, index) => (
-                                <tr key={index} className="" data-report-id={report.id}>
+                                <tr key={index} data-report-id={report.id}>
                                     {Object.values(table_rows).map((value, index) => {
                                         if(value === "status") {
                                             return <td key={index} className="px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24!">

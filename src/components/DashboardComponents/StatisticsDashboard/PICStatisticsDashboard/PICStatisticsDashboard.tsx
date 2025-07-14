@@ -4,7 +4,8 @@ import CompactBoxData from "./outputs/CompactBoxData";
 import React, { Suspense } from "react";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 
-const ReportCountChart = React.lazy(() => import("./outputs/ReportCountChart"));
+const ReportCountChart = React.lazy(() => import("./outputs/PICReportCountChart"));
+const RankingTable = React.lazy(() => import("./outputs/PICRankTable"));
 
 export default function PICStatisticsDashboard() {
   const { activeTab } = useDashboardNavbarHook();
@@ -29,7 +30,7 @@ export default function PICStatisticsDashboard() {
         </div>
         
         {/* Reports Count Chart */}
-        <div className="mt-10 rounded-2xl shadow p-4">
+        <div className="mt-10 rounded-2xl shadow p-4 min-h-68">
           <h1 className="mb-4 text-2xl">Report Count</h1>
           <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
             <ReportCountChart />
@@ -37,7 +38,12 @@ export default function PICStatisticsDashboard() {
         </div>
 
         {/* Ranking Table */}
-
+        <div className="mt-10 rounded-2xl shadow p-4 min-h-80">
+          <h1 className="mb-4 text-2xl">Ranking Table</h1>
+          <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
+            <RankingTable />
+          </Suspense>
+        </div>
         
       </div>
     </PrimeReactProvider>

@@ -64,7 +64,7 @@ export default function ReportCountChart() {
 
   return (
     <>
-      <div className="shadow p-2">
+      <div className="shadow p-2 rounded-2xl">
         <ReactApexChart options={options} height={500} type="bar" series={series} />
       </div>
     </>
