@@ -16,7 +16,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #1f324d;
+  background-color: #257180;
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: content-box;
@@ -24,12 +24,12 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #41689f;
+  background-color: #fd8b51;
   transition: all 0.5s;
 }
 
 ::-webkit-scrollbar-track {
-  background: #fff;
+  background: transparent;
   border-radius: 10px;
 }
 
@@ -44,7 +44,7 @@ body {
 }
 
 .bg-form {
-  background: #1f324d;
+  background: #257180;
 }
 
 .bg-form::-webkit-scrollbar {
@@ -66,7 +66,7 @@ body {
 }
 
 .wave {
-  background: #eee9da;
+  background: #fd8b51;
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 150%;
@@ -183,25 +183,36 @@ body {
 /* Mengatur elemen utama dropdown */
 .p-dropdown {
   width: 100%;
-  background-color: #e2dad6 !important;
+  background-color: #f2e5bf !important;
   border: none;
   box-shadow: none;
 }
 
 .p-dropdown-label {
-  background-color: #e2dad6 !important;
-  color: black;
+  background-color: #f2e5bf !important;
+  color: #257180;
+  font-weight: 600;
 }
 
 .p-dropdown-trigger {
-  background-color: #e2dad6 !important;
+  background-color: #f2e5bf !important;
   border-left: none;
 }
 
 .p-dropdown-panel {
-  background-color: white;
+  background-color: #fd8b51;
+  margin-top: 0.5rem;
   border: none;
   box-shadow: none;
+  border-radius: 0.75rem;
+}
+
+.p-dropdown-item {
+  color: #fff;
+}
+
+.p-dropdown-item:hover{
+  color: #257180;
 }
 
 .swiper {
@@ -256,7 +267,6 @@ body {
   border: none;
 }
 
-
 .p-listbox-item.p-highlight {
   background-color: #257180;
   border: 2px solid #fff;
@@ -273,6 +283,6 @@ body {
 }
 
 .p-listbox-item:hover {
-  background-color: #CB6040;
+  background-color: #cb6040;
   cursor: pointer;
 }

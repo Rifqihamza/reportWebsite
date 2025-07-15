@@ -17,4 +17,8 @@ import AboutMain from "../components/AboutComponents/AboutMain/AboutMain.astro";
   <AboutFooter />
 </Layout>
 
-<style is:global></style>
+<style is?="global">
+  body::-webkit-scrollbar {
+    display: none;
+  }
+</style>

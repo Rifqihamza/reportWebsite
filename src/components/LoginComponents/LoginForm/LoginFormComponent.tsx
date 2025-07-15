@@ -58,18 +58,18 @@ export default function LoginFormComponent() {
     <>
       {/* Username */}
       <div className="space-y-2 mt-6">
-        <label htmlFor="username" className={`font-bold ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
+        <label htmlFor="username" className={`font-bold text-gray-500 ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Username
         </label>
-        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 bg-[#CB6040] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
 
       {/* Password */}
       <div className="space-y-2 mt-2">
-        <label htmlFor="password" className={`font-bold ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
+        <label htmlFor="password" className={`font-bold text-gray-500 ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Passsword
         </label>
-        <input type="password" name="password" placeholder="Password..." className={`mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="password" name="password" placeholder="Password..." className={`mt-3 bg-[#CB6040] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
       <p className={`${isPasswordCorrect ? "text-green-600" : "text-red-600"} h-1`}>{(isPasswordCorrect === false) ? "username / password is wrong" : ""}{(isPasswordCorrect === true) ? "username & password are correct!" : ""}</p>
 
@@ -77,7 +77,7 @@ export default function LoginFormComponent() {
       <div className="space-y-2 mt-8">
         <button
           type="button"
-          className={`disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#1f324d] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-xl cursor-pointer`}
+          className={`disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#257180] -translate-y-[10px] [box-shadow:0_10px_0_#CB6040] active:[box-shadow:0_5px_0_#CB6040] active:-translate-y-[5px] text-white rounded-xl cursor-pointer`}
           disabled={loginDisabled}
           onClick={handleLogin}
         >
