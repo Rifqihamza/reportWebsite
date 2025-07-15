@@ -220,6 +220,7 @@ export interface MenuItem {
 
 export interface MenuItemGroup {
     label: string;
+    icon: string;
     items: {
         id: number;
         label: string;
@@ -245,6 +246,7 @@ export const menuItems: (MenuItem|MenuItemGroup)[] = [
     },
     { 
         label: "Statistics",
+        icon: "pi pi-chart-pie",
         items: [
             {
                 id: 2,

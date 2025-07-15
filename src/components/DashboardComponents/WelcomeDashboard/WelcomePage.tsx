@@ -20,15 +20,13 @@ function quickNavigationMapper(menuItem: MenuItem|MenuItemGroup, setActiveTab: (
     if((menuItem as any).items) {
         menuItem = menuItem as MenuItemGroup;
         
-        return <>
-            {menuItem.items.map((item) => {
-                if(item.privillage && !userPrivillages.includes(item.privillage)) {
-                    return "";
-                }
-                
-                return <QuickNavigationButton key={item.id} title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />
-            })}
-        </>
+        return menuItem.items.map((item) => {
+            if(item.privillage && !userPrivillages.includes(item.privillage)) {
+                return "";
+            }
+            
+            return <QuickNavigationButton key={item.id} title={item.label} description={item.description} icon={item.icon} onClick={() => setActiveTab(item.id)} />
+        })
     }
 
     menuItem = menuItem as MenuItem;

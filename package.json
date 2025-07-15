@@ -26,7 +26,7 @@
     "astro": "^5.8.0",
     "auth-astro": "^4.2.0",
     "browser-image-compression": "^2.0.2",
-    "cookie": "^1.0.2",
+    "cookie": "^1.0.2", 
     "dotenv": "^16.5.0",
     "font-awesome": "^4.7.0",
     "framer-motion": "^12.12.1",
