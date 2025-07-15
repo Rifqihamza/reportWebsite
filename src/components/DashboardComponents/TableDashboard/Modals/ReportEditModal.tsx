@@ -10,28 +10,26 @@ import { Calendar } from "primereact/calendar";
 import { useNetworkConnectivityHook } from "../../../../hooks/shared/useNetworkConnectivity";
 import { PrimeReactProvider } from "primereact/api";
 import DropdownComponent from "../../../GlobalComponents/DropdownComponent/DropdownComponent";
+import { spaces_in_camel_case } from "../../../../utils/other";
 
-const reportTypeOptions = [
-  ...Object.keys(ReportType)
-    .filter((x) => x !== "NoType" && x !== "VR")
-    .map((key) => ({
-      label: reporttype_to_string(key as ReportType) || key,
-      value: key,
-    })),
-  { label: "5R", value: "5R" },
-];
+const accountTypeOptions = Object.values(AccountType).map((type) => {
+  return {
+    label: type.toString(),
+    value: type
+  }
+});
 
-const accountTypeOptions = [
-  { label: "Guru", value: AccountType.Guru },
-  { label: "Siswa", value: AccountType.Siswa },
-  { label: "Vendor", value: AccountType.Vendor },
-  { label: "Tukang", value: AccountType.Tukang },
-];
+const reportStatusOptions = Object.values(ReportStatus).map((status) => {
+  return {
+    label: spaces_in_camel_case(status.toString()),
+    value: status
+  }
+});
 
 export default function ReportEditModal() {
   const { reportData, setReportData } = useReportDataHook();
   const { detailId } = useReportDetailHook();
-  const { picNamesOptions, locationOptions } = useReportConfigHook();
+  const { picNamesOptions } = useReportConfigHook();
 
   const report = reportData?.find((value) => value.id === detailId) || null;
 
@@ -56,7 +54,7 @@ export default function ReportEditModal() {
         follow_up: report.follow_up || ("" as AccountType),
         due_date: report.due_date || "",
         follow_up_name: report.follow_up_name || "",
-        status: report.status,
+        status: report.status || "",
       });
     }
     setIsChange(false);
@@ -104,6 +102,8 @@ export default function ReportEditModal() {
       showMessage("Error", "error", "Database sedang bermasalah. Mohon tunggu, lalu coba lagi!");
     }
   };
+
+  
   return (
     <>
       <PrimeReactProvider>
@@ -125,25 +125,7 @@ export default function ReportEditModal() {
             </div>
           }
         >
-          <div className="">
-            <div className="flex flex-row w-full justify-between">
-              <label htmlFor="descriptionReport" className="font-bold">
-                Deskripsi Laporan
-              </label>
-              <p className="text-gray-400">
-                <i className="pi pi-lock"></i>
-              </p>
-            </div>
-            <textarea
-              rows={3}
-              id="descriptionReport"
-              value={report ? report.message : ""}
-              className="w-full resize-none outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg"
-              disabled
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4 items-center">
-            <InputField label="Pelapor" value={report ? report.submitted_by : ""} disabled />
+          <div className="w-full grid grid-rows-[1fr_1fr] grid-cols-[1fr_1fr] gap-2">
             {(() => {
               const picNameIsNotLoaded = Object.values(picNamesOptions).length == 0;
               return (
@@ -157,23 +139,11 @@ export default function ReportEditModal() {
                 />
               );
             })()}
-            {(() => {
-              return <DropdownField filter label="Lokasi" options={[{ label: report?.location_name ?? "", value: report?.location_name ?? "" }]} value={report?.location_name ?? ""} disabled />;
-            })()}
-            <InputField label="Detail Lokasi" value={report?.detail_location ?? ""} disabled />
-
-            <DropdownField label="Kategori" options={reportTypeOptions} value={reporttype_to_string(report?.type ?? "")} disabled />
-            <DropdownField
-              label="Edit Status"
-              options={Object.values(ReportStatus).map((status) => ({ label: status, value: status }))}
-              value={formState.status}
-              onChange={(e) => updateField("status", e.value)}
-            />
+            <CalendarField label="Due Date" value={formState.due_date ? new Date(formState.due_date) : null} onChange={(e) => updateField("due_date", e.value ? new Date(e.value) : "")} />
             <DropdownField label="Follow Up" options={accountTypeOptions} value={formState.follow_up} onChange={(e) => updateField("follow_up", e.value as AccountType)} />
             <InputField label="Nama Follow Up" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} max={30} />
-            <CalendarField label="Tanggal Temuan" value={report?.report_date ? new Date(report.report_date) : null} disabled />
-            <CalendarField label="Due Date" value={formState.due_date ? new Date(formState.due_date) : null} onChange={(e) => updateField("due_date", e.value ? new Date(e.value) : "")} />
           </div>
+          <DropdownField label="Status" options={reportStatusOptions} value={formState.status} onChange={(e) => updateField("status", e.value as ReportStatus)} />
         </Dialog>
       </PrimeReactProvider>
     </>
@@ -195,7 +165,7 @@ function InputField({
   max?: number;
 }) {
   return (
-    <div className="flex flex-col">
+    <div className="w-full flex flex-col">
       <div className="flex justify-between px-2">
         <label className="font-semibold mb-1">{label}</label>
         {disabled ? (
@@ -273,7 +243,7 @@ function CalendarField({ label, value, onChange, disabled = false }: { label: st
         )}
       </div>
 
-      <Calendar value={value} onChange={onChange} showTime className="w-full outline-none! px-4! py-2! border! border-gray-400! focus:border-gray-800! rounded-lg!" disabled={disabled} />
+      <Calendar value={value} onChange={onChange} showTime className="outline-none! px-4! border! border-gray-400! focus:border-gray-800! rounded-lg!" disabled={disabled} />
     </div>
   );
 }

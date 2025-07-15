@@ -60,7 +60,7 @@ export async function userLogin(username: string, password: string): Promise<API
     return status_to_apiresult(response.status);
 }
 
-function add_to_formdata(formData: FormData, key: string, value?: string) {
+function add_to_formdata(formData: FormData, key: string, value?: string | Blob) {
     if (value) {
         formData.append(key, value);
     }

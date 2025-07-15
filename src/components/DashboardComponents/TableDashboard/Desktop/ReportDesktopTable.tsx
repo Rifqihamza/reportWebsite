@@ -1,6 +1,6 @@
 import { reporttype_to_string, table_rows } from '../../../../types/variables';
 import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { formatDate } from "../../../../utils/other";
+import { formatDate, spaces_in_camel_case } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -65,7 +65,7 @@ export default function ReportDesktopTable() {
                                                 <span
                                                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                                                 >
-                                                    {report.status}
+                                                    {spaces_in_camel_case(report.status)}
                                                 </span>
                                             </td>;
                                         }

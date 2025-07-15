@@ -3,7 +3,7 @@ import { Image } from "primereact/image";
 import { AccountAPIPrivillage, reporttype_to_string } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { formatDate } from "../../../../utils/other";
+import { formatDate, spaces_in_camel_case } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";
 import { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -72,7 +72,7 @@ export default function ReportDetailModal() {
             <p>
               Status:
               <span className={`${report_data ? statusColors[report_data.status] : ""} font-medium uppercase md:text-md md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2`}>
-                {report_data?.status}
+                {spaces_in_camel_case(report_data?.status.toString() || "")}
               </span>
             </p>
           </div>
