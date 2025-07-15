@@ -108,7 +108,7 @@ export async function POST({ request, cookies }: APIContext) {
 
     if (image) {
         console.log("Sending Image...");
-        if (image.size > 5 * 1024 * 1024) {
+        if (image.size > 8 * 1024 * 1024) {
             console.log("Image size is too large!");
             return create_response_status(413);
         }
@@ -120,7 +120,6 @@ export async function POST({ request, cookies }: APIContext) {
 
         const form_data = new FormData();
         form_data.append("image", image);
-        form_data.append("test", "test");
 
         const report_num = (await prisma.report.findMany()).length;
         const server_token = process_server_token(report_num);
