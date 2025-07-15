@@ -24,14 +24,14 @@ export default function ReportDesktopTable() {
                             return <th
                                 key={key}
                                 scope="col"
-                                className="rounded-tl-xl px-2 py-3 border-b border-[#F2E5BF] text-left text-sm font-semibold text-[#F2E5BF] uppercase tracking-wider truncate"
+                                className="rounded-tl-xl px-2 py-3 border-b border-[#F2E5BF] text-left text-sm font-semibold text-white uppercase tracking-wider truncate"
                             >
                                 {key}
                             </th>;
                         })}
                         <th
                             scope="col"
-                            className="rounded-tr-xl px-2 py-3 border-b border-[#F2E5BF] text-center text-sm font-semibold text-[#F2E5BF] uppercase tracking-wider truncate"
+                            className="rounded-tr-xl px-2 py-3 border-b border-[#F2E5BF] text-center text-sm font-semibold text-white uppercase tracking-wider truncate"
                         >
                             Action
                         </th>

@@ -184,20 +184,20 @@ export default function UsersPage() {
 
           return <>
             <div className="hidden md:block h-full overflow-auto relative rounded-xl px-5 py-4 bg-[#CB6040]">
-              <h2 className="text-2xl font-bold mb-4 text-[#F2E5BF]">Daftar Akun Pengguna</h2>
+              <h2 className="text-2xl font-bold mb-4 text-white">Daftar Akun Pengguna</h2>
               <table className="w-full">
                 <thead>
                   <tr>
-                    <th className="border-b border-[#F2E5BF] text-[#F2E5BF] w-10">No.</th>
-                    <th className="p-4 text-left border-b border-[#F2E5BF] text-[#F2E5BF]">Nama</th>
-                    <th className="p-4 text-left border-b border-[#F2E5BF] text-[#F2E5BF]">Role</th>
-                    <th className="p-4 text-left border-b border-[#F2E5BF] text-[#F2E5BF]">Created At</th>
-                    <th className="p-4 text-center border-b border-[#F2E5BF] text-[#F2E5BF]">Action</th>
+                    <th className="border-b border-[#F2E5BF] text-white w-10">No.</th>
+                    <th className="p-4 text-left border-b border-[#F2E5BF] text-white">Nama</th>
+                    <th className="p-4 text-left border-b border-[#F2E5BF] text-white">Role</th>
+                    <th className="p-4 text-left border-b border-[#F2E5BF] text-white">Created At</th>
+                    <th className="p-4 text-center border-b border-[#F2E5BF] text-white">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {showedUserAccountData.map((user, index) => (
-                    <tr key={user.id} className="border-b border-[#F2E5BF] text-[#F2E5BF] font-semibold">
+                    <tr key={user.id} className="border-b border-[#F2E5BF] text-white font-semibold">
                       <td className="p-4 text-center">{index + 1}</td>
                       <td className="p-4 text-left truncate">{user.username}</td>
                       <td className="p-4 text-left">{user.role}</td>

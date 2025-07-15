@@ -102,12 +102,9 @@ export default function StatisticsPage() {
                             </Suspense>
                         </div>
                     </div>
-
-                    <div className="flex flex-col md:flex-row gap-4 py-2 w-full">
-
-
-                        {/* Container Insight di bawahnya */}
-                        <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-[#CB6040] shadow-md shadow-white">
+                    {/* Container Insight */}
+                    <div className="w-full pb-3">
+                        <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-[#CB6040] shadow-md shadow-white text-white">
                             <h2 className="font-semibold uppercase tracking-wider text-lg mb-2">Insights</h2>
                             <div className="">{!insight ? "Memuat insight.." :
                                 <ol className="list-decimal p-2 space-y-3">
