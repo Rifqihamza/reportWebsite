@@ -62,7 +62,6 @@ export async function DELETE({ request }: APIContext) {
         if(report_data.image_after_finish) {
             form_data.append("image_after_finish_location", report_data.image_after_finish);
         }
-        console.log(form_data);
         
 
         const server_token = process_server_token();
