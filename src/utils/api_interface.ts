@@ -287,6 +287,33 @@ export async function updateReport(report_id: string, updated_data: updatedDataT
     }
 }
 
+export async function markCompleteReport(report_id: string, confirmation_photo: File): Promise<false | APIResultType | object> {
+    const formData = new FormData();
+
+    add_to_formdata(formData, "report_id", report_id);
+    add_to_formdata(formData, "confirmation_photo", confirmation_photo);
+    
+    // Fetch to API
+    try {
+        const response = await fetch(base_url_endpoint + "/api/report/complete", {
+            method: "POST",
+            credentials: "include",
+            body: formData
+        });
+
+        const result = status_to_apiresult(response.status);
+
+        if(result === APIResultType.NoError) {
+            return (await response.json()) as object;
+        }
+
+        return result;
+    }
+    catch(err) {
+        return false;
+    }
+}
+
 export type formConfigurationResponse = {
     pic_data: Report_PIC[],
     location_data: Report_Location[]

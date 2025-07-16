@@ -11,6 +11,7 @@ import { useNetworkConnectivityHook } from "../../../../hooks/shared/useNetworkC
 import { PrimeReactProvider } from "primereact/api";
 import DropdownComponent from "../../../GlobalComponents/DropdownComponent/DropdownComponent";
 import { spaces_in_camel_case } from "../../../../utils/other";
+import { useReportCompletionHook } from "../../../../hooks/pages/ReportTable/useReportCompletionHook";
 
 const accountTypeOptions = Object.values(AccountType).map((type) => {
   return {
@@ -30,6 +31,7 @@ export default function ReportEditModal() {
   const { reportData, setReportData } = useReportDataHook();
   const { detailId } = useReportDetailHook();
   const { picNamesOptions } = useReportConfigHook();
+  const { setReportId } = useReportCompletionHook();
 
   const report = reportData?.find((value) => value.id === detailId) || null;
 
@@ -69,6 +71,13 @@ export default function ReportEditModal() {
   };
 
   const handleSave = async () => {
+    if(!report) return;
+    
+    if (formState.status === ReportStatus.Complete) {
+      setReportId(report.id);
+      return;
+    }
+    
     if (!isConnected) {
       showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
     }
@@ -125,7 +134,7 @@ export default function ReportEditModal() {
             </div>
           }
         >
-          <div className="w-full grid grid-rows-[1fr_1fr] grid-cols-[1fr_1fr] gap-2">
+          <div className="w-full grid grid-rows-2 grid-cols-2 gap-2">
             {(() => {
               const picNameIsNotLoaded = Object.values(picNamesOptions).length == 0;
               return (

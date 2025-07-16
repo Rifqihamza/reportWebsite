@@ -77,7 +77,8 @@ export type ReportData = {
     report_date: string,
     due_date: string,
     campus?: Campus,
-    image: string
+    image: string,
+    image_after_finish: string,
 }
 
 export type User = {
@@ -160,6 +161,7 @@ export enum AccountAPIPrivillage {
     // Report Related Privillage
     CreateReport = "CreateReport",
     UpdateReport = "UpdateReport",
+    MarkCompeleteReport = "MarkCompeleteReport",
     DeleteReport = "DeleteReport",
     GetReport = "GetReport",
     
