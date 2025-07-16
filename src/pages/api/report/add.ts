@@ -121,8 +121,7 @@ export async function POST({ request, cookies }: APIContext) {
         const form_data = new FormData();
         form_data.append("image", image);
 
-        const report_num = (await prisma.report.findMany()).length;
-        const server_token = process_server_token(report_num);
+        const server_token = process_server_token();
 
 
         let response;
