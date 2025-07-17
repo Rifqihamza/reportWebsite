@@ -289,7 +289,7 @@ export async function updateReport(report_id: string, updated_data: updatedDataT
     }
 }
 
-export async function markCompleteReport(report_id: string, confirmation_photo: File): Promise<false | APIResultType | object> {
+export async function markCompleteReport(report_id: string, confirmation_photo: File): Promise<false | APIResultType | ReportData> {
     const formData = new FormData();
 
     add_to_formdata(formData, "report_id", report_id);
@@ -306,7 +306,7 @@ export async function markCompleteReport(report_id: string, confirmation_photo: 
         const result = status_to_apiresult(response.status);
 
         if(result === APIResultType.NoError) {
-            return (await response.json()) as object;
+            return (await response.json()) as ReportData;
         }
 
         return result;
