@@ -1,8 +1,8 @@
 import { PrimeReactProvider } from "primereact/api";
 import { useDashboardNavbarHook } from "../../../../hooks/shared/useDashboardNavbar";
-import CompactBoxData from "./outputs/CompactBoxData";
 import React, { Suspense } from "react";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
+import PICCOmpactData from "./outputs/PICCompactData";
 
 const ReportCountChart = React.lazy(() => import("./outputs/PICReportCountChart"));
 const RankingTable = React.lazy(() => import("./outputs/PICRankTable"));
@@ -22,11 +22,7 @@ export default function PICStatisticsDashboard() {
         {/* Box Data */}
         <div className="mt-10 rounded-2xl shadow p-4">
           <h1 className="mb-4 text-2xl">Quick Glance of Data</h1>
-          <div className="flex flex-col md:flex-row gap-2">
-            <CompactBoxData label="MIN" value={0} description="Jumlah laporan paling sedikit yang dimiliki PIC" unit="laporan" />
-            <CompactBoxData label="AVG" value={5} description="Rata-rata jumlah laporan yang dimiliki PIC"  unit="laporan" />
-            <CompactBoxData label="MAX" value={10} description="Jumlah laporan paling banyak yang dimiliki PIC"  unit="laporan" />
-          </div>
+          <PICCOmpactData />
         </div>
         
         {/* Reports Count Chart */}

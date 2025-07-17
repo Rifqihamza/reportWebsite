@@ -1,9 +1,8 @@
 import { create } from "zustand";
-import { useReportDataHook } from "../../shared/useReportData";
 import { useEffect } from "react";
 import UsePICRankHookEffect, { usePICRankHook } from "./usePICRankHook";
 
-const maxPICReportCountPerPage = 10;
+const maxPICReportCountPerPage = 15;
 
 type usePICReportCountType = {
   picReportCountSeries: ApexAxisChartSeries;

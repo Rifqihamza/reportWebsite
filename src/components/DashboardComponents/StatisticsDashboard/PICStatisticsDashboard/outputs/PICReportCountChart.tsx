@@ -12,13 +12,13 @@ export default function ReportCountChart() {
     plotOptions: {
       bar: {
         horizontal: true,
-        columnWidth: "80%",
+        columnWidth: "90%",
         colors: {
           ranges: [
             {
               from: 0,
               to: 0,
-              color: "#fff"
+              color: "#00000000"
             }
           ]
         }
@@ -32,7 +32,8 @@ export default function ReportCountChart() {
     },
     xaxis: {
       categories: picReportCountNames,
-      max: maxValue
+      max: maxValue,
+      stepSize: 1,
     },
     yaxis: {
       title: {
@@ -60,11 +61,13 @@ export default function ReportCountChart() {
   return (
     <>
       <UsePICReportCountHookEffect />
-      <div className="shadow md:p-2 rounded-2xl overflow-auto flex flex-col items-center">
-        <div className="min-w-[600px] w-full">
-          <ReactApexChart options={options} height={500} type="bar" series={picReportCountSeries} />
+      <div className="shadow md:p-2 rounded-2xl flex flex-col">
+        <div className="overflow-auto">
+          <div className="min-w-[300px] w-full pt-4">
+            <ReactApexChart options={options} height={500} type="bar" series={picReportCountSeries} />
+          </div>
         </div>
-        <div className="flex flex-row gap-4">
+        <div className="py-4 flex flex-row gap-4 w-full justify-center">
             <button
               className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-gray-600 duration-300 flex flex-row items-center justify-around"
               disabled={page <= 0}
