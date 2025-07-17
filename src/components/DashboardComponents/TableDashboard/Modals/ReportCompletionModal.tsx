@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useMessageToastHook } from "../../../../hooks/shared/useMessageToast";
 import { APIResultType, markCompleteReport } from "../../../../utils/api_interface";
 import { error_message } from "../../../../types/error";
+import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 
 
 export default function ReportCompletionModal() {
   const { reportId, setReportId } = useReportCompletionHook();
   const { showMessageByAPI, showMessage } = useMessageToastHook();
+  const { reportData, setReportData } = useReportDataHook();
 
   const [image, setImage] = useState<File|null>(null);
   const [disableComplete, setDisableComplete] = useState(false);
@@ -33,6 +35,7 @@ export default function ReportCompletionModal() {
       }
       else if(typeof result === "object") {
         showMessageByAPI(APIResultType.NoError, "Sukses menandai \"laporan telah selesai\"");
+        setReportData(reportData!.map((data) => data.id === result.id ? result : data));
         setReportId(null);
       }
       else {
@@ -70,7 +73,7 @@ export default function ReportCompletionModal() {
           </button>
           <button onClick={setReportComplete} disabled={disableComplete} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none">
             {disableComplete && <i className="pi pi-spinner pi-spin mr-2" />}
-            Simpan
+            Submit
           </button>
         </div>
       }

@@ -5,7 +5,7 @@ import { APIResultType, updateReport } from "../../../../utils/api_interface";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import { useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { useMessageToastHook } from "../../../../hooks/shared/useMessageToast";
-import { useReportConfigHook } from "../../../../hooks/shared/useReportConfig";
+import UseReportConfigHookEffect, { useReportConfigHook } from "../../../../hooks/shared/useReportConfig";
 import { Calendar } from "primereact/calendar";
 import { useNetworkConnectivityHook } from "../../../../hooks/shared/useNetworkConnectivity";
 import { PrimeReactProvider } from "primereact/api";
@@ -120,6 +120,7 @@ export default function ReportEditModal() {
   
   return (
     <>
+      <UseReportConfigHookEffect />
       <PrimeReactProvider>
         <Dialog
           header="Edit Laporan"
