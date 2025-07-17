@@ -6,14 +6,14 @@ export default function PICRankTable() {
 
   return <>
     <UsePICRankHookEffect />
-    <div className="p-4 shadow w-full h-full rounded-2xl">
+    <div className="p-4 shadow w-full h-full rounded-2xl overflow-auto">
       <table className="w-full h-full">
         <thead>
           <tr className="">
-            <th className="border-b border-gray-300 py-4 text-left w-24">Rank</th>
-            <th className="border-b border-gray-300 py-4 text-left">Nama PIC</th>
-            <th className="border-b border-gray-300 py-4 text-left">Total Laporan</th>
-            <th className="border-b border-gray-300 py-4 text-left">Laporan Selesai</th>
+            <th className="border-b border-gray-300 py-4 text-left min-w-18 max-w-18">Rank</th>
+            <th className="border-b border-gray-300 py-4 text-left min-w-48 max-w-48">Nama PIC</th>
+            <th className="border-b border-gray-300 py-4 text-left min-w-48 max-w-48">Total Laporan</th>
+            <th className="border-b border-gray-300 py-4 text-left min-w-48 max-w-48">Laporan Selesai</th>
           </tr>
         </thead>
         <tbody>

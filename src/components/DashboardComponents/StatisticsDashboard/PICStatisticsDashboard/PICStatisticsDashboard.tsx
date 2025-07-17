@@ -30,7 +30,7 @@ export default function PICStatisticsDashboard() {
         </div>
         
         {/* Reports Count Chart */}
-        <div className="mt-10 rounded-2xl shadow p-4 min-h-68">
+        <div className="mt-10 rounded-2xl shadow py-4 px-2 md:px-4 min-h-68">
           <h1 className="mb-4 text-2xl">Report Count</h1>
           <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
             <ReportCountChart />

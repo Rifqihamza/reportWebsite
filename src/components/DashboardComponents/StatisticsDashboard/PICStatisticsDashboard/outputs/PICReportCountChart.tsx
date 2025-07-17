@@ -59,8 +59,8 @@ export default function ReportCountChart() {
   return (
     <>
       <UsePICReportCountHookEffect />
-      <div className="shadow p-2 rounded-2xl">
-        <ReactApexChart options={options} height={500} type="bar" series={picReportCountSeries} />
+      <div className="shadow md:p-2 rounded-2xl overflow-auto">
+        <ReactApexChart options={options} height={500} width={1000} type="bar" series={picReportCountSeries} />
       </div>
     </>
   );
