@@ -46,7 +46,7 @@ export default function ReportEditModal() {
   const [isChange, setIsChange] = useState(false);
 
   const { editVisible, setEditVisible } = useReportEditHook();
-  const { showMessage } = useMessageToastHook();
+  const { showMessage, showMessageByAPI } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
@@ -89,26 +89,31 @@ export default function ReportEditModal() {
     try {
       result = await updateReport(report.id, formState);
     } catch {
-      showMessage("Success", "success", "Data berhasil diedit!");
+      showMessageByAPI(APIResultType.NoError, "Data berhasil diedit!");
       return;
     } finally {
       setDisableSave(false);
     }
 
-    if (result === APIResultType.NoError) {
+    if(result === false) {
+      showMessage("Terjadi error.", "error");
+    }
+    else if (result === APIResultType.NoError) {
       // Update current report data information
       const updated: any = reportData?.map((item) => (item.id === report.id ? { ...item, ...formState } : item)) || null;
       setReportData(updated);
 
       // Close the dialog component and trigger success function
       setEditVisible(false);
-      showMessage("Success", "success", "Data berhasil diedit!");
+      showMessageByAPI(result, "Data berhasil diedit!");
     } else if (result === APIResultType.Unauthorized) {
-      showMessage("Unauthorized", "error", "Unauthorized attempt detected!");
+      showMessageByAPI(result, "Unauthorized attempt detected!");
     } else if (result === APIResultType.InternalServerError) {
-      showMessage("Error", "error", "Terjadi error!");
+      showMessageByAPI(result, "Terjadi error!");
     } else if (result === APIResultType.DatabaseError) {
-      showMessage("Error", "error", "Database sedang bermasalah. Mohon tunggu, lalu coba lagi!");
+      showMessageByAPI(result, "Database sedang bermasalah. Mohon tunggu, lalu coba lagi!");
+    } else {
+      showMessageByAPI(result);
     }
   };
 

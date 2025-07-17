@@ -3,11 +3,12 @@ import { useReportCompletionHook } from "../../../../hooks/pages/ReportTable/use
 import { useEffect, useState } from "react";
 import { useMessageToastHook } from "../../../../hooks/shared/useMessageToast";
 import { APIResultType, markCompleteReport } from "../../../../utils/api_interface";
+import { error_message } from "../../../../types/error";
 
 
 export default function ReportCompletionModal() {
   const { reportId, setReportId } = useReportCompletionHook();
-  const { showMessage } = useMessageToastHook();
+  const { showMessageByAPI, showMessage } = useMessageToastHook();
 
   const [image, setImage] = useState<File|null>(null);
   const [disableComplete, setDisableComplete] = useState(false);
@@ -31,19 +32,19 @@ export default function ReportCompletionModal() {
         showMessage("Terjadi error!", "error", "Mohon maaf, terjadi kesalahan.");
       }
       else if(typeof result === "object") {
-        showMessage("Sukses!", "success", "Sukses menandai \"laporan telah selesai\"");
+        showMessageByAPI(APIResultType.NoError, "Sukses menandai \"laporan telah selesai\"");
         setReportId(null);
       }
       else {
         switch(result) {
           case APIResultType.DatabaseError:
-            showMessage("Gagal menandai laporan", "error", "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
+            showMessageByAPI(result, "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
           case APIResultType.NeedCaptchaAuthentication:
             window.location.reload();
           case APIResultType.InternalServerError:
-            showMessage("Gagal menandai laporan", "error", "Terjadi kesalah server. Silahkan coba lagi nanti.");
+            showMessageByAPI(result, "Terjadi kesalah server. Silahkan coba lagi nanti.");
           case APIResultType.Unauthorized:
-            showMessage("Tidak mempunyai akses", "error", "Tidak mempunyai akses untuk menandai selesai.");
+            showMessageByAPI(result, "Tidak mempunyai akses untuk menandai selesai.");
         }
       }
     }

@@ -7,6 +7,7 @@ import UseUserDataHookEffect from "../../../hooks/shared/useUserData";
 import { AccountType, type User } from "../../../types/variables";
 import { useMessageToastHook } from '../../../hooks/shared/useMessageToast';
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
+import { error_message } from "../../../types/error";
 
 const PUBLIC_SITE_KEY = "9d404a42-7eee-446a-94ae-e5c8c8dc7050";
 
@@ -29,17 +30,11 @@ export default function CaptchaChallange({ onSuccess, onError, onIncorrect }: Pr
     }
     
     checkAuthentication().then((result) => {
-      if (result == APIResultType.NeedCaptchaAuthentication) {
-        setIsCaptchaNeeded(true);
-      }
-      else if (result == APIResultType.InternalServerError) {
-        showMessage("There's an internal server error.", "error", "");
-      }
-      else if (result == APIResultType.DatabaseError) {
-        showMessage("There's an error in database. (Database problem)", "error", "");
+      if (result == APIResultType.NoError) {
+        window.location.href = "/loginPage";
       }
       else {
-        window.location.href = "/loginPage";
+        showMessage(error_message[result].title, error_message[result].severity, error_message[result].detail);
       }
     });
   }, []);
