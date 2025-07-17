@@ -26,9 +26,6 @@ export default function VerifyAuthentication() {
       else if (result == APIResultType.Unauthorized && !window.location.href.includes("login")) {
         window.location.href = "/loginPage/";
       }
-      else if (result !== APIResultType.NoError) {
-        showMessageByAPI(result);
-      }
     })
   }, []);
 
