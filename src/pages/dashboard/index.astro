@@ -15,6 +15,10 @@ import UseUserDataHookEffect from "../../hooks/shared/useUserData";
 import UseReportConfigHookEffect from "../../hooks/shared/useReportConfig";
 import SidebarToggle from "./DashboardPage/_SideBarToggle";
 import VersionTracker from "../../components/GlobalComponents/VersionTracker/VersionTracker";
+import Image from "astro/components/Image.astro";
+
+import SchoolLogo from "../../assets/images/logoSekolah.png";
+
 ---
 
 <Layout pageType="dashboard">
@@ -29,11 +33,12 @@ import VersionTracker from "../../components/GlobalComponents/VersionTracker/Ver
       <div
         class="hidden lg:flex flex-row-reverse items-center justify-between gap-4"
       >
-        <img
-          src="/img/logoSekolah.png"
+        <Image
+          src={SchoolLogo}
           class="hidden md:block w-8 h-8 ring-2 ring-white rounded-full"
           alt="Logo Sekolah"
-          loading="lazy"
+          width={50}
+          loading={"eager"}
         />
         <h1 class="font-semibold text-white">E-Lapor Dashboard</h1>
       </div>
