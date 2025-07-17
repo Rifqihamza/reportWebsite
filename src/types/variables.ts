@@ -181,7 +181,8 @@ export const account_to_api_privillage: {
         AccountAPIPrivillage.CreateReport,
         AccountAPIPrivillage.GetReport,
         AccountAPIPrivillage.UpdateReport,
-        AccountAPIPrivillage.SettingProfile
+        AccountAPIPrivillage.SettingProfile,
+        AccountAPIPrivillage.MarkCompeleteReport
     ],
     "Siswa": [
         AccountAPIPrivillage.CreateReport,
