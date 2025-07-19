@@ -66,6 +66,7 @@ model Users {
 
   // Relation
   recorded_activities RecordedActivity[]
+  recorded_reports    Report[]
 }
 
 model Report_PIC {
@@ -122,6 +123,9 @@ model Report {
   report_location Report_Location? @relation(references: [id, location], fields: [location_id, location_name], onDelete: SetNull)
   location_id     String?
   location_name   String?
+
+  account_used Users?  @relation(references: [id], fields: [account_id], onDelete: Cascade)
+  account_id   String?
 }
 
 model VerifiedCaptcha {
