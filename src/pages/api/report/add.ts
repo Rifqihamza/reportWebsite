@@ -2,11 +2,11 @@ import type { APIContext } from "astro";
 import { apiresult_to_status, create_response_json, create_response_status, process_server_token, record_activity, verify_user_data_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report, type Report_Location, ActivityType } from "@prisma/client";
-import { account_to_api_privillage, AccountAPIPrivillage, ReportType, string_to_campus } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, ReportData_TypeGuard, ReportType, string_to_campus } from "../../../types/variables";
 import { z } from 'zod';
 
 
-const ReportBodyType = z.object({
+const ReportRequestBodyType = z.object({
     submitted_by: z.string(),
     message: z.string(),
     report_type: z.nativeEnum(ReportType),
@@ -45,7 +45,7 @@ export async function POST({ request, cookies }: APIContext) {
         result[key] = value.valueOf();
     }
 
-    const parsed_result = ReportBodyType.safeParse(result);
+    const parsed_result = ReportRequestBodyType.safeParse(result);
     if (!parsed_result.success) {
         console.log("Request data is not complete!");
         return create_response_status(400);
@@ -212,6 +212,13 @@ export async function POST({ request, cookies }: APIContext) {
     }
 
 
+    // Parse safely data in order to make sure its data structure
+    const safe_parse_result = ReportData_TypeGuard.safeParse(report_data);
+    if(!safe_parse_result.success) {
+        console.log(`Did you forgot to change the report data type guard? error: ${safe_parse_result.error}`);
+        return create_response_status(500);
+    }
+    
     // Return OK
     // return create_response_status(200);
     return create_response_json(report_data);

@@ -1,3 +1,6 @@
+import { z } from 'zod';
+
+
 export enum AccountType {
     Admin = "Admin",
     Guru = "Guru",
@@ -56,53 +59,61 @@ export function campus_to_campuscode(campus?: Campus): string | undefined {
 }
 
 export function campuscode_to_campus(campus_code?: string): Campus | undefined {
-    return Object.values(Campus)[Object.keys(Campus).findIndex(value => value == campus_code)]
+    return Object.values(Campus)[Object.keys(Campus).findIndex(value => value == campus_code)];
 }
 
 // DATABASE MODEL
-export type ReportData = {
-    id: string,
-    submitted_by: string,
-    message: string,
-    type: ReportType,
-    follow_up?: AccountType,
-    follow_up_name?: AccountType,
-    status: ReportStatus,
-    location_id?: string,
-    location_name?: string,
-    detail_location: string,
-    pic_id?: string,
-    pic_name?: string,
-    created_at: string,
-    report_date: string,
-    due_date: string,
-    campus?: Campus,
-    image: string,
-    image_after_finish: string,
-}
+export const ReportData_TypeGuard = z.object({
+    id: z.string().uuid(),
+    submitted_by: z.string(),
+    message: z.string(),
+    type: z.nativeEnum(ReportType),
+    follow_up: z.nativeEnum(AccountType).nullable(),
+    follow_up_name: z.nativeEnum(AccountType).nullable(),
+    status: z.nativeEnum(ReportStatus),
+    location_id: z.string().nullable(),
+    location_name: z.string().nullable(),
+    detail_location: z.string(),
+    pic_id: z.string().nullable(),
+    pic_name: z.string().nullable(),
+    created_at: z.date(),
+    report_date: z.date(),
+    due_date: z.date().nullable(),
+    campus: z.nativeEnum(Campus).nullable(),
+    image: z.string(),
+    image_after_finish: z.string().nullable()
+});
+export type ReportData = z.infer<typeof ReportData_TypeGuard>;
 
-export type User = {
-    id: string,
-    email: string,
-    username: string,
-    password: string,
-    role: AccountType,
-    created_at: string
-}
 
-export type Report_PIC = {
-    id: string,
-    name: string,
-    created_at: string,
-    campus_name: string
-}
+export const User_TypeGuard = z.object({
+    id: z.string(),
+    username: z.string(),
+    password: z.string(),
+    role: z.nativeEnum(AccountType),
+    created_at: z.date(),
+    lowercased_username: z.string(),
+    inactive: z.boolean()
+});
+export type User = z.infer<typeof User_TypeGuard>;
 
-export type Report_Location = {
-    id: string,
-    location: string,
-    created_at: string,
-    campus_name: string
-}
+
+export const Report_PIC_TypeGuard = z.object({
+    id: z.string(),
+    name: z.string(),
+    created_at: z.date(),
+    campus_name: z.string()
+});
+export type Report_PIC = z.infer<typeof Report_PIC_TypeGuard>;
+
+
+export const Report_Location_TypeGuard = z.object({
+    id: z.string(),
+    location: z.string(),
+    created_at: z.date(),
+    campus_name: z.nativeEnum(Campus)
+});
+export type Report_Location = z.infer<typeof Report_Location_TypeGuard>;
 
 
 // Table variables

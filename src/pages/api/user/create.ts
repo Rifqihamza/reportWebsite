@@ -4,7 +4,7 @@ import { create_response_json, create_response_status, get_cookies_from_request,
 import { ActivityType, Prisma } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
 import sha3 from "js-sha3";
-import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, User_TypeGuard } from "../../../types/variables";
 
 export async function POST({ request, cookies }: APIContext) {
     // Get the user data
@@ -64,6 +64,13 @@ export async function POST({ request, cookies }: APIContext) {
                 role: role
             }
         });
+        
+        // Parse safely data in order to make sure its data structure
+        const safe_parse_result = User_TypeGuard.safeParse(created_user_data);
+        if(!safe_parse_result.success) {
+            console.log(`Did you forgot to change the user type guard? error: ${safe_parse_result.error}`);
+            return create_response_status(500);
+        }
 
         // Return OK
         return create_response_json(created_user_data);

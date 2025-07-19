@@ -1,7 +1,7 @@
 import type { APIContext } from "astro";
 import { create_response_status, verify_user_data_token, record_activity, process_server_token, create_response_json } from '../../../utils/api_helper';
 import { APIResultType } from "../../../utils/api_interface";
-import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, ReportData_TypeGuard } from "../../../types/variables";
 import { prisma } from "../../../utils/db";
 import { ActivityType, Prisma, ReportStatus, type Report } from "@prisma/client";
 import { z } from "zod";
@@ -132,6 +132,13 @@ export async function POST({ request, cookies }: APIContext) {
         image_after_finish: image_file_path
       }
     });
+
+    // Parse safely data in order to make sure its data structure
+    const safe_parse_result = ReportData_TypeGuard.safeParse(update_result);
+    if(!safe_parse_result.success) {
+        console.log(`Did you forgot to change the report data type guard? error: ${safe_parse_result.error}`);
+        return create_response_status(500);
+    }
   }
   catch (err) {
     if (err instanceof Prisma.PrismaClientInitializationError) {
