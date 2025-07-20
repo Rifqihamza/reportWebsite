@@ -32,7 +32,7 @@ export default function ReportFormComponent() {
   const { locationOptions } = useReportConfigHook();
   const { setShowThanks } = useThanksModalHook();
   const { selectedCampus } = useCampusDataHook();
-  const { showMessage, showMessageByAPI } = useMessageToastHook();
+  const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   const toastProgress = useRef<Toast>(null);
@@ -48,7 +48,7 @@ export default function ReportFormComponent() {
   };
 
   const handle_submit = async () => {
-    if(!isConnected) {
+    if (!isConnected) {
       showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
       return;
     }
@@ -89,8 +89,11 @@ export default function ReportFormComponent() {
       setTimeout(() => {
         setShowThanks(false);
       }, 3500);
-    } else {
-      showMessageByAPI(result);
+
+    } else if (result == APIResultType.Unauthorized) {
+      showMessage("Unauthroized report detected!", "error", "You've been detected using a service without proper authorization. Please login again.");
+    } else if (result == APIResultType.InternalServerError) {
+      showMessage("There's an unexpected error occured in the server side!", "error", "Sorry for the inconvenient, please try again later.");
     }
 
     toastProgress.current!.clear();
@@ -114,7 +117,7 @@ export default function ReportFormComponent() {
           <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>
             {/* Detail Laporan */}
             <div className="flex flex-col w-full">
-              <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
                 <label
                   htmlFor="laporan"
                   className="md:text-lg font-semibold mb-6 text-xs text-white flex flex-row gap-2 items-center"
@@ -128,7 +131,7 @@ export default function ReportFormComponent() {
                 name="laporan"
                 id="laporan"
                 placeholder="Deskripsikan Temuan Anda..."
-                className="resize-none outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className="resize-none outline-none px-6 py-4 w-full bg-[#F2E5BF] border-2 border-white rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setMessage(e.target.value)}
                 value={message}
                 maxLength={200}
@@ -139,7 +142,7 @@ export default function ReportFormComponent() {
 
             {/* Nama Pelapor */}
             <div className="flex flex-col gap-2 w-full">
-              <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
                 <label
                   htmlFor="submitted_by"
                   className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
@@ -153,7 +156,7 @@ export default function ReportFormComponent() {
                 name="submitted_by"
                 id="submitted_by"
                 placeholder="Nama Pelapor..."
-                className=" outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className=" outline-none px-6 py-4 w-full bg-[#F2E5BF] border-2 border-white rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setSubmittedBy(e.target.value)}
                 value={submitted_by}
                 maxLength={30}
@@ -177,7 +180,7 @@ export default function ReportFormComponent() {
 
             {/* Detail Lokasi */}
             <div className="flex flex-col gap-2 w-full">
-              <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
                 <label
                   htmlFor="detail_location"
                   className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
@@ -191,7 +194,7 @@ export default function ReportFormComponent() {
                 name="detail_location"
                 id="detail_location"
                 placeholder="Tambahkan detail lokasi..."
-                className=" outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className=" outline-none px-6 py-4 w-full bg-[#F2E5BF] border-2 border-white rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setDetailLocation(e.target.value)}
                 value={detailLocation}
                 maxLength={200}
@@ -201,7 +204,7 @@ export default function ReportFormComponent() {
 
             {/* Tanggal Temuan section */}
             <div className="flex flex-col gap-2 w-full">
-              <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
                 <label
                   htmlFor="tanggal"
                   className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
@@ -214,7 +217,7 @@ export default function ReportFormComponent() {
                 autoComplete="off"
                 type="datetime-local"
                 placeholder="Tanggal temuan"
-                className="outline-none px-6 py-4 w-full bg-[#E2DAD6] border-2 border-[#314f79] rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className="outline-none px-6 py-4 w-full bg-[#F2E5BF] border-2 border-white rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
                 onChange={(e) => setReportDate(e.target.value)}
                 value={reportDate}
                 required
@@ -241,7 +244,7 @@ export default function ReportFormComponent() {
 
           {/* File Image Upload */}
           <div className={`flex flex-col gap-2 w-full ${submitDisabled ? "opacity-50 bg-[#ccc55] pointer-events-none" : ""}`}>
-            <div className="bg-[#314f79] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+            <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
               <label
                 htmlFor="foto"
                 className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
@@ -253,7 +256,7 @@ export default function ReportFormComponent() {
             <div className="flex items-center justify-center w-full z-10">
               <label
                 htmlFor="foto"
-                className="cursor-pointer outline-none px-6 py-8 w-full bg-[#E2DAD6] border-2 border-[#314f79] hover:bg-neutral-50 duration-300 rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
+                className="cursor-pointer outline-none px-6 py-8 w-full bg-[#F2E5BF] border-2 border-white hover:bg-neutral-50 duration-300 rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease"
               >
                 <div className="flex flex-col items-center justify-center">
                   <i className="pi pi-cloud text-black" />
@@ -280,7 +283,7 @@ export default function ReportFormComponent() {
             ) : (
               <button
                 type="button"
-                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#314f79] hover:bg-[#E2DAC9] duration-300 "
+                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#257180] border-2 border-white hover:bg-[#CB6040] duration-300 "
                 disabled={submitDisabled}
                 onClick={handle_submit}
               >

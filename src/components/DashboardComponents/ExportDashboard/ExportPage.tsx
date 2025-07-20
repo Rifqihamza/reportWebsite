@@ -16,13 +16,13 @@ export default function ExportPage() {
   const { reportData } = useReportDataHook();
   const { dateRange, selectedOutputType, selectedRows, filter } = useExportHook();
   const { showMessage } = useMessageToastHook();
-  
+
   const [processingState, setProcessingState] = useState(0);
-  
+
 
   const handleExport = async () => {
     setProcessingState(1);
-    
+
     // Check if report data is empty
     if (!reportData) {
       showMessage("Data dalam keadaan kosong.", "warn", "");
@@ -71,13 +71,13 @@ export default function ExportPage() {
     setTimeout(() => {
       setProcessingState(0);
     }, 1000);
-    
+
     // Output the result depends on the selected output file type
     if (selectedOutputType === ExportOutputType.CSV) {
       const csvContent = (resultData.map((value) => value.map(value2 => `"${value2}"`).join(",")).join("\n"));
       const blob = new Blob([csvContent], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
-      
+
 
       const a = document.createElement("a");
       a.href = url;
@@ -104,27 +104,23 @@ export default function ExportPage() {
   };
 
 
-  if(activeTab !== 3) {
-      return <></>;
+  if (activeTab !== 3) {
+    return <></>;
   }
-  
+
   return (
     <>
       <UseReportDataHookEffect />
       <UseExportHookEffect />
-      <div className="h-full w-full p-4 bg-white rounded-2xl relative overflow-auto grid grid-flow-row grid-rows-[1fr_auto]">
-        <div className="w-full h-full flex flex-row gap-2 px-1 py-2">
-          <div className="w-full h-full flex flex-col md:flex-row gap-4">
-            <RowOptions />
-            <FilterOptions />
-            <div className="w-full h-full flex flex-col gap-4">
-              <DateRangeOptions />
-              <OutputOptions />
-            </div>
-          </div>
+      <div className="h-full w-full p-4 relative overflow-auto grid grid-flow-row grid-rows-[1fr_auto]">
+        <div className="w-full h-full flex flex-col gap-2 px-1 py-2">
+          <RowOptions />
+          <FilterOptions />
+          <DateRangeOptions />
+          <OutputOptions />
         </div>
         {/* Export button */}
-        <button className={`h-full p-4 bg-[#1f324d] border-2 text-white rounded-2xl hover:brightness-75 ${(processingState == 1) ? "bg-white text-[#1f324d]! border-[#1f324d] pointer-events-none" : ""}`} onClick={handleExport}>
+        <button className={`h-full p-4 bg-[#257180] text-white rounded-2xl hover:bg-[#FD8B51] duration-300 ${(processingState == 1) ? "bg-white text-[#1f324d]! border-[#1f324d] pointer-events-none" : ""}`} onClick={handleExport}>
           {(processingState == 1) ? "Processing..." : ((processingState == 2) ? "Done!" : "Process & Export")}
         </button>
       </div>

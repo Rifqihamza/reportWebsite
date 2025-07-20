@@ -66,7 +66,6 @@ model Users {
 
   // Relation
   recorded_activities RecordedActivity[]
-  recorded_reports    Report[]
 }
 
 model Report_PIC {
@@ -98,17 +97,16 @@ model Report_Location {
 }
 
 model Report {
-  id                 String       @id @default(uuid())
-  submitted_by       String       @db.VarChar(30)
-  message            String       @db.VarChar(200)
-  type               ReportType
-  follow_up          AccountType?
-  follow_up_name     String?      @db.VarChar(30)
-  status             ReportStatus @default(NotStarted)
-  image              String?      @db.LongText
-  image_after_finish String?
-  detail_location    String?      @db.VarChar(200)
-  campus             Campus
+  id              String       @id @default(uuid())
+  submitted_by    String       @db.VarChar(30)
+  message         String       @db.VarChar(200)
+  type            ReportType
+  follow_up       AccountType?
+  follow_up_name  String?      @db.VarChar(30)
+  status          ReportStatus @default(NotStarted)
+  image           String?
+  detail_location String?      @db.VarChar(200)
+  campus          Campus
 
   created_at DateTime @default(now())
 
@@ -123,9 +121,6 @@ model Report {
   report_location Report_Location? @relation(references: [id, location], fields: [location_id, location_name], onDelete: SetNull)
   location_id     String?
   location_name   String?
-
-  account_used Users  @relation(references: [username], fields: [account_name], onDelete: Cascade)
-  account_name String
 }
 
 model VerifiedCaptcha {

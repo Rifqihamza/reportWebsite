@@ -23,9 +23,9 @@ const { pageType = "form" } = Astro.props;
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="description" content="Data manager website for reports that can be used by students in Mitra Industri Vocational HighSchool" />
-    <link rel="shortcut icon" href="/img/logoSekolah.ico" type="image/x-icon">
+    <link rel="icon" href="/img/logoSekolah.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>Report Website | SMK Mitra Industri MM2100</title>
+    <title>E-Lapor Website | SMK Mitra Industri MM2100</title>
   </head>
   <body class={pageType === "dashboard" ? "bg-dashboard" : (pageType === "form" ? "bg-form" : "")}>
     {
@@ -54,8 +54,8 @@ const { pageType = "form" } = Astro.props;
     })()}
     <CheckConnection client:only />
     
-
-    <SpeedInsights />
-    <Analytics />
   </body>
+
+  <SpeedInsights />
+  <Analytics />
 </html>

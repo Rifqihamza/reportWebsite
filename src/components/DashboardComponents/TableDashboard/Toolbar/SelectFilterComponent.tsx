@@ -103,7 +103,7 @@ export default function FilterSelect() {
     return (
         <div className="flex justify-content-center" >
             <TieredMenu model={items} popup ref={menu} breakpoint='4096px' className="mt-2" />
-            <button className={`w-fit text-gray-600 cursor-pointer  ${selectedFilter.find((val) => val !== null) ? " " : ""}`} onClick={(e) => menu.current?.toggle(e)}>
+            <button className={`w-fit bg-[#257180] text-white px-4 py-3 rounded-xl cursor-pointer  ${selectedFilter.find((val) => val !== null) ? " " : ""}`} onClick={(e) => menu.current?.toggle(e)}>
                 <i className="pi pi-filter" />
             </button>
         </div>

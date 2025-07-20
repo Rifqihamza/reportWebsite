@@ -1,15 +1,40 @@
 ---
-
+const linkFooter = [
+  {
+    link: "https://mail.google.com/mail/?view=cm&fs=1&to=ridwansetiawan@elapor.smkind-mm2100.sch.id",
+    label: "Email",
+  },
+  {
+    link: "https://www.instagram.com/mitra_industri?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+    label: "Instagram",
+  },
+  {
+    link: "https://www.facebook.com/SmkMitraIndustriMM2100/",
+    label: "Facebook",
+  },
+  {
+    link: "https://www.youtube.com/channel/UCXyS8encGuXjGfzZdpOHPYw",
+    label: "Youtube",
+  },
+];
 ---
 
 <footer
-  class="bg-slate-900 text-white px-8 py-6 flex flex-row justify-between items-center relative"
+  class="bg-zinc-900 text-white px-6 md:px-16 py-10 flex flex-row justify-between items-center relative"
 >
-  <h1 class="font-thin text-2xl">E-LAPOR</h1>
-  <a class="p-4 px-8 flex justify-center items-center" target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&to=ridwansetiawan@elapor.smkind-mm2100.sch.id">Email</a>
+  <h1 class="font-normal text-2xl text-[#F2E5BF]">E-LAPOR</h1>
+  <div class="flex flex-col md:flex-row gap-4 text-[#F2E5BF]">
+    {
+      linkFooter.map((items) => (
+        <a target="_blank" href={items.link}>
+          {items.label}
+        </a>
+      ))
+    }
+  </div>
 
   <h1
-    class="text-[10px] text-white absolute bottom-1 left-0 right-0 w-full flex justify-center"
+    class="text-[10px] text-gray-300 absolute bottom-1 left-0 right-0 w-full flex justify-center"
   >
     © {new Date().getFullYear()} IT MIVHS. All Rights Reserved.
   </h1>

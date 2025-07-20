@@ -35,7 +35,7 @@ let initialized = false;
 export default function UseReportConfigHookEffect(props: { useAllCampus?: boolean }) {
   const { selectedCampus } = useCampusDataHook();
   const { setLocationOptions, setPicNamesOptions } = useReportConfigHook();
-  const { showMessage, showMessageByAPI } = useMessageToastHook();
+  const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
@@ -76,11 +76,10 @@ export default function UseReportConfigHookEffect(props: { useAllCampus?: boolea
 
         setPicNamesOptions(resultPicNamesOptions);
         setLocationOptions(resultLocationOptions);
+      } else if (result === APIResultType.DatabaseError) {
+        showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       } else if (result === false) {
         showMessage("There's a network error.", "error", "Please reload the website once you connected.");
-      }
-      else {
-        showMessageByAPI(result as APIResultType);
       }
     }).catch(() => {
       showMessage("There's a network error.", "error", "Please reload the website once you connected.");

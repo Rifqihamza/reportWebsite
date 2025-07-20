@@ -3,7 +3,7 @@ import { create_response_json, create_response_status, get_cookies_from_request,
 import { prisma } from "../../../utils/db";
 import { ActivityType, Prisma, type Report } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
-import { account_to_api_privillage, AccountAPIPrivillage, ReportData_TypeGuard } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
 export async function GET({ request }: APIContext) {
     // Verify user token

@@ -2,11 +2,11 @@ import type { APIContext } from "astro";
 import { apiresult_to_status, create_response_json, create_response_status, process_server_token, record_activity, verify_user_data_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { Prisma, type Report, type Report_Location, ActivityType } from "@prisma/client";
-import { account_to_api_privillage, AccountAPIPrivillage, ReportData_TypeGuard, ReportType, string_to_campus } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, ReportType, string_to_campus } from "../../../types/variables";
 import { z } from 'zod';
 
 
-const ReportRequestBodyType = z.object({
+const ReportBodyType = z.object({
     submitted_by: z.string(),
     message: z.string(),
     report_type: z.nativeEnum(ReportType),
@@ -45,7 +45,7 @@ export async function POST({ request, cookies }: APIContext) {
         result[key] = value.valueOf();
     }
 
-    const parsed_result = ReportRequestBodyType.safeParse(result);
+    const parsed_result = ReportBodyType.safeParse(result);
     if (!parsed_result.success) {
         console.log("Request data is not complete!");
         return create_response_status(400);
@@ -108,7 +108,7 @@ export async function POST({ request, cookies }: APIContext) {
 
     if (image) {
         console.log("Sending Image...");
-        if (image.size > 8 * 1024 * 1024) {
+        if (image.size > 5 * 1024 * 1024) {
             console.log("Image size is too large!");
             return create_response_status(413);
         }
@@ -120,8 +120,10 @@ export async function POST({ request, cookies }: APIContext) {
 
         const form_data = new FormData();
         form_data.append("image", image);
+        form_data.append("test", "test");
 
-        const server_token = process_server_token();
+        const report_num = (await prisma.report.findMany()).length;
+        const server_token = process_server_token(report_num);
 
 
         let response;
@@ -173,14 +175,9 @@ export async function POST({ request, cookies }: APIContext) {
                 report_date: report_date,
                 image: image_file_path,
                 detail_location: detail_location,
-                campus: verified_campus_name,
-                account_used: {
-                    connect: {
-                        username: user_data.username
-                    }
-                }
+                campus: verified_campus_name
             }
-        });
+        })
     }
     catch (err) {
         if (err instanceof Prisma.PrismaClientValidationError) {
@@ -217,13 +214,6 @@ export async function POST({ request, cookies }: APIContext) {
     }
 
 
-    // Parse safely data in order to make sure its data structure
-    const safe_parse_result = ReportData_TypeGuard.safeParse(report_data);
-    if(!safe_parse_result.success) {
-        console.log(`Did you forgot to change the report data type guard? error: ${safe_parse_result.error}`);
-        return create_response_status(500);
-    }
-    
     // Return OK
     // return create_response_status(200);
     return create_response_json(report_data);

@@ -18,7 +18,7 @@ export default function EditUserDataModal(props: Props) {
   const [loading, setLoading] = useState(false);
   
   const { userData, setUserData } = useUserDataHook();
-  const { showMessage, showMessageByAPI } = useMessageToastHook();
+  const { showMessage } = useMessageToastHook();
   
   const handleEditUserData = () => {
     if(!userData) {
@@ -40,10 +40,13 @@ export default function EditUserDataModal(props: Props) {
       }
       else {
         if(result === APIResultType.Conflict) {
-          showMessageByAPI(result, "Mohon maaf, ada pengguna lain yang menggunakan nama yang sama.");
+          showMessage("Terjadi duplikat!", "error", "Mohon maaf, ada pengguna lain yang menggunakan nama yang sama.");
+        }
+        else if(result === APIResultType.DatabaseError) {
+          showMessage("Database error!", "error", "Mohon maaf, terjadi kesalahan dari sisi database.");
         }
         else {
-          showMessageByAPI(result);
+          showMessage("Server error!", "error", "Mohon maaf, terjadi kesalahan dari sisi server.");
         }
       }
     }).finally(() => {
@@ -72,7 +75,7 @@ export default function EditUserDataModal(props: Props) {
             <label htmlFor={props.editKey}>{capitalize(props.editKey??"")}</label>
             <input
               id={props.editKey}
-              type={props.editKey === "password" ? "password" : "text"}
+              type="text"
               value={value}
               onChange={(e) => setValue(e.target.value)}
               className="w-full px-4 py-2 rounded-xl border border-gray-300"

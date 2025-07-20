@@ -2,30 +2,30 @@
 import { useEffect, useState } from "react";
 import { APIResultType, userLogin } from "../../../utils/api_interface";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
-import { account_to_api_privillage, AccountAPIPrivillage, AccountType, has_access_to_dashboard, privillage_for_dashboard } from "../../../types/variables";
+import { AccountType, has_access_to_dashboard, } from "../../../types/variables";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(null as boolean | null);
-  
-  const { showMessage, showMessageByAPI } = useMessageToastHook();
+
+  const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   const handleLogin = async () => {
-    if(!isConnected) {
+    if (!isConnected) {
       showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
       return;
     }
-    
+
     setLoginDisabled(true);
 
     try {
       const result = await userLogin(username, password);
-      if(Object.values(AccountType).includes(result as AccountType)) {
+      if (Object.values(AccountType).includes(result as AccountType)) {
         showMessage("Welcome!", "success", "You've successfully login! You'll be redirected in a second..");
         setIsPasswordCorrect(true);
         setTimeout(() => {
@@ -35,13 +35,16 @@ export default function LoginFormComponent() {
       }
       else if (result === APIResultType.Unauthorized) {
         setIsPasswordCorrect(false);
-        showMessageByAPI(result, "Wrong password or username");
+        showMessage("Unauthorized!", "error", "Wrong password or username");
+      }
+      else if (result === APIResultType.DatabaseError) {
+        showMessage("Database Error!", "error", "please try again later.");
       }
       else {
-        showMessageByAPI(result as APIResultType);
+        showMessage("There's an error!", "error", "Unknown error detected please report to developer");
       }
     } catch (err) {
-      showMessage("There's an unexpected error..", "error", "");
+      alert("There's an unexpected error..");
     }
 
     setLoginDisabled(false);
@@ -54,19 +57,19 @@ export default function LoginFormComponent() {
   return (
     <>
       {/* Username */}
-      <div className="space-y-2 mt-6">
-        <label htmlFor="username" className={`font-bold ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
+      <div className="">
+        <label htmlFor="username" className={`font-bold text-white ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Username
         </label>
-        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 bg-zinc-800 shadow-inner rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
 
       {/* Password */}
-      <div className="space-y-2 mt-2">
-        <label htmlFor="password" className={`font-bold ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
+      <div className="mt-4">
+        <label htmlFor="password" className={`font-bold text-white ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Passsword
         </label>
-        <input type="password" name="password" placeholder="Password..." className={`mt-3 bg-[#E2DAD6] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-400 focus:duration-300 focus:ease placeholder-black ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="password" name="password" placeholder="Password..." autoComplete="off" className={`mt-3 bg-zinc-800 shadow-inner rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
       <p className={`${isPasswordCorrect ? "text-green-600" : "text-red-600"} h-1`}>{(isPasswordCorrect === false) ? "username / password is wrong" : ""}{(isPasswordCorrect === true) ? "username & password are correct!" : ""}</p>
 
@@ -74,7 +77,7 @@ export default function LoginFormComponent() {
       <div className="space-y-2 mt-8">
         <button
           type="button"
-          className={`disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#1f324d] -translate-y-[10px] [box-shadow:0_10px_0_#E2DAD6] active:[box-shadow:0_5px_0_#E2DAD6] active:-translate-y-[5px] text-white rounded-xl cursor-pointer`}
+          className={`disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#F2E5BF] -translate-y-[10px] [box-shadow:0_10px_0_#CBB88B] active:[box-shadow:0_5px_0_#CBB88B] active:-translate-y-[5px] text-zinc-500 rounded-xl cursor-pointer`}
           disabled={loginDisabled}
           onClick={handleLogin}
         >

@@ -14,7 +14,7 @@ import { useMessageToastHook } from "../../shared/useMessageToast";
 import { useEffect } from "react";
 import { useNetworkConnectivityHook } from "../../shared/useNetworkConnectivity";
 
-const maxReportDataPerPage: number = 10;
+const maxReportDataPerPage: number = 7;
 
 // --/ Report Detail Hook
 type useReportDetailHookType = {
@@ -59,11 +59,11 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
     // -- Handling report deletion
     handleDelete: async (id: string) => {
       const { isConnected } = useNetworkConnectivityHook.getState();
-      if(!isConnected) return;
-      
+      if (!isConnected) return;
+
       const { reportData, setReportData } = useReportDataHook.getState();
       const { userData } = useUserDataHook.getState();
-      const { showMessage, showMessageByAPI } = useMessageToastHook.getState();
+      const { showMessage } = useMessageToastHook.getState();
 
       // Check if the user is
       if (!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
@@ -74,7 +74,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       set(() => ({ deleteDisabled: true }));
 
       if (reportData?.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
-        showMessage("Tidak bisa menghapus laporan yang sudah di follow up", "warn");
+        alert("Tidak bisa menghapus laporan yang sudah di follow up");
         set(() => ({ deleteDisabled: false }));
         return;
       }
@@ -83,12 +83,14 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
 
       if (result == APIResultType.NoError) {
         setReportData(reportData?.filter((value) => value.id != id) || null);
-        showMessageByAPI(result, "Data berhasil dihapus!");
+        showMessage("Success", "success", "Data berhasil dihapus!");
 
         set(() => ({ deleteDisabled: false, detailId: null }));
         return true;
-      } else {
-        showMessageByAPI(result);
+      } else if (result == APIResultType.InternalServerError) {
+        showMessage("Error", "error", "Terjadi error di server!");
+      } else if (result == APIResultType.Unauthorized) {
+        showMessage("Unauthroized!", "error", "Akses tidak dikenal!");
       }
 
       set(() => ({ deleteDisabled: false }));
@@ -230,21 +232,21 @@ export function ReportHookEffect() {
   }, [filteredReports, currentPage]);
 
   useEffect(() => {
-    if(!reportData) {
+    if (!reportData) {
       return;
     }
-    
+
     // Filter Categories and Status
     let result_data = reportData.filter((value) => {
-      if(selectedFilter[0] !== null && value.type !== selectedFilter[0]) {
+      if (selectedFilter[0] !== null && value.type !== selectedFilter[0]) {
         return false;
       }
 
-      if(selectedFilter[1] !== null && value.status !== selectedFilter[1]) {
+      if (selectedFilter[1] !== null && value.status !== selectedFilter[1]) {
         return false;
       }
 
-      if(selectedFilter[2] !== null && value.campus !== selectedFilter[2]) {
+      if (selectedFilter[2] !== null && value.campus !== selectedFilter[2]) {
         return false;
       }
 
@@ -279,9 +281,9 @@ export function ReportHookEffect() {
 }
 
 // Utility constants
-export const statusColors = {
-  NotStarted: "bg-red-100 text-red-800",
-  InProcess: "bg-yellow-100 text-yellow-800",
-  Complete: "bg-green-100 text-green-800",
-  Hold: "bg-blue-100 text-blue-800",
+export const statusColors: Record<ReportStatus, string> = {
+  NotStarted: ReportStatus.NotStarted,
+  InProcess: ReportStatus.InProcess,
+  Complete: ReportStatus.Complete,
+  Hold: ReportStatus.Hold,
 };
