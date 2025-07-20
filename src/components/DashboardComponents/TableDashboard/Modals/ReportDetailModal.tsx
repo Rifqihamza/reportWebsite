@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "primereact/image";
-import { AccountAPIPrivillage, reporttype_to_string } from "../../../../types/variables";
+import { AccountAPIPrivillage, ReportStatus, reporttype_to_string } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
-import { useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { statusColorHex } from "../../../../types/variables";
-import { formatDate } from "../../../../utils/other";
+import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
+import { formatDate, spaces_in_camel_case } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";
 import { useUserDataHook } from "../../../../hooks/shared/useUserData";
+import { useReportEvidenceHook } from "../../../../hooks/pages/ReportTable/useReportEvidenceHook";
 
 export default function ReportDetailModal() {
   const [accordionIndex, setAccordionIndex] = useState(0);
@@ -17,6 +17,7 @@ export default function ReportDetailModal() {
 
   const { setEditVisible } = useReportEditHook();
   const { userPrivillages: userDataPrivillages } = useUserDataHook();
+  const { setReportImageURL } = useReportEvidenceHook();
 
   const report_data = reportData?.find((value) => value.id === detailId) || null;
   const backgroundElement = useRef(null as HTMLDivElement | null);
@@ -72,11 +73,8 @@ export default function ReportDetailModal() {
             <h1 className="font-bold lg:text-2xl text-lg tracking-wide">Detail Temuan</h1>
             <p>
               Status:
-              <span
-                className="font-medium md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2 text-white"
-                style={{ backgroundColor: report_data ? statusColorHex[report_data.status] : "#FD8B51" }}
-              >
-                {report_data?.status}
+              <span className={`${report_data ? statusColors[report_data.status] : ""} font-medium uppercase md:text-md md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2`}>
+                {spaces_in_camel_case(report_data?.status.toString() || "")}
               </span>
             </p>
             <hr className="mt-3" />
@@ -117,13 +115,18 @@ export default function ReportDetailModal() {
 
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-4 w-full pt-4">
-            <button
-              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+            {report_data?.status === ReportStatus.Complete ? <button
+              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-[#1f324d] hover:bg-[#1f324d] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+              onClick={() => setReportImageURL(report_data.image_after_finish)}
+            >
+              Lihat Bukti
+            </button> : <button
+              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-[#1f324d] hover:bg-[#1f324d] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => setEditVisible(true)}
               disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateReport)}
             >
               Edit
-            </button>
+            </button>}
             <button
               className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => (report_data ? handleDelete(report_data.id) : null)}

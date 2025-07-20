@@ -63,7 +63,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
 
       const { reportData, setReportData } = useReportDataHook.getState();
       const { userData } = useUserDataHook.getState();
-      const { showMessage } = useMessageToastHook.getState();
+      const { showMessage, showMessageByAPI } = useMessageToastHook.getState();
 
       // Check if the user is
       if (!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
@@ -83,14 +83,12 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
 
       if (result == APIResultType.NoError) {
         setReportData(reportData?.filter((value) => value.id != id) || null);
-        showMessage("Success", "success", "Data berhasil dihapus!");
+        showMessageByAPI(result, "Data berhasil dihapus!");
 
         set(() => ({ deleteDisabled: false, detailId: null }));
         return true;
-      } else if (result == APIResultType.InternalServerError) {
-        showMessage("Error", "error", "Terjadi error di server!");
-      } else if (result == APIResultType.Unauthorized) {
-        showMessage("Unauthroized!", "error", "Akses tidak dikenal!");
+      } else {
+        showMessageByAPI(result);
       }
 
       set(() => ({ deleteDisabled: false }));

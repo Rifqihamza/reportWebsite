@@ -14,7 +14,7 @@ import UseUserAccountHookEffect, { useUserAccountHook } from "../../../hooks/pag
 export default function UsersPage() {
   const { activeTab } = useDashboardNavbarHook();
   const { setUsernameFilter, usernameFilter, showedUserAccountData, setUserAccountData, doneFetching, userAccountData, isAuthorized: isAuhtorizedGetAllUsers } = useUserAccountHook();
-  const { showMessage } = useMessageToastHook();
+  const { showMessage, showMessageByAPI } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
   const { userData, userPrivillages: userDataPrivillages } = useUserDataHook();
 
@@ -57,16 +57,19 @@ export default function UsersPage() {
       setVisibleDialog(false);
     } else {
       if (result === APIResultType.Conflict) {
-        showMessage("Gagal update user", "warn", "Ada user yang mempunyai username yang sama (Jika tidak ada di tabel mungkin user tersebut adalah admin).");
+        showMessageByAPI(result, "Ada user yang mempunyai username yang sama (Jika tidak ada di tabel mungkin user tersebut adalah admin).");
       }
       else if (result === APIResultType.Unauthorized) {
-        showMessage("Unauthorized", "error", `${userData?.role} tidak diperbolehkan mengedit data user!`);
+        showMessageByAPI(result, `${userData?.role} tidak diperbolehkan mengedit data user!`);
       }
       else if (result === APIResultType.DatabaseError) {
-        showMessage("Gagal update user", "error", "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
+        showMessageByAPI(result, "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
+      }
+      else if (result === false) {
+        showMessage("Terjadi error!", "error", "Mohon maaf, terjadi kesalahan.");
       }
       else {
-        showMessage("Gagal update user", "error", "Terjadi kesalahan saat memperbarui data pengguna.");
+        showMessageByAPI(result);
       }
     }
   };
@@ -93,16 +96,16 @@ export default function UsersPage() {
       setVisibleDialog(false);
     } else {
       if (result === APIResultType.Conflict) {
-        showMessage("Gagal menambahkan user", "warn", "Ada user yang mempunyai username yang sama (Jika tidak ada di tabel mungkin user tersebut adalah admin).");
+        showMessageByAPI(result, "Ada user yang mempunyai username yang sama (Jika tidak ada di tabel mungkin user tersebut adalah admin).");
       }
       else if (result === APIResultType.Unauthorized) {
-        showMessage("Unauthorized", "error", `${userData?.role} tidak diperbolehkan menambahkan data user!`);
+        showMessageByAPI(result, `${userData?.role} tidak diperbolehkan menambahkan data user!`);
       }
       else if (result === APIResultType.DatabaseError) {
-        showMessage("Gagal menambahkan user", "error", "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
+        showMessageByAPI(result, "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
       }
       else {
-        showMessage("Gagal menambahkan user", "error", "Terjadi kesalahan saat menambahkan data pengguna.");
+        showMessageByAPI(result);
       }
     }
   }

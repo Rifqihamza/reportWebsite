@@ -18,7 +18,7 @@ export default function EditUserDataModal(props: Props) {
   const [loading, setLoading] = useState(false);
   
   const { userData, setUserData } = useUserDataHook();
-  const { showMessage } = useMessageToastHook();
+  const { showMessage, showMessageByAPI } = useMessageToastHook();
   
   const handleEditUserData = () => {
     if(!userData) {
@@ -40,13 +40,10 @@ export default function EditUserDataModal(props: Props) {
       }
       else {
         if(result === APIResultType.Conflict) {
-          showMessage("Terjadi duplikat!", "error", "Mohon maaf, ada pengguna lain yang menggunakan nama yang sama.");
-        }
-        else if(result === APIResultType.DatabaseError) {
-          showMessage("Database error!", "error", "Mohon maaf, terjadi kesalahan dari sisi database.");
+          showMessageByAPI(result, "Mohon maaf, ada pengguna lain yang menggunakan nama yang sama.");
         }
         else {
-          showMessage("Server error!", "error", "Mohon maaf, terjadi kesalahan dari sisi server.");
+          showMessageByAPI(result);
         }
       }
     }).finally(() => {

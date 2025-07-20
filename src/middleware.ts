@@ -11,7 +11,7 @@ const rateLimiterMemory = new RateLimiterMemory({
 
 export const onRequest: MiddlewareHandler = async (context, next) => {
     await first_initialization();
-    console.log(context.url.href);
+    console.log(context.url.href); //? API Logging
     
     if(context.url.href.includes("api/") && !(await check_database_connection())) {
         return create_response_status(503);

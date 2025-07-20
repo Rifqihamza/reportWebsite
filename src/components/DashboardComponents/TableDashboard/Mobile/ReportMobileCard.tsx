@@ -1,7 +1,7 @@
 import React from "react";
 import { reporttype_to_string, type ReportData } from "../../../../types/variables";
 import { statusColors, useReportDetailHook } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { formatDate } from "../../../../utils/other";
+import { formatDate, spaces_in_camel_case } from "../../../../utils/other";
 
 interface ReportMobileCardProps {
   report: ReportData;
@@ -19,24 +19,19 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
           </h3>
           <p className="text-xs lg:text-md truncate text-gray-200">{formatDate(new Date(report.created_at).toISOString())}</p>
         </div>
-        <hr className="bg-[#FD8B51] h-0.5 border-none rounded-xl" />
-        <div className="text-sm text-white space-y-2 break-all mt-4 *:font-medium">
-          <p>
-            <span className="font-bold">Nama Pelapor: </span> {report.submitted_by}
-          </p>
-          <p>
-            <span className="font-bold">Laporan: </span>
-            {report.message}
-          </p>
-          <p>
-            <span className="font-bold">Lokasi:</span> {report.location_name}
-          </p>
-          <p>
-            <span className="font-bold">Kampus:</span> {report.campus}
-          </p>
-          <p>
-            <span className="font-bold">Status Laporan:</span> <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}> {report.status}</span>
-          </p>
+        <hr className="bg-black h-0.5 border-none rounded-xl" />
+        <div className="text-sm text-gray-500 space-y-2 break-all mt-4 *:font-medium">
+          {Object.entries(table_rows).map(([row, value], index) => {
+            if (value === "status") {
+              return <p key={index}>
+                <span className="font-bold">{row}: </span> <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}>{spaces_in_camel_case(report[value])}</span>
+              </p>
+            }
+
+            return <p key={index}>
+              <span className="font-bold">{row}: </span> {report[value]}
+            </p>
+          })}
         </div>
         <div className="mt-8">
           <button className="mobile-detail-button w-full text-white bg-[#FD8B51] px-3 py-2 rounded-xl text-sm font-medium" onClick={() => handleDetail(report.id)}>

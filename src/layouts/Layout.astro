@@ -23,7 +23,7 @@ const { pageType = "form" } = Astro.props;
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="description" content="Data manager website for reports that can be used by students in Mitra Industri Vocational HighSchool" />
-    <link rel="icon" href="/img/logoSekolah.png" />
+    <link rel="shortcut icon" href="/img/logoSekolah.ico" type="image/x-icon">
     <meta name="generator" content={Astro.generator} />
     <title>E-Lapor Website | SMK Mitra Industri MM2100</title>
   </head>
@@ -59,3 +59,65 @@ const { pageType = "form" } = Astro.props;
   <SpeedInsights />
   <Analytics />
 </html>
+
+<style>
+  .bg-form {
+    background: #1f324d;
+  }
+
+  .bg-form::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bg-dashboard {
+    background: #1f324d;
+  }
+
+  .wave {
+    background: #eee9da;
+    border-radius: 1000% 1000% 0 0;
+    position: fixed;
+    width: 150%;
+    height: 12em;
+    animation: wave 10s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    bottom: 0;
+    left: 0;
+    z-index: -99;
+  }
+
+  .wave:nth-of-type(2) {
+    bottom: -1.25em;
+    animation: wave 18s linear reverse infinite;
+    opacity: 0.8;
+  }
+
+  .wave:nth-of-type(3) {
+    bottom: -2.5em;
+    animation: wave 15s -1s reverse infinite;
+    opacity: 0.9;
+  }
+
+  @keyframes wave {
+    2% {
+      transform: translateX(-10);
+    }
+
+    25% {
+      transform: translateX(-10%);
+    }
+
+    50% {
+      transform: translateX(-25%);
+    }
+
+    75% {
+      transform: translateX(-10%);
+    }
+
+    100% {
+      transform: translateX(-10);
+    }
+  }
+</style>
