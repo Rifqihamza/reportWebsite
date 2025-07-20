@@ -173,9 +173,14 @@ export async function POST({ request, cookies }: APIContext) {
                 report_date: report_date,
                 image: image_file_path,
                 detail_location: detail_location,
-                campus: verified_campus_name
+                campus: verified_campus_name,
+                account_used: {
+                    connect: {
+                        username: user_data.username
+                    }
+                }
             }
-        })
+        });
     }
     catch (err) {
         if (err instanceof Prisma.PrismaClientValidationError) {

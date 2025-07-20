@@ -65,7 +65,7 @@ export async function PUT({ request }: APIContext) {
                 status: new_report_data.status || undefined,
                 follow_up: new_report_data.follow_up || undefined,
                 follow_up_name: new_report_data.follow_up_name ?? undefined,
-                due_date: new_report_data.due_date === "" ? null : (new_report_data.due_date || undefined),
+                due_date: (new_report_data.due_date as any) === "" ? null : (new_report_data.due_date || undefined),
                 responsible_pic: new_report_data.pic_name ? {
                     connect: {
                         name_campus_name: {
