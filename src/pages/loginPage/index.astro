@@ -2,8 +2,6 @@
 import HelpButton from "../../components/GlobalComponents/HelpButton/HelpButton";
 import LoginFormComponent from "../../components/LoginComponents/LoginForm/LoginFormComponent";
 import Layout from "../../layouts/Layout.astro";
-import LogoImage from "../../assets/images/logoSekolah.png";
-import Image from "astro/components/Image.astro";
 ---
 
 <Layout>
@@ -19,7 +17,7 @@ import Image from "astro/components/Image.astro";
             <h1 class="font-bold text-lg">Login Page</h1>
             <p class="text-[14px]">Please Login First!</p>
           </div>
-          <Image src={LogoImage} class="w-10 h-auto" alt="" width={50} />
+          <img src="/img/logoSekolah.png" class="w-10 h-auto" alt="" />
         </div>
 
         <LoginFormComponent client:load />

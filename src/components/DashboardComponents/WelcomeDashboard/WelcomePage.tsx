@@ -7,7 +7,7 @@ import { useEffect } from "react";
 function QuickNavigationButton(props: { icon: string, title: string, description: string, onClick: () => void }) {
     return (
         <button
-            className="flex-1 w-full h-40 md:w-max md:h-48 cursor-pointer aspect-video flex flex-col gap-2 justify-center items-center px-2 py-4 rounded-xl bg-[#1f324d] hover:bg-slate-500 text-white duration-300"
+            className="cursor-pointer w-fit md:h-18 h-13 aspect-square p-2 rounded-xl bg-[#257180] hover:bg-[#FD8B51] text-white font-semibold duration-300"
             onClick={props.onClick}
         >
             <i className={`pi ${props.icon}`} style={{ fontSize: "18px" }}></i>
@@ -65,17 +65,32 @@ export default function WelcomePage() {
         return reportData.filter((r) => r.status === status).length;
     };
     return (
-        <div className="h-full w-full relative px-4 py-5 md:py-10 flex flex-col items-center justify-center text-center overflow-auto">
+        <section className="px-5 py-10 md:py-6 overflow-auto space-y-4">
             <UseUserDataHookEffect adminOnly />
-            <div className="w-full space-y-4 h-full">
-                <div className="w-full max-w-3xl mx-auto text-center">
-                    {/* Welcome message */}
-                    <h1 className="text-3xl tracking-wide text-[#1f324d]">{greeting}, {userData ? <><b>{userData?.username}</b>!</> : <i className="pi pi-spinner pi-spin" style={{ fontSize: 18 }} />}</h1>
-                    <p className="text-lg w-full max-w-xl mx-auto text-[#1f324d]">Selamat datang di Dashboard! Disini adalah tempat kita melihat, mengelola, dan menganalisa data laporan yang telah direkam oleh sistem</p>
-                </div>
-                {/* Quick Navigation */}
-                <div className="w-full h-max max-w-3xl grid grid-cols-2 grid-rows-3 md:flex md:flex-wrap md:items-center md:justify-center gap-3 mx-auto">
-                    {menuItems.filter((value, index) => index !== 0).map((item) => quickNavigationMapper(item, setActiveTab, userPrivillages))}
+
+            {/* Header */}
+            <div className="w-full h-fit bg-[#CB6040] shadow-md shadow-gray-400 flex flex-col md:flex-row items-center justify-between gap-4 px-3 md:px-6 py-4 rounded-xl">
+                <header>
+                    <div className="text-white">
+                        <h1 className="text-md">{greeting}, <span className="font-semibold">{userData?.username || "User"}!</span></h1>
+                        <p className="text-2xl font-medium">Welcome to the dashboard.</p>
+                        <p className="text-sm">Dashboard untuk manage dan analisis laporan.</p>
+                    </div>
+                </header>
+
+                {/* Quick Nav */}
+                <div className="flex flex-col gap-2">
+                    <h1 className="text-white text-sm pr-2 flex gap-1 md:justify-end justify-center items-center">
+                        <i className="pi pi-arrow-down" style={{ fontSize: "12px" }}></i>
+                        Quick Navigation
+                    </h1>
+                    <div className="flex flex-wrap justify-center md:justify-end gap-2 md:gap-4">
+                        <QuickNavigationButton icon="pi-table" title="Table" description="Buat laporan baru" onClick={() => setActiveTab(1)} />
+                        <QuickNavigationButton icon="pi-chart-bar" title="Analytics" description="Kelola pengguna sistem" onClick={() => setActiveTab(2)} />
+                        <QuickNavigationButton icon="pi-download" title="Exports" description="Pengaturan sistem" onClick={() => setActiveTab(3)} />
+                        <QuickNavigationButton icon="pi-user" title="Users" description="Lihat statistik laporan" onClick={() => setActiveTab(4)} />
+                        <QuickNavigationButton icon="pi-cog" title="Settings" description="Informasi tentang aplikasi" onClick={() => setActiveTab(5)} />
+                    </div>
                 </div>
             </div>
 

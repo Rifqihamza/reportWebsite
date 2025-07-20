@@ -14,9 +14,6 @@ import UseUserDataHookEffect from "../../hooks/shared/useUserData";
 import UseReportConfigHookEffect from "../../hooks/shared/useReportConfig";
 import SidebarToggle from "./DashboardPage/_SideBarToggle";
 import VersionTracker from "../../components/GlobalComponents/VersionTracker/VersionTracker";
-import Image from "astro/components/Image.astro";
-
-import SchoolLogo from "../../assets/images/logoSekolah.png";
 ---
 
 <Layout pageType="dashboard">
@@ -31,12 +28,10 @@ import SchoolLogo from "../../assets/images/logoSekolah.png";
       <div
         class="hidden lg:flex flex-row-reverse items-center justify-between gap-4"
       >
-        <Image
-          src={SchoolLogo}
+        <img
+          src="/img/logoSekolah.png"
           class="hidden md:block w-8 h-8 ring-2 ring-white rounded-full"
           alt="Logo Sekolah"
-          width={50}
-          loading={"eager"}
         />
         <h1 class="font-semibold text-[#FEF0EF]">E-Lapor Dashboard</h1>
       </div>
@@ -45,16 +40,14 @@ import SchoolLogo from "../../assets/images/logoSekolah.png";
       <!-- Sidebar -->
       <SidebarDashboard client:load />
       <!-- Main Pages Scrollable -->
-      <main
-        class="flex-1 overflow-y-auto p-2 shadow shadow-black bg-[#F2E5BF] lg:rounded-tl-2xl"
-      >
+      <main class="flex-1 overflow-y-auto p-2 shadow shadow-black bg-[#F2E5BF] lg:rounded-tl-2xl ">
         <WelcomePage client:load />
         <ReportTablePage client:only />
         <StatisticsPage client:only />
         <ExportPage client:only />
         <UsersPage client:only />
         <SettingPage client:only />
-      </main>
+      </div>
     </div>
   </section>
 </Layout>

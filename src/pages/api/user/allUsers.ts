@@ -8,7 +8,7 @@ import {
     apiresult_to_status,
 } from "../../../utils/api_helper";
 import { Prisma } from "@prisma/client";
-import { account_to_api_privillage, AccountAPIPrivillage, User_TypeGuard } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
 export async function GET({ cookies }: APIContext) {
     // Verify tokenn

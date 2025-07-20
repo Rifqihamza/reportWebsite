@@ -6,10 +6,9 @@ import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConn
 
 export default function VerifyAuthentication() {
   const { isConnected } = useNetworkConnectivityHook();
-  const { showMessageByAPI } = useMessageToastHook();
-
+  
   useEffect(() => {
-    if (!isConnected) {
+    if(!isConnected) {
       return;
     }
 
@@ -24,6 +23,9 @@ export default function VerifyAuthentication() {
       }
       else if (result == APIResultType.Unauthorized && !window.location.href.includes("login")) {
         window.location.href = "/loginPage/";
+      }
+      else if(result == APIResultType.DatabaseError) {
+        alert("Database sedang error. Mohon coba lagi.");
       }
     })
   }, []);
