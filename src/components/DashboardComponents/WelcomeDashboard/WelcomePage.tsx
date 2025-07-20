@@ -69,7 +69,7 @@ export default function WelcomePage() {
             <UseUserDataHookEffect adminOnly />
 
             {/* Header */}
-            <div className="w-full h-fit bg-[#CB6040] shadow-md shadow-gray-400 flex flex-col md:flex-row items-center justify-between gap-4 px-3 md:px-6 py-4 rounded-xl">
+            <div className="w-full h-fit bg-[#CB6040] shadow-md shadow-gray-400 flex flex-col md:flex-row items-center justify-between gap-4 px-3 py-4 md:px-6 md:py-8 rounded-xl">
                 <header>
                     <div className="text-white">
                         <h1 className="text-md">{greeting}, <span className="font-semibold">{userData?.username || "User"}!</span></h1>
