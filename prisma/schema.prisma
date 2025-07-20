@@ -124,8 +124,8 @@ model Report {
   location_id     String?
   location_name   String?
 
-  account_used Users?  @relation(references: [id], fields: [account_id], onDelete: Cascade)
-  account_id   String?
+  account_used Users  @relation(references: [username], fields: [account_name], onDelete: Cascade)
+  account_name String
 }
 
 model VerifiedCaptcha {
