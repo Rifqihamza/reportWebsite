@@ -10,6 +10,20 @@
   src: url("/sairaFont/Saira-VariableFont_wdth\,wght.ttf");
 }
 
+:root {
+  --color-primary: #257180;
+  --color-secondary: #cb6040;
+  --color-bg: #f2e5bf;
+  --color-text: #1f2937;
+}
+
+.dark {
+  --color-primary: #123840; /* 50% lebih gelap */
+  --color-secondary: #763321; /* versi gelap dari #CB6040 */
+  --color-bg: #1a1a1a;
+  --color-text: #f1f5f9;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -43,18 +57,19 @@ body {
   padding: 0;
 }
 
-.bg-form {
-  background: #257180;
-}
-
 .bg-form::-webkit-scrollbar {
   display: none;
 }
 
+.bg-form,
 .bg-dashboard,
 .sidebarDashboard,
 .headerDashboard {
-  background: #257180;
+  background: oklch(27.4% 0.006 286.033);
+}
+
+.bg-mainDashboard {
+  background: oklch(21% 0.006 285.885);
 }
 
 .titlePage {
@@ -66,7 +81,7 @@ body {
 }
 
 .wave {
-  background: #fd8b51;
+  background: #cbb88b;
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 150%;
@@ -211,7 +226,7 @@ body {
   color: #fff;
 }
 
-.p-dropdown-item:hover{
+.p-dropdown-item:hover {
   color: #257180;
 }
 

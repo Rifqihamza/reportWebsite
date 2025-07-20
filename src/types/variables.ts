@@ -131,10 +131,10 @@ export const keyto_table_rows: Partial<{
 
 // Other things
 export const statusColorHex: Record<string, string> = {
-    NotStarted: "oklch(70.4% 0.191 22.216)",
-    InProcess: "oklch(90.5% 0.182 98.111)",
-    Complete: "oklch(79.2% 0.209 151.711)",
-    Hold: "oklch(70.7% 0.165 254.624)",
+    NotStarted: "#ff6467",
+    InProcess: "#ffdf20",
+    Complete: "#05df72",
+    Hold: "#51a2ff",
     Abnormality: "#FFC107",
     "5R": "#4CAF50",
     Safety: "#F44336"

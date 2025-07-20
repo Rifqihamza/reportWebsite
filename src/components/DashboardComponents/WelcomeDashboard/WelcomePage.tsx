@@ -2,12 +2,11 @@ import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar
 import UseReportDataHookEffect, { useReportDataHook } from "../../../hooks/shared/useReportData";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { ReportStatus, statusColorHex } from "../../../types/variables";
-import { useEffect } from "react";
 
 function QuickNavigationButton(props: { icon: string, title: string, description: string, onClick: () => void }) {
     return (
         <button
-            className="cursor-pointer w-fit md:h-18 h-13 aspect-square p-2 rounded-xl bg-[#257180] hover:bg-[#FD8B51] text-white font-semibold duration-300"
+            className="cursor-pointer w-fit md:h-18 h-13 aspect-square p-2 rounded-xl font-semibold text-white [box-shadow:0_0_3px_2px_#fff] hover:[box-shadow:0_0_10px_2px_#F2E5BF] hover:text-[#F2E5BF] duration-300"
             onClick={props.onClick}
         >
             <i className={`pi ${props.icon}`} style={{ fontSize: "18px" }}></i>
@@ -21,7 +20,7 @@ function DataReport(props: { title: string; value: number; icon: string; status:
 
     return (
         <div
-            className="w-full md:w-1/2 h-fit p-4 rounded-xl flex flex-col gap-2 shadow-md shadow-gray-400 text-white"
+            className="w-full md:w-1/2 h-fit p-4 rounded-xl flex flex-col gap-2 text-white"
             style={{ backgroundColor: bgColor }}
         >
             <div className="flex flex-row items-center justify-between gap-8">
@@ -69,7 +68,7 @@ export default function WelcomePage() {
             <UseUserDataHookEffect adminOnly />
 
             {/* Header */}
-            <div className="w-full h-fit bg-[#CB6040] shadow-md shadow-gray-400 flex flex-col md:flex-row items-center justify-between gap-4 px-3 md:px-6 py-4 rounded-xl">
+            <div className="w-full h-fit bg-zinc-900 border-4 border-[#F2E5BF] border-dashed flex flex-col md:flex-row items-center justify-between gap-4 px-3 py-4 md:px-6 md:py-8 rounded-xl">
                 <header>
                     <div className="text-white">
                         <h1 className="text-md">{greeting}, <span className="font-semibold">{userData?.username || "User"}!</span></h1>
