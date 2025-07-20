@@ -10,6 +10,26 @@
   src: url("/sairaFont/Saira-VariableFont_wdth\,wght.ttf");
 }
 
+:root {
+  --theme-light-bg: var(--color-white);
+  --theme-light-text: #1f324d;
+  --theme-light-text-alt: var(--color-white);
+  --theme-light-bg-accent: var(--color-slate-900);
+  --theme-light-shadow: 0 4px 6px -1px var(--color-gray-300);
+
+  --theme-dark-bg: var(--color-black);
+  --theme-dark-text: var(--color-white);
+  --theme-dark-text-alt: var(--color-white);
+  --theme-dark-bg-accent: var(--color-slate-800);
+  --theme-dark-shadow: 0 4px 6px -1px var(--color-gray-800);
+  
+  --theme-bg: var(--theme-dark-bg);
+  --theme-text: var(--theme-dark-text);
+  --theme-text-alt: var(--theme-dark-text-alt);
+  --theme-bg-accent: var(--theme-dark-bg-accent);
+  --theme-shadow: var(--theme-dark-shadow);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
