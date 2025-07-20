@@ -3,6 +3,7 @@ import { useDashboardNavbarHook } from "../../../../hooks/shared/useDashboardNav
 import React, { Suspense } from "react";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 import PICCOmpactData from "./outputs/PICCompactData";
+import UserRankTable from "./outputs/UserRankTable";
 
 const ReportCountChart = React.lazy(() => import("./outputs/PICReportCountChart"));
 const RankingTable = React.lazy(() => import("./outputs/PICRankTable"));
@@ -35,9 +36,17 @@ export default function PICStatisticsDashboard() {
 
         {/* Ranking Table */}
         <div className="mt-10 rounded-2xl shadow p-4 min-h-80">
-          <h1 className="mb-4 text-2xl">Ranking Table</h1>
+          <h1 className="mb-4 text-2xl">Tabel Ranking PIC</h1>
           <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
             <RankingTable />
+          </Suspense>
+        </div>
+
+        {/* Ranking Table */}
+        <div className="mt-10 rounded-2xl shadow p-4 min-h-80">
+          <h1 className="mb-4 text-2xl">Tabel Ranking Pelapor</h1>
+          <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
+            <UserRankTable />
           </Suspense>
         </div>
         

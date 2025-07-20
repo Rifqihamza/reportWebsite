@@ -63,7 +63,7 @@ export function campuscode_to_campus(campus_code?: string): Campus | undefined {
 }
 
 // DATABASE MODEL
-export const ReportData_TypeGuard = z.object({
+export const ReportData_TypeGuard = z.strictObject({
     id: z.string().uuid(),
     submitted_by: z.string(),
     message: z.string(),
@@ -81,12 +81,13 @@ export const ReportData_TypeGuard = z.object({
     due_date: z.date().nullable(),
     campus: z.nativeEnum(Campus).nullable(),
     image: z.string(),
-    image_after_finish: z.string().nullable()
+    image_after_finish: z.string().nullable(),
+    account_name: z.string()
 });
 export type ReportData = z.infer<typeof ReportData_TypeGuard>;
 
 
-export const User_TypeGuard = z.object({
+export const User_TypeGuard = z.strictObject({
     id: z.string(),
     username: z.string(),
     password: z.string(),
@@ -98,7 +99,7 @@ export const User_TypeGuard = z.object({
 export type User = z.infer<typeof User_TypeGuard>;
 
 
-export const Report_PIC_TypeGuard = z.object({
+export const Report_PIC_TypeGuard = z.strictObject({
     id: z.string(),
     name: z.string(),
     created_at: z.date(),
@@ -107,7 +108,7 @@ export const Report_PIC_TypeGuard = z.object({
 export type Report_PIC = z.infer<typeof Report_PIC_TypeGuard>;
 
 
-export const Report_Location_TypeGuard = z.object({
+export const Report_Location_TypeGuard = z.strictObject({
     id: z.string(),
     location: z.string(),
     created_at: z.date(),

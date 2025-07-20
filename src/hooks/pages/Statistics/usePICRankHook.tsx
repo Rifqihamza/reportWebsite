@@ -21,8 +21,8 @@ type IndexedPICData = {
 };
 
 type usePICRankHookType = {
-  showedPICData: PICData[];
-  setShowedPICData: (newShowedPICData: PICData[]) => void;
+  showedPICRank: PICData[];
+  setShowedPICRank: (newShowedPICRank: PICData[]) => void;
 
   sortedPICData: PICData[];
   setSortedPICData: (newSortedPICData: PICData[]) => void;
@@ -35,8 +35,8 @@ type usePICRankHookType = {
 }
 
 export const usePICRankHook = create<usePICRankHookType>((set) => ({
-  showedPICData: [],
-  setShowedPICData: (newShowedPICData) => (set(() => ({ showedPICData: newShowedPICData }))),
+  showedPICRank: [],
+  setShowedPICRank: (newShowedPICData) => (set(() => ({ showedPICRank: newShowedPICData }))),
 
   sortedPICData: [],
   setSortedPICData: (newSortedPICData) => (set(() => {
@@ -59,7 +59,14 @@ export const usePICRankHook = create<usePICRankHookType>((set) => ({
   })),
 
   page: 1,
-  setPage: (newPage) => (set(() => ({ page: newPage }))),
+  setPage: (newPage) => {
+    const { maxPage } = usePICRankHook.getState();
+    if(newPage < 1 || newPage > maxPage) {
+      return;
+    }
+
+    set(() => ({ page: newPage }));
+  },
 
   maxPage: 1,
   medianReportData: 1
@@ -69,7 +76,7 @@ export const usePICRankHook = create<usePICRankHookType>((set) => ({
 
 export default function UsePICRankHookEffect() {
   const { userAccountData } = useUserAccountHook();
-  const { setShowedPICData, setSortedPICData, page, maxPage, sortedPICData } = usePICRankHook();
+  const { setShowedPICRank, setSortedPICData, page, maxPage, sortedPICData } = usePICRankHook();
   const { reportData } = useReportDataHook();
    
   useEffect(() => {
@@ -110,7 +117,7 @@ export default function UsePICRankHookEffect() {
     if(page < 1 || page > maxPage) {
       return
     }
-    setShowedPICData(sortedPICData.slice((page-1)*maxPICRankPerPage, page*maxPICRankPerPage));
+    setShowedPICRank(sortedPICData.slice((page-1)*maxPICRankPerPage, page*maxPICRankPerPage));
   }, [page, sortedPICData])
   
   return <>
