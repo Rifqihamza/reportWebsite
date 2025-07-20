@@ -105,7 +105,7 @@ model Report {
   follow_up          AccountType?
   follow_up_name     String?      @db.VarChar(30)
   status             ReportStatus @default(NotStarted)
-  image              String?
+  image              String?      @db.LongText
   image_after_finish String?
   detail_location    String?      @db.VarChar(200)
   campus             Campus
