@@ -38,7 +38,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -211,7 +211,7 @@ body {
   color: #fff;
 }
 
-.p-dropdown-item:hover{
+.p-dropdown-item:hover {
   color: #257180;
 }
 
