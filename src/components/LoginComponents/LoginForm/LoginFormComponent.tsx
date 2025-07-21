@@ -61,7 +61,7 @@ export default function LoginFormComponent() {
         <label htmlFor="username" className={`font-bold text-white ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Username
         </label>
-        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 bg-zinc-800 shadow-inner rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 bg-zinc-700 shadow-inner rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
 
       {/* Password */}
@@ -69,7 +69,7 @@ export default function LoginFormComponent() {
         <label htmlFor="password" className={`font-bold text-white ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Passsword
         </label>
-        <input type="password" name="password" placeholder="Password..." autoComplete="off" className={`mt-3 bg-zinc-800 shadow-inner rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="password" name="password" placeholder="Password..." autoComplete="off" className={`mt-3 bg-zinc-700 shadow-inner rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
       <p className={`${isPasswordCorrect ? "text-green-600" : "text-red-600"} h-1`}>{(isPasswordCorrect === false) ? "username / password is wrong" : ""}{(isPasswordCorrect === true) ? "username & password are correct!" : ""}</p>
 
