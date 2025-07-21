@@ -27,7 +27,7 @@ let initialized = false;
 
 export default function UseReportDataHookEffect() {
   const { setReportData, setIsAuthorized } = useReportDataHook();
-  const { showMessage } = useMessageToastHook();
+  const { showMessageByAPI } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
@@ -36,15 +36,15 @@ export default function UseReportDataHookEffect() {
     }
     initialized = true;
 
-    getReport().then((report_data_array) => {
-      if (typeof report_data_array === "object") {
-        setReportData(report_data_array);
+    getReport().then((result) => {
+      if (typeof result === "object") {
+        setReportData(result);
       }
-      else if (report_data_array === APIResultType.Unauthorized) {
+      else if (result === APIResultType.Unauthorized) {
         setIsAuthorized(true);
       }
-      else if (report_data_array === APIResultType.DatabaseError) {
-        showMessage("There's an error in database.", "error", "Please reload the website after a while.");
+      else {
+        showMessageByAPI(result, "Please reload the website after a while.");
       }
     });
   }, [isConnected]);

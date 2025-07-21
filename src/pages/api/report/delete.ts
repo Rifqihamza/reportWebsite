@@ -59,8 +59,12 @@ export async function DELETE({ request }: APIContext) {
         const form_data = new FormData();
         form_data.append("image_location", report_data.image);
 
-        const report_num = (await prisma.report.findMany()).length;
-        const server_token = process_server_token(report_num);
+        if(report_data.image_after_finish) {
+            form_data.append("image_after_finish_location", report_data.image_after_finish);
+        }
+        
+
+        const server_token = process_server_token();
 
         let response;
         try {

@@ -61,5 +61,14 @@
       "fixes": ["Fix minor bugs", "Some buttons background doesn't change when hovered"],
       "improvements": ["After change username or password in setting, doesn't have to login again", "Add PIC information in Report Table", "Add loading animation in Setting Page"]
     }
+  },
+  {
+    "version": "1.2",
+    "date": "21 July 2025",
+    "changes": {
+      "features": ["Add PIC Statistics Tab", "Evidence of Completed Report"],
+      "fixes": [],
+      "improvement": ["Add spaces in report status", "Improving performance"]
+    }
   }
 ]

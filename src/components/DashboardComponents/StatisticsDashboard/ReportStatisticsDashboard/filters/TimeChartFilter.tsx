@@ -1,5 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
-import { LineChartTimeCategoryOption, useLineChartHook } from "../../../../hooks/pages/Statistics/useChartHook";
+import { LineChartTimeCategoryOption, useLineChartHook } from "../../../../../hooks/pages/Statistics/useChartHook";
 import { Accordion, AccordionTab } from "primereact/accordion";
 
 export default function TimeChartFilter() {

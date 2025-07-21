@@ -62,14 +62,10 @@ export async function PUT({ request }: APIContext) {
                 id: report_id
             },
             data: {
-                submitted_by: new_report_data.submitted_by ?? undefined,
-                message: new_report_data.message ?? undefined,
-                type: new_report_data.type ?? undefined,
-                status: new_report_data.status ?? undefined,
+                status: new_report_data.status || undefined,
                 follow_up: new_report_data.follow_up || undefined,
                 follow_up_name: new_report_data.follow_up_name ?? undefined,
-                report_date: new_report_data.report_date ?? undefined,
-                due_date: new_report_data.due_date === "" ? null : (new_report_data.due_date || undefined),
+                due_date: (new_report_data.due_date as any) === "" ? null : (new_report_data.due_date || undefined),
                 responsible_pic: new_report_data.pic_name ? {
                     connect: {
                         name_campus_name: {
@@ -78,14 +74,6 @@ export async function PUT({ request }: APIContext) {
                         }
                     }
                 } : undefined,
-                report_location: new_report_data.location_name ? {
-                    connect: {
-                        location_campus_name: {
-                            campus_name: prev_report_data.campus,
-                            location: new_report_data.location_name
-                        }
-                    }
-                } : undefined
             }
         });
     }

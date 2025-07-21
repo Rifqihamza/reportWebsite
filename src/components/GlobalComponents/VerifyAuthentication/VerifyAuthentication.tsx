@@ -7,7 +7,7 @@ import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 
 export default function VerifyAuthentication() {
   const { isConnected } = useNetworkConnectivityHook();
-  const { showMessage } = useMessageToastHook();
+  const { showMessageByAPI } = useMessageToastHook();
   
   useEffect(() => {
     if(!isConnected) {
@@ -25,9 +25,6 @@ export default function VerifyAuthentication() {
       }
       else if (result == APIResultType.Unauthorized && !window.location.href.includes("login")) {
         window.location.href = "/loginPage/";
-      }
-      else if(result == APIResultType.DatabaseError) {
-        showMessage("Database sedang error. Mohon coba lagi.", "error", "");
       }
     })
   }, []);

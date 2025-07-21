@@ -2,7 +2,8 @@
 // Pages
 import WelcomePage from "../../components/DashboardComponents/WelcomeDashboard/WelcomePage";
 import ReportTablePage from "../../components/DashboardComponents/TableDashboard/ReportTablePage";
-import StatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/StatisticsPage";
+import ReportStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/ReportStatisticsDashboard/ReportStatisticsPage";
+import PICStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/PICStatisticsDashboard/PICStatisticsDashboard";
 import ExportPage from "../../components/DashboardComponents/ExportDashboard/ExportPage";
 import UsersPage from "../../components/DashboardComponents/UsersDashboard/UsersPage";
 import SettingPage from "../../components/DashboardComponents/SettingDashboard/SettingPage";
@@ -14,6 +15,10 @@ import UseUserDataHookEffect from "../../hooks/shared/useUserData";
 import UseReportConfigHookEffect from "../../hooks/shared/useReportConfig";
 import SidebarToggle from "./DashboardPage/_SideBarToggle";
 import VersionTracker from "../../components/GlobalComponents/VersionTracker/VersionTracker";
+import Image from "astro/components/Image.astro";
+
+import SchoolLogo from "../../assets/images/logoSekolah.png";
+
 ---
 
 <Layout pageType="dashboard">
@@ -28,11 +33,12 @@ import VersionTracker from "../../components/GlobalComponents/VersionTracker/Ver
       <div
         class="hidden lg:flex flex-row-reverse items-center justify-between gap-4"
       >
-        <img
-          src="/img/logoSekolah.png"
+        <Image
+          src={SchoolLogo}
           class="hidden md:block w-8 h-8 ring-2 ring-white rounded-full"
           alt="Logo Sekolah"
-          loading="lazy"
+          width={50}
+          loading={"eager"}
         />
         <h1 class="font-semibold text-white">E-Lapor Dashboard</h1>
       </div>
@@ -44,7 +50,8 @@ import VersionTracker from "../../components/GlobalComponents/VersionTracker/Ver
       <main class="flex-1 overflow-y-auto p-2 bg-white lg:rounded-tl-2xl ">
         <WelcomePage client:load />
         <ReportTablePage client:only />
-        <StatisticsPage client:only />
+        <ReportStatisticsPage client:only />
+        <PICStatisticsPage client:only />
         <ExportPage client:only />
         <UsersPage client:only />
         <SettingPage client:only />

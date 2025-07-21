@@ -11,7 +11,8 @@ export enum APIResultType {
     NeedCaptchaAuthentication = "Need Captcha Authentication",
     InternalServerError = "Internal Server Error",
     DatabaseError = "Database Error",
-    Conflict = "Conflict"
+    Conflict = "Conflict",
+    RateLimited = "RateLimited",
 }
 
 function status_to_apiresult(status: number): APIResultType {
@@ -26,6 +27,8 @@ function status_to_apiresult(status: number): APIResultType {
             return APIResultType.Unauthorized;
         case 409:
             return APIResultType.Conflict
+        case 429:
+            return APIResultType.RateLimited
         default:
             return APIResultType.NoError;
     }
@@ -60,7 +63,7 @@ export async function userLogin(username: string, password: string): Promise<API
     return status_to_apiresult(response.status);
 }
 
-function add_to_formdata(formData: FormData, key: string, value?: string) {
+function add_to_formdata(formData: FormData, key: string, value?: string | Blob) {
     if (value) {
         formData.append(key, value);
     }
@@ -210,7 +213,7 @@ export async function getUser(): Promise<User | APIResultType> {
 
     return api_result;
 }
-export async function getAllUsers(): Promise<User | boolean | APIResultType> {
+export async function getAllUsers(): Promise<User[] | false | APIResultType> {
     let response;
     try {
         response = await fetch(base_url_endpoint + "/api/user/allUsers", {
@@ -225,7 +228,7 @@ export async function getAllUsers(): Promise<User | boolean | APIResultType> {
 
     const api_result = status_to_apiresult(response.status);
     if(api_result === APIResultType.NoError) {
-        return (await response.json()) as User;
+        return (await response.json()) as User[];
     }
 
     return api_result;
@@ -251,7 +254,6 @@ export async function updateUser(userId: string, data: { username: string; passw
 
         return api_result;
     } catch (error) {
-        console.error(error);
         return false;
     }
 }
@@ -281,6 +283,33 @@ export async function updateReport(report_id: string, updated_data: updatedDataT
         });
 
         return status_to_apiresult(response.status);
+    }
+    catch(err) {
+        return false;
+    }
+}
+
+export async function markCompleteReport(report_id: string, confirmation_photo: File): Promise<false | APIResultType | ReportData> {
+    const formData = new FormData();
+
+    add_to_formdata(formData, "report_id", report_id);
+    add_to_formdata(formData, "confirmation_photo", confirmation_photo);
+    
+    // Fetch to API
+    try {
+        const response = await fetch(base_url_endpoint + "/api/report/complete", {
+            method: "POST",
+            credentials: "include",
+            body: formData
+        });
+
+        const result = status_to_apiresult(response.status);
+
+        if(result === APIResultType.NoError) {
+            return (await response.json()) as ReportData;
+        }
+
+        return result;
     }
     catch(err) {
         return false;
