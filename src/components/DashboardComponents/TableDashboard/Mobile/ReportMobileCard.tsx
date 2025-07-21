@@ -1,7 +1,7 @@
 import React from "react";
 import { reporttype_to_string, table_rows, type ReportData } from "../../../../types/variables";
 import { statusColors, useReportDetailHook } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { formatDate, spaces_in_camel_case } from "../../../../utils/other";
+import { formatDate } from "../../../../utils/other";
 
 interface ReportMobileCardProps {
   report: ReportData;
@@ -24,7 +24,7 @@ const ReportMobileCard: React.FC<ReportMobileCardProps> = ({ report }) => {
           {Object.entries(table_rows).map(([row, value], index) => {
             if(value === "status") {
               return <p key={index}>
-                <span className="font-bold">{row}: </span> <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}>{spaces_in_camel_case(report[value])}</span>
+                <span className="font-bold">{row}: </span> <span className={`px-6 py-1 text-xs font-semibold rounded-full truncate ${statusColors[report.status]}`}>{report[value]}</span>
               </p>
             }
 

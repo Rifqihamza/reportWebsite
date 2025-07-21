@@ -1,6 +1,6 @@
-import { useLineChartHook } from "../../../../../hooks/pages/Statistics/useChartHook";
-import { useReportConfigHook } from "../../../../../hooks/shared/useReportConfig";
-import { Campus, campuscode_to_campus } from "../../../../../types/variables";
+import { useLineChartHook } from "../../../../hooks/pages/Statistics/useChartHook";
+import { useReportConfigHook } from "../../../../hooks/shared/useReportConfig";
+import { Campus, campuscode_to_campus } from "../../../../types/variables";
 import { Accordion, AccordionTab } from "primereact/accordion";
 
 export default function LocationChartFilter() {

@@ -43,10 +43,20 @@ body {
   padding: 0;
 }
 
+.bg-form {
+  background: #1f324d;
+}
+
+.bg-form::-webkit-scrollbar {
+  display: none;
+}
+
+.bg-dashboard {
+  background: #1f324d;
+}
 
 
-/* Below are classes for overriding Primereact builtin styles */
-.titlePage  /* Is this also a class from primereact? */ {
+.titlePage {
   font-size: 18px;
   font-weight: 700;
   color: #000;
@@ -54,14 +64,52 @@ body {
   letter-spacing: 2px;
 }
 
-.MyGradient /* Is this also a class from primereact? */ {
-  mask-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 1) 20%,
-    rgba(0, 0, 0, 1) 80%,
-    rgba(0, 0, 0, 0)
-  );
+.wave {
+  background: #eee9da;
+  border-radius: 1000% 1000% 0 0;
+  position: fixed;
+  width: 150%;
+  height: 12em;
+  animation: wave 10s -3s linear infinite;
+  transform: translate3d(0, 0, 0);
+  opacity: 0.8;
+  bottom: 0;
+  left: 0;
+  z-index: -99;
+}
+
+.wave:nth-of-type(2) {
+  bottom: -1.25em;
+  animation: wave 18s linear reverse infinite;
+  opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+  bottom: -2.5em;
+  animation: wave 15s -1s reverse infinite;
+  opacity: 0.9;
+}
+
+@keyframes wave {
+  2% {
+    transform: translateX(-10);
+  }
+
+  25% {
+    transform: translateX(-10%);
+  }
+
+  50% {
+    transform: translateX(-25%);
+  }
+
+  75% {
+    transform: translateX(-10%);
+  }
+
+  100% {
+    transform: translateX(-10);
+  }
 }
 
 .p-image-preview {
@@ -173,6 +221,16 @@ body {
     --swiper-navigation-sides-offset: 10%;
     --swiper-pagination-bottom: 15px;
   }
+}
+
+.MyGradient {
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 1) 80%,
+    rgba(0, 0, 0, 0)
+  );
 }
 
 .p-progressbar {

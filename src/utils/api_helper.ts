@@ -123,8 +123,8 @@ export function verify_admin_token(token?: string): boolean {
     return token === process.env.ADMIN_TOKEN;
 }
 
-export function process_server_token(): string {
-    return jwt.sign({ key: process.env.PHP_SERVER_KEY! }, process.env.JWT_SECRET!);
+export function process_server_token(report_num: number): string {
+    return jwt.sign({ report_num: report_num }, process.env.JWT_SECRET!);
 }
 
 export async function verify_captcha_token(token: string): Promise<boolean|APIResultType> {

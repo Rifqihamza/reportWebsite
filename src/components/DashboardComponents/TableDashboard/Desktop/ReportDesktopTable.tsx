@@ -1,6 +1,6 @@
 import { reporttype_to_string, table_rows } from '../../../../types/variables';
 import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { formatDate, spaces_in_camel_case } from "../../../../utils/other";
+import { formatDate } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -58,14 +58,14 @@ export default function ReportDesktopTable() {
                         // Return a normal report data
                         return <>
                             {showedReportData.map((report, index) => (
-                                <tr key={index} data-report-id={report.id}>
+                                <tr key={index} className="" data-report-id={report.id}>
                                     {Object.values(table_rows).map((value, index) => {
                                         if(value === "status") {
                                             return <td key={index} className="px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24!">
                                                 <span
                                                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
                                                 >
-                                                    {spaces_in_camel_case(report.status)}
+                                                    {report.status}
                                                 </span>
                                             </td>;
                                         }

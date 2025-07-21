@@ -32,7 +32,7 @@ export default function ReportFormComponent() {
   const { locationOptions } = useReportConfigHook();
   const { setShowThanks } = useThanksModalHook();
   const { selectedCampus } = useCampusDataHook();
-  const { showMessage, showMessageByAPI } = useMessageToastHook();
+  const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   const toastProgress = useRef<Toast>(null);
@@ -89,8 +89,11 @@ export default function ReportFormComponent() {
       setTimeout(() => {
         setShowThanks(false);
       }, 3500);
-    } else {
-      showMessageByAPI(result);
+
+    } else if (result == APIResultType.Unauthorized) {
+      showMessage("Unauthroized report detected!", "error", "You've been detected using a service without proper authorization. Please login again.");
+    } else if (result == APIResultType.InternalServerError) {
+      showMessage("There's an unexpected error occured in the server side!", "error", "Sorry for the inconvenient, please try again later.");
     }
 
     toastProgress.current!.clear();

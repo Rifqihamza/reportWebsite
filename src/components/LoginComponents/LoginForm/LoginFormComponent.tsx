@@ -12,7 +12,7 @@ export default function LoginFormComponent() {
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(null as boolean | null);
   
-  const { showMessage, showMessageByAPI } = useMessageToastHook();
+  const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   const handleLogin = async () => {
@@ -35,10 +35,13 @@ export default function LoginFormComponent() {
       }
       else if (result === APIResultType.Unauthorized) {
         setIsPasswordCorrect(false);
-        showMessageByAPI(result, "Wrong password or username");
+        showMessage("Unauthorized!", "error", "Wrong password or username");
+      }
+      else if (result === APIResultType.DatabaseError) {
+        showMessage("Database Error!", "error", "please try again later.");
       }
       else {
-        showMessageByAPI(result as APIResultType);
+        showMessage("There's an error!", "error", "Unknown error detected please report to developer");
       }
     } catch (err) {
       showMessage("There's an unexpected error..", "error", "");
