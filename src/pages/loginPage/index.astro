@@ -11,14 +11,13 @@ import Layout from "../../layouts/Layout.astro";
       class="relative bg-zinc-900 border-4 border-[#F2E5BF] border-dashed p-6 rounded-3xl max-w-3xl w-full h-fit mx-8"
     >
       <div
-        class="px-7 py-6 rounded-2xl text-white bg-zinc-800 absolute inset-x-12 -translate-y-[5rem] flex flex-row items-center justify-between"
+        class="px-7 py-6 rounded-2xl text-white bg-zinc-800 absolute inset-x-1/8 -translate-y-[5rem] flex flex-row items-center justify-center"
       >
         <!-- Label Login -->
-        <div class="">
+        <div class="text-center">
           <h1 class="font-bold text-lg">Login Page</h1>
           <p class="text-[14px]">Please Login First!</p>
         </div>
-        <img src="/img/logoSekolah.png" class="w-10 h-auto" alt="" />
       </div>
       <form method="POST" action="" class="mt-8">
         <LoginFormComponent client:load />
