@@ -1,6 +1,6 @@
 import { reporttype_to_string, table_rows } from '../../../../types/variables';
 import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { formatDate, spaces_in_camel_case } from "../../../../utils/other";
+import { spaces_in_camel_case } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -72,7 +72,7 @@ export default function ReportDesktopTable() {
 
                                         let isSpecified = report[value] !== null;
                                         return <td key={index} className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
-                                            {isSpecified ? report[value] : "Belum Ditentukan"}
+                                            {isSpecified ? (report[value] as string) : "Belum Ditentukan"}
                                         </td>;
                                     })}
                                     

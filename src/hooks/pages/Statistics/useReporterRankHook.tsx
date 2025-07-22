@@ -81,8 +81,12 @@ export default function useReporterRankHookEffect() {
     const max_date = (new Date()).valueOf() - (1000 * 60 * 60 * 24 * 3); // Report is considered valid after 3 days
     // Looping through report data ( O(2*n) based on how much report data )
     reportData.filter((data) => (new Date(data.created_at)).valueOf() < max_date).forEach((data) => {
+      if(!Object.keys(result).includes(data.account_name)) {
+        return;
+      }
+
       result[data.account_name].totalReports += 1;
-      
+
       if(data.status === ReportStatus.Complete) {
         result[data.account_name].totalCompletedReports += 1;
       }

@@ -3,7 +3,7 @@ import { Image } from "primereact/image";
 import { AccountAPIPrivillage, ReportStatus, reporttype_to_string } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { formatDate, spaces_in_camel_case } from "../../../../utils/other";
+import { date_to_str, spaces_in_camel_case } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";
 import { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -103,8 +103,8 @@ export default function ReportDetailModal() {
                     <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
                     <DetailField label="Follow Up Oleh:" value={report_data?.follow_up_name} fallback="Belum ditentukan" />
                     <DetailField label="Jenis Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
-                    <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : ""} fallback="Belum ditentukan" />
-                    <DetailField label="Tenggat Waktu:" value={report_data?.due_date ? formatDate(report_data.due_date) : undefined} fallback="Belum ditentukan" />
+                    <DetailField label="Tanggal Temuan:" value={report_data ? date_to_str(report_data.report_date) : ""} fallback="Belum ditentukan" />
+                    <DetailField label="Tenggat Waktu:" value={report_data?.due_date ? date_to_str(report_data.due_date) : undefined} fallback="Belum ditentukan" />
                   </div>
                 </AccordionTab>
               </Accordion>

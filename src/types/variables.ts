@@ -76,9 +76,9 @@ export const ReportData_TypeGuard = z.strictObject({
     detail_location: z.string(),
     pic_id: z.string().nullable(),
     pic_name: z.string().nullable(),
-    created_at: z.date(),
-    report_date: z.date(),
-    due_date: z.date().nullable(),
+    created_at: z.date().or(z.string()),
+    report_date: z.date().or(z.string()),
+    due_date: z.date().or(z.string()).nullable(),
     campus: z.nativeEnum(Campus).nullable(),
     image: z.string(),
     image_after_finish: z.string().nullable(),
@@ -92,7 +92,7 @@ export const User_TypeGuard = z.strictObject({
     username: z.string(),
     password: z.string(),
     role: z.nativeEnum(AccountType),
-    created_at: z.date(),
+    created_at: z.date().or(z.string()),
     lowercased_username: z.string(),
     inactive: z.boolean()
 });
@@ -102,7 +102,7 @@ export type User = z.infer<typeof User_TypeGuard>;
 export const Report_PIC_TypeGuard = z.strictObject({
     id: z.string(),
     name: z.string(),
-    created_at: z.date(),
+    created_at: z.date().or(z.string()),
     campus_name: z.string()
 });
 export type Report_PIC = z.infer<typeof Report_PIC_TypeGuard>;

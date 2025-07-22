@@ -3,7 +3,7 @@ import { useDashboardNavbarHook } from "../../../../hooks/shared/useDashboardNav
 import React, { Suspense } from "react";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 import PICCOmpactData from "./outputs/PICCompactData";
-import UserRankTable from "./outputs/UserRankTable";
+import UserRankTable from "./outputs/ReporterRankTable";
 
 const ReportCountChart = React.lazy(() => import("./outputs/PICReportCountChart"));
 const RankingTable = React.lazy(() => import("./outputs/PICRankTable"));
