@@ -43,4 +43,9 @@ export const error_message: {
     detail: "Maaf, Silahkan tunggu beberapa menit untuk mengguanakan website ini lagi.",
     severity: "error"
   },
+  "Data Mismatch": {
+    title: "Data tidak sesuai!",
+    detail: "Maaf, Silahkan tunggu beberapa menit untuk mengguanakan website ini lagi.",
+    severity: "error"
+  }
 }
