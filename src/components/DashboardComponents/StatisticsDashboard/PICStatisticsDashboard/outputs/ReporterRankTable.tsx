@@ -15,7 +15,6 @@ export default function UserRankTable() {
               <th className="border-b border-gray-300 py-4 text-left">Rank</th>
               <th className="border-b border-gray-300 py-4 text-left">Nama Pelapor</th>
               <th className="border-b border-gray-300 py-4 text-left">Total Laporan</th>
-              <th className="border-b border-gray-300 py-4 text-left">Laporan Selesai</th>
             </tr>
           </thead>
           <tbody>
@@ -24,7 +23,6 @@ export default function UserRankTable() {
                   <td className="border-b border-gray-300 px-2 py-4 min-w-18 max-w-18">{data.rank}</td>
                   <td className="border-b border-gray-300 px-2 py-4 min-w-48 max-w-48 truncate">{data.name}</td>
                   <td className="border-b border-gray-300 px-2 py-4 min-w-38 max-w-38">{data.totalReports}</td>
-                  <td className="border-b border-gray-300 px-2 py-4 min-w-38 max-w-38">{data.totalCompletedReports}</td>
                 </tr>;
             })}
           </tbody>

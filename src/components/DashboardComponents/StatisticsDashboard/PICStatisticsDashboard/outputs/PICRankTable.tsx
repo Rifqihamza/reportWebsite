@@ -13,7 +13,7 @@ export default function PICRankTable() {
             <tr>
               <th className="border-b border-gray-300 py-4 text-left">Rank</th>
               <th className="border-b border-gray-300 py-4 text-left">Nama PIC</th>
-              <th className="border-b border-gray-300 py-4 text-left">Total Laporan</th>
+              <th className="border-b border-gray-300 py-4 text-left">Laporan Diurus</th>
               <th className="border-b border-gray-300 py-4 text-left">Laporan Selesai</th>
             </tr>
           </thead>
