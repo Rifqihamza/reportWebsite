@@ -30,17 +30,17 @@ export default function SidebarDashboard() {
         }
     };
 
-    const renderMenuItem = (menu: MenuItem|MenuItemGroup, index: number) => {
-        if((menu as any).items) {
+    const renderMenuItem = (menu: MenuItem | MenuItemGroup, index: number) => {
+        if ((menu as any).items) {
             menu = menu as MenuItemGroup;
 
-            if(menu.items.every((item) => item.privillage && !userPrivillages.includes(item.privillage))) {
+            if (menu.items.every((item) => item.privillage && !userPrivillages.includes(item.privillage))) {
                 return ""
             }
-            
+
             const isActive = menu.items.some((item) => activeTab === item.id);
             const isGroupOpened = (openedMenuTab.find((item) => item.id === index)?.isOpen);
-            
+
             return <li key={index}>
                 <div className="">
                     <button
@@ -54,7 +54,7 @@ export default function SidebarDashboard() {
                             <i data-is-open={isGroupOpened} className="pi pi-angle-down duration-500 origin-[50%_30%] scale-y-100 data-[is-open=true]:-scale-y-100"></i>
                         </div>
                         <span
-                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${isActive ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
+                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${isGroupOpened ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
                                 }`}
                         ></span>
                     </button>
@@ -62,13 +62,13 @@ export default function SidebarDashboard() {
                         {
                             menu.items.map((item, index) => {
                                 return <button
-                                        key={index}
-                                        onClick={() => setActiveTab(item.id)}
-                                        className={`p-3 relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === item.id ? "text-white bg-black/50" : "text-gray-300"
-                                            }`}
-                                    >
-                                        {item.label}
-                                    </button>
+                                    key={index}
+                                    onClick={() => setActiveTab(item.id)}
+                                    className={`p-3 relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === item.id ? "text-white bg-black/50" : "text-gray-300"
+                                        }`}
+                                >
+                                    {item.label}
+                                </button>
                             })
                         }
                     </div>
@@ -78,22 +78,22 @@ export default function SidebarDashboard() {
         else {
             menu = menu as MenuItem;
 
-            if(menu.privillage && !userPrivillages.includes(menu.privillage)) {
+            if (menu.privillage && !userPrivillages.includes(menu.privillage)) {
                 return "";
             }
 
-            
+
             return (
                 <li key={index}>
                     <button
                         onClick={() => setActiveTab((menu as MenuItem).id)}
-                        className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === menu.id ? "text-white" : "text-gray-300"
+                        className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === menu.id ? "text-[#DCD7C9]" : "text-white"
                             }`}
                     >
                         <i className={menu.icon}></i>
                         {menu.label}
                         <span
-                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${activeTab === menu.id ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
+                            className={`absolute bottom-0 left-0 h-1 bg-[#DCD7C9] rounded-full transition-all duration-500 ${activeTab === menu.id ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
                                 }`}
                         ></span>
                     </button>

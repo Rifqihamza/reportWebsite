@@ -44,7 +44,7 @@ body {
 }
 
 .bg-form {
-  background: #257180;
+  background: #2c3930;
 }
 
 .bg-form::-webkit-scrollbar {
@@ -54,7 +54,7 @@ body {
 .bg-dashboard,
 .sidebarDashboard,
 .headerDashboard {
-  background: #257180;
+  background: #2c3930;
 }
 
 .titlePage {
@@ -66,7 +66,7 @@ body {
 }
 
 .wave {
-  background: #fd8b51;
+  background: #dcd7c9;
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 150%;

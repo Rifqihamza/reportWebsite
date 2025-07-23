@@ -34,14 +34,16 @@ import VersionTracker from "../../components/GlobalComponents/VersionTracker/Ver
           class="hidden md:block w-8 h-8 ring-2 ring-white rounded-full"
           alt="Logo Sekolah"
         />
-        <h1 class="font-semibold text-[#FEF0EF]">E-Lapor Dashboard</h1>
+        <h1 class="font-semibold text-[#DCD7C9]">E-Lapor Dashboard</h1>
       </div>
     </header>
     <div class="flex h-full overflow-y-auto">
       <!-- Sidebar -->
       <SidebarDashboard client:load />
       <!-- Main Pages Scrollable -->
-      <main class="flex-1 overflow-y-auto p-2 shadow shadow-black bg-[#F2E5BF] lg:rounded-tl-2xl ">
+      <main
+        class="flex-1 overflow-y-auto p-2 shadow shadow-black bg-[#3F4F44] lg:rounded-tl-2xl"
+      >
         <WelcomePage client:load />
         <ReportTablePage client:only />
         <ReportStatisticsPage client:only />
@@ -49,7 +51,7 @@ import VersionTracker from "../../components/GlobalComponents/VersionTracker/Ver
         <ExportPage client:only />
         <UsersPage client:only />
         <SettingPage client:only />
-      </div>
+      </main>
     </div>
   </section>
 </Layout>
