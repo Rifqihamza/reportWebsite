@@ -1,3 +1,6 @@
+import { z } from 'zod';
+
+
 export enum AccountType {
     Admin = "Admin",
     Guru = "Guru",
@@ -56,7 +59,7 @@ export function campus_to_campuscode(campus?: Campus): string | undefined {
 }
 
 export function campuscode_to_campus(campus_code?: string): Campus | undefined {
-    return Object.values(Campus)[Object.keys(Campus).findIndex(value => value == campus_code)]
+    return Object.values(Campus)[Object.keys(Campus).findIndex(value => value == campus_code)];
 }
 
 // DATABASE MODEL
@@ -120,6 +123,7 @@ export const table_rows: {
 } = {
     "Status": "status",
     "Nama": "submitted_by",
+    "PIC": "pic_name",
     "Laporan": "message",
     "Kampus": "campus",
     "Lokasi": "location_name",
@@ -141,28 +145,24 @@ export const keyto_table_rows: Partial<{
 
 // Other things
 export const statusColorHex: Record<string, string> = {
-    NotStarted: "oklch(70.4% 0.191 22.216)",
-    InProcess: "oklch(90.5% 0.182 98.111)",
-    Complete: "oklch(79.2% 0.209 151.711)",
-    Hold: "oklch(70.7% 0.165 254.624)",
-    Abnormality: "#FFC107",
-    "5R": "#4CAF50",
-    Safety: "#F44336"
+    NotStarted: "#fca5a5", // Tailwind bg-red-300
+    InProcess: "#fde047",  // Tailwind bg-yellow-300
+    Complete: "#86efac",   // Tailwind bg-green-300
+    Hold: "#93c5fd",       // Tailwind bg-blue-300
+    Abnormality: "#f3d262",
+    "5R": "#7750a5",
+    Safety: "#ea8557"
 };
 
 export enum ExportOutputType {
-    Excel = "/excelIcon.png",
-    CSV = "/csvIcon.png"
+    Excel = "Excel",
+    CSV = "CSV",
 }
 
-export const ExportOutputTitles = [
-    { value: ExportOutputType.Excel, title: "Excel" },
-    { value: ExportOutputType.CSV, title: "CSV" },
-];
 
 export enum AccountAPIPrivillage {
     AllPrivillages = "AllPrivillages",
-
+    
     // User Related Privillage
     CreateUser = "CreateUser",
     UpdateUser = "UpdateUser",
@@ -173,11 +173,13 @@ export enum AccountAPIPrivillage {
     // Report Related Privillage
     CreateReport = "CreateReport",
     UpdateReport = "UpdateReport",
+    MarkCompeleteReport = "MarkCompeleteReport",
     DeleteReport = "DeleteReport",
     GetReport = "GetReport",
-
+    
     // Umm Related Privillage
-    StatisticsPage = "StatisticsPage",
+    ReportStatisticsPage = "ReportStatisticsPage",
+    PICStatisticsPage = "PICStatisticsPage",
     ExportPage = "ExportPage",
     UsersPage = "UsersPage"
 }
@@ -191,7 +193,8 @@ export const account_to_api_privillage: {
         AccountAPIPrivillage.CreateReport,
         AccountAPIPrivillage.GetReport,
         AccountAPIPrivillage.UpdateReport,
-        AccountAPIPrivillage.SettingProfile
+        AccountAPIPrivillage.SettingProfile,
+        AccountAPIPrivillage.MarkCompeleteReport
     ],
     "Siswa": [
         AccountAPIPrivillage.CreateReport,
@@ -217,9 +220,7 @@ export const privillage_for_dashboard = [
 ];
 
 export function has_access_to_dashboard(role: AccountType) {
-    const privillages = account_to_api_privillage[role];
-    console.log(`Has access to dashboard: ${privillage_for_dashboard.findIndex(x => privillages.includes(x)) > -1}`);
-    return privillage_for_dashboard.findIndex(x => privillages.includes(x)) > -1;
+    return privillage_for_dashboard.findIndex(x => account_to_api_privillage[role].includes(x)) > -1;
 }
 
 
@@ -232,42 +233,67 @@ export interface MenuItem {
     privillage?: AccountAPIPrivillage
 }
 
-export const menuItems: MenuItem[] = [
-    {
+export interface MenuItemGroup {
+    label: string;
+    icon: string;
+    items: {
+        id: number;
+        label: string;
+        icon: string;
+        description: string;
+        privillage?: AccountAPIPrivillage
+    }[]
+}
+
+export const menuItems: (MenuItem|MenuItemGroup)[] = [
+    { 
         id: 0,
         label: "Home",
         icon: "pi pi-home",
         description: "Kembali ke menu utama untuk melihat navigasi ke tempat-tempat lain"
     },
-    {
+    { 
         id: 1,
         label: "Table",
         icon: "pi pi-table",
         privillage: AccountAPIPrivillage.GetReport,
         description: "Lihat dan kelola data laporan yang disimpan"
     },
-    {
-        id: 2,
+    { 
         label: "Statistics",
-        icon: "pi pi-chart-bar",
-        privillage: AccountAPIPrivillage.StatisticsPage,
-        description: "Lihat dan analisa data laporan berdasarkan statistik"
+        icon: "pi pi-chart-pie",
+        items: [
+            {
+                id: 2,
+                label: "Report Statistics",
+                icon: "pi pi-chart-line",
+                privillage: AccountAPIPrivillage.ReportStatisticsPage,
+                description: "Lihat dan analisa data laporan berdasarkan statistik"
+            },
+            {
+                id: 6,
+                label: "PIC Statistics",
+                icon: "pi pi-chart-bar",
+                privillage: AccountAPIPrivillage.PICStatisticsPage,
+                description: "Lihat dan analisa PIC beserta laporan nya"
+            }
+        ]
     },
-    {
+    { 
         id: 3,
         label: "Export",
         icon: "pi pi-file-export",
         privillage: AccountAPIPrivillage.ExportPage,
         description: "Download data yang telah terekam sistem"
     },
-    {
+    { 
         id: 4,
         label: "Users",
         icon: "pi pi-user",
         privillage: AccountAPIPrivillage.UsersPage,
         description: "Lihat data pengguna yang menggunakan website ini"
     },
-    {
+    { 
         id: 5,
         label: "Setting",
         icon: "pi pi-cog",
