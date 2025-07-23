@@ -1,9 +1,9 @@
 import strftime from "strftime";
 
-export function formatDate(dateStr: string) {
-  const date = new Date(dateStr);
+export function date_to_str(date: Date | string | null): string {
+  if(!date) return "";
+  if(typeof date === "string") date = new Date(date);
 
-  // Format date part
   const formattedDate = date.toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",

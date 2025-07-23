@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Image } from "primereact/image";
 import { AccountAPIPrivillage, reporttype_to_string } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
-import { useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { statusColorHex } from "../../../../types/variables";
-import { formatDate } from "../../../../utils/other";
+import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
+import { date_to_str, spaces_in_camel_case } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";
 import { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -74,7 +73,7 @@ export default function ReportDetailModal() {
               Status:
               <span
                 className="font-medium md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2 text-white"
-                style={{ backgroundColor: report_data ? statusColorHex[report_data.status] : "#FD8B51" }}
+                style={{ backgroundColor: report_data ? statusColors[report_data.status] : "#FD8B51" }}
               >
                 {report_data?.status}
               </span>
@@ -106,8 +105,8 @@ export default function ReportDetailModal() {
                     <DetailField label="Nama PIC:" value={report_data?.pic_name} fallback="Belum ditentukan" />
                     <DetailField label="Follow Up Oleh:" value={report_data?.follow_up_name} fallback="Belum ditentukan" />
                     <DetailField label="Jenis Follow Up:" value={report_data?.follow_up} fallback="Belum ditentukan" />
-                    <DetailField label="Tanggal Temuan:" value={report_data ? formatDate(report_data.report_date) : ""} fallback="Belum ditentukan" />
-                    <DetailField label="Tenggat Waktu:" value={report_data?.due_date ? formatDate(report_data.due_date) : undefined} fallback="Belum ditentukan" />
+                    <DetailField label="Tanggal Temuan:" value={report_data ? date_to_str(report_data.report_date) : ""} fallback="Belum ditentukan" />
+                    <DetailField label="Tenggat Waktu:" value={report_data?.due_date ? date_to_str(report_data.due_date) : undefined} fallback="Belum ditentukan" />
                   </div>
                 </AccordionTab>
               </Accordion>
