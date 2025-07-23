@@ -3,13 +3,15 @@ import { useUserDataHook } from "../../../hooks/shared/useUserData";
 import { userLogout } from "../../../utils/api_interface";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
-import { menuItems, type MenuItem } from "../../../types/variables";
+import { menuItems, type MenuItem, type MenuItemGroup } from "../../../types/variables";
 
 
 export default function SidebarDashboard() {
     const { showSidebar, setShowSidebar, activeTab, setActiveTab } = useDashboardNavbarHook();
     const { userData, userPrivillages } = useUserDataHook();
     const { isConnected } = useNetworkConnectivityHook();
+
+    const [openedMenuTab, setOpenedMenuTab] = useState<{ id: number, isOpen: boolean }[]>(menuItems.map((item, index) => ({ id: index, isFiltered: (item as any).items !== undefined })).filter((item) => item.isFiltered).map((item) => ({ id: item.id, isOpen: false })));
 
     useEffect(() => {
         setShowSidebar(false);
@@ -28,30 +30,76 @@ export default function SidebarDashboard() {
         }
     };
 
-    const renderMenuItem = ({ id, label, icon, privillage }: MenuItem) => {
-        if (privillage && !userPrivillages.includes(privillage)) {
-            return <></>;
-        }
+    const renderMenuItem = (menu: MenuItem|MenuItemGroup, index: number) => {
+        if((menu as any).items) {
+            menu = menu as MenuItemGroup;
 
-        return (
-            <ul key={id}>
-                <li>
+            if(menu.items.every((item) => item.privillage && !userPrivillages.includes(item.privillage))) {
+                return ""
+            }
+            
+            const isActive = menu.items.some((item) => activeTab === item.id);
+            const isGroupOpened = (openedMenuTab.find((item) => item.id === index)?.isOpen);
+            
+            return <li key={index}>
+                <div className="">
                     <button
-                        onClick={() => setActiveTab(id)}
-                        className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === id ? "text-[#F2F0EF]" : "text-[#dddd]"
+                        onClick={() => setOpenedMenuTab(openedMenuTab.map((item) => item.id === index ? { id: item.id, isOpen: !item.isOpen } : item))}
+                        className={`relative w-full flex flex-row items-center text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${isActive ? "text-white" : "text-gray-300"
                             }`}
                     >
-                        <i className={icon}></i>
-                        {label}
+                        <i className={menu.icon}></i>
+                        <div className="w-full flex flex-row justify-between">
+                            <span>{menu.label}</span>
+                            <i data-is-open={isGroupOpened} className="pi pi-angle-down duration-500 origin-[50%_30%] scale-y-100 data-[is-open=true]:-scale-y-100"></i>
+                        </div>
                         <span
-                            className={`absolute bottom-0 left-0 h-1 bg-[#F2F0EF] rounded-full transition-all duration-500 ${activeTab === id ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
+                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${isActive ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
+                                }`}
+                        ></span>
+                    </button>
+                    <div data-is-open={isGroupOpened} className="overflow-hidden flex flex-col gap-1 bg-transparent text-white duration-500 h-28 p-2 data-[is-open=false]:h-0! data-[is-open=false]:p-0">
+                        {
+                            menu.items.map((item, index) => {
+                                return <button
+                                        key={index}
+                                        onClick={() => setActiveTab(item.id)}
+                                        className={`p-3 relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === item.id ? "text-white bg-black/50" : "text-gray-300"
+                                            }`}
+                                    >
+                                        {item.label}
+                                    </button>
+                            })
+                        }
+                    </div>
+                </div>
+            </li>
+        }
+        else {
+            menu = menu as MenuItem;
+
+            if(menu.privillage && !userPrivillages.includes(menu.privillage)) {
+                return "";
+            }
+
+            
+            return (
+                <li key={index}>
+                    <button
+                        onClick={() => setActiveTab((menu as MenuItem).id)}
+                        className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === menu.id ? "text-white" : "text-gray-300"
+                            }`}
+                    >
+                        <i className={menu.icon}></i>
+                        {menu.label}
+                        <span
+                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${activeTab === menu.id ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
                                 }`}
                         ></span>
                     </button>
                 </li>
-            </ul>
-
-        );
+            );
+        }
     };
 
     return (

@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { statusColorHex, string_to_reporttype, type ReportType } from "../../../../types/variables";
-import { usePieChartHook } from "../../../../hooks/pages/Statistics/useChartHook";
+import { statusColorHex, string_to_reporttype, type ReportType } from "../../../../../types/variables";
+import { usePieChartHook } from "../../../../../hooks/pages/Statistics/useChartHook";
 interface ApexInternalConfig {
-    config: {
-        labels: string[];
-        series: number[];
-    };
+  config: {
+    labels: string[];
+    series: number[];
+  };
 }
 
 interface PieChartProps {
-    reportType?: ReportType | null,
+    reportType?: ReportType|null,
     category?: boolean
 }
 
@@ -26,7 +26,7 @@ const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
         acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
         return acc;
     }, {} as Record<string, number>);
-
+    
     const reportByStatus = pieStatus.reduce((acc, report) => {
         report.labels = (report.labels == "VR" ? "5R" : report.labels);
         if (!acc[report.labels]) {
@@ -35,7 +35,7 @@ const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
         acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
         return acc;
     }, {} as Record<string, number>);
-
+    
 
 
     const labels = Object.keys(category ? reportByCategory : reportByStatus);
@@ -46,8 +46,8 @@ const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
         chart: {
             type: 'pie' as const,
             data: series,
-            events: category ? {
-                dataPointSelection: function (event: MouseEvent, chartContext: ApexCharts, config: {
+            events: category ?{
+                dataPointSelection: function(event: MouseEvent, chartContext: ApexCharts, config: {
                     seriesIndex: number;
                     dataPointIndex: number;
                     selectedDataPoints: number[][];
@@ -92,13 +92,12 @@ const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
         },
         legend: {
             show: true,
-            position: 'bottom' as 'bottom',
-
+            position: 'bottom' as 'bottom'
         },
     };
 
     return (
-        <ReactApexChart options={options} series={series} type="pie" height="250" />
+        <ReactApexChart options={options} series={series} type="pie" width="300" />
     );
 };
 

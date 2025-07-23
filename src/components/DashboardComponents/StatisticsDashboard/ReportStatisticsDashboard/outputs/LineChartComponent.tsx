@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { LineChartTimeCategoryOption, listOfDay, listOfMonths, useLineChartHook } from '../../../../hooks/pages/Statistics/useChartHook';
+import { LineChartTimeCategoryOption, listOfDay, listOfMonths, useLineChartHook } from '../../../../../hooks/pages/Statistics/useChartHook';
 
-const maxYAxisSnapLength = 2;
+const maxYAxisSnapLength = 10;
 
 interface Report {
     type: string;
@@ -82,7 +82,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
     };
 
     return (
-        <ReactApexChart options={options} series={series} type="line" height={230} />
+        <ReactApexChart options={options} series={series} type="line" height={300} />
     );
 };
 

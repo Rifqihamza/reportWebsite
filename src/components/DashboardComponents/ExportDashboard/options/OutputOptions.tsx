@@ -19,6 +19,7 @@ export default function OutputOptions() {
           <div className="flex flex-row items-center gap-4 w-full">
             {outputOptions.map((value, index) => {
               const titleObj = ExportOutputTitles.find((t) => t.value === value);
+              if(!titleObj) return "";
 
               return (
                 <button
@@ -30,7 +31,7 @@ export default function OutputOptions() {
                 rounded-xl duration-300 hover:brightness-75 flex flex-row items-center justify-center gap-3`}
                   onClick={() => setSelectedOutput(value)}
                 >
-                  <img src={value} />
+                  <img src={titleObj.icon} />
                   <h1 className="text-lg font-semibold">{titleObj?.title}</h1>
                 </button>
               );

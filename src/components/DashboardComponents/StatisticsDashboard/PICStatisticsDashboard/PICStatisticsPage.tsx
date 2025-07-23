@@ -8,7 +8,7 @@ import UserRankTable from "./outputs/ReporterRankTable";
 const ReportCountChart = React.lazy(() => import("./outputs/PICReportCountChart"));
 const RankingTable = React.lazy(() => import("./outputs/PICRankTable"));
 
-export default function PICStatisticsDashboard() {
+export default function PICStatisticsPage() {
   const { activeTab } = useDashboardNavbarHook();
 
   if(activeTab !== 6) {

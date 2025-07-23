@@ -2,7 +2,8 @@
 // Pages
 import WelcomePage from "../../components/DashboardComponents/WelcomeDashboard/WelcomePage";
 import ReportTablePage from "../../components/DashboardComponents/TableDashboard/ReportTablePage";
-import StatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/StatisticsPage";
+import ReportStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/ReportStatisticsDashboard/ReportStatisticsPage";
+import PICStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/PICStatisticsDashboard/PICStatisticsPage";
 import ExportPage from "../../components/DashboardComponents/ExportDashboard/ExportPage";
 import UsersPage from "../../components/DashboardComponents/UsersDashboard/UsersPage";
 import SettingPage from "../../components/DashboardComponents/SettingDashboard/SettingPage";
@@ -43,7 +44,8 @@ import VersionTracker from "../../components/GlobalComponents/VersionTracker/Ver
       <main class="flex-1 overflow-y-auto p-2 shadow shadow-black bg-[#F2E5BF] lg:rounded-tl-2xl ">
         <WelcomePage client:load />
         <ReportTablePage client:only />
-        <StatisticsPage client:only />
+        <ReportStatisticsPage client:only />
+        <PICStatisticsPage client:only />
         <ExportPage client:only />
         <UsersPage client:only />
         <SettingPage client:only />

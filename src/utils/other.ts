@@ -63,3 +63,7 @@ export function which_latest_version(version1: string, version2: string): string
   
   return null;
 }
+
+export function spaces_in_camel_case(word: string): string {
+  return Array.from(word).map((w, index) => ((w.toLowerCase() === w && index > 0) ? w : ` ${w}`)).join("");
+}

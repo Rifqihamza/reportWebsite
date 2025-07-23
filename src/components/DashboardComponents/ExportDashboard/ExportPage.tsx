@@ -54,7 +54,7 @@ export default function ExportPage() {
     const resultData: string[][] = [["No.", ...(selectedRows.map((value) => keyto_table_rows[value]) as string[])], ...(filteredReportData.map((value, index) => {
       let result: string[] = [(index + 1).toString()];
       selectedRows.forEach((row) => {
-        result.push((row === "type" ? reporttype_to_string(value[row]) : value[row]) ?? "");
+        result.push((row === "type" ? reporttype_to_string(value[row]) : value[row]?.toString()) ?? "");
       })
       return result;
     }))]
