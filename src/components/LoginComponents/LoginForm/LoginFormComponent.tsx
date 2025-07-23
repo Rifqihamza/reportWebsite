@@ -8,24 +8,24 @@ import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConn
 export default function LoginFormComponent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const [loginDisabled, setLoginDisabled] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(null as boolean | null);
-  
+
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   const handleLogin = async () => {
-    if(!isConnected) {
+    if (!isConnected) {
       showMessage("Internet koneksi terputus.", "error", "Mohon coba lagi setelah terkoneksi internet");
       return;
     }
-    
+
     setLoginDisabled(true);
 
     try {
       const result = await userLogin(username, password);
-      if(Object.values(AccountType).includes(result as AccountType)) {
+      if (Object.values(AccountType).includes(result as AccountType)) {
         showMessage("Welcome!", "success", "You've successfully login! You'll be redirected in a second..");
         setIsPasswordCorrect(true);
         setTimeout(() => {
@@ -61,7 +61,7 @@ export default function LoginFormComponent() {
         <label htmlFor="username" className={`font-bold text-gray-500 ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Username
         </label>
-        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 bg-[#CB6040] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 outline-none shadow-inner shadow-black/40 rounded-xl w-full px-4 py-3 ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
 
       {/* Password */}
@@ -69,7 +69,7 @@ export default function LoginFormComponent() {
         <label htmlFor="password" className={`font-bold text-gray-500 ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Passsword
         </label>
-        <input type="password" name="password" placeholder="Password..." className={`mt-3 bg-[#CB6040] shadow-inner shadow-gray-300 rounded-xl w-full px-4 py-3 outline-none focus:shadow-gray-100 focus:duration-300 focus:ease text-white placeholder-white! ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input type="password" name="password" placeholder="Password..." className={`mt-3 outline-none shadow-inner shadow-black/40 rounded-xl w-full px-4 py-3 ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
       </div>
       <p className={`${isPasswordCorrect ? "text-green-600" : "text-red-600"} h-1`}>{(isPasswordCorrect === false) ? "username / password is wrong" : ""}{(isPasswordCorrect === true) ? "username & password are correct!" : ""}</p>
 
@@ -77,7 +77,7 @@ export default function LoginFormComponent() {
       <div className="space-y-2 mt-8">
         <button
           type="button"
-          className={`disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#257180] -translate-y-[10px] [box-shadow:0_10px_0_#CB6040] active:[box-shadow:0_5px_0_#CB6040] active:-translate-y-[5px] text-white rounded-xl cursor-pointer`}
+          className={`disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#257180] -translate-y-[10px] [box-shadow:0_10px_0_#3C94A3] active:[box-shadow:0_5px_0_#3C94A3] active:-translate-y-[5px] text-white rounded-xl cursor-pointer`}
           disabled={loginDisabled}
           onClick={handleLogin}
         >

@@ -19,7 +19,10 @@ export default function AboutNavbar() {
         ${isScrolled ? 'fixed top-0 bg-[#257180] shadow-sm shadow-gray-800 translate-0 py-5 duration-500' : 'fixed bg-transparent duration-500'}`}
       >
         <a className="text-2xl font-normal tracking-wide cursor-pointer" href="#">E-LAPOR</a>
-        <button onClick={() => { window.location.href = "/loginPage" }} className="cursor-pointer font-normal text-md uppercase tracking-wider bg-[#CB6040] hover:bg-[#FD8B51] hover:text-[#F2E5BF] font-normal py-1 px-4 rounded-lg duration-300 transition-colors">Lapor</button>
+        <button
+          onClick={() => { window.location.href = "/loginPage" }}
+          className={`font-semibold uppercase tracking-wider cursor-pointer py-1 px-4 rounded-lg duration-300 transition-colors
+          ${isScrolled ? 'bg-[#3C94A3]' : 'bg-[#F2E5BF] text-[#257180]'} hover:bg-[#CB6040] hover:text-[#F2E5BF]`}>Lapor</button>
       </nav>
     </>
   );
