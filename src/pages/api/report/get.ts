@@ -32,16 +32,6 @@ export async function GET({ request }: APIContext) {
     let report_data: Report[];
     try {
         report_data = await prisma.report.findMany();
-
-        // Parse safely data in order to make sure its data structure
-        if (report_data.length > 0) {
-            const safe_parse_result = ReportData_TypeGuard.safeParse(report_data[0]);
-            if (!safe_parse_result.success) {
-                console.log(`Did you forgot to change the report data type guard? error: ${safe_parse_result.error}`);
-                return create_response_status(500);
-            }
-        }
-
     }
     catch (err) {
         if (err instanceof Prisma.PrismaClientInitializationError) {

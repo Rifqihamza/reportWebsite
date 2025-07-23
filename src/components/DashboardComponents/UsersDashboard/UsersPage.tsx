@@ -160,17 +160,17 @@ export default function UsersPage() {
         {(() => {
           // If the fetch is not done yet.
           if (!doneFetching) {
-            return <div className="w-full h-full flex justify-center items-center z-100 relative bg-white rounded-xl"><LoadingAnimation /></div>;
+            return <div className="w-full h-full flex justify-center items-center relative bg-white rounded-xl"><LoadingAnimation /></div>;
           }
 
           // If the user doesn't have access to users data
           if (!isAuhtorizedGetAllUsers) {
-            return <div className="w-full h-full flex justify-center items-center z-100 bg-white rounded-xl"><p>Maaf, anda tidak mendapat akses untuk melihat data pengguna.</p></div>;
+            return <div className="w-full h-full flex justify-center items-center bg-white rounded-xl"><p>Maaf, anda tidak mendapat akses untuk melihat data pengguna.</p></div>;
           }
 
           // If the user account data is empty
           if (userAccountData.length == 0) {
-            return <div className="w-full h-full flex justify-center items-center z-100 bg-white rounded-xl"><p>Tidak ada data pengguna yang tersedia.</p></div>;
+            return <div className="w-full h-full flex justify-center items-center bg-white rounded-xl"><p>Tidak ada data pengguna yang tersedia.</p></div>;
           }
 
           // If the user account data is not empty but, the filter makes them looks empty
