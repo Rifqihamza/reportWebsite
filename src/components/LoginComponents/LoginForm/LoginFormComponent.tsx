@@ -29,7 +29,7 @@ export default function LoginFormComponent() {
         showMessage("Welcome!", "success", "You've successfully login! You'll be redirected in a second..");
         setIsPasswordCorrect(true);
         setTimeout(() => {
-          window.location.href = has_access_to_dashboard(result as AccountType) ? "/dashboard" : "/form";
+          window.location.href = (result === AccountType.Admin) ? "/dashboard" : "/form";
         }, 2000);
         return;
       }
