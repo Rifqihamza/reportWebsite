@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { APIResultType, userLogin } from "../../../utils/api_interface";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
-import { account_to_api_privillage, AccountAPIPrivillage, AccountType, has_access_to_dashboard, privillage_for_dashboard } from "../../../types/variables";
+import { AccountType } from "../../../types/variables";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 export default function LoginFormComponent() {
