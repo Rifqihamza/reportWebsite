@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import UseReportDataHookEffect, { useReportDataHook } from "../../shared/useReportData";
+import { useEffect } from "react";
 
 export enum PICFilterTimeSpan {
   Yearly = "Yearly",
@@ -9,7 +11,9 @@ export enum PICFilterTimeSpan {
 };
 
 type usePICFilterType = {
+  startDateFilter: Date;
   endDateFilter: Date;
+  setStartDateFilter: (newStartDateFilter: Date) => void;
   setEndDateFilter: (newEndDateFilter: Date) => void;
   prevDate: () => void;
   nextDate: () => void;
@@ -19,12 +23,18 @@ type usePICFilterType = {
 };
 
 export const usePICFilterHook = create<usePICFilterType>((set) => ({
-  endDateFilter: new Date(),
-  setEndDateFilter: (newEndDateFilter) => set(() => ({ endDateFilter: newEndDateFilter })),
+    startDateFilter: new Date(),
+    endDateFilter: new Date(),
+    setStartDateFilter: (newStartDateFilter) => set((state) => ({ startDateFilter: newStartDateFilter })),
+    setEndDateFilter: (newEndDateFilter) => set((state) => {
+      return { 
+        endDateFilter: newEndDateFilter
+      };
+    }),
 
   prevDate: () => {
     set((state) => {
-      let resultDate = state.endDateFilter;
+      let resultDate = new Date(state.endDateFilter);
 
       if(state.currentTimeSpan === PICFilterTimeSpan.Daily) {
         resultDate.setDate(resultDate.getDate() - 1);
@@ -46,7 +56,7 @@ export const usePICFilterHook = create<usePICFilterType>((set) => ({
   },
   nextDate: () => {
     set((state) => {
-      let resultDate = state.endDateFilter;
+      let resultDate = new Date(state.endDateFilter);
 
       if(state.currentTimeSpan === PICFilterTimeSpan.Daily) {
         resultDate.setDate(resultDate.getDate() + 1);
@@ -72,5 +82,29 @@ export const usePICFilterHook = create<usePICFilterType>((set) => ({
 }));
 
 export default function UsePICFilterHookEffect() {
-  return <></>;
+  const { reportData } = useReportDataHook();
+  const { setStartDateFilter, endDateFilter, currentTimeSpan } = usePICFilterHook();
+  
+  useEffect(() => {
+    let startDateFilter = new Date();
+    if(currentTimeSpan === PICFilterTimeSpan.AllTime) {
+      startDateFilter = reportData ? new Date(reportData[reportData.length - 1].created_at) : new Date();
+    }
+    else if(currentTimeSpan === PICFilterTimeSpan.Monthly) {
+      startDateFilter.setMonth(endDateFilter.getMonth() - 1);
+    }
+    else if(currentTimeSpan === PICFilterTimeSpan.Yearly) {
+      startDateFilter.setFullYear(endDateFilter.getFullYear() - 1);
+    }
+    else if(currentTimeSpan === PICFilterTimeSpan.Weekly) {
+      startDateFilter.setDate(endDateFilter.getDate() - 7);
+    }
+    else {
+      startDateFilter.setDate(endDateFilter.getDate() - 1);
+    }
+
+    setStartDateFilter(startDateFilter);
+  }, [currentTimeSpan, endDateFilter, reportData]);
+  
+  return <><UseReportDataHookEffect /></>;
 }

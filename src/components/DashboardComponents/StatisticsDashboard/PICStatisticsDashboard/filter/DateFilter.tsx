@@ -2,33 +2,16 @@ import { PrimeReactProvider } from "primereact/api";
 import UsePICFilterHookEffect, { PICFilterTimeSpan, usePICFilterHook } from "../../../../../hooks/pages/Statistics/usePICFilterHook";
 import { Dropdown } from "primereact/dropdown";
 import strftime from "strftime";
-import { useReportDataHook } from "../../../../../hooks/shared/useReportData";
 
 export default function DateFilter() {
-  const { endDateFilter, currentTimeSpan, nextDate, prevDate, setCurrentTimeSpan } = usePICFilterHook();
-  const { reportData } = useReportDataHook();
+  const { startDateFilter, endDateFilter, currentTimeSpan, nextDate, prevDate, setCurrentTimeSpan } = usePICFilterHook();
 
-  let startDateFilter: Date = new Date(endDateFilter);
   let dateFormat: string = "%d %b %Y";
-  if(currentTimeSpan === PICFilterTimeSpan.AllTime) {
-    startDateFilter = reportData ? new Date(reportData[reportData.length - 1].created_at) : new Date();
-  }
-  else if(currentTimeSpan === PICFilterTimeSpan.Monthly) {
-    startDateFilter.setMonth(endDateFilter.getMonth() - 1);
-  }
-  else if(currentTimeSpan === PICFilterTimeSpan.Yearly) {
-    startDateFilter.setFullYear(endDateFilter.getFullYear() - 1);
-  }
-  else if(currentTimeSpan === PICFilterTimeSpan.Weekly) {
-    startDateFilter.setDate(endDateFilter.getDate() - 7);
-  }
-  else {
-    startDateFilter.setDate(endDateFilter.getDate() - 1);
-  }
 
   if(startDateFilter.getFullYear() == new Date().getFullYear()) {
     dateFormat = "%d %b";
   }
+
 
   return <>
     <UsePICFilterHookEffect />
