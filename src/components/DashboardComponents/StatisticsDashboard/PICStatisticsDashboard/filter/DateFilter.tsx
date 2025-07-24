@@ -1,7 +1,5 @@
 import { PrimeReactProvider } from "primereact/api";
-import { Calendar } from "primereact/calendar";
 import UsePICFilterHookEffect, { PICFilterTimeSpan, usePICFilterHook } from "../../../../../hooks/pages/Statistics/usePICFilterHook";
-import { useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import strftime from "strftime";
 import { useReportDataHook } from "../../../../../hooks/shared/useReportData";

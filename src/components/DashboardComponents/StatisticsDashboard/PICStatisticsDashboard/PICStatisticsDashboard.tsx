@@ -23,7 +23,6 @@ export default function PICStatisticsDashboard() {
 
         {/* Filter Table */}
         <div className="mt-10 rounded-2xl shadow p-4">  
-          <h1 className="mb-4 text-2xl">Filter Data PIC</h1>
           <DateFilter />
         </div>
 

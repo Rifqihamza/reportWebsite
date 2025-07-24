@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { create } from "zustand";
 
 export enum PICFilterTimeSpan {
@@ -6,7 +5,7 @@ export enum PICFilterTimeSpan {
   Monthly = "Monthly",
   Weekly = "Weekly",
   Daily = "Daily",
-  AllTime = "AllTime"
+  AllTime = "All Time"
 };
 
 type usePICFilterType = {
@@ -68,7 +67,7 @@ export const usePICFilterHook = create<usePICFilterType>((set) => ({
     })
   },
 
-  currentTimeSpan: PICFilterTimeSpan.Daily,
+  currentTimeSpan: PICFilterTimeSpan.AllTime,
   setCurrentTimeSpan: (newCurrentTimeSpan) => set(() => ({ currentTimeSpan: newCurrentTimeSpan, endDateFilter: new Date() }))
 }));
 
