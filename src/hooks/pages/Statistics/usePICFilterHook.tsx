@@ -6,6 +6,7 @@ export enum PICFilterTimeSpan {
   Monthly = "Monthly",
   Weekly = "Weekly",
   Daily = "Daily",
+  AllTime = "AllTime"
 };
 
 type usePICFilterType = {

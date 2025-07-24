@@ -4,14 +4,18 @@ import UsePICFilterHookEffect, { PICFilterTimeSpan, usePICFilterHook } from "../
 import { useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import strftime from "strftime";
+import { useReportDataHook } from "../../../../../hooks/shared/useReportData";
 
 export default function DateFilter() {
   const { endDateFilter, currentTimeSpan, nextDate, prevDate, setCurrentTimeSpan } = usePICFilterHook();
-
+  const { reportData } = useReportDataHook();
 
   let startDateFilter: Date = new Date(endDateFilter);
   let dateFormat: string = "%d %b %Y";
-  if(currentTimeSpan === PICFilterTimeSpan.Monthly) {
+  if(currentTimeSpan === PICFilterTimeSpan.AllTime) {
+    startDateFilter = reportData ? new Date(reportData[reportData.length - 1].created_at) : new Date();
+  }
+  else if(currentTimeSpan === PICFilterTimeSpan.Monthly) {
     startDateFilter.setMonth(endDateFilter.getMonth() - 1);
   }
   else if(currentTimeSpan === PICFilterTimeSpan.Yearly) {
