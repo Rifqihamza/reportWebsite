@@ -4,6 +4,7 @@ import React, { Suspense } from "react";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 import PICCOmpactData from "./outputs/PICCompactData";
 import UserRankTable from "./outputs/ReporterRankTable";
+import DateFilter from "./filter/DateFilter";
 
 const ReportCountChart = React.lazy(() => import("./outputs/PICReportCountChart"));
 const RankingTable = React.lazy(() => import("./outputs/PICRankTable"));
@@ -19,6 +20,12 @@ export default function PICStatisticsDashboard() {
     <PrimeReactProvider>
       <div className='flex flex-col mx-4 mt-2'>
         <h1 className="text-3xl">PIC Statistics</h1>
+
+        {/* Filter Table */}
+        <div className="mt-10 rounded-2xl shadow p-4">  
+          <h1 className="mb-4 text-2xl">Filter Data PIC</h1>
+          <DateFilter />
+        </div>
 
         {/* Box Data */}
         <div className="mt-10 rounded-2xl shadow p-4">
