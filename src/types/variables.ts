@@ -303,5 +303,6 @@ export const menuItems: (MenuItem|MenuItemGroup)[] = [
 ];
 
 
+export const max_file_size = 10;
 
 
