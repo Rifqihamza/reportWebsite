@@ -8,7 +8,7 @@ export default function DateFilter() {
 
   let dateFormat: string = "%d %b %Y";
 
-  if(startDateFilter.getFullYear() == new Date().getFullYear()) {
+  if(currentTimeSpan !== PICFilterTimeSpan.AllTime && startDateFilter.getFullYear() == new Date().getFullYear()) {
     dateFormat = "%d %b";
   }
 
@@ -18,9 +18,9 @@ export default function DateFilter() {
     <PrimeReactProvider>
       <div className="flex flex-row gap-2 items-center">
         <div className="flex flex-row gap-2 items-center justify-center px-2 h-12 shadow-lg rounded-md">
-          <button onClick={prevDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-4/5"><i className="pi pi-angle-left"></i></button>
+          <button onClick={prevDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-4/5 disabled:opacity-0 disabled:pointer-events-none" disabled={currentTimeSpan === PICFilterTimeSpan.AllTime}><i className="pi pi-angle-left"></i></button>
           <p className="w-full">{strftime(dateFormat, startDateFilter)} - {strftime(dateFormat, endDateFilter)}</p>
-          <button onClick={nextDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-4/5"><i className="pi pi-angle-right"></i></button>
+          <button onClick={nextDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-4/5 disabled:opacity-0 disabled:pointer-events-none" disabled={currentTimeSpan === PICFilterTimeSpan.AllTime}><i className="pi pi-angle-right"></i></button>
         </div>
         <div className="w-32 shadow-lg! rounded-md! h-12 flex items-center">
           <Dropdown className="bg-white! *:bg-white! [&_.p-dropdown-trigger]:rounded-md!" options={Object.values(PICFilterTimeSpan)} value={currentTimeSpan} onChange={(e) => setCurrentTimeSpan(e.value)} />
