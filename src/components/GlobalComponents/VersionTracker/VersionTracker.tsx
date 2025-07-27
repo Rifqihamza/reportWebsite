@@ -10,7 +10,8 @@ type ChangesType = {
   "changes": {
     "features": string[],
     "fixes": string[],
-    "improvements": string[]
+    "improvements": string[],
+    "adjustments": string[]
   }
 }
 
@@ -36,6 +37,8 @@ export default function VersionTracker() {
     return <></>;
   }
 
+  console.log(changes);
+  console.log(changes.changes.improvements);
   return <>
     <PrimeReactProvider>
       <Dialog header={
@@ -47,6 +50,7 @@ export default function VersionTracker() {
         {changes.changes.features.length > 0 ? <ChangesGroup label="Features" changes={changes.changes.features} /> : <></>}
         {changes.changes.improvements.length > 0 ? <ChangesGroup label="Improvements" changes={changes.changes.improvements} /> : <></>}
         {changes.changes.fixes.length > 0 ? <ChangesGroup label="Fixes" changes={changes.changes.fixes} /> : <></>}
+        {changes.changes.adjustments.length > 0 ? <ChangesGroup label="Adjustments" changes={changes.changes.adjustments} /> : <></>}
       </Dialog>
     </PrimeReactProvider>
   </>
