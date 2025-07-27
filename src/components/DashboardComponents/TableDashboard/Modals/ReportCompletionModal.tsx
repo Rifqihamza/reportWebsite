@@ -5,6 +5,7 @@ import { useMessageToastHook } from "../../../../hooks/shared/useMessageToast";
 import { APIResultType, markCompleteReport } from "../../../../utils/api_interface";
 import { error_message } from "../../../../types/error";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
+import { max_file_size } from "../../../../types/variables";
 
 
 export default function ReportCompletionModal() {
@@ -89,11 +90,11 @@ export default function ReportCompletionModal() {
             <p className={`mb-1 text-sm text-${image ? "black" : "black"}`} id="file-name-display">
               {image ? image.name : "Klik untuk upload foto"}
             </p>
-            <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : "PNG, JPG atau JPEG (Max. 8MB)"}</p>
+            <p className={`text-xs text-${image ? "black" : "black"}`}>{image ? `${image.type} (${(image.size.toString().length > 6) ? (Math.round(image.size / 10000) / 100) + "MB" : (Math.round(image.size / 10) / 100) + "KB"})` : `PNG, JPG atau JPEG (Max. ${max_file_size}MB)`}</p>
           </div>
 
           <input
-            autoComplete="off" id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < 8000000) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", "Please put an image smaller than 8MB"))) : "" }} />
+            autoComplete="off" id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < (max_file_size * 1000000)) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", "Please put an image smaller than 8MB"))) : "" }} />
         </label>
       </div>
     </Dialog>
