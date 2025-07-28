@@ -13,7 +13,7 @@ import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar
 
 export default function ExportPage() {
   const { activeTab } = useDashboardNavbarHook();
-  const { reportData } = useReportDataHook();
+  const { chunkedReportData: reportData } = useReportDataHook();
   const { dateRange, selectedOutputType, selectedRows, filter } = useExportHook();
   const { showMessage } = useMessageToastHook();
   

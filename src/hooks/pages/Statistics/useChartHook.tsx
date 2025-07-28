@@ -180,7 +180,7 @@ const listOfHari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Mingg
 export const listOfDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export function UseChartHookEffect() {
-  const { reportData } = useReportDataHook();
+  const { chunkedReportData: reportData } = useReportDataHook();
   const { lineChartCategoryFilter: chartCategoryFilter, setPercentStatus, setPieCategory, setPieStatus } = usePieChartHook();
   const { setInsight } = useInsightHook();
   const { appliedChartTimeFilter, setLineChartFilteredReports, lineChartFilteredReports, appliedChartCampusFilter, appliedChartLocationFilter } = useLineChartHook();

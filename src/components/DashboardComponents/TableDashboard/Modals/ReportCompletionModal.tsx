@@ -11,7 +11,7 @@ import { max_file_size } from "../../../../types/variables";
 export default function ReportCompletionModal() {
   const { reportId, setReportId } = useReportCompletionHook();
   const { showMessageByAPI, showMessage } = useMessageToastHook();
-  const { reportData, setReportData } = useReportDataHook();
+  const { chunkedReportData: reportData, addReportChunk: setReportData } = useReportDataHook();
 
   const [image, setImage] = useState<File|null>(null);
   const [disableComplete, setDisableComplete] = useState(false);

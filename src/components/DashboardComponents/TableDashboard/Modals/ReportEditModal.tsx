@@ -28,7 +28,7 @@ const reportStatusOptions = Object.values(ReportStatus).map((status) => {
 });
 
 export default function ReportEditModal() {
-  const { reportData, setReportData } = useReportDataHook();
+  const { chunkedReportData: reportData, addReportChunk: setReportData } = useReportDataHook();
   const { detailId } = useReportDetailHook();
   const { picNamesOptions } = useReportConfigHook();
   const { setReportId } = useReportCompletionHook();

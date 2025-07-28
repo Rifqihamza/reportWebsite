@@ -28,10 +28,22 @@ export async function GET({ request }: APIContext) {
     }
 
 
+    // Get the required body parameters
+    const searchParams = (new URL(request.url)).searchParams;
+    const page = Number.parseInt(searchParams.get("page") ?? "0");
+    const limit = Number.parseInt(searchParams.get("limit") ?? "0");
+    if (page <= 0 || limit <= 0) {
+        return create_response_status(400);
+    }
+
     // Get the report data
     let report_data: Report[];
     try {
-        report_data = await prisma.report.findMany();
+        report_data = await prisma.report.findMany({
+            orderBy: {
+                created_at: "desc"
+            },
+        });
 
         // Parse safely data in order to make sure its data structure
         const safe_parse_result = ReportData_TypeGuard.safeParse(report_data[0]);
@@ -69,7 +81,12 @@ export async function GET({ request }: APIContext) {
         return create_response_status(500);
     }
 
+    const max_page = Math.ceil(report_data.length / limit);
+    const sliced_report_data = report_data.slice(page * limit, Math.min(report_data.length - 1, (page + 1) * limit));
 
     // Return the report data
-    return create_response_json(report_data);
+    return create_response_json({
+        max_page: max_page,
+        report_data: sliced_report_data
+    });
 }

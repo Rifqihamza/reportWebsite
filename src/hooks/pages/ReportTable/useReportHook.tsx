@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   AccountType,
   Campus,
+  maxReportDataPerPage,
   ReportStatus,
   ReportType,
   table_rows,
@@ -13,8 +14,6 @@ import { APIResultType, deleteReport } from "../../../utils/api_interface";
 import { useMessageToastHook } from "../../shared/useMessageToast";
 import { useEffect } from "react";
 import { useNetworkConnectivityHook } from "../../shared/useNetworkConnectivity";
-
-const maxReportDataPerPage: number = 10;
 
 // --/ Report Detail Hook
 type useReportDetailHookType = {
@@ -61,7 +60,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       const { isConnected } = useNetworkConnectivityHook.getState();
       if(!isConnected) return;
       
-      const { reportData, setReportData } = useReportDataHook.getState();
+      const { chunkedReportData: reportData, addReportChunk: setReportData } = useReportDataHook.getState();
       const { userData } = useUserDataHook.getState();
       const { showMessage, showMessageByAPI } = useMessageToastHook.getState();
 
@@ -208,7 +207,7 @@ export const useReportFilterHook = create<useReportFilterType>((set) => {
 export function ReportHookEffect() {
   const { currentPage, setCurrentPage, setMaxPage, setShowedReportData } =
     useReportPaginationHook();
-  const { reportData } = useReportDataHook();
+  const { chunkedReportData: reportData } = useReportDataHook();
   const { selectedFilter, dateFilter, searchKeyword, filteredReports, setFilteredReports } =
     useReportFilterHook();
 

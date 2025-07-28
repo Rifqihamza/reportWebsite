@@ -54,7 +54,7 @@ export const useReporterRankHook = create<useReporterRankType>((set) => {
 });
 
 export default function useReporterRankHookEffect() {
-  const { reportData } = useReportDataHook();
+  const { chunkedReportData: reportData } = useReportDataHook();
   const { userAccountData } = useUserAccountHook();
   const { setReporterRank } = useReporterRankHook();
   

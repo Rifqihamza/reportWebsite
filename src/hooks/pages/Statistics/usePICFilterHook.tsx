@@ -82,7 +82,7 @@ export const usePICFilterHook = create<usePICFilterType>((set) => ({
 }));
 
 export default function UsePICFilterHookEffect() {
-  const { reportData } = useReportDataHook();
+  const { chunkedReportData: reportData } = useReportDataHook();
   const { setStartDateFilter, endDateFilter, currentTimeSpan } = usePICFilterHook();
   
   useEffect(() => {

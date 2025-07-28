@@ -29,7 +29,6 @@ export default function SidebarDashboard() {
         }
 
         window.location.href = "/loginPage";
-
     };
 
     const renderMenuItem = (menu: MenuItem|MenuItemGroup, index: number) => {

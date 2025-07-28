@@ -1,4 +1,4 @@
-import { AccountType, ReportType, ReportStatus } from '../types/variables';
+import { AccountType, ReportType, ReportStatus, maxReportDataPerPage } from '../types/variables';
 import type { Campus, Report_Location, Report_PIC, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
@@ -123,9 +123,10 @@ export async function addReport(
 }
 
 
-export async function getReport(): Promise<ReportData[] | APIResultType> {
+export type GetReportReturnValue = {max_page: number, report_data: ReportData[]};
+export async function getReport(page: number): Promise<GetReportReturnValue | APIResultType> {
     // Fetch to API
-    const response = await fetch(`${base_url_endpoint}/api/report/get`, {
+    const response = await fetch(`${base_url_endpoint}/api/report/get?page=${page}&limit=${maxReportDataPerPage}`, {
         method: "GET",
         credentials: "include",
     });
@@ -134,8 +135,7 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
     const api_result = status_to_apiresult(response.status);
     if(api_result === APIResultType.NoError) {
         // Sorting report data by date
-        let result = (await response.json()) as ReportData[];
-        result = result.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
+        let result = (await response.json() as GetReportReturnValue);
         return result;
     }
 

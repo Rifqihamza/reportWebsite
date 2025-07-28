@@ -78,7 +78,7 @@ export const usePICRankHook = create<usePICRankHookType>((set) => ({
 export default function UsePICRankHookEffect() {
   const { userAccountData } = useUserAccountHook();
   const { setShowedPICRank, setSortedPICData, page, maxPage, sortedPICData } = usePICRankHook();
-  const { reportData } = useReportDataHook();
+  const { chunkedReportData: reportData } = useReportDataHook();
   const { currentTimeSpan, startDateFilter, endDateFilter } = usePICFilterHook();
    
   useEffect(() => {

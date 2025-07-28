@@ -304,5 +304,5 @@ export const menuItems: (MenuItem|MenuItemGroup)[] = [
 
 
 export const max_file_size = 10;
-
+export const maxReportDataPerPage: number = 10;
 

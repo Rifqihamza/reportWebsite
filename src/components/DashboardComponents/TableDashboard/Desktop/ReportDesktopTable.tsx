@@ -8,7 +8,7 @@ import UseUserDataHookEffect, { useUserDataHook } from "../../../../hooks/shared
 export default function ReportDesktopTable() {
     const { showedReportData } = useReportPaginationHook();
     const { handleDetail } = useReportDetailHook();
-    const { reportData, isAuthorized: isAuthorizedGetReport } = useReportDataHook();
+    const { chunkedReportData: reportData, isAuthorized: isAuthorizedGetReport } = useReportDataHook();
     const { userData } = useUserDataHook();
 
     return <>

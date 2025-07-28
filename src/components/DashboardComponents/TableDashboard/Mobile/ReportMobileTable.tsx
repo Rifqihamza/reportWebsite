@@ -6,7 +6,7 @@ import ReportMobileCard from "./ReportMobileCard";
 export default function ReportMobileTable() {
   const { filteredReports } = useReportFilterHook();
   const { showedReportData } = useReportPaginationHook();
-  const { reportData } = useReportDataHook();
+  const { chunkedReportData: reportData } = useReportDataHook();
   
   return <div className="md:hidden space-y-4">
     {(() => {

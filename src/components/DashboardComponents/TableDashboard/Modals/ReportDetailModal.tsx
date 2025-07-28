@@ -12,7 +12,7 @@ import { useReportEvidenceHook } from "../../../../hooks/pages/ReportTable/useRe
 export default function ReportDetailModal() {
   const [accordionIndex, setAccordionIndex] = useState(0);
 
-  const { reportData } = useReportDataHook();
+  const { chunkedReportData: reportData } = useReportDataHook();
   const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
   
   const { setEditVisible } = useReportEditHook();
