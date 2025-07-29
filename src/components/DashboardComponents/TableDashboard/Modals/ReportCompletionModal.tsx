@@ -94,7 +94,7 @@ export default function ReportCompletionModal() {
           </div>
 
           <input
-            autoComplete="off" id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < (max_file_size * 1000000)) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", "Please put an image smaller than 8MB"))) : "" }} />
+            autoComplete="off" id="foto" name="foto" type="file" className="hidden" accept="image/*" onChange={(e) => { e.target.files ? ((e.target.files[0].size < (max_file_size * 1000000)) ? setImage(e.target.files[0]) : (showMessage("Image is too large!", "warn", `Please put an image smaller than ${max_file_size}MB`))) : "" }} />
         </label>
       </div>
     </Dialog>
