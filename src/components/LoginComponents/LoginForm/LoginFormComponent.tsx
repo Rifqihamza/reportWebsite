@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { APIResultType, userLogin } from "../../../utils/api_interface";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
-import { account_to_api_privillage, AccountAPIPrivillage, AccountType, has_access_to_dashboard, privillage_for_dashboard } from "../../../types/variables";
+import { AccountType } from "../../../types/variables";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 
 export default function LoginFormComponent() {
@@ -29,7 +29,7 @@ export default function LoginFormComponent() {
         showMessage("Welcome!", "success", "You've successfully login! You'll be redirected in a second..");
         setIsPasswordCorrect(true);
         setTimeout(() => {
-          window.location.href = has_access_to_dashboard(result as AccountType) ? "/dashboard" : "/form";
+          window.location.href = (result === AccountType.Admin) ? "/dashboard" : "/form";
         }, 2000);
         return;
       }

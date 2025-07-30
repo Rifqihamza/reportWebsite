@@ -18,16 +18,15 @@ export default function SidebarDashboard() {
     }, [activeTab]);
 
     const handleLogout = async () => {
-        if (!isConnected) return;
+        if (!isConnected || !confirm("Apakah Anda yakin ingin keluar?")) return;
 
         if (userData && !(await userLogout())) {
             alert("Terjadi error saat ingin logout!");
             return;
         }
 
-        if (confirm("Apakah Anda yakin ingin keluar?")) {
-            window.location.href = "/loginPage";
-        }
+        window.location.href = "/loginPage";
+
     };
 
     const renderMenuItem = (menu: MenuItem|MenuItemGroup, index: number) => {

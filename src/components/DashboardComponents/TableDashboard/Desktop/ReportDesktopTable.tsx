@@ -1,6 +1,6 @@
 import { reporttype_to_string, table_rows } from '../../../../types/variables';
 import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { spaces_in_camel_case } from "../../../../utils/other";
+import { date_to_str, spaces_in_camel_case } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -62,22 +62,31 @@ export default function ReportDesktopTable() {
                             {showedReportData.map((report, index) => (
                                 <tr key={index} data-report-id={report.id}>
                                     {Object.values(table_rows).map((value, index) => {
-                                        if(value === "status") {
-                                            return <td key={index} className="px-2 py-3 text-left border-b border-[#F2E5BF] whitespace-nowrap text-sm text-gray-600 truncate min-w-20! max-w-20!">
-                                                <span
-                                                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
-                                                >
-                                                    {spaces_in_camel_case(report.status)}
-                                                </span>
-                                            </td>;
+                                        let isSpecified = report[value] !== null;
+
+                                        let element = <></>;
+                                        if (!isSpecified) {
+                                            element = <>Belum Ditentukan</>;
+                                        }
+                                        else if (value === "status") {
+                                            element = <span
+                                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
+                                            >
+                                                {spaces_in_camel_case(report.status)}
+                                            </span>;
+                                        }
+                                        else if (value === "due_date" || value === "report_date" || value === "created_at") {
+                                            element = <>{date_to_str(report[value])}</>;
+                                        }
+                                        else {
+                                            element = <>{report[value]}</>;
                                         }
 
-                                        let isSpecified = report[value] !== null;
                                         return <td key={index} className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
-                                            {isSpecified ? (report[value] as string) : "Belum Ditentukan"}
+                                            {element}
                                         </td>;
                                     })}
-                                    
+
                                     <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-gray-300 min-w-12! max-w-12!">
                                         <button
                                             className="cursor-pointer border text-[#F2E5BF] hover:border-[#CB6040] hover:bg-[#257180] hover:text-white duration-300 px-3 py-1 rounded-xl"

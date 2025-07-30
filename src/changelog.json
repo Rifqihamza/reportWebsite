@@ -5,7 +5,8 @@
     "changes": {
       "features": ["Added filter options in Statistics tab"],
       "fixes": ["Fix bug when exporting data to Excel"],
-      "improvements": ["Change maximum length of some field to an appropriate length", "Change some FAQ contents", "Improve style for FAQ"]
+      "improvements": ["Change maximum length of some field to an appropriate length", "Change some FAQ contents", "Improve style for FAQ"],
+      "adjustments": []
     }
   },
   {
@@ -14,7 +15,8 @@
     "changes": {
       "features": ["Added filter options in Statistics tab"],
       "fixes": ["Fix title of report table not showing in mobile view"],
-      "improvements": ["Report detail message now supports multi-line paragraph", "Add campus filtering in statistics tab", "Change from 5MB to 8MB of image in report form"]
+      "improvements": ["Report detail message now supports multi-line paragraph", "Add campus filtering in statistics tab", "Change from 5MB to 8MB of image in report form"],
+      "adjustments": []
     }
   },
   {
@@ -23,7 +25,8 @@
     "changes": {
       "features": [],
       "fixes": [],
-      "improvements": ["Add mobile view responsiveness in users page", "Add search username in users page", "Improve users page UI"]
+      "improvements": ["Add mobile view responsiveness in users page", "Add search username in users page", "Improve users page UI"],
+      "adjustments": []
     }
   },
   {
@@ -32,7 +35,8 @@
     "changes": {
       "features": [],
       "fixes": [],
-      "improvements": ["Case-insensitivity for username in login page", "Improve website performance"]
+      "improvements": ["Case-insensitivity for username in login page", "Improve website performance"],
+      "adjustments": []
     }
   },
   {
@@ -41,7 +45,8 @@
     "changes": {
       "features": ["Admin can change username and password", "Admin can delete user", "Admin can add user", "Add location filter inside statistics section", "Teacher now can use dashboard for seeing report data and user data"],
       "fixes": ["Fix sidebar in admin dashboard can't be opened in mobile view", "Fix user data in welcome page can't be loaded", "Fix navbar in about page doesn't react when user scrolling the website"],
-      "improvements": ["Users username now can be capitalized", "Improve performance in statistics section"]
+      "improvements": ["Users username now can be capitalized", "Improve performance in statistics section"],
+      "adjustments": []
     }
   },
   {
@@ -50,7 +55,8 @@
     "changes": {
       "features": ["Settings Page"],
       "fixes": ["Fix bug when an admin update user's username", "Fix a bug that there's no loading animation in users tab for mobile user"],
-      "improvements": ["Re-design dashboard page", "Better responsiveness in statistics tab for mobile view", "Add search filter in PIC dropdown when edit a report", "User can only see several tabs in dashboard that the user has access to"]
+      "improvements": ["Re-design dashboard page", "Better responsiveness in statistics tab for mobile view", "Add search filter in PIC dropdown when edit a report", "User can only see several tabs in dashboard that the user has access to"],
+      "adjustments": []
     }
   },
   {
@@ -59,7 +65,8 @@
     "changes": {
       "features": [],
       "fixes": ["Fix minor bugs", "Some buttons background doesn't change when hovered"],
-      "improvements": ["After change username or password in setting, doesn't have to login again", "Add PIC information in Report Table", "Add loading animation in Setting Page"]
+      "improvements": ["After change username or password in setting, doesn't have to login again", "Add PIC information in Report Table", "Add loading animation in Setting Page"],
+      "adjustments": []
     }
   },
   {
@@ -68,7 +75,18 @@
     "changes": {
       "features": ["Add PIC Statistics Tab", "Evidence of Completed Report"],
       "fixes": [],
-      "improvement": ["Add spaces in report status", "Improving performance"]
+      "improvements": ["Add spaces in report status", "Improving performance"],
+      "adjustments": []
+    }
+  },
+  {
+    "version": "1.2.2",
+    "date": "26 July 2025",
+    "changes": {
+      "features": ["Add PIC Date Filter"],
+      "fixes": [],
+      "improvements": [],
+      "adjustments": ["Max file size from 8MB to 10MB", "Redirect teacher to report form instead of admin dashboard after login"]
     }
   }
 ]
