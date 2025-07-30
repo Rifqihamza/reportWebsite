@@ -19,15 +19,15 @@ const ReportRequestBodyType = z.object({
 
 export async function POST({ request, cookies }: APIContext) {
     const user_token = cookies.get("user_token")?.value;
-    const [verification_result, verification_output, user_data] = await verify_user_data_token(user_token??"");
+    const [verification_result, verification_output, user_data] = await verify_user_data_token(user_token ?? "");
 
     // If the token invalid
-    if(!verification_result) {
+    if (!verification_result) {
         return apiresult_to_status(verification_output);
     }
-      
+
     // Verify user role
-    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.CreateReport)) {
+    if (!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.CreateReport)) {
         return create_response_status(401);
     }
 
@@ -87,8 +87,8 @@ export async function POST({ request, cookies }: APIContext) {
                     }
                 });
             }
-            catch(err) {
-                if(err instanceof Prisma.PrismaClientInitializationError) {
+            catch (err) {
+                if (err instanceof Prisma.PrismaClientInitializationError) {
                     return create_response_status(503);
                 }
                 console.error(`There's an error when trying to get report data. Error: ${err}`);
@@ -135,7 +135,7 @@ export async function POST({ request, cookies }: APIContext) {
                 body: form_data
             });
         }
-        catch(err) {
+        catch (err) {
             console.error(`There's an error when trying to get report data. Error: ${err}`);
             return create_response_status(500);
         }
@@ -186,15 +186,15 @@ export async function POST({ request, cookies }: APIContext) {
         if (err instanceof Prisma.PrismaClientValidationError) {
             return create_response_status(400);
         }
-        else if(err instanceof Prisma.PrismaClientInitializationError) {
+        else if (err instanceof Prisma.PrismaClientInitializationError) {
             return create_response_status(503);
         }
-        
+
         console.error(`There's an error when trying to add report data. Error: ${err}`);
         return create_response_status(500);
     }
 
-    
+
     // Record Activity
     try {
         await record_activity({
@@ -204,14 +204,14 @@ export async function POST({ request, cookies }: APIContext) {
             user_id: user_data.id
         });
     }
-    catch(err) {
+    catch (err) {
         if (err instanceof Prisma.PrismaClientValidationError) {
             return create_response_status(400);
         }
-        else if(err instanceof Prisma.PrismaClientInitializationError) {
+        else if (err instanceof Prisma.PrismaClientInitializationError) {
             return create_response_status(503);
         }
-        
+
         console.error(`There's an error when trying to add activity record data. Error: ${err}`);
         return create_response_status(500);
     }
@@ -219,11 +219,11 @@ export async function POST({ request, cookies }: APIContext) {
 
     // Parse safely data in order to make sure its data structure
     const safe_parse_result = ReportData_TypeGuard.safeParse(report_data);
-    if(!safe_parse_result.success) {
+    if (!safe_parse_result.success) {
         console.log(`Did you forgot to change the report data type guard? error: ${safe_parse_result.error}`);
         return create_response_status(500);
     }
-    
+
     // Return OK
     // return create_response_status(200);
     return create_response_json(report_data);

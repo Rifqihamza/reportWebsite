@@ -1,5 +1,5 @@
-import { reporttype_to_string, table_rows } from '../../../../types/variables';
-import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/pages/ReportTable/useReportHook";
+import { statusColorHex, table_rows } from '../../../../types/variables';
+import { useReportDetailHook, useReportPaginationHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { date_to_str, spaces_in_camel_case } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import LoadingAnimation from "../../../GlobalComponents/Loading/LoadingAnimation";
@@ -15,7 +15,7 @@ export default function ReportDesktopTable() {
 
     return <>
         <UseUserDataHookEffect />
-        <div className='hidden md:block overflow-auto p-5 bg-[#CB6040] rounded-xl'>
+        <div className='hidden md:block overflow-auto p-5 bg-[#257180] rounded-xl'>
             <table className="w-full relative min-h-48">
                 <thead>
                     <tr>
@@ -23,14 +23,14 @@ export default function ReportDesktopTable() {
                             return <th
                                 key={key}
                                 scope="col"
-                                className="rounded-tl-xl px-2 py-3 border-b border-[#F2E5BF] text-left text-sm font-semibold text-white uppercase tracking-wider truncate"
+                                className="rounded-tl-xl px-2 py-3 border-b border-[#CB6040] text-left text-sm font-semibold text-white uppercase tracking-wider truncate"
                             >
                                 {key}
                             </th>;
                         })}
                         <th
                             scope="col"
-                            className="rounded-tr-xl px-2 py-3 border-b border-[#F2E5BF] text-center text-sm font-semibold text-white uppercase tracking-wider truncate"
+                            className="rounded-tr-xl px-2 py-3 border-b border-[#CB6040] text-center text-sm font-semibold text-white uppercase tracking-wider truncate"
                         >
                             Action
                         </th>
@@ -70,7 +70,8 @@ export default function ReportDesktopTable() {
                                         }
                                         else if (value === "status") {
                                             element = <span
-                                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[report.status]}`}
+                                                className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+                                                style={{ backgroundColor: statusColorHex[report.status] }}
                                             >
                                                 {spaces_in_camel_case(report.status)}
                                             </span>;
@@ -82,14 +83,14 @@ export default function ReportDesktopTable() {
                                             element = <>{report[value]}</>;
                                         }
 
-                                        return <td key={index} className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
+                                        return <td key={index} className={`px-2 py-3 text-left border-b border-[#cb6040] text-sm text-white truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
                                             {element}
                                         </td>;
                                     })}
 
-                                    <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-gray-300 min-w-12! max-w-12!">
+                                    <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-[#cb6040] min-w-12! max-w-12!">
                                         <button
-                                            className="cursor-pointer border text-[#F2E5BF] hover:border-[#CB6040] hover:bg-[#257180] hover:text-white duration-300 px-3 py-1 rounded-xl"
+                                            className="cursor-pointer border text-white bg-[#257180] hover:border-[#CB6040] hover:bg-[#CB6040] hover:text-white duration-300 px-3 py-1 rounded-xl"
                                             onClick={() => handleDetail(report.id)}
                                         >
                                             Detail

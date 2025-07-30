@@ -23,7 +23,7 @@ export default function StatisticsPage() {
     const { percentCategory } = usePercentChartHook();
 
 
-    if(activeTab !== 2) {
+    if (activeTab !== 2) {
         return <></>;
     }
 
@@ -43,7 +43,7 @@ export default function StatisticsPage() {
 
                             {/* Location Filter */}
                             <LocationChartFilter />
-                            
+
                             {/* Apply Filter Button */}
                             <ApplyFilterButton />
                         </AccordionTab>

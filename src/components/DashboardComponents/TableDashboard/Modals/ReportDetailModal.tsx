@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "primereact/image";
-import { AccountAPIPrivillage, reporttype_to_string } from "../../../../types/variables";
+import { AccountAPIPrivillage, reporttype_to_string, statusColorHex } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
-import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { date_to_str, spaces_in_camel_case } from "../../../../utils/other";
+import { useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
+import { date_to_str } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";
 import { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -55,16 +55,16 @@ export default function ReportDetailModal() {
         <div
           className={
             (detailId ? "visible pointer-events-auto top-0 scale-100 opacity-100" : "invisible pointer-events-none top-0 scale-50 opacity-0") +
-            " left-1/2 translate-y-6 md:translate-y-[5rem] -translate-x-1/2 duration-200 fixed bg-[#257180] w-full max-w-[90vw] lg:max-w-[70vw] " +
+            " left-1/2 translate-y-6 md:translate-y-[5rem] -translate-x-1/2 duration-200 fixed bg-[#f2e5bf] w-full max-w-[90vw] lg:max-w-[70vw] " +
             "lg:max-h-[100vh] min-h-[70vh] max-h-[90vh] px-5 py-6 rounded-3xl z-50 flex flex-col justify-between space-y-5 shadow-md shadow-white"
           }
         >
 
           {/* Header Laporan */}
-          <div className="flex flex-col px-0 py-0 lg:px-6 lg:py-2 text-[#F2E5BF] relative">
+          <div className="flex flex-col px-0 py-0 lg:px-6 lg:py-2 text-black relative">
             {/* Close Button Modal */}
             <div className="absolute top-0 right-0">
-              <button className="cursor-pointer text-white bg-[#FD8B51] shadow-md shadow-[#CB6040] rounded-full hover:ring-6 hover:ring-gray-200 duration-400" onClick={handleClose}>
+              <button className="cursor-pointer text-white bg-[#FD8B51] shadow-md shadow-[#CB6040] rounded-full hover:ring-6 hover:ring-[#cb6040] duration-400" onClick={handleClose}>
                 <i className="pi pi-times p-2"></i>
               </button>
             </div>
@@ -73,7 +73,7 @@ export default function ReportDetailModal() {
               Status:
               <span
                 className="font-medium md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2 text-white"
-                style={{ backgroundColor: report_data ? statusColors[report_data.status] : "#FD8B51" }}
+                style={{ backgroundColor: report_data ? statusColorHex[report_data.status] : "#FD8B51" }}
               >
                 {report_data?.status}
               </span>
@@ -88,12 +88,12 @@ export default function ReportDetailModal() {
             {/* Details */}
             <div className="w-full [&_.p-accordion]:flex! [&_.p-accordion]:flex-col! [&_.p-accordion]:gap-2!">
               <Accordion activeIndex={accordionIndex} onTabChange={(e) => setAccordionIndex(Array.isArray(e.index) ? e.index[0] : e.index)} className="[&_.p-accordion-header-link]:border-none!">
-                <AccordionTab header="Pesan Laporan" className={`${accordionIndex == 0 && ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-header-link]:bg-[#FD8B51]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-2! [&_.p-accordion-content]:mb-2! [&_.p-accordion-content]:rounded-xl!`}>
+                <AccordionTab header="Pesan Laporan" className={`${accordionIndex == 0 && ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-header-link]:bg-[#257180]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-2! [&_.p-accordion-content]:mb-2! [&_.p-accordion-content]:rounded-xl!`}>
                   <p className="break-words whitespace-pre-line w-full overflow-y-auto overflow-x-auto">{report_data?.message}</p>
                 </AccordionTab>
                 <AccordionTab
                   header="Detail Laporan"
-                  className={`${accordionIndex == 1 && ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-content]:overflow-y-auto [&_.p-accordion-header-link]:bg-[#FD8B51]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-2! [&_.p-accordion-content]:mb-2! [&_.p-accordion-content]:rounded-xl!`}
+                  className={`${accordionIndex == 1 && ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-content]:overflow-y-auto [&_.p-accordion-header-link]:bg-[#257180]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-2! [&_.p-accordion-content]:mb-2! [&_.p-accordion-content]:rounded-xl!`}
                 >
                   <div className="w-full flex flex-col space-y-2 overflow-y-auto">
                     {/* Report Details */}
@@ -117,14 +117,14 @@ export default function ReportDetailModal() {
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-4 w-full pt-4">
             <button
-              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white bg-[#257180] hover:bg-[#cb6040] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => setEditVisible(true)}
               disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateReport)}
             >
               Edit
             </button>
             <button
-              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white bg-[#257180] hover:bg-[#cb6040] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => (report_data ? handleDelete(report_data.id) : null)}
               disabled={deleteDisabled || !userDataPrivillages.includes(AccountAPIPrivillage.DeleteReport)}
             >
