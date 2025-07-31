@@ -7,7 +7,7 @@ export default function OutputOptions() {
 
   return (
     <>
-      <div className="bg-[#CB6040] w-full h-fit rounded-xl px-6">
+      <div className="bg-[#CB6040] w-full h-fit rounded-xl px-3">
         <div className="flex flex-row justify-between px-4 py-5">
           <div className="w-full">
             <h1 className="text-xl lg:text-2xl font-semibold text-white ">Output Option</h1>
@@ -19,7 +19,7 @@ export default function OutputOptions() {
           <div className="flex flex-row items-center gap-4 w-full">
             {outputOptions.map((value, index) => {
               const titleObj = ExportOutputTitles.find((t) => t.value === value);
-              if(!titleObj) return "";
+              if (!titleObj) return "";
 
               return (
                 <button

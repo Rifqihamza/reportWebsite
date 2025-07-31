@@ -183,7 +183,7 @@ export default function UsersPage() {
           }
 
           return <>
-            <div className="hidden md:block h-full overflow-auto relative rounded-xl px-5 py-4 bg-[#CB6040]">
+            <div className="hidden md:block h-full overflow-auto relative rounded-xl px-5 py-4 bg-[#257180]">
               <h2 className="text-2xl font-bold mb-4 text-white">Daftar Akun Pengguna</h2>
               <table className="w-full">
                 <thead>
