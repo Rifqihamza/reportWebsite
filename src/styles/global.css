@@ -44,7 +44,7 @@ body {
 }
 
 .bg-form {
-  background: oklch(21% 0.006 285.885);
+  background: #2c2c2c;
 }
 
 .bg-form::-webkit-scrollbar {
@@ -54,7 +54,7 @@ body {
 .bg-dashboard,
 .sidebarDashboard,
 .headerDashboard {
-  background: oklch(14.1% 0.005 285.823);
+  background: #1e5b66;
 }
 
 .titlePage {
