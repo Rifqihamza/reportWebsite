@@ -44,7 +44,7 @@ body {
 }
 
 .bg-form {
-  background: #2c3930;
+  background: oklch(21% 0.006 285.885);
 }
 
 .bg-form::-webkit-scrollbar {
