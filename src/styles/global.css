@@ -54,7 +54,7 @@ body {
 .bg-dashboard,
 .sidebarDashboard,
 .headerDashboard {
-  background: #2c3930;
+  background: oklch(14.1% 0.005 285.823);
 }
 
 .titlePage {
@@ -66,7 +66,7 @@ body {
 }
 
 .wave {
-  background: #dcd7c9;
+  background: #f2e5bf;
   border-radius: 1000% 1000% 0 0;
   position: fixed;
   width: 150%;

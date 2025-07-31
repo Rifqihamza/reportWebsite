@@ -12,14 +12,14 @@ export default function RowOptions() {
   const { toggleAllRow, setRow, selectedRows } = useExportHook();
 
   return <>
-    <div className="bg-[#CB6040] w-full h-fit rounded-xl px-6">
-      <div className="flex flex-row justify-between items-center px-4 py-5">
+    <div className="bg-[#257180] w-full h-fit rounded-xl px-3">
+      <div className="flex flex-row justify-between px-4 py-5">
         <div>
           <h1 className="text-xl lg:text-2xl font-semibold text-white ">Row Options</h1>
           <span className="text-md lg:text-lg text-white flex flex-row items-center gap-3">
             Opsi baris data yang akan di eksport
             <i className="pi pi-arrow-right"></i>
-            </span>
+          </span>
         </div>
         <ListBox
           className="w-fit px-4 py-3 [&_.p-listbox-list]:flex! [&_.p-listbox-list]:items-center! [&_.p-listbox-list]:gap-3! [&_.p-listbox]:border-0!"

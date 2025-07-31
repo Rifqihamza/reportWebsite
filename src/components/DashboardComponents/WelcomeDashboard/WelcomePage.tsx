@@ -6,7 +6,7 @@ import { ReportStatus, statusColorHex } from "../../../types/variables";
 function QuickNavigationButton(props: { icon: string, title: string, description: string, onClick: () => void }) {
     return (
         <button
-            className="cursor-pointer w-fit md:h-18 h-13 aspect-square p-2 rounded-xl bg-[#3F4F44] hover:bg-[#DCD7C9] text-white hover:text-[#2C3930] font-semibold duration-300"
+            className="cursor-pointer w-fit md:h-18 h-13 aspect-square p-2 rounded-xl bg-[#cb6040] hover:bg-[#f2e5bf] text-white hover:text-[#2C3930] font-semibold duration-300"
             onClick={props.onClick}
         >
             <i className={`pi ${props.icon}`} style={{ fontSize: "18px" }}></i>
@@ -16,7 +16,7 @@ function QuickNavigationButton(props: { icon: string, title: string, description
 }
 
 function DataReport(props: { title: string; value: number; icon: string; status: string }) {
-    const bgColor = statusColorHex[props.status] || "#A27B5C";
+    const bgColor = statusColorHex[props.status] || "#257180";
 
     return (
         <div
@@ -68,7 +68,7 @@ export default function WelcomePage() {
             <UseUserDataHookEffect adminOnly />
 
             {/* Header */}
-            <div className="w-full h-fit bg-[#A27B5C] flex flex-col md:flex-row items-center justify-between gap-4 px-3 py-4 md:px-6 md:py-8 rounded-xl">
+            <div className="w-full h-fit bg-[#257180] flex flex-col md:flex-row items-center justify-between gap-4 px-3 py-4 md:px-6 md:py-8 rounded-xl">
                 <header>
                     <div className="text-white">
                         <h1 className="text-md">{greeting}, <span className="font-semibold">{userData?.username || "User"}!</span></h1>
