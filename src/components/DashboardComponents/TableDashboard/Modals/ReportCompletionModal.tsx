@@ -1,9 +1,8 @@
 import { Dialog } from "primereact/dialog";
 import { useReportCompletionHook } from "../../../../hooks/pages/ReportTable/useReportCompletionHook";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMessageToastHook } from "../../../../hooks/shared/useMessageToast";
 import { APIResultType, markCompleteReport } from "../../../../utils/api_interface";
-import { error_message } from "../../../../types/error";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import { max_file_size } from "../../../../types/variables";
 
@@ -13,16 +12,16 @@ export default function ReportCompletionModal() {
   const { showMessageByAPI, showMessage } = useMessageToastHook();
   const { reportData, setReportData } = useReportDataHook();
 
-  const [image, setImage] = useState<File|null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [disableComplete, setDisableComplete] = useState(false);
 
   async function setReportComplete() {
-    if(!reportId) {
+    if (!reportId) {
       setReportId(null);
       return;
     }
-    
-    if(!image) {
+
+    if (!image) {
       showMessage("Mohon isi gambar sebagai bukti selesai.", "warn");
       return;
     }
@@ -31,16 +30,16 @@ export default function ReportCompletionModal() {
 
     try {
       const result = await markCompleteReport(reportId, image);
-      if(result === false) {
+      if (result === false) {
         showMessage("Terjadi error!", "error", "Mohon maaf, terjadi kesalahan.");
       }
-      else if(typeof result === "object") {
+      else if (typeof result === "object") {
         showMessageByAPI(APIResultType.NoError, "Sukses menandai \"laporan telah selesai\"");
         setReportData(reportData!.map((data) => data.id === result.id ? result : data));
         setReportId(null);
       }
       else {
-        switch(result) {
+        switch (result) {
           case APIResultType.DatabaseError:
             showMessageByAPI(result, "Tidak dapat terhubung dengan database. Silahkan coba lagi nanti.");
           case APIResultType.NeedCaptchaAuthentication:
@@ -52,7 +51,7 @@ export default function ReportCompletionModal() {
         }
       }
     }
-    catch(e) {
+    catch (e) {
       showMessage("Terjadi error!", "error", "Mohon maaf, terjadi kesalahan.");
       console.error(e);
     }
@@ -64,8 +63,8 @@ export default function ReportCompletionModal() {
   const isOpen = reportId !== null;
 
   return <>
-    <Dialog 
-      visible={isOpen} 
+    <Dialog
+      visible={isOpen}
       onHide={() => setReportId(null)}
       footer={
         <div className="flex justify-end gap-2">
@@ -79,7 +78,7 @@ export default function ReportCompletionModal() {
         </div>
       }
       header={"Upload Bukti Foto"}
-      >
+    >
       <div className="flex items-center justify-center w-full z-10">
         <label
           htmlFor="foto"

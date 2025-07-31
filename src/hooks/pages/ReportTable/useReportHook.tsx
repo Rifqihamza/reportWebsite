@@ -14,7 +14,7 @@ import { useMessageToastHook } from "../../shared/useMessageToast";
 import { useEffect } from "react";
 import { useNetworkConnectivityHook } from "../../shared/useNetworkConnectivity";
 
-const maxReportDataPerPage: number = 7;
+const maxReportDataPerPage: number = 10;
 
 // --/ Report Detail Hook
 type useReportDetailHookType = {
@@ -63,7 +63,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
 
       const { reportData, setReportData } = useReportDataHook.getState();
       const { userData } = useUserDataHook.getState();
-      const { showMessage } = useMessageToastHook.getState();
+      const { showMessage, showMessageByAPI } = useMessageToastHook.getState();
 
       // Check if the user is
       if (!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
@@ -74,7 +74,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       set(() => ({ deleteDisabled: true }));
 
       if (reportData?.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
-        alert("Tidak bisa menghapus laporan yang sudah di follow up");
+        showMessage("Tidak bisa menghapus laporan yang sudah di follow up", "warn");
         set(() => ({ deleteDisabled: false }));
         return;
       }
@@ -83,14 +83,12 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
 
       if (result == APIResultType.NoError) {
         setReportData(reportData?.filter((value) => value.id != id) || null);
-        showMessage("Success", "success", "Data berhasil dihapus!");
+        showMessageByAPI(result, "Data berhasil dihapus!");
 
         set(() => ({ deleteDisabled: false, detailId: null }));
         return true;
-      } else if (result == APIResultType.InternalServerError) {
-        showMessage("Error", "error", "Terjadi error di server!");
-      } else if (result == APIResultType.Unauthorized) {
-        showMessage("Unauthroized!", "error", "Akses tidak dikenal!");
+      } else {
+        showMessageByAPI(result);
       }
 
       set(() => ({ deleteDisabled: false }));
@@ -281,9 +279,9 @@ export function ReportHookEffect() {
 }
 
 // Utility constants
-export const statusColors: Record<ReportStatus, string> = {
-  NotStarted: ReportStatus.NotStarted,
-  InProcess: ReportStatus.InProcess,
-  Complete: ReportStatus.Complete,
-  Hold: ReportStatus.Hold,
+export const statusColors = {
+  NotStarted: "bg-red-100 text-red-800",
+  InProcess: "bg-yellow-100 text-yellow-800",
+  Complete: "bg-green-100 text-green-800",
+  Hold: "bg-blue-100 text-blue-800",
 };

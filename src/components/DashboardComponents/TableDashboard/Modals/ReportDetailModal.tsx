@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "primereact/image";
-import { AccountAPIPrivillage, reporttype_to_string } from "../../../../types/variables";
+import { AccountAPIPrivillage, reporttype_to_string, statusColorHex } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
-import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
-import { date_to_str, spaces_in_camel_case } from "../../../../utils/other";
+import { useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
+import { date_to_str } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";
 import { useUserDataHook } from "../../../../hooks/shared/useUserData";
@@ -55,13 +55,13 @@ export default function ReportDetailModal() {
         <div
           className={
             (detailId ? "visible pointer-events-auto top-0 scale-100 opacity-100" : "invisible pointer-events-none top-0 scale-50 opacity-0") +
-            " left-1/2 translate-y-6 md:translate-y-[5rem] -translate-x-1/2 duration-200 fixed bg-[#257180] w-full max-w-[90vw] lg:max-w-[70vw] " +
-            "lg:max-h-[100vh] min-h-[70vh] max-h-[90vh] px-5 py-6 rounded-3xl z-50 flex flex-col justify-between space-y-5 shadow-md shadow-white"
+            " left-1/2 translate-y-6 md:translate-y-[5rem] -translate-x-1/2 duration-200 fixed bg-[#F2E5BF] w-full max-w-[90vw] lg:max-w-[70vw] " +
+            "lg:max-h-[100vh] min-h-[70vh] max-h-[90vh] px-5 py-6 rounded-3xl z-50 flex flex-col justify-between space-y-5 shadow shadow-gray-500"
           }
         >
 
           {/* Header Laporan */}
-          <div className="flex flex-col px-0 py-0 lg:px-6 lg:py-2 text-[#F2E5BF] relative">
+          <div className="flex flex-col px-0 py-0 lg:px-6 lg:py-2 relative">
             {/* Close Button Modal */}
             <div className="absolute top-0 right-0">
               <button className="cursor-pointer text-white bg-[#FD8B51] shadow-md shadow-[#CB6040] rounded-full hover:ring-6 hover:ring-gray-200 duration-400" onClick={handleClose}>
@@ -73,7 +73,7 @@ export default function ReportDetailModal() {
               Status:
               <span
                 className="font-medium md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2 text-white"
-                style={{ backgroundColor: report_data ? statusColors[report_data.status] : "#FD8B51" }}
+                style={{ backgroundColor: report_data ? statusColorHex[report_data.status] : "#FD8B51" }}
               >
                 {report_data?.status}
               </span>
