@@ -87,13 +87,13 @@ export default function SidebarDashboard() {
                 <li key={index}>
                     <button
                         onClick={() => setActiveTab((menu as MenuItem).id)}
-                        className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === menu.id ? "text-[#DCD7C9]" : "text-white"
+                        className={`relative w-full text-left group py-3 font-semibold uppercase tracking-wider space-x-3 transition-colors duration-300 ${activeTab === menu.id ? "text-white" : "text-white"
                             }`}
                     >
                         <i className={menu.icon}></i>
                         {menu.label}
                         <span
-                            className={`absolute bottom-0 left-0 h-1 bg-[#DCD7C9] rounded-full transition-all duration-500 ${activeTab === menu.id ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
+                            className={`absolute bottom-0 left-0 h-1 bg-white rounded-full transition-all duration-500 ${activeTab === menu.id ? "w-full" : "w-0 group-hover:w-full group-hover:left-0"
                                 }`}
                         ></span>
                     </button>

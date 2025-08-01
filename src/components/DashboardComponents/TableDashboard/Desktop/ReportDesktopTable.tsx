@@ -15,7 +15,7 @@ export default function ReportDesktopTable() {
 
     return <>
         <UseUserDataHookEffect />
-        <div className='hidden md:block overflow-auto p-5 bg-[#257180] rounded-xl'>
+        <div className='hidden md:block overflow-auto p-5 bg-[#374151] rounded-xl'>
             <table className="w-full relative min-h-48">
                 <thead>
                     <tr>
@@ -23,14 +23,14 @@ export default function ReportDesktopTable() {
                             return <th
                                 key={key}
                                 scope="col"
-                                className="rounded-tl-xl px-2 py-3 border-b border-[#F2E5BF] text-left text-sm font-semibold text-white uppercase tracking-wider truncate"
+                                className="rounded-tl-xl px-2 py-3 border-b border-[#F97316] text-left text-sm font-semibold text-white uppercase tracking-wider truncate"
                             >
                                 {key}
                             </th>;
                         })}
                         <th
                             scope="col"
-                            className="rounded-tr-xl px-2 py-3 border-b border-[#F2E5BF] text-center text-sm font-semibold text-white uppercase tracking-wider truncate"
+                            className="rounded-tr-xl px-2 py-3 border-b border-[#F97316] text-center text-sm font-semibold text-white uppercase tracking-wider truncate"
                         >
                             Action
                         </th>
@@ -63,7 +63,7 @@ export default function ReportDesktopTable() {
                                 <tr key={index} data-report-id={report.id}>
                                     {Object.values(table_rows).map((value, index) => {
                                         if (value === "status") {
-                                            return <td key={index} className="px-2 py-3 text-left border-b border-[#F2E5BF] whitespace-nowrap text-sm text-white truncate min-w-20! max-w-20!">
+                                            return <td key={index} className="px-2 py-3 text-left border-b border-[#F97316] whitespace-nowrap text-sm text-white truncate min-w-20! max-w-20!">
                                                 <span
                                                     style={{ backgroundColor: statusColorHex[report.status] }}
                                                     className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
@@ -74,12 +74,12 @@ export default function ReportDesktopTable() {
                                         }
 
                                         let isSpecified = report[value] !== null;
-                                        return <td key={index} className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-white truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
+                                        return <td key={index} className={`px-2 py-3 text-left border-b border-[#F97316] text-sm text-white truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
                                             {isSpecified ? (report[value] as string) : "Belum Ditentukan"}
                                         </td>;
                                     })}
 
-                                    <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-gray-300 min-w-12! max-w-12!">
+                                    <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-[#F97316] min-w-12! max-w-12!">
                                         <button
                                             className="cursor-pointer border text-white hover:[box-shadow:0_0_4px_2px_#f2e5bf] duration-300 px-3 py-1 rounded-xl"
                                             onClick={() => handleDetail(report.id)}

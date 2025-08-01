@@ -7,7 +7,7 @@ export default function OutputOptions() {
 
   return (
     <>
-      <div className="bg-[#CB6040] w-full h-fit rounded-xl px-6">
+      <div className="bg-[#374151] w-full h-fit rounded-xl px-3">
         <div className="flex flex-row justify-between px-4 py-5">
           <div className="w-full">
             <h1 className="text-xl lg:text-2xl font-semibold text-white ">Output Option</h1>
@@ -19,15 +19,15 @@ export default function OutputOptions() {
           <div className="flex flex-row items-center gap-4 w-full">
             {outputOptions.map((value, index) => {
               const titleObj = ExportOutputTitles.find((t) => t.value === value);
-              if(!titleObj) return "";
+              if (!titleObj) return "";
 
               return (
                 <button
                   key={index}
                   className={`w-full h-full cursor-pointer px-2 py-6 border-2
                 ${selectedOutput === value
-                      ? "bg-[#257180] border-white text-white"
-                      : "bg-[#257180] border-transparent text-white "} 
+                      ? "bg-[#1A1D24] border-white text-white"
+                      : "bg-[#1A1D24] border-transparent text-white "} 
                 rounded-xl duration-300 hover:brightness-75 flex flex-row items-center justify-center gap-3`}
                   onClick={() => setSelectedOutput(value)}
                 >

@@ -60,7 +60,7 @@ export default function FilterSelect() {
                 return {
                     label: reporttype_to_string(type),
                     template: () => (
-                        <div className={`flex align-items-center gap-2 w-full h-full p-3 ${(selectedFilter[0] == type ? "text-white bg-[#7fa1c3] rounded-xl" : "")}`}>
+                        <div className={`flex align-items-center gap-2 w-full h-full p-3 ${(selectedFilter[0] == type ? "text-white bg-[#2B3440] rounded-xl" : "")}`}>
                             {(() => {
                                 switch (type) {
                                     case ReportType.Abnormality:
@@ -103,7 +103,7 @@ export default function FilterSelect() {
     return (
         <div className="flex justify-content-center" >
             <TieredMenu model={items} popup ref={menu} breakpoint='4096px' className="mt-2" />
-            <button className={`w-fit bg-[#257180] text-white px-4 py-3 rounded-xl cursor-pointer  ${selectedFilter.find((val) => val !== null) ? " " : ""}`} onClick={(e) => menu.current?.toggle(e)}>
+            <button className={`w-fit bg-[#2B3440] text-white px-4 py-3 rounded-xl cursor-pointer  ${selectedFilter.find((val) => val !== null) ? " " : ""}`} onClick={(e) => menu.current?.toggle(e)}>
                 <i className="pi pi-filter" />
             </button>
         </div>

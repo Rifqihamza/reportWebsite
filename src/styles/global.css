@@ -44,7 +44,7 @@ body {
 }
 
 .bg-form {
-  background: #2c2c2c;
+  background: #1a1d24;
 }
 
 .bg-form::-webkit-scrollbar {
@@ -54,7 +54,7 @@ body {
 .bg-dashboard,
 .sidebarDashboard,
 .headerDashboard {
-  background: #1e5b66;
+  background: #2b3440;
 }
 
 .titlePage {
@@ -268,8 +268,8 @@ body {
 }
 
 .p-listbox-item.p-highlight {
-  background-color: #257180;
-  border: 2px solid #fff;
+  background-color: #1a1d24;
+  border: 2px solid #9ca3af;
   color: #fff;
 }
 
@@ -277,12 +277,12 @@ body {
   padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;
   transition: background-color 0.2s ease;
-  background-color: #257180;
+  background-color: #1a1d24;
   border: 2px solid transparent;
   color: #fff;
 }
 
 .p-listbox-item:hover {
-  background-color: #cb6040;
+  background-color: #2b3440;
   cursor: pointer;
 }

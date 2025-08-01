@@ -12,7 +12,7 @@ export default function RowOptions() {
   const { toggleAllRow, setRow, selectedRows } = useExportHook();
 
   return <>
-    <div className="bg-[#257180] w-full h-fit rounded-xl px-3">
+    <div className="bg-[#374151] w-full h-fit rounded-xl px-3">
       <div className="flex flex-row justify-between px-4 py-5">
         <div>
           <h1 className="text-xl lg:text-2xl font-semibold text-white ">Row Options</h1>
@@ -22,7 +22,7 @@ export default function RowOptions() {
           </span>
         </div>
         <ListBox
-          className="w-fit px-4 py-3 [&_.p-listbox-list]:flex! [&_.p-listbox-list]:items-center! [&_.p-listbox-list]:gap-3! [&_.p-listbox]:border-0!"
+          className="w-fit px-4 py-3 [&_.p-listbox-list]:flex! [&_.p-listbox-list]:items-center! [&_.p-listbox-list]:gap-2! [&_.p-listbox]:border-0!"
           value={selectedRows}
           onChange={(e) => setRow(e.value)}
           options={rows}
@@ -31,7 +31,9 @@ export default function RowOptions() {
           multiple
         />
       </div>
-      <button className={`cursor-pointer w-full text-sm lg:text-md mb-5 px-2 py-3 hover:ring-2 hover:ring-gray-100/50 duration-300 ${((selectedRows.length === Object.values(table_rows).length) ? "bg-[#257180] text-white border-2 " : "bg-[#257180] text-white border-2 border-transparent")} rounded-xl`} onClick={() => { toggleAllRow() }}>{selectedRows.length === Object.values(table_rows).length ? "Remove All" : "Add All"}</button>
+      <div className="w-full px-5">
+        <button className={`cursor-pointer w-full text-sm lg:text-md mb-5 px-2 py-3 hover:ring-2 hover:ring-gray-100/50 duration-300 ${((selectedRows.length === Object.values(table_rows).length) ? "bg-[#9CA3AF] text-white border-2 " : "bg-[#9CA3AF] text-white border-2 border-transparent")} rounded-xl`} onClick={() => { toggleAllRow() }}>{selectedRows.length === Object.values(table_rows).length ? "Remove All" : "Add All"}</button>
+      </div>
     </div>
   </>;
 }
