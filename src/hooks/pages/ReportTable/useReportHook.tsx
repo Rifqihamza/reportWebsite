@@ -150,12 +150,20 @@ export const useReportEditHook = create<useReportEditType>((set) => {
   };
 });
 
+type SelectedFilterType = {
+  type: ReportType[],
+  status: ReportStatus[],
+  campus: Campus[],
+  location: [Campus, string][]
+}
+
 // --/ Report Filter Hook
 type useReportFilterType = {
-  selectedFilter: [null | ReportType, null | ReportStatus, null | Campus];
-  setReportTypeFilter: (newReportTypeFilter: null | ReportType) => void;
-  setReportStatusFilter: (newReportStatusFilter: null | ReportStatus) => void;
-  setCampusFilter: (newCampusFilter: null | Campus) => void;
+  selectedFilter: SelectedFilterType;
+  setSelectedFilter: (newSelectedFilter: SelectedFilterType) => void;
+  setReportTypeFilter: (newReportTypeFilter: ReportType[]) => void;
+  setReportStatusFilter: (newReportStatusFilter: ReportStatus[]) => void;
+  setCampusFilter: (newCampusFilter: Campus[]) => void;
   resetFilter: () => void;
 
   dateFilter: (Date | null)[];
@@ -170,18 +178,42 @@ type useReportFilterType = {
 
 export const useReportFilterHook = create<useReportFilterType>((set) => {
   return {
-    selectedFilter: [null, null, null],
+    selectedFilter: { campus: [], status: [], type: [], location: [] },
+    setSelectedFilter(newSelectedFilter) {
+      set(() => ({ selectedFilter: newSelectedFilter }))
+    },
     setReportTypeFilter(newReportTypeFilter) {
-      set((state) => ({ selectedFilter: [newReportTypeFilter, state.selectedFilter[1], state.selectedFilter[2]] }));
+      set((state) => {
+        const currentSelectedFilter = state.selectedFilter;
+        currentSelectedFilter.type = newReportTypeFilter;
+
+        return {
+          selectedFilter: currentSelectedFilter
+        }
+      });
     },
     setReportStatusFilter(newReportStatusFilter) {
-      set((state) => ({ selectedFilter: [state.selectedFilter[0], newReportStatusFilter, state.selectedFilter[2]] }));
+      set((state) => {
+        const currentSelectedFilter = state.selectedFilter;
+        currentSelectedFilter.status = newReportStatusFilter;
+        
+        return {
+          selectedFilter: currentSelectedFilter
+        }
+      });
     },
     setCampusFilter(newCampusFilter) {
-      set((state) => ({ selectedFilter: [state.selectedFilter[0], state.selectedFilter[1], newCampusFilter] }));
+      set((state) => {
+        const currentSelectedFilter = state.selectedFilter;
+        currentSelectedFilter.campus = newCampusFilter;
+        
+        return {
+          selectedFilter: currentSelectedFilter
+        }
+      });
     },
     resetFilter() {
-      set(() => ({ selectedFilter: [null, null, null] }));
+      set(() => ({ selectedFilter: { campus: [], status: [], type: [], location: [] } }));
     },
 
     dateFilter: [],
@@ -235,17 +267,21 @@ export function ReportHookEffect() {
     }
     
     // Filter Categories and Status
-    let result_data = reportData.filter((value) => {
-      if(selectedFilter[0] !== null && value.type !== selectedFilter[0]) {
+    let result_data = reportData.filter((value, index) => {
+      if(selectedFilter.type.length > 0 && !selectedFilter.type.includes(value.type)) {
         return false;
       }
 
-      if(selectedFilter[1] !== null && value.status !== selectedFilter[1]) {
+      if(selectedFilter.status.length > 0 && !selectedFilter.status.includes(value.status)) {
         return false;
       }
 
-      if(selectedFilter[2] !== null && value.campus !== selectedFilter[2]) {
+      if(selectedFilter.campus.length > 0 && !selectedFilter.campus.includes(value.campus)) {
         return false;
+      }
+
+      if(selectedFilter.location.length > 0 && (!value.location_name || !selectedFilter.location.find((locationFilter) => locationFilter[0] == value.campus && locationFilter[1] == value.location_name))) {
+        return false
       }
 
       return true;

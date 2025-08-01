@@ -9,7 +9,7 @@ export default function ReportTableToolbar() {
   return (
     <>
       <PrimeReactProvider>
-        <div className="flex flex-col gap-3 ">
+        <div className="flex flex-col gap-3">
           {/* Search Bar */}
           <div className="relative w-full flex items-center gap-4">
             <input
@@ -20,9 +20,7 @@ export default function ReportTableToolbar() {
               onChange={(e) => setSearchKeyword(e.target.value)}
             />
             <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black" />
-            <span className="absolute right-4 top-1/2 transform -translate-y-1/2">
               <FilterSelect />
-            </span>
           </div>
           <div className="flex items-center gap-2 w-full">
             <Calendar
