@@ -60,7 +60,7 @@ export default function ReportDesktopTable() {
                         // Return a normal report data
                         return <>
                             {showedReportData.map((report, index) => (
-                                <tr key={index} data-report-id={report.id}>
+                                <tr key={index} data-report-id={report.id} className="*:text-white *:border-[#F97316] *:border-b">
                                     {Object.values(table_rows).map((value, index) => {
                                         let isSpecified = report[value] !== null;
 
@@ -82,14 +82,14 @@ export default function ReportDesktopTable() {
                                             element = <>{report[value]}</>;
                                         }
 
-                                        return <td key={index} className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
+                                        return <td key={index} className={`px-2 py-3 text-left text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
                                             {element}
                                         </td>;
                                     })}
 
-                                    <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-[#F97316] min-w-12! max-w-12!">
+                                    <td className="px-6 py-4  text-sm font-medium text-center min-w-12! max-w-12!">
                                         <button
-                                            className="cursor-pointer border text-white hover:[box-shadow:0_0_4px_2px_#f2e5bf] duration-300 px-3 py-1 rounded-xl"
+                                            className="cursor-pointer border hover:[box-shadow:0_0_4px_2px_#f2e5bf] duration-300 px-3 py-1 rounded-xl"
                                             onClick={() => handleDetail(report.id)}
                                         >
                                             Detail
