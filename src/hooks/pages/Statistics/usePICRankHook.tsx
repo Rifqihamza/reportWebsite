@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import UseReportDataHookEffect, { useReportDataHook } from "../../shared/useReportData";
 import { ReportStatus } from "../../../types/variables";
 import { usePICReportCountHook } from "./usePICReportCountHook";
+import { usePICFilterHook } from "./usePICFilterHook";
 
 const maxPICRankPerPage = 10;
 
@@ -78,6 +79,7 @@ export default function UsePICRankHookEffect() {
   const { userAccountData } = useUserAccountHook();
   const { setShowedPICRank, setSortedPICData, page, maxPage, sortedPICData } = usePICRankHook();
   const { reportData } = useReportDataHook();
+  const { currentTimeSpan, startDateFilter, endDateFilter } = usePICFilterHook();
    
   useEffect(() => {
     if(!userAccountData || !reportData) return;
@@ -97,21 +99,25 @@ export default function UsePICRankHookEffect() {
       }
     });
     
-    reportData.forEach((data, index) => {
+    reportData.forEach((data) => {
       // If the report doesn't have PIC just yet.
       if(!data.pic_name) return;
 
       // If there's no recorded data in the PIC database with the name as same as in the report data
       if(!Object.keys(result).includes(data.pic_name)) return;
+
+      // Filter Date
+      if(!(new Date(data.created_at) >= startDateFilter && new Date(data.created_at) <= endDateFilter)) return;
       
       result[data.pic_name].reportCountByStatus[data.status] += 1;
       result[data.pic_name].reportCountTotal += 1;
     });
 
+    // Sort by report count total
     const newSortedPICData = Object.values(result).sort((a, b) => b.reportCountTotal - a.reportCountTotal).map((data, index) => ({ ...data, rank: (index + 1) }));
 
     setSortedPICData(newSortedPICData);
-  }, [userAccountData, reportData]);
+  }, [userAccountData, reportData, startDateFilter, endDateFilter, currentTimeSpan]);
 
   useEffect(() => {
     if(page < 1 || page > maxPage) {

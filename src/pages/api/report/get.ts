@@ -5,7 +5,7 @@ import { ActivityType, Prisma, type Report } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
 import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
-export async function GET({ request }: APIContext) {
+export async function GET({ request, clientAddress }: APIContext) {
     // Verify user token
     const cookies = get_cookies_from_request(request);
           
@@ -44,7 +44,7 @@ export async function GET({ request }: APIContext) {
     // Record Activity
     try {
         await record_activity({
-            message: "Get all report data",
+            ip_address: clientAddress,
             url: request.url,
             activity_type: ActivityType.GetReport,
             user_id: user_data.id

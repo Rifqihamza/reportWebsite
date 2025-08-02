@@ -5,7 +5,7 @@ import { ActivityType, Prisma, type Report } from "@prisma/client";
 import { account_to_api_privillage, AccountAPIPrivillage, type ReportData } from "../../../types/variables";
 import { APIResultType } from "../../../utils/api_interface";
 
-export async function PUT({ request }: APIContext) {
+export async function PUT({ request, clientAddress }: APIContext) {
     // Verify user_token
     const cookies = get_cookies_from_request(request);
           
@@ -101,7 +101,7 @@ export async function PUT({ request }: APIContext) {
     // Record Activity
     try {
         await record_activity({
-            message: "Update a report data",
+            ip_address: clientAddress,
             url: request.url,
             activity_type: ActivityType.UpdateReport,
             user_id: user_data.id

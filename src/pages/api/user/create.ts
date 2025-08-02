@@ -6,7 +6,7 @@ import { APIResultType } from "../../../utils/api_interface";
 import sha3 from "js-sha3";
 import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
-export async function POST({ request, cookies }: APIContext) {
+export async function POST({ request, cookies, clientAddress }: APIContext) {
     // Get the user data
     const { username, password, role } = await request.json();
 
@@ -39,7 +39,7 @@ export async function POST({ request, cookies }: APIContext) {
     // Update RecordedActivity
     try {
         await record_activity({
-            message: "Create a user data",
+            ip_address: clientAddress,
             url: request.url,
             activity_type: ActivityType.CreateUser,
             user_id: user_data.id

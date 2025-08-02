@@ -6,7 +6,7 @@ import sha3 from "js-sha3";
 import { ActivityType, Prisma } from "@prisma/client";
 import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
-export async function PUT({ request, cookies }: APIContext) {  
+export async function PUT({ request, cookies, clientAddress }: APIContext) {
   // Get the cookie
   const user_token = cookies.get("user_token")?.value;
 
@@ -64,7 +64,7 @@ export async function PUT({ request, cookies }: APIContext) {
   // Update RecordedActivity
   try {
     await record_activity({
-      message: user_data.id === id ? "Update their own data" : "Update a user data",
+      ip_address: clientAddress,
       url: request.url,
       activity_type: ActivityType.UpdateUser,
       user_id: user_data.id
