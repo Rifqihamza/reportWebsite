@@ -64,7 +64,7 @@ export default function StatisticsPage() {
                         {/* Kiri: Pie Chart Kategori dan Status */}
                         <div className="flex flex-col gap-4">
                             {/* Pie Chart Kategori */}
-                            <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center **:text-white! bg-[#2b3440] shadow">
+                            <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center **:text-white! border border-white bg-[#2b3440] shadow">
                                 <h1 className='font-bold uppercase tracking-wider'>Kategori</h1>
                                 <Suspense fallback={<>Loading..</>}>
                                     <PieChart reportType={lineChartCategoryFilter} category={true} />
@@ -72,7 +72,7 @@ export default function StatisticsPage() {
                             </div>
 
                             {/* Pie Chart Status */}
-                            <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center **:text-white! bg-[#2b3440] shadow">
+                            <div className="w-full h-full px-6 py-4 text-center rounded-2xl flex flex-col items-center **:text-white! border border-white bg-[#2b3440] shadow">
                                 <h1 className='font-bold uppercase tracking-wider'>Status</h1>
                                 <Suspense fallback={<>Loading..</>}>
                                     <PieChart />
@@ -99,7 +99,7 @@ export default function StatisticsPage() {
                             </div>
 
                             {/* Container Insight di bawahnya */}
-                            <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-[#2b3440] shadow">
+                            <div className="w-full h-full px-6 py-4 rounded-2xl flex flex-col items-center bg-[#2b3440] border border-white shadow">
                                 <h2 className="text-white font-semibold uppercase tracking-wider text-lg mb-2">Insights</h2>
                                 <div className="text-white">{!insight ? "Membuat insight.." :
                                     <ol className="list-decimal m-4">
