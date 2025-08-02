@@ -5,7 +5,7 @@ import { ActivityType, Prisma } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
 import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
 
-export async function DELETE({ request }: APIContext) {
+export async function DELETE({ request, clientAddress }: APIContext) {
     // Verify user_token
     const cookies = get_cookies_from_request(request);
       
@@ -109,7 +109,7 @@ export async function DELETE({ request }: APIContext) {
     // Record Activity
     try {
         await record_activity({
-            message: "Delete a report data",
+            ip_address: clientAddress,
             url: request.url,
             activity_type: ActivityType.DeleteReport,
             user_id: user_data.id

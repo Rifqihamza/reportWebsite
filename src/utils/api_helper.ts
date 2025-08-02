@@ -186,10 +186,10 @@ export function generate_captcha_token(): string {
     return result;
 }
 
-export function record_activity({message, url, activity_type, user_id}: { message: string, url: string, activity_type: ActivityType, user_id: string }) {
+export function record_activity({ip_address, url, activity_type, user_id}: { ip_address: string, url: string, activity_type: ActivityType, user_id: string }) {
     return prisma.recordedActivity.create({
         data: {
-            message: message,
+            ip_address: ip_address,
             url: url,
             activity_type: activity_type,
             account: {

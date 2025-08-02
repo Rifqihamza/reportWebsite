@@ -10,7 +10,7 @@ type AddPICRequestBodyType = {
   campus_code?: string
 }
 
-export async function POST({ request, cookies }: APIContext) {
+export async function POST({ request, cookies, clientAddress }: APIContext) {
   // Verify the request coming from an admin
   const user_cookies = cookies.get("user_token")?.value;
   
@@ -62,7 +62,7 @@ export async function POST({ request, cookies }: APIContext) {
   // Record Activity
   try {
       await record_activity({
-          message: "Add a PIC data",
+          ip_address: clientAddress,
           url: request.url,
           activity_type: ActivityType.CreatePIC,
           user_id: user_data.id

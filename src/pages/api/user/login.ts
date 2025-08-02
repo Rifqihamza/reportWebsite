@@ -5,7 +5,7 @@ import { prisma } from "../../../utils/db";
 import sha3 from "js-sha3";
 import { ActivityType, Prisma } from "@prisma/client";
 
-export async function POST({ request }: APIContext) {
+export async function POST({ request, clientAddress }: APIContext) {
     // Get username and password to check
     const { username, password } = await request.json();
     if(!username || !password) {
@@ -57,7 +57,7 @@ export async function POST({ request }: APIContext) {
     // Record Activity
     try {
         await record_activity({
-            message: "Login to an account",
+            ip_address: clientAddress,
             url: request.url,
             activity_type: ActivityType.LoginUser,
             user_id: user.id
