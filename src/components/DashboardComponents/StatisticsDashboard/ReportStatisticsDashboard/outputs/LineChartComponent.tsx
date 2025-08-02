@@ -53,9 +53,11 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
         data: categories.map(label => grouped[type][label]),
     }));
 
-    const options = {
+    const options: ApexCharts.ApexOptions = {
         chart: {
             type: 'line' as const,
+            background: "#2b3440",
+            foreColor: "#fff"
         },
         theme: {
             palette: 'palette1'
