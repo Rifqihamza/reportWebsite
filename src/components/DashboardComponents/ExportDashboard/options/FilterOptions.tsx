@@ -2,33 +2,40 @@ import { ListBox } from "primereact/listbox";
 import { filterOptions, useExportHook } from "../../../../hooks/pages/Export/useExportHook";
 import { reporttype_to_string, type ReportData } from "../../../../types/variables";
 import { capitalize } from "../../../../utils/other";
-import { Accordion, AccordionTab } from "primereact/accordion";
+import { useEffect, useState } from "react";
 
 export default function FilterOptions() {
   const { filter, setFilter } = useExportHook();
+  const [openedIndex, setOpenedIndex] = useState<number|null>(null);
+  const [shouldClose, setShouldClose] = useState<boolean>(true);
+
+  function windowClick() {
+    if(openedIndex !== null) {      
+      setTimeout(() => {
+        if(shouldClose) setOpenedIndex(null);
+        setShouldClose(true);
+      }, 100);
+    }
+  }
+  
+  useEffect(() => {
+    window.addEventListener("click", windowClick);
+    return (() => { window.removeEventListener("click", windowClick) })
+  }, [openedIndex, shouldClose]);
 
   return <>
     <div className="bg-[#374151] w-full h-fit rounded-xl px-3">
       <div className="flex flex-row justify-between px-4 py-5">
         <div className="w-full">
-          <h1 className="text-xl lg:text-2xl font-semibold text-white ">Filter Option</h1>
+          <h1 className="text-xl lg:text-2xl font-semibold text-white">Filter Option</h1>
           <span className="text-md lg:text-lg text-white flex flex-row items-center gap-3">
             Opsi filter data yang akan di eksport
             <i className="pi pi-arrow-right"></i>
           </span>
         </div>
-        <div className="w-full h-full overflow-y-auto flex flex-col gap-4">
-          <Accordion className="px-4 py-3 flex flex-col-reverse gap-2 
-            [&_.p-accordion-header-link]:rounded-xl! 
-          [&_.p-accordion-header-link]:bg-[#9CA3AF]!
-          [&_.p-accordion-header-link]:text-white!
-            [&_.p-accordion-header-link]:border-none!
-            [&_.p-accordion-content]:rounded-xl!
-            [&_.p-accordion-content]:mt-3!
-            [&_.p-accordion-content]:border-none!
-            [&_.p-accordion-content]:bg-[#9CA3AF]!
-            ">
-            {Object.entries(filterOptions).map(([key, options]) => {
+        <div className="w-full h-full overflow-y-visible flex flex-col justify-start gap-4">
+          <div className="px-4 py-3 flex flex-col justify-start gap-2">
+            {Object.entries(filterOptions).map(([key, options], index) => {
               const filterKey = key as keyof ReportData;
               const displayOptions = key === "type" ? options.map(reporttype_to_string) : options;
               const selectedValues = filter[filterKey] || [];
@@ -39,21 +46,24 @@ export default function FilterOptions() {
               }));
 
               return (
-                <AccordionTab key={key} header={capitalize(key)}>
-                  <ListBox
-                    className="[&_.p-listbox-list]:space-y-1.5! w-full h-full "
-                    value={selectedValues}
-                    onChange={(e) => {
-                      const newValues = e.value as string[];
-                      setFilter(filterKey, newValues);
-                    }}
-                    options={listBoxOptions}
-                    multiple
-                  />
-                </AccordionTab>
+                <div data-filter-element key={key} className="flex flex-col justify-center h-full! overflow-y-visible items-center relative" onClick={() => setShouldClose(false)}>
+                  <button className={`cursor-pointer z-10 w-full h-full p-[12px_24px] bg-[#1a1d24] text-white rounded-xl border ${selectedValues.length > 0 ? "border-white" : "border-transparent"}`} onClick={() => index === openedIndex ? setOpenedIndex(null) : setOpenedIndex(index)}>{capitalize(key)}</button>
+                    <div className={`p-4 max-h-70 overflow-auto rounded-l-2xl bg-[#374151] border border-white z-11 w-full left-0 absolute top-[calc(26px_+_1.5rem_+6px)] duration-400 ${openedIndex === index ? "opacity-100 text-base" : "opacity-0 pointer-events-none"}`}>
+                      <ListBox
+                        className="[&_.p-listbox-list]:space-y-1.5! w-full h-full"
+                        value={selectedValues}
+                        onChange={(e) => {
+                          const newValues = e.value as string[];
+                          setFilter(filterKey, newValues);
+                        }}
+                        options={listBoxOptions}
+                        multiple
+                      />
+                    </div>
+                </div>
               );
             })}
-          </Accordion>
+          </div>
         </div>
       </div>
     </div>
