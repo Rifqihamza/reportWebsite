@@ -10,7 +10,7 @@ interface Props {
 
 export default function CompactBoxData(props: Props) {
   return <>
-    <div className="w-full h-48 rounded-2xl shadow-md flex justify-center items-center hover:bg-gray-200/50 relative cursor-default">
+    <div className="w-full h-48 rounded-2xl shadow-md flex justify-center items-center border border-white text-white hover:bg-gray-200/50 relative cursor-default">
       <h1 className="text-2xl absolute top-2 left-2">{props.label}</h1>
       {(() => {
         if(props.loading) {

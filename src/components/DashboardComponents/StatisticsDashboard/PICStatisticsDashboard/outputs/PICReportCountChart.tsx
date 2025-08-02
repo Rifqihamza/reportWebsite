@@ -8,6 +8,8 @@ export default function ReportCountChart() {
     chart: {
       type: "bar",
       stacked: true,
+      foreColor: "#fff",
+      background: "#2b3440",
     },
     plotOptions: {
       bar: {
@@ -41,7 +43,11 @@ export default function ReportCountChart() {
       },
     },
     tooltip: {
+      cssClass: "bg-[#2b3440]!",
       shared: false,
+      x: {
+        show: false,
+      },
       y: {
         formatter: function (val) {
           if(val === 0) return "";
@@ -56,6 +62,7 @@ export default function ReportCountChart() {
     legend: {
       position: "top",
     },
+    
   };
 
   return (
@@ -63,7 +70,7 @@ export default function ReportCountChart() {
       <UsePICReportCountHookEffect />
       <div className="shadow md:p-2 rounded-2xl flex flex-col">
         <div className="overflow-auto">
-          <div className="min-w-[300px] w-full pt-4">
+          <div className="min-w-[300px] w-full pt-4 [&_.apexcharts-menu-icon]:hover:*:bg-white!">
             <ReactApexChart options={options} height={500} type="bar" series={picReportCountSeries} />
           </div>
         </div>
