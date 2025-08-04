@@ -54,7 +54,7 @@ export default function ReportEditModal() {
       setFormState({
         pic_name: report.pic_name || "",
         follow_up: report.follow_up || ("" as AccountType),
-        due_date: report.due_date || "",
+        due_date: (report.due_date || "").toString(),
         follow_up_name: report.follow_up_name || "",
         status: report.status || "",
       });
