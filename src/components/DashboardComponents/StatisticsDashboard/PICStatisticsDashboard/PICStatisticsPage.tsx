@@ -34,7 +34,7 @@ export default function PICStatisticsPage() {
         
         {/* Reports Count Chart */}
         <div className="mt-10 rounded-2xl border border-white bg-[#2b3440] py-4 px-2 md:px-4 min-h-68">
-          <h1 className="mb-4 text-2xl">Report Count</h1>
+          <h1 className="mb-4 text-2xl">Grafik Laporan PIC</h1>
           <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
             <ReportCountChart />
           </Suspense>

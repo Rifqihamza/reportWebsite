@@ -81,6 +81,7 @@ export default function UsePICRankHookEffect() {
   const { reportData } = useReportDataHook();
   const { currentTimeSpan, startDateFilter, endDateFilter } = usePICFilterHook();
    
+  // Report data processing to get the sorted PIC Rank
   useEffect(() => {
     if(!userAccountData || !reportData) return;
     const result: IndexedPICData = {};
@@ -119,6 +120,7 @@ export default function UsePICRankHookEffect() {
     setSortedPICData(newSortedPICData);
   }, [userAccountData, reportData, startDateFilter, endDateFilter, currentTimeSpan]);
 
+  // Pagination handler
   useEffect(() => {
     if(page < 1 || page > maxPage) {
       return
