@@ -88,5 +88,15 @@
       "improvements": [],
       "adjustments": ["Max file size from 8MB to 10MB", "Redirect teacher to report form instead of admin dashboard after login"]
     }
+  },
+  {
+    "version": "1.4",
+    "date": "04 August 2025",
+    "changes": {
+      "features": ["More extensive filter option in report table"],
+      "fixes": [],
+      "improvements": ["Dark Theme"],
+      "adjustments": []
+    }
   }
 ]
