@@ -40,7 +40,7 @@ export default function ReportDetailModal() {
 
   const ImageComponent = () => (
     <div className="flex flex-col w-full h-full">
-      <Image src={report_data?.image} imageClassName="object-cover rounded-lg max-h-[50vh]" alt="Foto Bukti Laporan" preview={true} width="600" loading="lazy" />
+      <Image src={report_data?.image} imageClassName="object-cover rounded-lg w-full aspect-square" alt="Foto Bukti Laporan" preview={true} loading="lazy" />
       <p className="mx-auto text-xs mt-2 text-gray-400">Klik Gambar Untuk Melihat Preview</p>
     </div>
   );
