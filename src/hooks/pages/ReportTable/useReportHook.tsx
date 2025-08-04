@@ -14,7 +14,7 @@ import { useMessageToastHook } from "../../shared/useMessageToast";
 import { useEffect } from "react";
 import { useNetworkConnectivityHook } from "../../shared/useNetworkConnectivity";
 
-const maxReportDataPerPage: number = 10;
+const maxReportDataPerPage: number = 7;
 
 // --/ Report Detail Hook
 type useReportDetailHookType = {
@@ -59,11 +59,11 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
     // -- Handling report deletion
     handleDelete: async (id: string) => {
       const { isConnected } = useNetworkConnectivityHook.getState();
-      if(!isConnected) return;
-      
+      if (!isConnected) return;
+
       const { reportData, setReportData } = useReportDataHook.getState();
       const { userData } = useUserDataHook.getState();
-      const { showMessage, showMessageByAPI } = useMessageToastHook.getState();
+      const { showMessage } = useMessageToastHook.getState();
 
       // Check if the user is
       if (!userData || userData.role == AccountType.Siswa || !confirm("Are you sure?")) {
@@ -74,7 +74,7 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       set(() => ({ deleteDisabled: true }));
 
       if (reportData?.find((data) => data.id == id)?.status === ReportStatus.InProcess) {
-        showMessage("Tidak bisa menghapus laporan yang sudah di follow up", "warn");
+        alert("Tidak bisa menghapus laporan yang sudah di follow up");
         set(() => ({ deleteDisabled: false }));
         return;
       }
@@ -83,12 +83,14 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
 
       if (result == APIResultType.NoError) {
         setReportData(reportData?.filter((value) => value.id != id) || null);
-        showMessageByAPI(result, "Data berhasil dihapus!");
+        showMessage("Success", "success", "Data berhasil dihapus!");
 
         set(() => ({ deleteDisabled: false, detailId: null }));
         return true;
-      } else {
-        showMessageByAPI(result);
+      } else if (result == APIResultType.InternalServerError) {
+        showMessage("Error", "error", "Terjadi error di server!");
+      } else if (result == APIResultType.Unauthorized) {
+        showMessage("Unauthroized!", "error", "Akses tidak dikenal!");
       }
 
       set(() => ({ deleteDisabled: false }));
@@ -150,12 +152,20 @@ export const useReportEditHook = create<useReportEditType>((set) => {
   };
 });
 
+type SelectedFilterType = {
+  type: ReportType[],
+  status: ReportStatus[],
+  campus: Campus[],
+  location: [Campus, string][]
+}
+
 // --/ Report Filter Hook
 type useReportFilterType = {
-  selectedFilter: [null | ReportType, null | ReportStatus, null | Campus];
-  setReportTypeFilter: (newReportTypeFilter: null | ReportType) => void;
-  setReportStatusFilter: (newReportStatusFilter: null | ReportStatus) => void;
-  setCampusFilter: (newCampusFilter: null | Campus) => void;
+  selectedFilter: SelectedFilterType;
+  setSelectedFilter: (newSelectedFilter: SelectedFilterType) => void;
+  setReportTypeFilter: (newReportTypeFilter: ReportType[]) => void;
+  setReportStatusFilter: (newReportStatusFilter: ReportStatus[]) => void;
+  setCampusFilter: (newCampusFilter: Campus[]) => void;
   resetFilter: () => void;
 
   dateFilter: (Date | null)[];
@@ -170,18 +180,42 @@ type useReportFilterType = {
 
 export const useReportFilterHook = create<useReportFilterType>((set) => {
   return {
-    selectedFilter: [null, null, null],
+    selectedFilter: { campus: [], status: [], type: [], location: [] },
+    setSelectedFilter(newSelectedFilter) {
+      set(() => ({ selectedFilter: newSelectedFilter }))
+    },
     setReportTypeFilter(newReportTypeFilter) {
-      set((state) => ({ selectedFilter: [newReportTypeFilter, state.selectedFilter[1], state.selectedFilter[2]] }));
+      set((state) => {
+        const currentSelectedFilter = state.selectedFilter;
+        currentSelectedFilter.type = newReportTypeFilter;
+
+        return {
+          selectedFilter: currentSelectedFilter
+        }
+      });
     },
     setReportStatusFilter(newReportStatusFilter) {
-      set((state) => ({ selectedFilter: [state.selectedFilter[0], newReportStatusFilter, state.selectedFilter[2]] }));
+      set((state) => {
+        const currentSelectedFilter = state.selectedFilter;
+        currentSelectedFilter.status = newReportStatusFilter;
+        
+        return {
+          selectedFilter: currentSelectedFilter
+        }
+      });
     },
     setCampusFilter(newCampusFilter) {
-      set((state) => ({ selectedFilter: [state.selectedFilter[0], state.selectedFilter[1], newCampusFilter] }));
+      set((state) => {
+        const currentSelectedFilter = state.selectedFilter;
+        currentSelectedFilter.campus = newCampusFilter;
+        
+        return {
+          selectedFilter: currentSelectedFilter
+        }
+      });
     },
     resetFilter() {
-      set(() => ({ selectedFilter: [null, null, null] }));
+      set(() => ({ selectedFilter: { campus: [], status: [], type: [], location: [] } }));
     },
 
     dateFilter: [],
@@ -230,22 +264,26 @@ export function ReportHookEffect() {
   }, [filteredReports, currentPage]);
 
   useEffect(() => {
-    if(!reportData) {
+    if (!reportData) {
       return;
     }
-    
+
     // Filter Categories and Status
-    let result_data = reportData.filter((value) => {
-      if(selectedFilter[0] !== null && value.type !== selectedFilter[0]) {
+    let result_data = reportData.filter((value, index) => {
+      if(selectedFilter.type.length > 0 && !selectedFilter.type.includes(value.type)) {
         return false;
       }
 
-      if(selectedFilter[1] !== null && value.status !== selectedFilter[1]) {
+      if(selectedFilter.status.length > 0 && !selectedFilter.status.includes(value.status)) {
         return false;
       }
 
-      if(selectedFilter[2] !== null && value.campus !== selectedFilter[2]) {
+      if(selectedFilter.campus.length > 0 && !selectedFilter.campus.includes(value.campus)) {
         return false;
+      }
+
+      if(selectedFilter.location.length > 0 && (!value.location_name || !selectedFilter.location.find((locationFilter) => locationFilter[0] == value.campus && locationFilter[1] == value.location_name))) {
+        return false
       }
 
       return true;
@@ -280,8 +318,8 @@ export function ReportHookEffect() {
 
 // Utility constants
 export const statusColors = {
-  NotStarted: "bg-red-100 text-red-800",
-  InProcess: "bg-yellow-100 text-yellow-800",
-  Complete: "bg-green-100 text-green-800",
-  Hold: "bg-blue-100 text-blue-800",
+  NotStarted: "bg-red-300 text-red-800",
+  InProcess: "bg-yellow-300 text-yellow-800",
+  Complete: "bg-green-300 text-green-800",
+  Hold: "bg-blue-300 text-blue-800",
 };

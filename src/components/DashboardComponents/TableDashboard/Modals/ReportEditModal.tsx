@@ -54,7 +54,7 @@ export default function ReportEditModal() {
       setFormState({
         pic_name: report.pic_name || "",
         follow_up: report.follow_up || ("" as AccountType),
-        due_date: report.due_date || "",
+        due_date: (report.due_date || "").toString(),
         follow_up_name: report.follow_up_name || "",
         status: report.status || "",
       });
@@ -123,24 +123,31 @@ export default function ReportEditModal() {
       <UseReportConfigHookEffect />
       <PrimeReactProvider>
         <Dialog
-          header="Edit Laporan"
-          className="w-full max-w-6xl"
+          header={
+            <div>
+              <h1 className="text-md">Edit Laporan</h1>
+              <p className="text-sm font-thin">Mengedit data laporan yang telah terdaftar</p>
+            </div>
+          }
+          className="w-full max-w-6xl border border-white [&_.p-dialog-footer]:bg-[#257180]! **:text-white!"
           visible={editVisible}
           draggable={false}
           onHide={() => setEditVisible(false)}
+          headerClassName="bg-[#fd8b51]!"
+          contentClassName="bg-[#257180]! py-5! flex flex-col gap-2"
           footer={
             <div className="flex justify-end gap-2">
-              <button onClick={() => setEditVisible(false)} className="text-gray-800 hover:text-gray-200">
+              <button onClick={() => setEditVisible(false)} className="text-gray-300 hover:text-gray-400">
                 Batal
               </button>
-              <button onClick={handleSave} disabled={disableSave || !isChange} className="text-blue-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none">
+              <button onClick={handleSave} disabled={disableSave || !isChange} className="text-green-200 hover:text-gray-600 disabled:text-white disabled:opacity-25 disabled:pointer-events-none">
                 {disableSave && <i className="pi pi-spinner pi-spin mr-2" />}
                 Simpan
               </button>
             </div>
           }
         >
-          <div className="w-full grid grid-rows-2 grid-cols-2 gap-2">
+          <div className="w-full grid grid-rows-4 md:grid-rows-2 md:grid-cols-2 gap-2">
             {(() => {
               const picNameIsNotLoaded = Object.values(picNamesOptions).length == 0;
               return (
@@ -195,7 +202,7 @@ function InputField({
         type="text"
         value={value}
         onChange={onChange}
-        className="outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg disabled:border-gray-300"
+        className="outline-none px-4 py-2 border border-gray-400 focus:border-gray-800 rounded-lg disabled:border-gray-300 text-white! placeholder:text-white!"
         disabled={disabled}
         maxLength={max}
       />
@@ -258,7 +265,7 @@ function CalendarField({ label, value, onChange, disabled = false }: { label: st
         )}
       </div>
 
-      <Calendar value={value} onChange={onChange} showTime className="outline-none! px-4! border! border-gray-400! focus:border-gray-800! rounded-lg!" disabled={disabled} />
+      <Calendar value={value} onChange={onChange} showTime className="bg-transparent! **:bg-transparent! outline-none! px-4! border! border-gray-400! focus:border-gray-800! rounded-lg!" disabled={disabled} />
     </div>
   );
 }

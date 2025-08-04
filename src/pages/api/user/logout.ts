@@ -4,7 +4,7 @@ import cookie from 'cookie';
 import { ActivityType, Prisma } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
 
-export async function POST({ request, cookies }: APIContext) {
+export async function POST({ request, cookies, clientAddress }: APIContext) {
     const user_token = cookies.get("user_token")?.value;
     if (!user_token) {
         return create_response_status(401);
@@ -34,7 +34,7 @@ export async function POST({ request, cookies }: APIContext) {
     // Record Activity
     try {
         await record_activity({
-            message: "Logout from an account",
+            ip_address: clientAddress,
             url: request.url,
             activity_type: ActivityType.LogoutUser,
             user_id: user_data.id

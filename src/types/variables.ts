@@ -79,7 +79,7 @@ export const ReportData_TypeGuard = z.strictObject({
     created_at: z.date().or(z.string()),
     report_date: z.date().or(z.string()),
     due_date: z.date().or(z.string()).nullable(),
-    campus: z.nativeEnum(Campus).nullable(),
+    campus: z.nativeEnum(Campus),
     image: z.string(),
     image_after_finish: z.string().nullable(),
     account_name: z.string()
@@ -159,6 +159,10 @@ export enum ExportOutputType {
     CSV = "CSV",
 }
 
+export const ExportOutputTitles = [
+    { value: ExportOutputType.Excel, title: "Excel", icon: "excelIcon.png" },
+    { value: ExportOutputType.CSV, title: "CSV", icon: "csvIcon.png" },
+];
 
 export enum AccountAPIPrivillage {
     AllPrivillages = "AllPrivillages",
@@ -304,5 +308,3 @@ export const menuItems: (MenuItem|MenuItemGroup)[] = [
 
 
 export const max_file_size = 10;
-
-

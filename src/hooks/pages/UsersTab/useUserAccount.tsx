@@ -47,7 +47,7 @@ export const useUserAccountHook = create<UserAccountData>((set) => ({
 export default function UseUserAccountHookEffect() {
     const { isConnected } = useNetworkConnectivityHook();
     const { setUserAccountData, userAccountData, setShowedUserAccountData, setDoneFetching, usernameFilter, setIsAuthorized } = useUserAccountHook();
-    const { showMessage, showMessageByAPI } = useMessageToastHook();
+    const { showMessage } = useMessageToastHook();
     
     useEffect(() => {
         if(initialized || !isConnected) {
@@ -59,14 +59,14 @@ export default function UseUserAccountHookEffect() {
             if (Array.isArray(result)) {
                 setUserAccountData(result);
             } else if (result === false) {
-                showMessage("Terjadi kesalahan.", "error");
+                showMessage("There's a network error.", "error", "Please reload the website once you connected.");
             } else if (result === APIResultType.Unauthorized) {
                 setIsAuthorized(false);
-            } else {
-                showMessageByAPI(result);
+            } else if (result === APIResultType.InternalServerError) {
+                showMessage("Terjadi error di server.", "error", "Reload website setelah beberapa waktu");
             }
         }).catch(() => {
-            showMessage("Terjadi kesalahan.", "error", "Mohon coba beberapa saat lagi.");
+            showMessage("There's a network error.", "error", "Please reload the website once you connected.");
         }).finally(() => {
             setDoneFetching(true);
         });

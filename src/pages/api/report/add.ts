@@ -17,7 +17,7 @@ const ReportRequestBodyType = z.object({
     campus: z.string(),
 });
 
-export async function POST({ request, cookies }: APIContext) {
+export async function POST({ request, cookies, clientAddress }: APIContext) {
     const user_token = cookies.get("user_token")?.value;
     const [verification_result, verification_output, user_data] = await verify_user_data_token(user_token??"");
 
@@ -198,7 +198,7 @@ export async function POST({ request, cookies }: APIContext) {
     // Record Activity
     try {
         await record_activity({
-            message: "Add a report data",
+            ip_address: clientAddress,
             url: request.url,
             activity_type: ActivityType.CreateReport,
             user_id: user_data.id

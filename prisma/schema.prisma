@@ -136,7 +136,7 @@ model VerifiedCaptcha {
 
 model RecordedActivity {
   id            String       @id @default(uuid())
-  message       String
+  ip_address    String
   url           String
   activity_type ActivityType
 

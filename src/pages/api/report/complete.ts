@@ -11,7 +11,7 @@ const ConfirmBodyType = z.object({
   confirmation_photo: z.instanceof(File)
 });
 
-export async function POST({ request, cookies }: APIContext) {
+export async function POST({ request, cookies, clientAddress }: APIContext) {
   //? Verify user_token
   const user_token = cookies.get("user_token")?.value;
 
@@ -152,7 +152,7 @@ export async function POST({ request, cookies }: APIContext) {
   //? Record Activity
   try {
     await record_activity({
-      message: "Confirm a report data",
+      ip_address: clientAddress,
       url: request.url,
       activity_type: ActivityType.UpdateReport,
       user_id: user_data.id

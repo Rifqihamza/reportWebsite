@@ -5,7 +5,7 @@ import { ActivityType, Prisma, type Report } from "@prisma/client";
 import { account_to_api_privillage, AccountAPIPrivillage, type ReportData } from "../../../types/variables";
 import { APIResultType } from "../../../utils/api_interface";
 
-export async function PUT({ request }: APIContext) {
+export async function PUT({ request, clientAddress }: APIContext) {
     // Verify user_token
     const cookies = get_cookies_from_request(request);
           
@@ -62,10 +62,14 @@ export async function PUT({ request }: APIContext) {
                 id: report_id
             },
             data: {
-                status: new_report_data.status || undefined,
+                submitted_by: new_report_data.submitted_by ?? undefined,
+                message: new_report_data.message ?? undefined,
+                type: new_report_data.type ?? undefined,
+                status: new_report_data.status ?? undefined,
                 follow_up: new_report_data.follow_up || undefined,
                 follow_up_name: new_report_data.follow_up_name ?? undefined,
-                due_date: (new_report_data.due_date as any) === "" ? null : (new_report_data.due_date || undefined),
+                report_date: new_report_data.report_date ?? undefined,
+                due_date: new_report_data.due_date === "" ? null : (new_report_data.due_date || undefined),
                 responsible_pic: new_report_data.pic_name ? {
                     connect: {
                         name_campus_name: {
@@ -74,6 +78,14 @@ export async function PUT({ request }: APIContext) {
                         }
                     }
                 } : undefined,
+                report_location: new_report_data.location_name ? {
+                    connect: {
+                        location_campus_name: {
+                            campus_name: prev_report_data.campus,
+                            location: new_report_data.location_name
+                        }
+                    }
+                } : undefined
             }
         });
     }
@@ -89,7 +101,7 @@ export async function PUT({ request }: APIContext) {
     // Record Activity
     try {
         await record_activity({
-            message: "Update a report data",
+            ip_address: clientAddress,
             url: request.url,
             activity_type: ActivityType.UpdateReport,
             user_id: user_data.id

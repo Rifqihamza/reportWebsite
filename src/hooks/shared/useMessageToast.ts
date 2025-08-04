@@ -32,4 +32,3 @@ export const useMessageToastHook = create<useMessageToastType>((set) => ({
     showMessage(error_message[apiResult].title, error_message[apiResult].severity, detail ? detail : error_message[apiResult].detail);
   },
 })) 
-
