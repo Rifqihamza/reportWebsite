@@ -159,6 +159,10 @@ export enum ExportOutputType {
     CSV = "CSV",
 }
 
+export const ExportOutputTitles = [
+    { value: ExportOutputType.Excel, title: "Excel", icon: "excelIcon.png" },
+    { value: ExportOutputType.CSV, title: "CSV", icon: "csvIcon.png" },
+];
 
 export enum AccountAPIPrivillage {
     AllPrivillages = "AllPrivillages",
