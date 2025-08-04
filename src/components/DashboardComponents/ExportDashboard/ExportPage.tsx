@@ -111,17 +111,18 @@ export default function ExportPage() {
     <>
       <UseReportDataHookEffect />
       <UseExportHookEffect />
-      <div className="h-full w-full p-4 relative overflow-auto grid grid-flow-row grid-rows-[1fr_auto]">
-        <div className="w-full h-full flex flex-col gap-2 px-1 py-2">
+      <div className="h-full w-full py-4 md:px-4 relative overflow-auto grid grid-flow-row grid-rows-[1fr_auto]">
+        <div className="w-full h-full flex flex-col gap-2 md:px-1 py-2">
           <RowOptions />
           <FilterOptions />
           <DateRangeOptions />
           <OutputOptions />
         </div>
         {/* Export button */}
-        <button className={`h-full p-4 bg-[#374151] text-white rounded-2xl hover:bg-[#F97316] duration-300 ${(processingState == 1) ? "bg-white text-[#1f324d]! border-[#1f324d] pointer-events-none" : ""}`} onClick={handleExport}>
+        <button className={`h-full mt-4 p-4 bg-[#374151] text-white rounded-2xl hover:bg-[#F97316] duration-300 ${(processingState == 1) ? "bg-white text-[#1f324d]! border-[#1f324d] pointer-events-none" : ""}`} onClick={handleExport}>
           {(processingState == 1) ? "Processing..." : ((processingState == 2) ? "Done!" : "Process & Export")}
         </button>
+        <br />
       </div>
     </>
   );

@@ -25,12 +25,12 @@ export default function FilterOptions() {
 
   return <>
     <div className="bg-[#374151] w-full h-fit rounded-xl px-3">
-      <div className="flex flex-row justify-between px-4 py-5">
+      <div className="flex flex-col md:flex-row justify-between px-4 py-5">
         <div className="w-full">
           <h1 className="text-xl lg:text-2xl font-semibold text-white">Filter Option</h1>
           <span className="text-md lg:text-lg text-white flex flex-row items-center gap-3">
             Opsi filter data yang akan di eksport
-            <i className="pi pi-arrow-right"></i>
+            <i className="pi pi-arrow-right hidden! md:inline!"></i>
           </span>
         </div>
         <div className="w-full h-full overflow-y-visible flex flex-col justify-start gap-4">
