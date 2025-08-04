@@ -317,9 +317,9 @@ export function ReportHookEffect() {
 }
 
 // Utility constants
-export const statusColors: Record<ReportStatus, string> = {
-  NotStarted: ReportStatus.NotStarted,
-  InProcess: ReportStatus.InProcess,
-  Complete: ReportStatus.Complete,
-  Hold: ReportStatus.Hold,
+export const statusColors = {
+  NotStarted: "bg-red-300 text-red-800",
+  InProcess: "bg-yellow-300 text-yellow-800",
+  Complete: "bg-green-300 text-green-800",
+  Hold: "bg-blue-300 text-blue-800",
 };

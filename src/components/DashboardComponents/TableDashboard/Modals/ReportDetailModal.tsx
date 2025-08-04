@@ -72,10 +72,9 @@ export default function ReportDetailModal() {
             <p>
               Status:
               <span
-                className="font-medium md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2 text-white"
-                style={{ backgroundColor: report_data ? statusColors[report_data.status] : "#FD8B51" }}
+                className={`font-medium md:px-2 md:py-1 text-xs p-1.5 rounded-xl h-fit w-fit whitespace-nowrap ml-2 text-white ${report_data ? statusColors[report_data.status] : ""}`}
               >
-                {report_data?.status}
+                {spaces_in_camel_case(report_data?.status ?? "")}
               </span>
             </p>
             <hr className="mt-3" />
