@@ -79,7 +79,7 @@ export const ReportData_TypeGuard = z.strictObject({
     created_at: z.date().or(z.string()),
     report_date: z.date().or(z.string()),
     due_date: z.date().or(z.string()).nullable(),
-    campus: z.nativeEnum(Campus).nullable(),
+    campus: z.nativeEnum(Campus),
     image: z.string(),
     image_after_finish: z.string().nullable(),
     account_name: z.string()

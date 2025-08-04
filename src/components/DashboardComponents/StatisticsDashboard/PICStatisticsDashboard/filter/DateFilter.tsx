@@ -16,14 +16,14 @@ export default function DateFilter() {
   return <>
     <UsePICFilterHookEffect />
     <PrimeReactProvider>
-      <div className="flex flex-row gap-2 items-center">
-        <div className="flex flex-row gap-2 items-center justify-center px-2 h-12 text-white border border-white rounded-md">
-          <button onClick={prevDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-4/5 disabled:opacity-0 disabled:pointer-events-none" disabled={currentTimeSpan === PICFilterTimeSpan.AllTime}><i className="pi pi-angle-left"></i></button>
-          <p className="w-full">{strftime(dateFormat, startDateFilter)} - {strftime(dateFormat, endDateFilter)}</p>
-          <button onClick={nextDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-4/5 disabled:opacity-0 disabled:pointer-events-none" disabled={currentTimeSpan === PICFilterTimeSpan.AllTime}><i className="pi pi-angle-right"></i></button>
+      <div className="flex flex-col md:flex-row gap-2 items-center">
+        <div className="w-full md:w-fit flex flex-row gap-2 text-xs md:text-base items-center justify-center px-2 h-12 shadow-lg rounded-md">
+          <button onClick={prevDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-3/5 disabled:opacity-0 disabled:pointer-events-none" disabled={currentTimeSpan === PICFilterTimeSpan.AllTime}><i className="pi pi-angle-left"></i></button>
+          <p className="w-full text-center">{strftime(dateFormat, startDateFilter)} - {strftime(dateFormat, endDateFilter)}</p>
+          <button onClick={nextDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-3/5 disabled:opacity-0 disabled:pointer-events-none" disabled={currentTimeSpan === PICFilterTimeSpan.AllTime}><i className="pi pi-angle-right"></i></button>
         </div>
-        <div className="w-32 shadow-lg! rounded-md! h-12 flex items-center">
-          <Dropdown className="border! border-white! rounded-md! bg-transparent! **:bg-transparent! w-full h-full flex justify-center items-center *:bg-white! [&_.p-dropdown-trigger]:rounded-md! [&_span]:text-white!" panelClassName="[&_.p-dropdown-items-wrapper]:bg-[#2b3440]! [&_.p-focus]:bg-[#2b3440]! [&_.p-highlight]:bg-[#295470]! [&_.p-dropdown-item]:hover:text-white! [&_.p-dropdown-item]:hover:bg-[#194460]!" options={Object.values(PICFilterTimeSpan)} value={currentTimeSpan} onChange={(e) => setCurrentTimeSpan(e.value)} />
+        <div className="w-full md:w-32 shadow-lg! rounded-md! h-12 flex items-center">
+          <Dropdown className="bg-white! *:bg-white! [&_.p-dropdown-trigger]:rounded-md!" options={Object.values(PICFilterTimeSpan)} value={currentTimeSpan} onChange={(e) => setCurrentTimeSpan(e.value)} />
         </div>
       </div>
     </PrimeReactProvider>
