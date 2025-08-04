@@ -145,10 +145,10 @@ export const keyto_table_rows: Partial<{
 
 // Other things
 export const statusColorHex: Record<string, string> = {
-    NotStarted: "#EF4444", // Tailwind bg-red-300
-    InProcess: "#FACC15",  // Tailwind bg-yellow-300
-    Complete: "#22C55E",   // Tailwind bg-green-300
-    Hold: "#3B82F6",       // Tailwind bg-blue-300
+    NotStarted: "#fca5a5", // Tailwind bg-red-300
+    InProcess: "#fde047",  // Tailwind bg-yellow-300
+    Complete: "#86efac",   // Tailwind bg-green-300
+    Hold: "#93c5fd",       // Tailwind bg-blue-300
     Abnormality: "#f3d262",
     "5R": "#7750a5",
     Safety: "#ea8557"
@@ -159,14 +159,10 @@ export enum ExportOutputType {
     CSV = "CSV",
 }
 
-export const ExportOutputTitles = [
-    { value: ExportOutputType.Excel, title: "Excel", icon: "excelIcon.png" },
-    { value: ExportOutputType.CSV, title: "CSV", icon: "csvIcon.png" },
-];
 
 export enum AccountAPIPrivillage {
     AllPrivillages = "AllPrivillages",
-
+    
     // User Related Privillage
     CreateUser = "CreateUser",
     UpdateUser = "UpdateUser",
@@ -180,7 +176,7 @@ export enum AccountAPIPrivillage {
     MarkCompeleteReport = "MarkCompeleteReport",
     DeleteReport = "DeleteReport",
     GetReport = "GetReport",
-
+    
     // Umm Related Privillage
     ReportStatisticsPage = "ReportStatisticsPage",
     PICStatisticsPage = "PICStatisticsPage",
@@ -249,21 +245,21 @@ export interface MenuItemGroup {
     }[]
 }
 
-export const menuItems: (MenuItem | MenuItemGroup)[] = [
-    {
+export const menuItems: (MenuItem|MenuItemGroup)[] = [
+    { 
         id: 0,
         label: "Home",
         icon: "pi pi-home",
         description: "Kembali ke menu utama untuk melihat navigasi ke tempat-tempat lain"
     },
-    {
+    { 
         id: 1,
         label: "Table",
         icon: "pi pi-table",
         privillage: AccountAPIPrivillage.GetReport,
         description: "Lihat dan kelola data laporan yang disimpan"
     },
-    {
+    { 
         label: "Statistics",
         icon: "pi pi-chart-pie",
         items: [
@@ -283,21 +279,21 @@ export const menuItems: (MenuItem | MenuItemGroup)[] = [
             }
         ]
     },
-    {
+    { 
         id: 3,
         label: "Export",
         icon: "pi pi-file-export",
         privillage: AccountAPIPrivillage.ExportPage,
         description: "Download data yang telah terekam sistem"
     },
-    {
+    { 
         id: 4,
         label: "Users",
         icon: "pi pi-user",
         privillage: AccountAPIPrivillage.UsersPage,
         description: "Lihat data pengguna yang menggunakan website ini"
     },
-    {
+    { 
         id: 5,
         label: "Setting",
         icon: "pi pi-cog",
@@ -308,5 +304,3 @@ export const menuItems: (MenuItem | MenuItemGroup)[] = [
 
 
 export const max_file_size = 10;
-
-
