@@ -23,7 +23,7 @@ export default function DateFilter() {
           <button onClick={nextDate} className="aspect-square cursor-pointer hover:bg-gray-200 h-3/5 disabled:opacity-0 disabled:pointer-events-none" disabled={currentTimeSpan === PICFilterTimeSpan.AllTime}><i className="pi pi-angle-right"></i></button>
         </div>
         <div className="w-full md:w-32 shadow-lg! rounded-md! h-12 flex items-center">
-          <Dropdown className="bg-white! *:bg-white! [&_.p-dropdown-trigger]:rounded-md!" options={Object.values(PICFilterTimeSpan)} value={currentTimeSpan} onChange={(e) => setCurrentTimeSpan(e.value)} />
+          <Dropdown className="bg-transparent! *:bg-transparent! *:text-white!" panelClassName="rounded-none! [&_.p-dropdown-item]:hover:text-white! [&_.p-dropdown-item]:hover:bg-[#f97316]! [&_.p-highlight]:bg-[#f97316]! [&_.p-focus]:bg-[#fd8b51]! bg-[#fd8b51]!" options={Object.values(PICFilterTimeSpan)} value={currentTimeSpan} onChange={(e) => setCurrentTimeSpan(e.value)} />
         </div>
       </div>
     </PrimeReactProvider>
