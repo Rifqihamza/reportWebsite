@@ -2,26 +2,23 @@
 import HelpButton from "../../components/GlobalComponents/HelpButton/HelpButton";
 import LoginFormComponent from "../../components/LoginComponents/LoginForm/LoginFormComponent";
 import Layout from "../../layouts/Layout.astro";
-import LogoImage from "../../assets/images/logoSekolah.png";
-import Image from "astro/components/Image.astro";
 ---
 
 <Layout>
   <HelpButton client:load />
   <div class="flex justify-center items-center w-full h-screen">
-    <div class="bg-white p-6 rounded-3xl max-w-3xl w-full mx-8">
-      <form method="POST" action="">
-        <div
-          class="px-4 py-3 bg-[#1f324d] rounded-2xl text-white flex flex-row items-center justify-between"
-        >
-          <!-- Label Login -->
-          <div>
-            <h1 class="font-bold text-lg">Login Page</h1>
-            <p class="text-[14px]">Please Login First!</p>
-          </div>
-          <Image src={LogoImage} class="w-10 h-auto" alt="" width={50} />
+    <div
+      class="bg-[#2B3440] w-full overflow-auto max-w-3xl h-auto rounded-4xl mx-6 px-8 py-10 relative"
+    >
+      <div
+        class="bg-[#9CA3AF] w-full h-fit p-5 absolute top-0 left-0 right-0 rounded-b-full"
+      >
+        <div class="text-center text-white">
+          <h1 class="font-bold text-2xl">Login Page</h1>
+          <p class="font-medium">Please, Login First!</p>
         </div>
-
+      </div>
+      <form method="POST" action="" class="mt-20">
         <LoginFormComponent client:load />
       </form>
     </div>

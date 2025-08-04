@@ -9,22 +9,25 @@ export default function ReportTableToolbar() {
   return (
     <>
       <PrimeReactProvider>
-        <div className="flex flex-col gap-3">
-          {/* Search Bar */}
+        {/* Search Bar */}
+        <div className="flex flex-col md:flex-row items-center gap-4">
           <div className="relative w-full flex items-center gap-4">
             <input
               type="text"
               id="search-input"
               placeholder="Cari laporan..."
-              className={`w-full pl-9 pr-11 py-3 rounded-xl text-gray-600 placeholder-black outline-none shadow-inner shadow-gray-400 ${searchKeyword.length > 0 ? "shadow-inner shadow-gray-400" : ""}`}
+              className={`w-full pl-10 pr-13 py-3 rounded-xl placeholder-white! bg-[#2B3440] outline-none ${searchKeyword.length > 0 ? "text-white" : ""}`}
               onChange={(e) => setSearchKeyword(e.target.value)}
             />
-            <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black" />
+            <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white" />
+            <span className="absolute right-0 top-1/2 transform -translate-y-1/2">
               <FilterSelect />
+            </span>
           </div>
-          <div className="flex items-center gap-2 w-full">
+          <div className="flex flex-row gap-3 items-center">
+
             <Calendar
-              className={`w-full *:cursor-pointer *:placeholder:opacity-50! [&_.p-inputtext]:shadow-inner [&_.p-inputtext]:shadow-gray-400 ${dateFilter[0] ? " " : ""}`}
+              className={`w-fit h-full *:cursor-pointer *:placeholder:text-white! [&_.p-inputtext]:py-3! [&_.p-inputtext]:bg-[#2B3440]! [&_.p-inputtext]:text-white! ${dateFilter[0] ? " " : ""}`}
               inputId="from-date"
               value={dateFilter ? dateFilter[0] : null}
               onChange={(e) => setDateFilter([e.value?.getTime() === dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])}
@@ -34,7 +37,7 @@ export default function ReportTableToolbar() {
             />
             <span className="text-black text-4xl">-</span>
             <Calendar
-              className={`w-full *:cursor-pointer *:placeholder:opacity-50! [&_.p-inputtext]:shadow-inner [&_.p-inputtext]:shadow-gray-400 ${dateFilter[1] ? "" : ""}`}
+              className={`w-fit h-full *:cursor-pointer *:placeholder:text-white! [&_.p-inputtext]:py-3! [&_.p-inputtext]:bg-[#2B3440]! [&_.p-inputtext]:text-white! ${dateFilter[1] ? " " : ""}`}
               inputId="until-date"
               value={dateFilter ? dateFilter[1] : null}
               onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() === dateFilter[1]?.getTime() ? null : e.value ?? null])}
@@ -43,6 +46,7 @@ export default function ReportTableToolbar() {
               placeholder="Sampai tanggal"
             />
           </div>
+
         </div>
       </PrimeReactProvider>
     </>

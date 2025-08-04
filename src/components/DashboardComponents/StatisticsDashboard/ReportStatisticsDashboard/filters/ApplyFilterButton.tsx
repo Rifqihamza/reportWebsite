@@ -11,7 +11,7 @@ export default function ApplyFilterButton() {
   
   return <>
     <button 
-      className={`w-full h-fit py-3 bg-[#1f324d] text-white disabled:bg-white disabled:text-[#495057] font-bold rounded-lg cursor-pointer hover:brightness-75 disabled:opacity-50 disabled:brightness-75 disabled:cursor-not-allowed`}
+      className={`w-full h-fit py-3 bg-[#2b3440] text-white border border-white disabled:text-[#495057] font-bold rounded-lg cursor-pointer hover:brightness-75 disabled:opacity-75 disabled:brightness-75 disabled:cursor-not-allowed`}
       onClick={() => applyFilter()}
       disabled={!isChange}
     >

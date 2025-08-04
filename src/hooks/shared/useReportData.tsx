@@ -10,44 +10,52 @@ type UseReportDataType = {
   setReportData: (reportData: ReportData[] | null) => void;
   isAuthorized: boolean;
   setIsAuthorized: (newIsAuthorized: boolean) => void
+  fetchReportData: () => Promise<void>; 
+
 };
 
 export const useReportDataHook = create<UseReportDataType>((set) => ({
   reportData: null,
   setReportData: (reportData) => {
-    set(() => ({ reportData: reportData }));
+    set(() => ({ reportData }));
   },
   isAuthorized: true,
   setIsAuthorized(newIsAuthorized) {
     set(() => ({ isAuthorized: newIsAuthorized }));
   },
+  fetchReportData: async () => {
+    const res = await fetch("/api/report/get"); // sesuaikan dengan endpoint kamu
+    const data = await res.json();
+    set(() => ({ reportData: data }));
+  }
 }));
+
 
 let initialized = false;
 
 export default function UseReportDataHookEffect() {
   const { setReportData, setIsAuthorized } = useReportDataHook();
-  const { showMessageByAPI } = useMessageToastHook();
+  const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
   useEffect(() => {
-    if(initialized || !isConnected) {
+    if (initialized || !isConnected) {
       return;
     }
     initialized = true;
 
-    getReport().then((result) => {
-      if (typeof result === "object") {
-        setReportData(result);
+    getReport().then((report_data_array) => {
+      if (typeof report_data_array === "object") {
+        setReportData(report_data_array);
       }
-      else if (result === APIResultType.Unauthorized) {
+      else if (report_data_array === APIResultType.Unauthorized) {
         setIsAuthorized(true);
       }
-      else {
-        showMessageByAPI(result, "Please reload the website after a while.");
+      else if (report_data_array === APIResultType.DatabaseError) {
+        showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       }
     });
   }, [isConnected]);
 
-  return <></> ;
+  return <></>;
 }

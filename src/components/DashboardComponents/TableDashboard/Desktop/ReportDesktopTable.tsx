@@ -1,4 +1,4 @@
-import { reporttype_to_string, table_rows } from '../../../../types/variables';
+import { reporttype_to_string, statusColorHex, table_rows } from '../../../../types/variables';
 import { useReportDetailHook, useReportPaginationHook, statusColors } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { date_to_str, spaces_in_camel_case } from "../../../../utils/other";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
@@ -11,9 +11,11 @@ export default function ReportDesktopTable() {
     const { reportData, isAuthorized: isAuthorizedGetReport } = useReportDataHook();
     const { userData } = useUserDataHook();
 
+
+
     return <>
         <UseUserDataHookEffect />
-        <div className='hidden md:block overflow-auto p-4'>
+        <div className='hidden md:block overflow-auto p-5 bg-[#374151] rounded-xl'>
             <table className="w-full relative min-h-48">
                 <thead>
                     <tr>
@@ -21,14 +23,14 @@ export default function ReportDesktopTable() {
                             return <th
                                 key={key}
                                 scope="col"
-                                className="rounded-tl-xl px-2 py-3 border-b border-gray-300 text-left text-sm font-semibold text-black uppercase tracking-wider truncate"
+                                className="rounded-tl-xl px-2 py-3 border-b border-[#F97316] text-left text-sm font-semibold text-white uppercase tracking-wider truncate"
                             >
                                 {key}
                             </th>;
                         })}
                         <th
                             scope="col"
-                            className="rounded-tr-xl px-2 py-3 border-b border-gray-300 text-center text-sm font-semibold text-black uppercase tracking-wider truncate"
+                            className="rounded-tr-xl px-2 py-3 border-b border-[#F97316] text-center text-sm font-semibold text-white uppercase tracking-wider truncate"
                         >
                             Action
                         </th>
@@ -58,7 +60,7 @@ export default function ReportDesktopTable() {
                         // Return a normal report data
                         return <>
                             {showedReportData.map((report, index) => (
-                                <tr key={index} data-report-id={report.id}>
+                                <tr key={index} data-report-id={report.id} className="*:text-white *:border-[#F97316] *:border-b">
                                     {Object.values(table_rows).map((value, index) => {
                                         let isSpecified = report[value] !== null;
 
@@ -80,14 +82,14 @@ export default function ReportDesktopTable() {
                                             element = <>{report[value]}</>;
                                         }
 
-                                        return <td key={index} className={`px-2 py-3 text-left border-b border-gray-300 text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
+                                        return <td key={index} className={`px-2 py-3 text-left text-sm text-gray-600 truncate min-w-24! max-w-24! ${isSpecified || "opacity-50"}`}>
                                             {element}
                                         </td>;
                                     })}
-                                    
-                                    <td className="px-6 py-4  text-sm font-medium text-white text-center border-b border-gray-300 min-w-12! max-w-12!">
+
+                                    <td className="px-6 py-4  text-sm font-medium text-center min-w-12! max-w-12!">
                                         <button
-                                            className="border text-[#1f324d] hover:border-white hover:bg-[#1f324d] hover:text-white duration-500 px-3 py-1 rounded-xl"
+                                            className="cursor-pointer border hover:[box-shadow:0_0_4px_2px_#f2e5bf] duration-300 px-3 py-1 rounded-xl"
                                             onClick={() => handleDetail(report.id)}
                                         >
                                             Detail

@@ -16,7 +16,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #1f324d;
+  background-color: #257180;
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: content-box;
@@ -24,12 +24,12 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #41689f;
+  background-color: #fd8b51;
   transition: all 0.5s;
 }
 
 ::-webkit-scrollbar-track {
-  background: #fff;
+  background: transparent;
   border-radius: 10px;
 }
 
@@ -38,15 +38,26 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
 
+.bg-form {
+  background: #1a1d24;
+}
 
+.bg-form::-webkit-scrollbar {
+  display: none;
+}
 
-/* Below are classes for overriding Primereact builtin styles */
-.titlePage  /* Is this also a class from primereact? */ {
+.bg-dashboard,
+.sidebarDashboard,
+.headerDashboard {
+  background: #2b3440;
+}
+
+.titlePage {
   font-size: 18px;
   font-weight: 700;
   color: #000;
@@ -54,14 +65,52 @@ body {
   letter-spacing: 2px;
 }
 
-.MyGradient /* Is this also a class from primereact? */ {
-  mask-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 1) 20%,
-    rgba(0, 0, 0, 1) 80%,
-    rgba(0, 0, 0, 0)
-  );
+.wave {
+  background: #f2e5bf;
+  border-radius: 1000% 1000% 0 0;
+  position: fixed;
+  width: 150%;
+  height: 12em;
+  animation: wave 10s -3s linear infinite;
+  transform: translate3d(0, 0, 0);
+  opacity: 0.8;
+  bottom: 0;
+  left: 0;
+  z-index: -99;
+}
+
+.wave:nth-of-type(2) {
+  bottom: -1.25em;
+  animation: wave 18s linear reverse infinite;
+  opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+  bottom: -2.5em;
+  animation: wave 15s -1s reverse infinite;
+  opacity: 0.9;
+}
+
+@keyframes wave {
+  2% {
+    transform: translateX(-10);
+  }
+
+  25% {
+    transform: translateX(-10%);
+  }
+
+  50% {
+    transform: translateX(-25%);
+  }
+
+  75% {
+    transform: translateX(-10%);
+  }
+
+  100% {
+    transform: translateX(-10);
+  }
 }
 
 .p-image-preview {
@@ -134,25 +183,36 @@ body {
 /* Mengatur elemen utama dropdown */
 .p-dropdown {
   width: 100%;
-  background-color: #e2dad6 !important;
+  background-color: #f2e5bf !important;
   border: none;
   box-shadow: none;
 }
 
 .p-dropdown-label {
-  background-color: #e2dad6 !important;
-  color: black;
+  background-color: #f2e5bf !important;
+  color: #257180;
+  font-weight: 600;
 }
 
 .p-dropdown-trigger {
-  background-color: #e2dad6 !important;
+  background-color: #f2e5bf !important;
   border-left: none;
 }
 
 .p-dropdown-panel {
-  background-color: white;
+  background-color: #fd8b51;
+  margin-top: 0.5rem;
   border: none;
   box-shadow: none;
+  border-radius: 0.75rem;
+}
+
+.p-dropdown-item {
+  color: #fff;
+}
+
+.p-dropdown-item:hover {
+  color: #257180;
 }
 
 .swiper {
@@ -173,6 +233,16 @@ body {
     --swiper-navigation-sides-offset: 10%;
     --swiper-pagination-bottom: 15px;
   }
+}
+
+.MyGradient {
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 1) 80%,
+    rgba(0, 0, 0, 0)
+  );
 }
 
 .p-progressbar {
@@ -197,21 +267,22 @@ body {
   border: none;
 }
 
+.p-listbox-item.p-highlight {
+  background-color: #1a1d24;
+  border: 2px solid #9ca3af;
+  color: #fff;
+}
+
 .p-listbox-item {
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;
   transition: background-color 0.2s ease;
-  background-color: #fff;
-  border: 2px solid #1f324d;
+  background-color: #1a1d24;
+  border: 2px solid transparent;
+  color: #fff;
 }
 
 .p-listbox-item:hover {
-  background-color: #f0f4f8;
+  background-color: #2b3440;
   cursor: pointer;
-}
-
-.p-listbox-item.p-highlight {
-  background-color: #1f324d;
-  border: 2px solid #ffff;
-  color: #fff;
 }

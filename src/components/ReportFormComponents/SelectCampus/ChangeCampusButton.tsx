@@ -16,7 +16,7 @@ export default function ChangeCampusButton() {
 
   return <>
         <button
-            className={`h-12 flex items-center overflow-hidden px-4 py-3 bg-[#E2DAD6] hover:bg-[#314f79] hover:text-white fixed top-12 right-0 hover:w-[11rem] hover:rounded-l-xl w-[3rem] duration-300 cursor-pointer group ${(!userData || userData.role !== AccountType.Guru && userData.role !== AccountType.Vendor) ? "" : ""}`}
+            className={`h-12 flex items-center overflow-hidden px-4 py-3 hover:shadow hover:shadow-gray-500 text-[#F2E5BF] bg-[#CB6040] hover:bg-[#FD8B51] hover:text-white fixed top-12 right-0 hover:w-[11rem] hover:rounded-l-xl w-[3rem] duration-300 cursor-pointer group ${(!userData || userData.role !== AccountType.Guru && userData.role !== AccountType.Vendor) ? "" : ""}`}
             onClick={handleChangeCampus}
         >
             <i className="pi pi-map-marker mr-2"></i>
