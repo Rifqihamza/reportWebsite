@@ -32,8 +32,8 @@ export default function FilterSelect() {
                 </button>
             </div>
         </span>
-        <div className={`fixed right-0 top-0 bg-black/40 w-full h-full z-100 duration-1000 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} onClick={(e) => e.currentTarget == e.target ? setIsOpen(false) : ""}>
-            <div className={`flex flex-col items-center absolute right-0 top-0 bg-[#1a1d24] w-full md:w-[500px] h-full p-4 border-1 border-white md:rounded-l-xl duration-750 ${isOpen ? "translate-x-0 delay-500" : "translate-x-full delay-0"}`}>
+        <div className={`fixed right-0 top-0 bg-black/40 w-full h-dvh overflow-hidden z-100 duration-1000 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} onClick={(e) => e.currentTarget == e.target ? setIsOpen(false) : ""}>
+            <div className={`flex flex-col items-center absolute right-0 top-0 bg-[#1a1d24] w-full md:w-[500px] h-full p-4 md:border-1 border-white md:rounded-l-xl duration-750 ${isOpen ? "translate-x-0 delay-500" : "translate-x-full delay-0"}`}>
                 <div className="w-full h-full flex flex-col items-center gap-2">
                     <h1 className="text-white font-thin text-4xl border-b-1 border-white p-2 text-center w-4/5">Filter Table</h1>
                     <br />
