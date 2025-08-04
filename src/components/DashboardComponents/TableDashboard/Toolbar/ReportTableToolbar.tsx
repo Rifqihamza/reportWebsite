@@ -20,9 +20,7 @@ export default function ReportTableToolbar() {
               onChange={(e) => setSearchKeyword(e.target.value)}
             />
             <i className="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white" />
-            <span className="absolute right-0 top-1/2 transform -translate-y-1/2">
-              <FilterSelect />
-            </span>
+            <FilterSelect />
           </div>
           <div className="flex flex-row gap-3 items-center">
 
