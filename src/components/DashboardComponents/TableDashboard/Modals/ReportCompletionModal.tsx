@@ -1,9 +1,8 @@
 import { Dialog } from "primereact/dialog";
 import { useReportCompletionHook } from "../../../../hooks/pages/ReportTable/useReportCompletionHook";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMessageToastHook } from "../../../../hooks/shared/useMessageToast";
 import { APIResultType, markCompleteReport } from "../../../../utils/api_interface";
-import { error_message } from "../../../../types/error";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import { max_file_size } from "../../../../types/variables";
 

@@ -6,6 +6,8 @@ import ReportMobileTable from "./Mobile/ReportMobileTable";
 
 
 import { ReportHookEffect } from "../../../hooks/pages/ReportTable/useReportHook";
+import ReportCompletionModal from "./Modals/ReportCompletionModal";
+import ReportEvidenceModal from "./Modals/ReportEvidenceModal";
 
 
 export default function ReportListComponent() {
@@ -29,6 +31,12 @@ export default function ReportListComponent() {
 
       {/* Pagination Controls */}
       <ReportPagination />
+
+      {/* Completition Dialog */}
+      <ReportCompletionModal />
+
+      {/* Evidence Dialog */}
+      <ReportEvidenceModal />
     </>
   );
 };
