@@ -40,27 +40,35 @@ export default function PercenContComponent({ reports, label }: PercenContProps)
         [groupedReports]
     );
 
-    const percentageData = useMemo(() =>
-        Object.entries(groupedReports).map(([name, value]) => ({
-            name,
-            value,
-            percent: ((value / total) * 100).toFixed(1) + '%'
-        })),
-        [groupedReports, total]
-    );
+    const percentageData = useMemo(() => {
+        if(total !== 0) {
+            return Object.entries(groupedReports).map(([name, value]) => ({
+                name,
+                value,
+                percent: ((value / total) * 100).toFixed(1) + '%'
+            }));
+        }
+        return [];
+    }, [groupedReports, total]);
 
     return (
-        <div className='bg-[#2b3440] border border-white px-6 py-4 rounded-xl  space-y-4'>
+        <div className='min-h-24 bg-[#2b3440] border flex flex-col items-center border-white px-6 py-4 rounded-xl  space-y-4'>
             <div className='flex flex-row justify-between items-center gap-10'>
                 <h1 className="text-md md:text-lg text-white font-bold">Persentase {label}</h1>
             </div>
-            <div className='space-y-3 px-3 py-1'>
-                {percentageData.map((item, index) => (
-                    <div key={index} className="flex justify-between text-sm text-white">
-                        <span className={`${statusColors[item.name]} px-2 py-0.5 rounded-xl text-sm`}>{item.name}</span>
-                        <span className='font-semibold'>{item.percent}</span>
-                    </div>
-                ))}
+            <div className='h-full space-y-3 px-3 py-1'>
+                {(() => {
+                    if(percentageData.length === 0) {
+                        return <p className="text-white text-center w-full h-full flex justify-center items-center opacity-50">Tidak ada data yang dapat ditampilkan.</p>
+                    }
+                    
+                    return percentageData.map((item, index) => (
+                        <div key={index} className="flex justify-between text-sm text-white">
+                            <span className={`${statusColors[item.name]} px-2 py-0.5 rounded-xl text-sm`}>{item.name}</span>
+                            <span className='font-semibold'>{item.percent}</span>
+                        </div>
+                    ))
+                })()}
             </div>
         </div>
     );
