@@ -17,6 +17,7 @@ import { useThanksModalHook } from "../../../hooks/shared/useThanksModal";
 import { useCampusDataHook } from "../../../hooks/pages/ReportForm/useCampusData";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
+import { Calendar } from "primereact/calendar";
 
 export default function ReportFormComponent() {
   // Report Form State
@@ -213,7 +214,7 @@ export default function ReportFormComponent() {
                   Tanggal Temuan
                 </label>
               </div>
-              <input
+              {/* <input
                 autoComplete="off"
                 type="datetime-local"
                 placeholder="Tanggal temuan"
@@ -221,7 +222,8 @@ export default function ReportFormComponent() {
                 onChange={(e) => setReportDate(e.target.value)}
                 value={reportDate}
                 required
-              />
+              /> */}
+              <Calendar showTime inputClassName="bg-[#f2e5bf]! p-4!" panelClassName="bg-[#f2e5bf]! **:[&:not(.p-highlight)]:bg-[#f2e5bf]! [&_.p-highlight]:bg-[#cb6040]!" value={new Date(reportDate)} onChange={(event) => setReportDate(event.value?.toISOString() || "")} />
             </div>
             {/* End Tanggal Temuan */}
 
@@ -283,7 +285,7 @@ export default function ReportFormComponent() {
             ) : (
               <button
                 type="button"
-                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#257180] border-2 border-white hover:bg-[#CB6040] duration-300 "
+                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#1a1d24] border-2 border-white hover:bg-[#CB6040] duration-300 "
                 disabled={submitDisabled}
                 onClick={handle_submit}
               >
