@@ -90,10 +90,9 @@ export default function ReportFormComponent() {
       setTimeout(() => {
         setShowThanks(false);
       }, 3500);
-
     } else if (result == APIResultType.Unauthorized) {
       showMessage("Unauthroized report detected!", "error", "You've been detected using a service without proper authorization. Please login again.");
-    } else if (result == APIResultType.InternalServerError) {
+    } else {
       showMessage("There's an unexpected error occured in the server side!", "error", "Sorry for the inconvenient, please try again later.");
     }
 
