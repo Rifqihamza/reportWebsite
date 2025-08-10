@@ -16,6 +16,7 @@ export default function CampusChartFilter() {
           <AccordionTab
             header="Filter Kampus"
             className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4"
+            contentClassName="*:text-white!"
           >
             <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full mt-4">{LineChartCampusFilter}</div>
           </AccordionTab>
