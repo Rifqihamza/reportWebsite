@@ -17,13 +17,14 @@ export default function RowOptions() {
         <div className="w-full">
           <h1 className="text-xl lg:text-2xl font-semibold text-white ">Row Options</h1>
           <span className="w-max text-md lg:text-lg text-white flex flex-row items-center gap-3">
-            Opsi baris data yang akan di eksport
+            Opsi baris data yang akan di ekspor
             <i className="pi pi-arrow-right hidden! md:inline!"></i>
           </span>
         </div>
-        <div className="w-full flex justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center">
           <ListBox
-            className="w-full md:px-4 py-3 [&_.p-listbox-list]:flex! [&_.p-listbox-list]:flex-col! [&_.p-listbox-list]:*:w-full! [&_.p-listbox-list]:*:text-center! [&_.p-listbox-list]:items-center! [&_.p-listbox-list]:gap-2! [&_.p-listbox]:border-0!"
+            className="w-full py-3 [&_.p-listbox-list]:flex! [&_.p-listbox-list]:flex-col! [&_.p-listbox-list]:*:w-full [&_.p-listbox-list]:*:text-center! [&_.p-listbox-list]:items-center! [&_.p-listbox-list]:gap-2! [&_.p-listbox]:border-0!"
+            style={{ direction: "rtl" }}
             value={selectedRows}
             onChange={(e) => setRow(e.value)}
             options={rows}
@@ -31,10 +32,8 @@ export default function RowOptions() {
             optionValue="value"
             multiple
           />
+          <button className={`cursor-pointer w-full text-sm lg:text-md mb-5 px-2 py-3 hover:ring-2 hover:ring-gray-100/50 duration-300 bg-[#1a1d24] ${((selectedRows.length === Object.values(table_rows).length) ? "text-white border-2 " : "text-white border-2 border-transparent")} rounded-xl`} onClick={() => { toggleAllRow() }}>{selectedRows.length === Object.values(table_rows).length ? "Remove All" : "Add All"}</button>
         </div>
-      </div>
-      <div className="w-full px-5">
-        <button className={`cursor-pointer w-full text-sm lg:text-md mb-5 px-2 py-3 hover:ring-2 hover:ring-gray-100/50 duration-300 bg-[#1a1d24] ${((selectedRows.length === Object.values(table_rows).length) ? "text-white border-2 " : "text-white border-2 border-transparent")} rounded-xl`} onClick={() => { toggleAllRow() }}>{selectedRows.length === Object.values(table_rows).length ? "Remove All" : "Add All"}</button>
       </div>
     </div>
   </>;
