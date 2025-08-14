@@ -19,8 +19,8 @@ export default function OtherOptions() {
             </span>
           </div>
           <div className="flex flex-col items-center gap-6 w-full">
-            <InputField label="Jumlah Laporan Maksimum" inputType="number" onChange={(value) => setMaxExportedData(value)} value={maxExportedData} max={reportData ? reportData.length : 0} />
-            <InputField label="Gambar berupa link" inputType="toggle" onChange={(value) => setOtherOption("usingLinkInsteadOfImage", value)} value={otherOption.usingLinkInsteadOfImage} />
+            {/* <InputField label="Jumlah Laporan Maksimum" inputType="number" onChange={(value) => setMaxExportedData(value)} value={maxExportedData} max={reportData ? reportData.length : 0} /> */}
+            <InputField label="Gambar berupa link" description="Jika aktif, kolom gambar akan diisi link menuju gambar yang sesuai dibandingkan dengan menampilkan gambar nya langsung" inputType="toggle" onChange={(value) => setOtherOption("usingLinkInsteadOfImage", value)} value={otherOption.usingLinkInsteadOfImage} />
           </div>
         </div>
       </div>
@@ -32,6 +32,7 @@ export default function OtherOptions() {
 
 type InputFieldText = {
   label: string,
+  description?: string,
   inputType: "text",
   onChange: (newValue: string) => void,
   value: string
@@ -39,6 +40,7 @@ type InputFieldText = {
 
 type InputFieldNumber = {
   label: string,
+  description?: string,
   inputType: "number",
   onChange: (newValue: number) => void,
   value: number,
@@ -48,6 +50,7 @@ type InputFieldNumber = {
 
 type InputFieldCheckbox = {
   label: string,
+  description?: string,
   inputType: "toggle",
   onChange: (newValue: boolean) => void,
   value: boolean
@@ -58,7 +61,10 @@ type InputFieldProps = InputFieldText|InputFieldNumber|InputFieldCheckbox;
 
 function InputField(props: InputFieldProps) {
   return <div className="w-full h-11 text-white flex flex-row justify-between items-center">
-    <p className="">{props.label}</p>
+    <div className="flex flex-col">
+      <p className="text-md font-bold">{props.label}</p>
+      <p className={"text-xs font-light " + (props.description ? "" : "hidden")}>{props.description}</p>
+    </div>
     {(() => {
 
       if(props.inputType == "text") {
