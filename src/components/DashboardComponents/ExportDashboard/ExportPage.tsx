@@ -88,19 +88,11 @@ export default function ExportPage() {
       URL.revokeObjectURL(url);
     }
     else if (selectedOutputType == ExportOutputType.Excel) {
-      const worksheet = XLSX.utils.aoa_to_sheet(resultData.map((value, index) => {
-        const result = value;
+      const worksheet = XLSX.utils.aoa_to_sheet(resultData.map((row_value, row_index) => row_index == 0 ? row_value : row_value.map((col_value, col_index) => selectedRows[col_index-1] == "created_at" ? strftime("%d/%M/%Y", new Date(col_value)) : col_value)));
+      const workbook = XLSX.utils.book_new(); // Create new excel file
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // Add sheet
 
-        if (index > 0) {
-          result[0] = strftime("%d/%m/%Y", new Date(result[0]));
-        }
-
-        return result;
-      }));         // 2D array to worksheet
-      const workbook = XLSX.utils.book_new();                  // Create workbook
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-
-      XLSX.writeFile(workbook, `${file_name}.xlsx`);                      // Triggers download
+      XLSX.writeFile(workbook, `${file_name}.xlsx`); // Trigger download
     }
   };
 
