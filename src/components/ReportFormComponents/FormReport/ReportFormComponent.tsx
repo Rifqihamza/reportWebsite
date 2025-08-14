@@ -61,7 +61,7 @@ export default function ReportFormComponent() {
       return;
     }
 
-    if (!submitted_by || !message || !category || !location || !reportDate || !image) {
+    if (!submitted_by || !message || !category || !location || !reportDate || !image || !detailLocation) {
       showMessage("Please complete the form.", "warn", "");
       return;
     }
