@@ -25,9 +25,9 @@ export default function ReportFormComponent() {
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [detailLocation, setDetailLocation] = useState("");
-  const [category, setCategory] = useState(null as ReportType | string | null);
-  const [reportDate, setReportDate] = useState("");
-  const [image, setImage] = useState(null as File | null);
+  const [category, setCategory] = useState<ReportType | string | null>(null);
+  const [reportDate, setReportDate] = useState<Date | null>(null);
+  const [image, setImage] = useState<File | null>(null);
 
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
@@ -45,7 +45,7 @@ export default function ReportFormComponent() {
     setCategory(null);
     setDetailLocation("");
     setLocation("");
-    setReportDate("");
+    setReportDate(null);
     setImage(null);
   };
 
@@ -223,7 +223,7 @@ export default function ReportFormComponent() {
                 value={reportDate}
                 required
               /> */}
-              <Calendar showTime inputClassName="bg-[#f2e5bf]! p-4!" panelClassName="bg-[#f2e5bf]! **:[&:not(.p-highlight)]:bg-[#f2e5bf]! [&_.p-highlight]:bg-[#cb6040]!" value={new Date(reportDate)} onChange={(event) => setReportDate(event.value?.toISOString() || "")} />
+              <Calendar showTime inputClassName="bg-[#f2e5bf]! p-4!" panelClassName="bg-[#f2e5bf]! **:[&:not(.p-highlight)]:bg-[#f2e5bf]! [&_.p-highlight]:bg-[#cb6040]!" value={reportDate} onChange={(event) => setReportDate(event.value || null)} />
             </div>
             {/* End Tanggal Temuan */}
 
