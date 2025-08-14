@@ -103,7 +103,7 @@ export const useExportHook = create<UseExportType>((set) => {
     },
 
     // Filter Functionalities
-    filter: { ...filterOptions, key: [""] },
+    filter: {},
     setFilter(key, value) {
       set((state) => {
         const result = state.filter;

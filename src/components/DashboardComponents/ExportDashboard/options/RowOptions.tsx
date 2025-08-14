@@ -24,7 +24,6 @@ export default function RowOptions() {
         <div className="w-full flex flex-col justify-center items-center">
           <ListBox
             className="w-full py-3 [&_.p-listbox-list]:flex! [&_.p-listbox-list]:flex-col! [&_.p-listbox-list]:*:w-full [&_.p-listbox-list]:*:text-center! [&_.p-listbox-list]:items-center! [&_.p-listbox-list]:gap-2! [&_.p-listbox]:border-0!"
-            style={{ direction: "rtl" }}
             value={selectedRows}
             onChange={(e) => setRow(e.value)}
             options={rows}

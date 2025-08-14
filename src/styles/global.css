@@ -268,9 +268,9 @@ body {
 }
 
 .p-listbox-item.p-highlight {
-  background-color: #1a1d24;
   border: 2px solid #9ca3af;
   color: #fff;
+  opacity: 1;
 }
 
 .p-listbox-item {
@@ -280,10 +280,11 @@ body {
   background-color: #1a1d24;
   border: 2px solid transparent;
   color: #fff;
+  opacity: 0.5;
 }
 
 .p-listbox-item:hover {
-  background-color: #2b3440;
+  background-color: #101114;
   cursor: pointer;
 }
 
