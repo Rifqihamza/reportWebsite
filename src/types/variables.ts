@@ -154,6 +154,7 @@ export const keyto_table_rows: Partial<{
     "pic_name": "PIC",
     "type": "Kategori",
     "campus": "Kampus",
+    "image": "Gambar"
 }
 
 // Other things
