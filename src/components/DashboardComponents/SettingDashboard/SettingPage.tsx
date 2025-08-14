@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
-import EditUserDataModal, { type EditKey } from "./EditUserDataModal";
+import EditProfileModal, { type EditKey } from "./EditProfileModal";
 
 export default function SettingPage() {
   const { activeTab } = useDashboardNavbarHook();
@@ -45,7 +45,7 @@ export default function SettingPage() {
           </ul>
         </div>
       </section>
-      <EditUserDataModal editKey={editKey} onDone={() => setEditKey(undefined)} />
+      <EditProfileModal editKey={editKey} onDone={() => setEditKey(undefined)} />
     </>
   );
 }
