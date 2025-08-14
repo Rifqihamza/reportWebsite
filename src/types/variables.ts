@@ -130,6 +130,19 @@ export const table_rows: {
     "Tanggal": "created_at",
 }
 
+export const exportable_rows: {
+    [key: string]: (keyof ReportData)
+} = {
+    "Status": "status",
+    "Nama": "submitted_by",
+    "PIC": "pic_name",
+    "Laporan": "message",
+    "Kampus": "campus",
+    "Lokasi": "location_name",
+    "Tanggal": "created_at",
+    "Gambar": "image"
+}
+
 export const keyto_table_rows: Partial<{
     [key in (keyof ReportData)]: string
 }> = {

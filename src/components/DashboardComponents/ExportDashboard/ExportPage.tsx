@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import FilterOptions from "./options/FilterOptions";
 import { useState } from "react";
 import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
+import OtherOptions from "./options/OtherOptions";
 
 export default function ExportPage() {
   const { activeTab } = useDashboardNavbarHook();
@@ -117,6 +118,7 @@ export default function ExportPage() {
           <FilterOptions />
           <DateRangeOptions />
           <OutputOptions />
+          <OtherOptions />
         </div>
         {/* Export button */}
         <button className={`h-full mt-4 p-4 bg-[#374151] text-white rounded-2xl hover:bg-[#F97316] duration-300 ${(processingState == 1) ? "bg-white text-[#1f324d]! border-[#1f324d] pointer-events-none" : ""}`} onClick={handleExport}>

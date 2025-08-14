@@ -9,9 +9,9 @@ export default function DateRangeOptions() {
     <div className="bg-[#374151] w-full h-fit rounded-xl px-3">
       <div className="flex flex-col gap-2 md:flex-row md:gap-0 justify-between px-4 py-5">
         <div className="w-full">
-          <h1 className="text-xl lg:text-2xl font-semibold text-white ">Range Waktu</h1>
+          <h1 className="text-xl lg:text-2xl font-semibold text-white ">Date Range</h1>
           <span className="text-md lg:text-lg text-white flex flex-row items-center gap-3">
-            Opsi Range Waktu yang akan di eksport
+            Opsi Rentang Waktu yang akan di ekspor
             <i className="pi pi-arrow-right hidden! md:inline!"></i>
           </span>
         </div>

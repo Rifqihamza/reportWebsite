@@ -1,5 +1,5 @@
 import { useExportHook } from "../../../../hooks/pages/Export/useExportHook";
-import { table_rows, type ReportData } from '../../../../types/variables';
+import { exportable_rows, type ReportData } from '../../../../types/variables';
 import { ListBox } from "primereact/listbox";
 
 
@@ -7,7 +7,7 @@ export default function RowOptions() {
   const rows: ({
     label: string,
     value: keyof ReportData
-  })[] = Object.entries(table_rows).map((value) => ({ label: value[0], value: value[1] }));
+  })[] = Object.entries(exportable_rows).map((value) => ({ label: value[0], value: value[1] }));
 
   const { toggleAllRow, setRow, selectedRows } = useExportHook();
 
@@ -32,7 +32,7 @@ export default function RowOptions() {
             optionValue="value"
             multiple
           />
-          <button className={`cursor-pointer w-full text-sm lg:text-md mb-5 px-2 py-3 hover:ring-2 hover:ring-gray-100/50 duration-300 bg-[#1a1d24] ${((selectedRows.length === Object.values(table_rows).length) ? "text-white border-2 " : "text-white border-2 border-transparent")} rounded-xl`} onClick={() => { toggleAllRow() }}>{selectedRows.length === Object.values(table_rows).length ? "Remove All" : "Add All"}</button>
+          <button className={`cursor-pointer w-full text-sm lg:text-md mb-5 px-2 py-3 hover:ring-2 hover:ring-gray-100/50 duration-300 bg-[#1a1d24] ${((selectedRows.length === Object.values(exportable_rows).length) ? "text-white border-2 " : "text-white border-2 border-transparent")} rounded-xl`} onClick={() => { toggleAllRow() }}>{selectedRows.length === Object.values(exportable_rows).length ? "Remove All" : "Add All"}</button>
         </div>
       </div>
     </div>

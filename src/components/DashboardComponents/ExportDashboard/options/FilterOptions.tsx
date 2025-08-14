@@ -27,7 +27,7 @@ export default function FilterOptions() {
     <div className="bg-[#374151] w-full h-fit rounded-xl px-3">
       <div className="flex flex-col md:flex-row justify-between px-4 py-5">
         <div className="w-full">
-          <h1 className="text-xl lg:text-2xl font-semibold text-white">Filter Option</h1>
+          <h1 className="text-xl lg:text-2xl font-semibold text-white">Filter Options</h1>
           <span className="w-max text-md lg:text-lg text-white flex flex-row items-center gap-3">
             Opsi filter data yang akan di ekspor
             <i className="pi pi-arrow-right hidden! md:inline!"></i>
