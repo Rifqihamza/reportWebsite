@@ -1,10 +1,16 @@
 import { useEffect } from "react";
 import { useExportHook } from "../../../../hooks/pages/Export/useExportHook";
 import UseReportDataHookEffect, { useReportDataHook } from "../../../../hooks/shared/useReportData";
+import { ExportOutputType } from "../../../../types/variables";
 
 export default function OtherOptions() {
-  const { otherOption, setOtherOption, maxExportedData, setMaxExportedData } = useExportHook();
-  const { reportData } = useReportDataHook();
+  const { otherOption, setOtherOption, selectedOutputType } = useExportHook();
+
+  useEffect(() => {
+    if(selectedOutputType === ExportOutputType.CSV) {
+      setOtherOption("usingLinkInsteadOfImage", true);
+    }
+  }, [selectedOutputType]);
 
   return (
     <>
@@ -20,7 +26,7 @@ export default function OtherOptions() {
           </div>
           <div className="flex flex-col items-center gap-6 w-full">
             {/* <InputField label="Jumlah Laporan Maksimum" inputType="number" onChange={(value) => setMaxExportedData(value)} value={maxExportedData} max={reportData ? reportData.length : 0} /> */}
-            <InputField label="Gambar berupa link" description="Jika aktif, kolom gambar akan diisi link menuju gambar yang sesuai dibandingkan dengan menampilkan gambar nya langsung" inputType="toggle" onChange={(value) => setOtherOption("usingLinkInsteadOfImage", value)} value={otherOption.usingLinkInsteadOfImage} />
+            <InputField label="Gambar berupa link" description="Jika aktif, kolom gambar akan diisi link menuju gambar yang sesuai dibandingkan dengan menampilkan gambar nya langsung" inputType="toggle" onChange={(value) => setOtherOption("usingLinkInsteadOfImage", value)} value={otherOption.usingLinkInsteadOfImage} disabled={selectedOutputType === ExportOutputType.CSV} />
           </div>
         </div>
       </div>
@@ -35,7 +41,8 @@ type InputFieldText = {
   description?: string,
   inputType: "text",
   onChange: (newValue: string) => void,
-  value: string
+  value: string,
+  disabled?: boolean
 }
 
 type InputFieldNumber = {
@@ -45,7 +52,8 @@ type InputFieldNumber = {
   onChange: (newValue: number) => void,
   value: number,
   max?: number,
-  min?: number
+  min?: number,
+  disabled?: boolean
 }
 
 type InputFieldCheckbox = {
@@ -53,7 +61,8 @@ type InputFieldCheckbox = {
   description?: string,
   inputType: "toggle",
   onChange: (newValue: boolean) => void,
-  value: boolean
+  value: boolean;
+  disabled?: boolean
 }
 
 type InputFieldProps = InputFieldText|InputFieldNumber|InputFieldCheckbox;
@@ -79,8 +88,8 @@ function InputField(props: InputFieldProps) {
       }
 
       else if(props.inputType == "toggle") {
-        return <div className={`w-24 h-full relative bg-[#13161b] border duration-500 ${props.value ? "border-white" : "border-[#374151]"} rounded-full`}>
-          <input className="absolute top-0 left-0 w-full h-full opacity-0 z-100" type="checkbox" checked={props.value} onChange={(e) => props.onChange(e.target.checked)}></input>
+        return <div className={`w-24 h-full relative bg-[#13161b] border duration-500 ${props.value ? "border-white opacity-100" : "border-[#374151] opacity-75"} rounded-full ${props.disabled ? "opacity-25! cursor-not-allowed" : ""}`}>
+          <input className="absolute top-0 left-0 w-full h-full opacity-0 z-100" type="checkbox" checked={props.value} onChange={(e) => props.onChange(e.target.checked)} disabled={props.disabled}></input>
           <div className={`absolute top-[4px] duration-500 left-[4px] ${props.value ? "left-[calc(100%_-_4px)] -translate-x-full" : ""} h-[calc(100%_-_8px)] aspect-square rounded-full bg-white`}></div>
         </div>
       }
