@@ -67,3 +67,77 @@ export function which_latest_version(version1: string, version2: string): string
 export function spaces_in_camel_case(word: string): string {
   return Array.from(word).map((w, index) => ((w.toLowerCase() === w && index > 0) ? w : ` ${w}`)).join("");
 }
+
+export function seconds_to_time_obj(duration_in_seconds: number) {
+  let seconds = duration_in_seconds;
+  let minutes = 0;
+  let hours = 0;
+  let days = 0;
+  let weeks = 0;
+  let months = 0;
+  
+  while (seconds > 60) {
+    seconds -= 60;
+    minutes += 1;
+  }
+
+  while (minutes > 60) {
+    minutes -= 60;
+    hours += 1;
+  }
+
+  while (hours > 24) {
+    hours -= 24;
+    days += 1;
+  }
+
+  while (days > 7) {
+    days -= 7;
+    months += 1;
+  }
+
+  while (weeks > 4) {
+    weeks -= 4;
+    months += 1;
+  }
+
+  return {
+    seconds: seconds,
+    minutes: minutes,
+    hours: hours,
+    days: days,
+    weeks: weeks,
+    months: months,
+  };
+}
+
+export function seconds_to_general_time(duration_in_seconds: number) {
+  const time_obj = seconds_to_time_obj(duration_in_seconds);
+  let result: string = "";
+
+  if(time_obj.months) {
+    result += time_obj.months + " bulan ";
+  }
+
+  if(time_obj.weeks) {
+    result += time_obj.weeks + " minggu ";
+  }
+
+  if(time_obj.days) {
+    result += time_obj.days + " hari ";
+  }
+
+  if(time_obj.hours) {
+    result += time_obj.hours + " jam ";
+  }
+
+  if(time_obj.minutes) {
+    result += time_obj.minutes + " menit ";
+  }
+
+  if(time_obj.seconds) {
+    result += time_obj.seconds + " detik ";
+  }
+  
+  return result;
+}

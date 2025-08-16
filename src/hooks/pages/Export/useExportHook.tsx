@@ -141,12 +141,15 @@ export const useExportHook = create<UseExportType>((set) => {
     setOtherOption(key, newValue) {
       set((state) => {
         const currentState = state.otherOption;
-        if (typeof currentState[key] == typeof newValue) {
-          currentState[key] = newValue as any;
+        if (typeof currentState[key] != typeof newValue) {
+          return {}
         }
 
         return {
-          otherOption: currentState,
+          otherOption: {
+            ...state.otherOption,
+            [key]: newValue as any
+          },
         };
       });
     },

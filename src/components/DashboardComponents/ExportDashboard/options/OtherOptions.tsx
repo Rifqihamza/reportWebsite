@@ -7,7 +7,7 @@ export default function OtherOptions() {
   const { otherOption, setOtherOption, selectedOutputType } = useExportHook();
 
   useEffect(() => {
-    if(selectedOutputType === ExportOutputType.CSV) {
+    if(selectedOutputType !== ExportOutputType.PDF) {
       setOtherOption("usingLinkInsteadOfImage", true);
     }
   }, [selectedOutputType]);
@@ -26,7 +26,7 @@ export default function OtherOptions() {
           </div>
           <div className="flex flex-col items-center gap-6 w-full">
             {/* <InputField label="Jumlah Laporan Maksimum" inputType="number" onChange={(value) => setMaxExportedData(value)} value={maxExportedData} max={reportData ? reportData.length : 0} /> */}
-            <InputField label="Gambar berupa link" description="Jika aktif, kolom gambar akan diisi link menuju gambar yang sesuai dibandingkan dengan menampilkan gambar nya langsung" inputType="toggle" onChange={(value) => setOtherOption("usingLinkInsteadOfImage", value)} value={otherOption.usingLinkInsteadOfImage} disabled={selectedOutputType === ExportOutputType.CSV} />
+            <InputField label="Gambar berupa link" description="Jika aktif, kolom gambar akan diisi link menuju gambar yang sesuai dibandingkan dengan menampilkan gambar nya langsung" inputType="toggle" onChange={(value) => setOtherOption("usingLinkInsteadOfImage", value)} value={otherOption.usingLinkInsteadOfImage} disabled={selectedOutputType !== ExportOutputType.PDF} />
           </div>
         </div>
       </div>
