@@ -210,7 +210,6 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     }),
   ];
 
-  setMaxStep(resultData.length);
 
   const file_name = `DataReport_${strftime("%d-%m-%Y", new Date())}`;
 
@@ -220,6 +219,7 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     }, 100 * selectedRows.length + Math.random() * 1000);
   });
 
+  setMaxStep(resultData.length - 1);
   // Output the result depends on the selected output file type
   
   // ---- CSV ----
@@ -264,9 +264,9 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     });
 
     const bodyResult = resultData.slice(1);
-    const image_index = selectedRows.indexOf("image") + 1;
+    const image_indexes = [selectedRows.indexOf("image") + 1, selectedRows.indexOf("image_after_finish") + 1];
 
-    if(image_index && !otherOption.usingLinkInsteadOfImage) {
+    if(image_indexes.some((image) => image !== 0) && !otherOption.usingLinkInsteadOfImage) {
       // Convert image URL to base64
       const toBase64 = async (url: string) => {
         const res = await fetch(url, { mode: "cors" });
@@ -280,22 +280,22 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
   
       // Generate table
       let current_step = 0;
-      const max_step = bodyResult.length;
 
       for(let index1 = 0; index1 < bodyResult.length; index1++) {
         for(let index2 = 0; index2 < bodyResult[index1].length; index2++) {
-          if(index2 !== image_index) continue;
+          if(!image_indexes.includes(index2)) continue;
 
           setCurrentStep(current_step);
-          bodyResult[index1][index2] = { image: await toBase64(bodyResult[index1][index2]) } as any;
+          bodyResult[index1][index2] = (bodyResult[index1][index2] ?  ({ image: (await toBase64(bodyResult[index1][index2])) } as any) : "Belum selesai");
           
-          current_step++;
           await new Promise((res, rej) => {
             setTimeout(() => {
               res(true);
             }, (Math.floor(Math.random() * 1) * 1000) + 500); // 0.5-2.5 seconds of interval
           })
         }
+
+        current_step++;
       }
     }
     else {
@@ -317,9 +317,10 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
         cellWidth: 75,
       },
       didDrawCell: (data) => {
-        if(!image_index || otherOption.usingLinkInsteadOfImage || data.column.index == 0) return;
+        if(image_indexes.every((image) => image === 0) || otherOption.usingLinkInsteadOfImage || data.column.index == 0 || typeof data.cell.raw !== "object") return;
+
         // Insert image manually into the right cell
-        if (image_index === data.column.index) {
+        if (image_indexes.includes(data.column.index)) {
           const raw = data.cell.raw as any
           if(raw.image) {
             pdf.addImage(

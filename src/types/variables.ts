@@ -62,7 +62,6 @@ export function campuscode_to_campus(campus_code?: string): Campus | undefined {
     return Object.values(Campus)[Object.keys(Campus).findIndex(value => value == campus_code)];
 }
 
-// DATABASE MODEL
 export const ReportData_TypeGuard = z.strictObject({
     id: z.string().uuid(),
     submitted_by: z.string(),
@@ -140,7 +139,8 @@ export const exportable_rows: {
     "Kampus": "campus",
     "Lokasi": "location_name",
     "Tanggal": "created_at",
-    "Gambar": "image"
+    "Bukti Temuan": "image",
+    "Bukti Selesai": "image_after_finish"
 }
 
 export const keyto_table_rows: Partial<{
@@ -154,7 +154,8 @@ export const keyto_table_rows: Partial<{
     "pic_name": "PIC",
     "type": "Kategori",
     "campus": "Kampus",
-    "image": "Gambar"
+    "image": "Bukti Temuan",
+    "image_after_finish": "Bukti Selesai"
 }
 
 // Other things
