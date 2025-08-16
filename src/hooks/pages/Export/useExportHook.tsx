@@ -167,7 +167,7 @@ export default function UseExportHookEffect() {
 }
 
 export const handleExport = async (setCurrentStep: (step: number) => void, setMaxStep: (maxStep: number) => void) => {
-  const { dateRange, selectedOutputType, selectedRows, filter } = useExportHook.getState();
+  const { dateRange, selectedOutputType, selectedRows, filter, otherOption } = useExportHook.getState();
   const { showMessage } = useMessageToastHook.getState();
   const { reportData } = useReportDataHook.getState();
 
@@ -210,6 +210,8 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     }),
   ];
 
+  setMaxStep(resultData.length);
+
   const file_name = `DataReport_${strftime("%d-%m-%Y", new Date())}`;
 
   await new Promise((res, rej) => {
@@ -219,6 +221,8 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
   });
 
   // Output the result depends on the selected output file type
+  
+  // ---- CSV ----
   if (selectedOutputType === ExportOutputType.CSV) {
     const csvContent = resultData.map((value) => value.map((value2) => `"${value2}"`).join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
@@ -229,11 +233,13 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     a.download = `${file_name}.csv`;
 
     return () => {
-      setCurrentStep(100);
+      setCurrentStep(resultData.length);
       a.click(); // Trigger Download
       URL.revokeObjectURL(url);
     };
   } 
+  
+  // ---- EXCEL ----
   else if (selectedOutputType === ExportOutputType.Excel) {
     const worksheet = XLSX.utils.aoa_to_sheet(
       resultData.map((row_value, row_index) =>
@@ -244,10 +250,12 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // Add sheet
 
     return () => {
-      setCurrentStep(100);
+      setCurrentStep(resultData.length);
       XLSX.writeFile(workbook, `${file_name}.xlsx`); // Trigger download
     };
   } 
+  
+  // ---- PDF ----
   else if (selectedOutputType === ExportOutputType.PDF) {
     const pdf = new jsPDF({
       orientation: "landscape",
@@ -258,7 +266,7 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     const bodyResult = resultData.slice(1);
     const image_index = selectedRows.indexOf("image") + 1;
 
-    if(image_index) {
+    if(image_index && !otherOption.usingLinkInsteadOfImage) {
       // Convert image URL to base64
       const toBase64 = async (url: string) => {
         const res = await fetch(url, { mode: "cors" });
@@ -273,7 +281,6 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
       // Generate table
       let current_step = 0;
       const max_step = bodyResult.length;
-      setMaxStep(max_step);
 
       for(let index1 = 0; index1 < bodyResult.length; index1++) {
         for(let index2 = 0; index2 < bodyResult[index1].length; index2++) {
@@ -310,7 +317,7 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
         cellWidth: 75,
       },
       didDrawCell: (data) => {
-        if(!image_index || data.column.index == 0) return;
+        if(!image_index || otherOption.usingLinkInsteadOfImage || data.column.index == 0) return;
         // Insert image manually into the right cell
         if (image_index === data.column.index) {
           const raw = data.cell.raw as any

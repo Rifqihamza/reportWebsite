@@ -55,7 +55,7 @@ export default function ExportPage() {
           {(processingState == 1) ? "Processing..." : ((processingState == 2) ? "Done!" : "Process & Export")}
         </button>
         <div className={`mt-6 bg-[#374151]! flex flex-row items-center gap-2 ${processingState ? "opacity-100" : "opacity-0"}`}>
-          <ProgressBar value={Math.round(currentExportStep/maxExportStep * 100)} showValue={true} className={`w-full ${selectedRows.includes("image") ? "[&_.p-progressbar-value-animate]:duration-500!" : ""} [&_.p-progressbar-value-animate]:bg-transparent! [&_.p-progressbar-value-animate]:border! [&_.p-progressbar-value-animate]:border-white! bg-[#14161c]!`} />
+          <ProgressBar value={Math.round(currentExportStep/maxExportStep * 100)} showValue={true} className={`w-full ${(selectedRows.includes("image") && !otherOption.usingLinkInsteadOfImage && selectedOutputType !== ExportOutputType.CSV) ? "[&_.p-progressbar-value-animate]:duration-500!" : ""} [&_.p-progressbar-value-animate]:bg-transparent! [&_.p-progressbar-value-animate]:border! [&_.p-progressbar-value-animate]:border-white! bg-[#14161c]!`} />
           <p className="w-max min-w-max px-4 text-white">{currentExportStep}/{maxExportStep} laporan diproses</p>
         </div>
         <br />
