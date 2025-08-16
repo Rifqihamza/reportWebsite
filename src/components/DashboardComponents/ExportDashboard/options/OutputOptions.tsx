@@ -16,7 +16,7 @@ export default function OutputOptions() {
               <i className="pi pi-arrow-right hidden! md:inline!"></i>
             </span>
           </div>
-          <div className="flex flex-row items-center gap-4 w-full">
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 w-full">
             {outputOptions.map((value, index) => {
               const titleObj = ExportOutputTitles.find((t) => t.value === value);
               if (!titleObj) return "";

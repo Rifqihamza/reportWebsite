@@ -1,7 +1,12 @@
 import { create } from "zustand";
-import { Campus, exportable_rows, ExportOutputType, ReportStatus, ReportType, reporttype_to_string, type ReportData } from "../../../types/variables";
+import { Campus, exportable_rows, ExportOutputType, keyto_table_rows, ReportStatus, ReportType, reporttype_to_string, type ReportData } from "../../../types/variables";
 import { useEffect } from "react";
 import { useMessageToastHook } from "../../shared/useMessageToast";
+import { useReportDataHook } from "../../shared/useReportData";
+import strftime from "strftime";
+import * as XLSX from "xlsx";
+import { jsPDF } from "jspdf"
+import autoTable from "jspdf-autotable";
 
 export const filterOptions: Partial<{
   [key in keyof ReportData]: string[];
@@ -160,3 +165,153 @@ export default function UseExportHookEffect() {
 
   return <></>;
 }
+
+export const handleExport = async () => {
+  const { dateRange, selectedOutputType, selectedRows, filter } = useExportHook.getState();
+  const { showMessage } = useMessageToastHook.getState();
+  const { reportData } = useReportDataHook.getState();
+
+  // Check if report data is empty
+  if (!reportData) {
+    showMessage("Data dalam keadaan kosong.", "warn", "");
+    throw Error();
+  }
+
+  // Check if there's no rows selected
+  if (selectedRows.length === 0) {
+    showMessage("Pilih minimal satu opsi barisan.", "warn", "");
+    throw Error();
+  }
+
+  const filteredReportData: ReportData[] = reportData.filter((data) => {
+    //? Filter date
+    const reportDate = new Date(data.created_at);
+    const startDatePassed = dateRange[0] ? dateRange[0] <= reportDate : true;
+    const endDatePassed = dateRange[1] ? new Date(dateRange[1].valueOf() + 1000 * 60 * 60 * 24) >= reportDate : true;
+
+    //? Filter value
+    const valueFilterPassed = !Object.keys(filter)
+      .map((key) => filter[key as keyof ReportData]?.includes(reporttype_to_string(data[key as keyof ReportData] ?? "")))
+      .includes(false);
+
+    //? Return the filter
+    return startDatePassed && endDatePassed && valueFilterPassed;
+  });
+
+  // Filter out rows
+  const resultData: string[][] = [
+    ["No.", ...(selectedRows.map((value) => keyto_table_rows[value]) as string[])],
+    ...filteredReportData.map((value, index) => {
+      let result: string[] = [(index + 1).toString()];
+      selectedRows.forEach((row) => {
+        result.push((row === "type" ? reporttype_to_string(value[row]) : value[row]?.toString()) ?? "");
+      });
+      return result;
+    }),
+  ];
+
+  const file_name = `DataReport_${strftime("%d-%m-%Y", new Date())}`;
+
+  await new Promise((res, rej) => {
+    setTimeout(() => {
+      res(true);
+    }, 100 * selectedRows.length + Math.random() * 1000);
+  });
+
+  // Output the result depends on the selected output file type
+  if (selectedOutputType === ExportOutputType.CSV) {
+    const csvContent = resultData.map((value) => value.map((value2) => `"${value2}"`).join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${file_name}.csv`;
+
+    return () => {
+      a.click(); // Trigger Download
+      URL.revokeObjectURL(url);
+    };
+  } 
+  else if (selectedOutputType === ExportOutputType.Excel) {
+    const worksheet = XLSX.utils.aoa_to_sheet(
+      resultData.map((row_value, row_index) =>
+        row_index == 0 ? row_value : row_value.map((col_value, col_index) => (selectedRows[col_index - 1] == "created_at" ? strftime("%d/%M/%Y", new Date(col_value)) : col_value))
+      )
+    );
+    const workbook = XLSX.utils.book_new(); // Create new excel file
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // Add sheet
+
+    return () => {
+      XLSX.writeFile(workbook, `${file_name}.xlsx`); // Trigger download
+    };
+  } 
+  else if (selectedOutputType === ExportOutputType.PDF) {
+    const pdf = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a1"
+    });
+
+    // Convert image URL to base64
+    const toBase64 = async (url: string) => {
+      const res = await fetch(url, { mode: "cors" });
+      const blob = await res.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(blob);
+      });
+    };
+
+    // Generate table
+    const image_index = selectedRows.indexOf("image") + 1;
+    const bodyResult = resultData.slice(1);
+    for(let index1 = 0; index1 < bodyResult.length; index1++) {
+      for(let index2 = 0; index2 < bodyResult[index1].length; index2++) {
+        if(index2 !== image_index) continue;
+
+        bodyResult[index1][index2] = { image: bodyResult[index1][index2] } as any;
+      }
+    }
+    
+    autoTable(pdf, {
+      head: [resultData[0]],
+      body: bodyResult,
+      rowPageBreak: "avoid",
+      headStyles: {
+        fontStyle: "bold"
+      },
+      styles: {
+        fontSize: 20
+      },
+      bodyStyles: {
+        minCellHeight: 75,
+        cellWidth: 75,
+      },
+      didDrawCell: (data) => {
+        if(data.column.index == 0) return;
+        // Insert image manually into the right cell
+        if (image_index === data.column.index) {
+          const raw = data.cell.raw as any
+          if(raw.image) {
+            pdf.addImage(
+              raw.image,
+              "PNG",
+              data.cell.x + 2,
+              data.cell.y + 2,
+              data.column.width - 4, // width
+              data.row.height - 4  // height
+            );
+          }
+        }
+      },
+    });
+
+    return () => {
+      pdf.save("table-with-images.pdf");
+    };
+  }
+
+  throw Error();
+};

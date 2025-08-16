@@ -171,11 +171,13 @@ export const statusColorHex: Record<string, string> = {
 export enum ExportOutputType {
     Excel = "Excel",
     CSV = "CSV",
+    PDF = "PDF"
 }
 
 export const ExportOutputTitles = [
     { value: ExportOutputType.Excel, title: "Excel", icon: "excelIcon.png" },
     { value: ExportOutputType.CSV, title: "CSV", icon: "csvIcon.png" },
+    { value: ExportOutputType.PDF, title: "PDF", icon: "pdfIcon.png" },
 ];
 
 export enum AccountAPIPrivillage {
