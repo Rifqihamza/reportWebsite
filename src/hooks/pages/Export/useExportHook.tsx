@@ -166,7 +166,7 @@ export default function UseExportHookEffect() {
   return <></>;
 }
 
-export const handleExport = async () => {
+export const handleExport = async (setCurrentStep: (step: number) => void, setMaxStep: (maxStep: number) => void) => {
   const { dateRange, selectedOutputType, selectedRows, filter } = useExportHook.getState();
   const { showMessage } = useMessageToastHook.getState();
   const { reportData } = useReportDataHook.getState();
@@ -229,6 +229,7 @@ export const handleExport = async () => {
     a.download = `${file_name}.csv`;
 
     return () => {
+      setCurrentStep(100);
       a.click(); // Trigger Download
       URL.revokeObjectURL(url);
     };
@@ -243,6 +244,7 @@ export const handleExport = async () => {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // Add sheet
 
     return () => {
+      setCurrentStep(100);
       XLSX.writeFile(workbook, `${file_name}.xlsx`); // Trigger download
     };
   } 
@@ -269,13 +271,28 @@ export const handleExport = async () => {
       };
   
       // Generate table
+      let current_step = 0;
+      const max_step = bodyResult.length;
+      setMaxStep(max_step);
+
       for(let index1 = 0; index1 < bodyResult.length; index1++) {
         for(let index2 = 0; index2 < bodyResult[index1].length; index2++) {
           if(index2 !== image_index) continue;
-  
-          bodyResult[index1][index2] = { image: bodyResult[index1][index2] } as any;
+
+          setCurrentStep(current_step);
+          bodyResult[index1][index2] = { image: await toBase64(bodyResult[index1][index2]) } as any;
+          
+          current_step++;
+          await new Promise((res, rej) => {
+            setTimeout(() => {
+              res(true);
+            }, (Math.floor(Math.random() * 1) * 1000) + 500); // 0.5-2.5 seconds of interval
+          })
         }
       }
+    }
+    else {
+      setCurrentStep(50);
     }
     
     autoTable(pdf, {
@@ -312,7 +329,8 @@ export const handleExport = async () => {
     });
 
     return () => {
-      pdf.save("table-with-images.pdf");
+      setCurrentStep(100);
+      pdf.save(`${file_name}.pdf`);
     };
   }
 
