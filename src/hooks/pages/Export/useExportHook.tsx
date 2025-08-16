@@ -253,25 +253,28 @@ export const handleExport = async () => {
       format: "a1"
     });
 
-    // Convert image URL to base64
-    const toBase64 = async (url: string) => {
-      const res = await fetch(url, { mode: "cors" });
-      const blob = await res.blob();
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.readAsDataURL(blob);
-      });
-    };
-
-    // Generate table
-    const image_index = selectedRows.indexOf("image") + 1;
     const bodyResult = resultData.slice(1);
-    for(let index1 = 0; index1 < bodyResult.length; index1++) {
-      for(let index2 = 0; index2 < bodyResult[index1].length; index2++) {
-        if(index2 !== image_index) continue;
+    const image_index = selectedRows.indexOf("image") + 1;
 
-        bodyResult[index1][index2] = { image: bodyResult[index1][index2] } as any;
+    if(image_index) {
+      // Convert image URL to base64
+      const toBase64 = async (url: string) => {
+        const res = await fetch(url, { mode: "cors" });
+        const blob = await res.blob();
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(blob);
+        });
+      };
+  
+      // Generate table
+      for(let index1 = 0; index1 < bodyResult.length; index1++) {
+        for(let index2 = 0; index2 < bodyResult[index1].length; index2++) {
+          if(index2 !== image_index) continue;
+  
+          bodyResult[index1][index2] = { image: bodyResult[index1][index2] } as any;
+        }
       }
     }
     
@@ -290,7 +293,7 @@ export const handleExport = async () => {
         cellWidth: 75,
       },
       didDrawCell: (data) => {
-        if(data.column.index == 0) return;
+        if(!image_index || data.column.index == 0) return;
         // Insert image manually into the right cell
         if (image_index === data.column.index) {
           const raw = data.cell.raw as any
