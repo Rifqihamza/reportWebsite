@@ -197,7 +197,7 @@ const listOfNumOfDates = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
 const listOfHari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 export const listOfDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-export function UseChartHookEffect() {
+export function UseReportStatisticsEffect() {
   const { reportData } = useReportDataHook();
   const { lineChartCategoryFilter: chartCategoryFilter, setPieCategory, setPieStatus } = usePieChartHook();
   const { setInsight } = useInsightHook();

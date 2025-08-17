@@ -1,4 +1,4 @@
-import { useInsightHook } from "../../../../../hooks/pages/Statistics/useChartHook";
+import { useInsightHook } from "../../../../../hooks/pages/Statistics/useReportStatisticsHook";
 import { useReportDataHook } from "../../../../../hooks/shared/useReportData";
 import { reporttype_to_string } from "../../../../../types/variables";
 

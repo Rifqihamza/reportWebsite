@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { ReportType, reporttype_to_string, statusColorHex } from '../../../../types/variables';
-import { UseChartHookEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../../hooks/pages/Statistics/useChartHook";
+import { UseReportStatisticsEffect, useInsightHook, useLineChartHook, usePercentChartHook, usePieChartHook } from "../../../../hooks/pages/Statistics/useReportStatisticsHook";
 import UseReportDataHookEffect from "../../../../hooks/shared/useReportData";
 import { useDashboardNavbarHook } from "../../../../hooks/shared/useDashboardNavbar";
 import { PrimeReactProvider } from 'primereact/api';
@@ -109,7 +109,7 @@ export default function StatisticsPage() {
                 </div>
             </PrimeReactProvider>
             <UseReportDataHookEffect />
-            <UseChartHookEffect />
+            <UseReportStatisticsEffect />
         </>
     );
 };

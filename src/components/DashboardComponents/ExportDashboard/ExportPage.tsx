@@ -9,7 +9,7 @@ import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar
 import OtherOptions from "./options/OtherOptions";
 import { ProgressBar } from "primereact/progressbar";
 import { seconds_to_general_time } from "../../../utils/other";
-import { useInsightHook } from "../../../hooks/pages/Statistics/useChartHook";
+import { useInsightHook, UseReportStatisticsEffect } from "../../../hooks/pages/Statistics/useReportStatisticsHook";
 
 export default function ExportPage() {
   const { activeTab } = useDashboardNavbarHook();
@@ -45,6 +45,7 @@ export default function ExportPage() {
 
   return (
     <>
+      <UseReportStatisticsEffect />
       <UseReportDataHookEffect />
       <UseExportHookEffect />
       <div className="h-full w-full py-4 md:px-4 relative overflow-auto grid grid-flow-row grid-rows-[1fr_auto]">

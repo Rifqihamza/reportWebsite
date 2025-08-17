@@ -1,6 +1,6 @@
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Campus } from "../../../../../types/variables";
-import { useLineChartHook } from "../../../../../hooks/pages/Statistics/useChartHook";
+import { useLineChartHook } from "../../../../../hooks/pages/Statistics/useReportStatisticsHook";
 
 export default function CampusChartFilter() {
   const { chartCampusFilter, toggleChartCampusFilter } = useLineChartHook();

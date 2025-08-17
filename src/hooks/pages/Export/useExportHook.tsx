@@ -286,10 +286,10 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
 
       for(let index1 = 0; index1 < bodyResult.length; index1++) {
         for(let index2 = 0; index2 < bodyResult[index1].length; index2++) {
-          if(!image_indexes.includes(index2)) continue;
+          if(!image_indexes.includes(index2) || !bodyResult[index1][index2].includes("http")) continue;
 
           setCurrentStep(current_step);
-          bodyResult[index1][index2] = (bodyResult[index1][index2] ?  ({ image: (await toBase64(bodyResult[index1][index2])) } as any) : "Belum selesai");
+          bodyResult[index1][index2] = ({ image: (await toBase64(bodyResult[index1][index2])) } as any);
           
           await new Promise((res, rej) => {
             setTimeout(() => {
