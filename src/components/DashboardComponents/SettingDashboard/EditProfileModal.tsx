@@ -13,7 +13,7 @@ interface Props {
   onDone: () => void
 }
 
-export default function EditUserDataModal(props: Props) {
+export default function EditProfileModal(props: Props) {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   
@@ -69,7 +69,7 @@ export default function EditUserDataModal(props: Props) {
   
   return <>
     <PrimeReactProvider>
-      <Dialog className="w-full max-w-6xl" header={`Change ${capitalize(props.editKey??"")}`} visible={!(!props.editKey)} onHide={() => props.onDone()}>
+      <Dialog className="w-full max-w-6xl bg-[#1a1d24]! *:text-white!" headerClassName="bg-[#1a1d24]!" contentClassName="bg-[#1a1d24]!" header={`Change ${capitalize(props.editKey??"")}`} visible={!(!props.editKey)} onHide={() => props.onDone()}>
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
             <label htmlFor={props.editKey}>{capitalize(props.editKey??"")}</label>

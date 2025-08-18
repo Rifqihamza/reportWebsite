@@ -1,4 +1,4 @@
-import { useLineChartHook } from "../../../../../hooks/pages/Statistics/useChartHook";
+import { useLineChartHook } from "../../../../../hooks/pages/Statistics/useReportStatisticsHook";
 import { useReportConfigHook } from "../../../../../hooks/shared/useReportConfig";
 import { Campus, campuscode_to_campus } from "../../../../../types/variables";
 import { Accordion, AccordionTab } from "primereact/accordion";
@@ -57,6 +57,7 @@ export default function LocationChartFilter() {
           <AccordionTab
             header="Filter Lokasi"
             className="[&_.p-accordion-header-link]:bg-white! [&_.p-accordion-header-link]:rounded-lg! [&.p-toggleable-content]:rounded-b-lg! [&.p-toggleable-content]:border-1! [&.p-toggleable-content]:border-white! [&.p-toggleable-content]:*:rounded-b-lg! [&.p-toggleable-content]:-translate-y-4"
+            contentClassName="*:text-white!"
           >
             <div className="grid md:grid-cols-2 grid-cols-1 auto-cols-auto gap-4 w-full max-h-84 md:max-h-none overflow-auto mt-4">{LineChartLocationFilter}</div>
           </AccordionTab>

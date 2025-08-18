@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { statusColorHex, string_to_reporttype, type ReportType } from "../../../../../types/variables";
-import { usePieChartHook } from "../../../../../hooks/pages/Statistics/useChartHook";
+import { usePieChartHook } from "../../../../../hooks/pages/Statistics/useReportStatisticsHook";
 interface ApexInternalConfig {
   config: {
     labels: string[];
@@ -10,55 +10,19 @@ interface ApexInternalConfig {
 }
 
 interface PieChartProps {
-    reportType?: ReportType|null,
-    category?: boolean
+    pieData: Record<string, number>
 }
 
-const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
-    const { pieCategory, pieStatus, setLineChartCategoryFilter: setChartCategoryFilter } = usePieChartHook();
-
+const PieChart: React.FC<PieChartProps> = ({ pieData }) => {
     // Hitung jumlah masing-masing jenis laporan
-    const reportByCategory = pieCategory.reduce((acc, report) => {
-        report.labels = (report.labels == "VR" ? "5R" : report.labels);
-        if (!acc[report.labels]) {
-            acc[report.labels] = 0;
-        }
-        acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
-        return acc;
-    }, {} as Record<string, number>);
-    
-    const reportByStatus = pieStatus.reduce((acc, report) => {
-        report.labels = (report.labels == "VR" ? "5R" : report.labels);
-        if (!acc[report.labels]) {
-            acc[report.labels] = 0;
-        }
-        acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
-        return acc;
-    }, {} as Record<string, number>);
-    
-
-
-    const labels = Object.keys(category ? reportByCategory : reportByStatus);
-    const series = Object.values(category ? reportByCategory : reportByStatus);
+    const labels = Object.keys(pieData);
+    const series = Object.values(pieData);
     const colors = labels.map(label => statusColorHex[label] || '#E0E0E0'); // default gray if not matched
 
     const options = {
         chart: {
             type: 'pie' as const,
             data: series,
-            events: category ?{
-                dataPointSelection: function(event: MouseEvent, chartContext: ApexCharts, config: {
-                    seriesIndex: number;
-                    dataPointIndex: number;
-                    selectedDataPoints: number[][];
-                    w: ApexInternalConfig;
-                }) {
-                    const selectedIndex = config.dataPointIndex;
-                    const selectedLabel = string_to_reporttype(config.w.config.labels[selectedIndex]);
-
-                    setChartCategoryFilter((selectedLabel && selectedLabel != reportType) ? selectedLabel : null);
-                }
-            } : {} // Prevent data point selection events if its not category pie chart,
         },
         labels,
         colors,
@@ -95,6 +59,14 @@ const PieChart: React.FC<PieChartProps> = ({ reportType, category }) => {
             position: 'bottom' as 'bottom'
         },
     };
+
+    if(!series.some((value) => value > 0)) {
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                <p className="text-white text-center opacity-50">Tidak ada yang dapat ditampilkan</p>
+            </div>
+        );
+    }
 
     return (
         <ReactApexChart options={options} series={series} type="pie" width="300" />

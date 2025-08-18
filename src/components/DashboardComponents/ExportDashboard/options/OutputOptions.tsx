@@ -10,13 +10,13 @@ export default function OutputOptions() {
       <div className="bg-[#374151] w-full h-fit rounded-xl px-3">
         <div className="flex flex-col gap-2 md:flex-row md:gap-0 justify-between px-4 py-5">
           <div className="w-full">
-            <h1 className="text-xl lg:text-2xl font-semibold text-white ">Output Option</h1>
+            <h1 className="text-xl lg:text-2xl font-semibold text-white ">Output Options</h1>
             <span className="text-md lg:text-lg text-white flex flex-row items-center gap-3">
               Opsi output tipe file
               <i className="pi pi-arrow-right hidden! md:inline!"></i>
             </span>
           </div>
-          <div className="flex flex-row items-center gap-4 w-full">
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 w-full">
             {outputOptions.map((value, index) => {
               const titleObj = ExportOutputTitles.find((t) => t.value === value);
               if (!titleObj) return "";

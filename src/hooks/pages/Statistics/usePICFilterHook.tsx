@@ -86,6 +86,8 @@ export default function UsePICFilterHookEffect() {
   const { setStartDateFilter, endDateFilter, currentTimeSpan } = usePICFilterHook();
   
   useEffect(() => {
+    if(!reportData || reportData.length === 0) return;
+    
     let startDateFilter = new Date();
     if(currentTimeSpan === PICFilterTimeSpan.AllTime) {
       startDateFilter = reportData ? new Date(reportData[reportData.length - 1].created_at) : new Date();

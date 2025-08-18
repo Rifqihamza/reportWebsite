@@ -27,14 +27,14 @@ export default function FilterOptions() {
     <div className="bg-[#374151] w-full h-fit rounded-xl px-3">
       <div className="flex flex-col md:flex-row justify-between px-4 py-5">
         <div className="w-full">
-          <h1 className="text-xl lg:text-2xl font-semibold text-white">Filter Option</h1>
-          <span className="text-md lg:text-lg text-white flex flex-row items-center gap-3">
-            Opsi filter data yang akan di eksport
+          <h1 className="text-xl lg:text-2xl font-semibold text-white">Filter Options</h1>
+          <span className="w-max text-md lg:text-lg text-white flex flex-row items-center gap-3">
+            Opsi filter data yang akan di ekspor
             <i className="pi pi-arrow-right hidden! md:inline!"></i>
           </span>
         </div>
         <div className="w-full h-full overflow-y-visible flex flex-col justify-start gap-4">
-          <div className="px-4 py-3 flex flex-col justify-start gap-2">
+          <div className="py-3 gap-2 flex flex-col lg:flex-row" style={{ direction: "rtl" }}>
             {Object.entries(filterOptions).map(([key, options], index) => {
               const filterKey = key as keyof ReportData;
               const displayOptions = key === "type" ? options.map(reporttype_to_string) : options;
@@ -46,7 +46,7 @@ export default function FilterOptions() {
               }));
 
               return (
-                <div data-filter-element key={key} className="flex flex-col justify-center h-full! overflow-y-visible items-center relative" onClick={() => setShouldClose(false)}>
+                <div data-filter-element key={key} className="flex flex-col justify-center w-full h-full overflow-y-visible items-center relative" onClick={() => setShouldClose(false)}>
                   <button className={`cursor-pointer z-10 w-full h-full p-[12px_24px] bg-[#1a1d24] text-white rounded-xl border ${selectedValues.length > 0 ? "border-white" : "border-transparent"}`} onClick={() => index === openedIndex ? setOpenedIndex(null) : setOpenedIndex(index)}>{capitalize(key)}</button>
                     <div className={`p-4 max-h-70 overflow-auto rounded-l-2xl bg-[#374151] border border-white z-11 w-full left-0 absolute top-[calc(26px_+_1.5rem_+6px)] duration-400 ${openedIndex === index ? "opacity-100 text-base" : "opacity-0 pointer-events-none"}`}>
                       <ListBox

@@ -62,7 +62,6 @@ export function campuscode_to_campus(campus_code?: string): Campus | undefined {
     return Object.values(Campus)[Object.keys(Campus).findIndex(value => value == campus_code)];
 }
 
-// DATABASE MODEL
 export const ReportData_TypeGuard = z.strictObject({
     id: z.string().uuid(),
     submitted_by: z.string(),
@@ -130,6 +129,20 @@ export const table_rows: {
     "Tanggal": "created_at",
 }
 
+export const exportable_rows: {
+    [key: string]: (keyof ReportData)
+} = {
+    "Status": "status",
+    "Nama": "submitted_by",
+    "PIC": "pic_name",
+    "Laporan": "message",
+    "Kampus": "campus",
+    "Lokasi": "location_name",
+    "Tanggal": "created_at",
+    "Bukti Temuan": "image",
+    "Bukti Selesai": "image_after_finish"
+}
+
 export const keyto_table_rows: Partial<{
     [key in (keyof ReportData)]: string
 }> = {
@@ -141,6 +154,8 @@ export const keyto_table_rows: Partial<{
     "pic_name": "PIC",
     "type": "Kategori",
     "campus": "Kampus",
+    "image": "Bukti Temuan",
+    "image_after_finish": "Bukti Selesai"
 }
 
 // Other things
@@ -157,11 +172,13 @@ export const statusColorHex: Record<string, string> = {
 export enum ExportOutputType {
     Excel = "Excel",
     CSV = "CSV",
+    PDF = "PDF"
 }
 
 export const ExportOutputTitles = [
     { value: ExportOutputType.Excel, title: "Excel", icon: "excelIcon.png" },
     { value: ExportOutputType.CSV, title: "CSV", icon: "csvIcon.png" },
+    { value: ExportOutputType.PDF, title: "PDF", icon: "pdfIcon.png" },
 ];
 
 export enum AccountAPIPrivillage {

@@ -17,6 +17,7 @@ import { useThanksModalHook } from "../../../hooks/shared/useThanksModal";
 import { useCampusDataHook } from "../../../hooks/pages/ReportForm/useCampusData";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
+import { Calendar } from "primereact/calendar";
 
 export default function ReportFormComponent() {
   // Report Form State
@@ -24,9 +25,9 @@ export default function ReportFormComponent() {
   const [message, setMessage] = useState("");
   const [location, setLocation] = useState("");
   const [detailLocation, setDetailLocation] = useState("");
-  const [category, setCategory] = useState(null as ReportType | string | null);
-  const [reportDate, setReportDate] = useState("");
-  const [image, setImage] = useState(null as File | null);
+  const [category, setCategory] = useState<ReportType | string | null>(null);
+  const [reportDate, setReportDate] = useState<Date | null>(null);
+  const [image, setImage] = useState<File | null>(null);
 
   // Other state
   const [submitDisabled, setSubmitDisabled] = useState(false);
@@ -44,7 +45,7 @@ export default function ReportFormComponent() {
     setCategory(null);
     setDetailLocation("");
     setLocation("");
-    setReportDate("");
+    setReportDate(null);
     setImage(null);
   };
 
@@ -60,7 +61,7 @@ export default function ReportFormComponent() {
       return;
     }
 
-    if (!submitted_by || !message || !category || !location || !reportDate || !image) {
+    if (!submitted_by || !message || !category || !location || !reportDate || !image || !detailLocation) {
       showMessage("Please complete the form.", "warn", "");
       return;
     }
@@ -90,10 +91,9 @@ export default function ReportFormComponent() {
       setTimeout(() => {
         setShowThanks(false);
       }, 3500);
-
     } else if (result == APIResultType.Unauthorized) {
       showMessage("Unauthroized report detected!", "error", "You've been detected using a service without proper authorization. Please login again.");
-    } else if (result == APIResultType.InternalServerError) {
+    } else {
       showMessage("There's an unexpected error occured in the server side!", "error", "Sorry for the inconvenient, please try again later.");
     }
 
@@ -214,7 +214,7 @@ export default function ReportFormComponent() {
                   Tanggal Temuan
                 </label>
               </div>
-              <input
+              {/* <input
                 autoComplete="off"
                 type="datetime-local"
                 placeholder="Tanggal temuan"
@@ -222,7 +222,8 @@ export default function ReportFormComponent() {
                 onChange={(e) => setReportDate(e.target.value)}
                 value={reportDate}
                 required
-              />
+              /> */}
+              <Calendar showTime inputClassName="bg-[#f2e5bf]! p-4!" panelClassName="bg-[#f2e5bf]! **:[&:not(.p-highlight)]:bg-[#f2e5bf]! [&_.p-highlight]:bg-[#cb6040]!" value={reportDate} onChange={(event) => setReportDate(event.value || null)} />
             </div>
             {/* End Tanggal Temuan */}
 
@@ -284,7 +285,7 @@ export default function ReportFormComponent() {
             ) : (
               <button
                 type="button"
-                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#257180] border-2 border-white hover:bg-[#CB6040] duration-300 "
+                className="flex justify-center items-center disabled:opacity-50 uppercase font-medium px-6 py-4 w-full rounded-2xl cursor-pointer text-white bg-[#1a1d24] border-2 border-white hover:bg-[#CB6040] duration-300 "
                 disabled={submitDisabled}
                 onClick={handle_submit}
               >

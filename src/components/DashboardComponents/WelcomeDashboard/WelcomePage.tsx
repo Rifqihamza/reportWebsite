@@ -16,7 +16,7 @@ function QuickNavigationButton(props: { icon: string, title: string, description
 }
 
 function DataReport(props: { title: string; value: number; icon: string; status: string }) {
-    const bgColor = statusColorHex[props.status] || "#374151";
+    const bgColor = (statusColorHex[props.status] || "#374151") + "55";
 
     return (
         <div
@@ -58,11 +58,13 @@ export default function WelcomePage() {
                 : "Selamat Pagi 🌞";
 
     if (activeTab !== 0) return null;
+    
     const getCount = (status: ReportStatus | "Total") => {
         if (!reportData) return 0;
         if (status === "Total") return reportData.length;
         return reportData.filter((r) => r.status === status).length;
     };
+    
     return (
         <section className="px-5 py-10 md:py-6 overflow-auto space-y-4">
             <UseUserDataHookEffect adminOnly />

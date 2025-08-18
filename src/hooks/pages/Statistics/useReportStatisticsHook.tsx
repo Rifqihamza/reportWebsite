@@ -47,14 +47,11 @@ type InsightDataType = {
 
 // -- Pie Chart States
 type UsePieChartype = {
-  pieCategory: CategoryType[];
+  pieCategory: Record<string, number>;
   setPieCategory: (newPieCategory: CategoryType[]) => void;
 
-  pieStatus: CategoryType[];
+  pieStatus: Record<string, number>;
   setPieStatus: (newPieStatus: CategoryType[]) => void;
-
-  percentStatus: CategoryType[];
-  setPercentStatus: (newPercentStatus: CategoryType[]) => void;
 
   lineChartCategoryFilter: ReportType | null;
   setLineChartCategoryFilter: (newChartCategoryFilter: ReportType | null) => void;
@@ -67,19 +64,32 @@ export const usePieChartHook = create<UsePieChartype>((set) => {
       set(() => ({ lineChartCategoryFilter: newChartCategoryFilter }));
     },
 
-    percentStatus: [],
-    setPercentStatus: (newPercentStatus) => {
-      set(() => ({ percentStatus: newPercentStatus }));
-    },
-
-    pieCategory: [],
+    pieCategory: {},
     setPieCategory: (newPieCategory) => {
-      set(() => ({ pieCategory: newPieCategory }));
+      set(() => ({
+        pieCategory: newPieCategory.reduce((acc, report) => {
+          report.labels = report.labels == "VR" ? "5R" : report.labels;
+          if (!acc[report.labels]) {
+            acc[report.labels] = 0;
+          }
+          acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
+          return acc;
+        }, {} as Record<string, number>),
+      }));
     },
 
-    pieStatus: [],
+    pieStatus: {},
     setPieStatus: (newPieStatus) => {
-      set(() => ({ pieStatus: newPieStatus }));
+      set(() => ({
+        pieStatus: newPieStatus.reduce((acc, report) => {
+          report.labels = report.labels == "VR" ? "5R" : report.labels;
+          if (!acc[report.labels]) {
+            acc[report.labels] = 0;
+          }
+          acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
+          return acc;
+        }, {} as Record<string, number>),
+      }));
     },
   };
 });
@@ -135,10 +145,10 @@ export const useLineChartHook = create<UseLineChartType>((set) => {
 
     applyFilter() {
       set((state) => ({
-        appliedChartCampusFilter: state.chartCampusFilter, 
-        appliedChartLocationFilter: state.chartLocationFilter, 
-        appliedChartTimeFilter: state.chartTimeFilter
-      }))
+        appliedChartCampusFilter: state.chartCampusFilter,
+        appliedChartLocationFilter: state.chartLocationFilter,
+        appliedChartTimeFilter: state.chartTimeFilter,
+      }));
     },
   };
 });
@@ -147,6 +157,9 @@ export const useLineChartHook = create<UseLineChartType>((set) => {
 type UsePercentChartType = {
   percentCategory: CategoryType[];
   setPercentCategory: (newPercentCategory: CategoryType[]) => void;
+
+  percentStatus: CategoryType[];
+  setPercentStatus: (newPercentStatus: CategoryType[]) => void;
 };
 
 export const usePercentChartHook = create<UsePercentChartType>((set) => {
@@ -154,6 +167,11 @@ export const usePercentChartHook = create<UsePercentChartType>((set) => {
     percentCategory: [],
     setPercentCategory(newPercentCategory) {
       set(() => ({ percentCategory: newPercentCategory }));
+    },
+
+    percentStatus: [],
+    setPercentStatus: (newPercentStatus) => {
+      set(() => ({ percentStatus: newPercentStatus }));
     },
   };
 });
@@ -179,12 +197,12 @@ const listOfNumOfDates = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
 const listOfHari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 export const listOfDay = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-export function UseChartHookEffect() {
+export function UseReportStatisticsEffect() {
   const { reportData } = useReportDataHook();
-  const { lineChartCategoryFilter: chartCategoryFilter, setPercentStatus, setPieCategory, setPieStatus } = usePieChartHook();
+  const { lineChartCategoryFilter: chartCategoryFilter, setPieCategory, setPieStatus } = usePieChartHook();
   const { setInsight } = useInsightHook();
   const { appliedChartTimeFilter, setLineChartFilteredReports, lineChartFilteredReports, appliedChartCampusFilter, appliedChartLocationFilter } = useLineChartHook();
-  const { setPercentCategory } = usePercentChartHook();
+  const { setPercentCategory, setPercentStatus } = usePercentChartHook();
   const { picNamesOptions } = useReportConfigHook();
 
   useEffect(() => {

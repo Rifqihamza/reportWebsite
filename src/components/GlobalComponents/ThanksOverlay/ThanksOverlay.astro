@@ -1,7 +1,7 @@
 ---
 import ThanksOverlayTrigger from "./ThanksOverlayTrigger";
 import LogoSekolah from "../../../../public/img/logoSekolah.png";
-import HeroImage from "../../../../public/img/9086589-removebg-preview.png";
+import ThanksImage from "../../../../public/img/thankyou_image.png";
 import ThanksCloseButton from "./ThanksCloseButton";
 
 import { Image } from "astro:assets";
@@ -14,10 +14,10 @@ import { Image } from "astro:assets";
 
   <section class="fixed inset-0 flex items-center justify-center p-4">
     <div
-      class="bg-[#1f324d] shadow shadow-white w-full max-w-3xl max-h-screen overflow-y-auto p-4 md:p-6 rounded-xl space-y-4 relative"
+      class="bg-[#1a1d24] shadow shadow-white w-full max-w-3xl max-h-screen overflow-y-auto p-4 md:p-6 rounded-xl space-y-4 relative"
     >
       <h1
-        class="font-bold uppercase text-lg md:text-xl text-white bg-[#7FA1C3] px-4 py-3 rounded-xl text-center"
+        class="font-bold uppercase text-lg md:text-xl text-white bg-[#cb6040] px-4 py-3 rounded-xl text-center"
       >
         Terima Kasih Telah Melapor!
       </h1>
@@ -25,7 +25,7 @@ import { Image } from "astro:assets";
       <div class="flex flex-col-reverse md:flex-row justify-center gap-4">
         <div class="flex flex-col gap-4 w-full md:w-1/2">
           <div
-            class="px-4 py-4 bg-[#7FA1C3] rounded-xl text-justify flex flex-col gap-4 items-center justify-center"
+            class="px-4 py-4 bg-[#cb6040] rounded-xl text-justify flex flex-col gap-4 items-center justify-center"
           >
             <Image src={LogoSekolah} class="w-24 h-auto" alt="Logo Sekolah" />
             <p
@@ -40,8 +40,8 @@ import { Image } from "astro:assets";
 
         <div class="w-full md:w-1/2 flex justify-center">
           <Image
-            src={HeroImage}
-            class="w-full md:w-[90%] px-4 py-2 bg-[#7FA1C3] h-auto rounded-xl"
+            src={ThanksImage}
+            class="w-full md:w-[90%] px-4 py-2 bg-[#cb6040] h-auto rounded-xl"
             alt="Thanks Image"
           />
         </div>
