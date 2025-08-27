@@ -56,7 +56,6 @@ export default function UseReportConfigHookEffect(props: { useAllCampus?: boolea
         let resultPicNamesOptions: { [key: string]: string[] } = {};
         let resultLocationOptions: { [key: string]: string[] } = {};
 
-        console.log(result.location_data);
         result.location_data.forEach((value) => {
           if(value.campus_name in resultLocationOptions) {
             resultLocationOptions[value.campus_name].push(value.location);
