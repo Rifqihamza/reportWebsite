@@ -80,10 +80,7 @@ export async function POST({ request, cookies, clientAddress }: APIContext) {
             try {
                 location_data = await prisma.report_Location.findUnique({
                     where: {
-                        location_campus_name: {
-                            location: location,
-                            campus_name: verified_campus_name
-                        }
+                        location: location,
                     }
                 });
             }
@@ -163,10 +160,7 @@ export async function POST({ request, cookies, clientAddress }: APIContext) {
                 message: message,
                 report_location: {
                     connect: {
-                        location_campus_name: {
-                            location: location,
-                            campus_name: verified_campus_name
-                        }
+                        location: location
                     }
                 },
                 type: report_type,

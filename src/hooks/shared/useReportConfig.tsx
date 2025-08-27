@@ -6,8 +6,8 @@ import { useMessageToastHook } from "./useMessageToast";
 import { useNetworkConnectivityHook } from "./useNetworkConnectivity";
 
 type useReportConfigType = {
-  picNamesOptions: { [key: string]: string[] };
-  setPicNamesOptions: (newPicNamesOptions: { [key: string]: string[] }) => void;
+  picNamesOptions: string[];
+  setPicNamesOptions: (newPicNamesOptions: string[]) => void;
 
   locationOptions: { [key: string]: string[] }
   setLocationOptions: (newLocationOptions: { [key: string]: string[] }) => void;
@@ -16,7 +16,7 @@ type useReportConfigType = {
 export const useReportConfigHook = create<useReportConfigType>((set) => {
   return {
     // PIC names options
-    picNamesOptions: {},
+    picNamesOptions: [],
     setPicNamesOptions(newPicNamesOptions) {
       set(() => ({ picNamesOptions: newPicNamesOptions }));
     },
@@ -56,15 +56,7 @@ export default function UseReportConfigHookEffect(props: { useAllCampus?: boolea
         let resultPicNamesOptions: { [key: string]: string[] } = {};
         let resultLocationOptions: { [key: string]: string[] } = {};
 
-        result.pic_data.forEach((value) => {
-          if(value.campus_name in resultPicNamesOptions) {
-            resultPicNamesOptions[value.campus_name].push(value.name);
-          }
-          else {
-            resultPicNamesOptions[value.campus_name] = [value.name];
-          }
-        });
-
+        console.log(result.location_data);
         result.location_data.forEach((value) => {
           if(value.campus_name in resultLocationOptions) {
             resultLocationOptions[value.campus_name].push(value.location);
@@ -72,9 +64,11 @@ export default function UseReportConfigHookEffect(props: { useAllCampus?: boolea
           else {
             resultLocationOptions[value.campus_name] = [value.location];
           }
+          
+          resultPicNamesOptions[value.pic_name] = []
         });
 
-        setPicNamesOptions(resultPicNamesOptions);
+        setPicNamesOptions(Object.keys(resultPicNamesOptions));
         setLocationOptions(resultLocationOptions);
       } else if (result === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");

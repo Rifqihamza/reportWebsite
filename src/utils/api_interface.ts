@@ -1,5 +1,5 @@
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
-import type { Campus, Report_Location, Report_PIC, ReportData, User } from "../types/variables";
+import type { Campus, Report_Location, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
 const base_url_endpoint: string = "";
@@ -317,7 +317,6 @@ export async function markCompleteReport(report_id: string, confirmation_photo: 
 }
 
 export type formConfigurationResponse = {
-    pic_data: Report_PIC[],
     location_data: Report_Location[]
 }
 

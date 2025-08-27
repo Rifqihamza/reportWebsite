@@ -69,32 +69,19 @@ model Users {
   recorded_reports    Report[]
 }
 
-model Report_PIC {
-  id          String @id @default(uuid())
-  name        String
-  campus_name Campus
-
-  created_at DateTime @default(now())
-
-  // Relation
-  reports Report[]
-
-  @@unique([name, campus_name])
-  @@unique([id, name])
-}
-
 model Report_Location {
   id          String @id @default(uuid())
-  location    String
+  location    String @unique
   campus_name Campus
+  pic_name    String
 
   created_at DateTime @default(now())
 
   // Relation
-  reports Report[]
-
-  @@unique([location, campus_name])
-  @@unique([id, location])
+  reports_location Report[] @relation
+  
+  
+  @@unique([location, pic_name])
 }
 
 model Report {
@@ -116,13 +103,9 @@ model Report {
   due_date    DateTime?
 
   // Relations
-  responsible_pic Report_PIC? @relation(references: [id, name], fields: [pic_id, pic_name], onDelete: SetNull)
-  pic_id          String?
-  pic_name        String?
-
-  report_location Report_Location? @relation(references: [id, location], fields: [location_id, location_name], onDelete: SetNull)
-  location_id     String?
-  location_name   String?
+  report_location Report_Location @relation(references: [location, pic_name], fields: [location_name, pic_name], onDelete: Cascade)
+  location_name   String
+  pic_name        String
 
   account_used Users  @relation(references: [username], fields: [account_name], onDelete: Cascade)
   account_name String
