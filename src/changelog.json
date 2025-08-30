@@ -132,5 +132,24 @@
       ],
       "adjustments": []
     }
+  },
+  {
+    "version": "1.6",
+    "date": "30 August 2025",
+    "changes": {
+      "features": [],
+      "fixes": [
+        "Fix button to see the evidence image disappeared"
+      ],
+      "improvements": [
+        "Improve report detail modal design",
+        "Improve report evidece modal design",
+        "Improve PIC Statistics date filter design"
+      ],
+      "adjustments": [
+        "Each report data has their own PIC and can't be changed by admin and already connected to the location of the report",
+        "Change the way report date is formatted"
+      ]
+    }
   }
 ]
