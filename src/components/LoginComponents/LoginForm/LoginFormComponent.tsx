@@ -33,7 +33,11 @@ export default function LoginFormComponent() {
         }, 2000);
         return;
       }
-      else if (result === APIResultType.Unauthorized) {
+      else {
+        setPassword("");
+      }
+      
+      if (result === APIResultType.Unauthorized) {
         setIsPasswordCorrect(false);
         showMessage("Unauthorized!", "error", "Wrong password or username");
       }

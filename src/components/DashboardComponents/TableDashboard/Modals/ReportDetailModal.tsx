@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image } from "primereact/image";
-import { AccountAPIPrivillage, reporttype_to_string } from "../../../../types/variables";
+import { AccountAPIPrivillage, ReportStatus, reporttype_to_string } from "../../../../types/variables";
 import { useReportDataHook } from "../../../../hooks/shared/useReportData";
 import { statusColors, useReportDetailHook, useReportEditHook } from "../../../../hooks/pages/ReportTable/useReportHook";
 import { date_to_str, spaces_in_camel_case } from "../../../../utils/other";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { PrimeReactProvider } from "primereact/api";
 import { useUserDataHook } from "../../../../hooks/shared/useUserData";
+import { useReportEvidenceHook } from "../../../../hooks/pages/ReportTable/useReportEvidenceHook";
 
 export default function ReportDetailModal() {
   const [accordionIndex, setAccordionIndex] = useState(0);
 
   const { reportData } = useReportDataHook();
   const { detailId, deleteDisabled, handleClose, handleDelete } = useReportDetailHook();
+  const { setReportImageURL } = useReportEvidenceHook();
 
   const { setEditVisible } = useReportEditHook();
   const { userPrivillages: userDataPrivillages } = useUserDataHook();
@@ -55,8 +57,8 @@ export default function ReportDetailModal() {
         <div
           className={
             (detailId ? "visible pointer-events-auto top-0 scale-100 opacity-100" : "invisible pointer-events-none top-0 scale-50 opacity-0") +
-            " left-1/2 translate-y-6 md:translate-y-[5rem] -translate-x-1/2 duration-200 fixed bg-[#257180] w-full max-w-[90vw] lg:max-w-[70vw] " +
-            "lg:max-h-[100vh] min-h-[70vh] max-h-[90vh] px-5 py-6 rounded-3xl z-50 flex flex-col justify-between space-y-5 shadow-md shadow-white"
+            " left-1/2 translate-y-6 md:translate-y-[5rem] -translate-x-1/2 duration-200 fixed bg-[#1a1d24] w-full max-w-[90vw] lg:max-w-[70vw] " +
+            "lg:max-h-[100vh] min-h-[70vh] max-h-[90vh] px-5 py-6 rounded-3xl z-50 flex flex-col justify-between space-y-5 border border-white"
           }
         >
 
@@ -87,12 +89,12 @@ export default function ReportDetailModal() {
             {/* Details */}
             <div className="w-full [&_.p-accordion]:flex! [&_.p-accordion]:flex-col! [&_.p-accordion]:gap-2!">
               <Accordion activeIndex={accordionIndex} onTabChange={(e) => setAccordionIndex(Array.isArray(e.index) ? e.index[0] : e.index)} className="[&_.p-accordion-header-link]:border-none!">
-                <AccordionTab header="Pesan Laporan" className={`${accordionIndex == 0 && ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-header-link]:bg-[#FD8B51]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-2! [&_.p-accordion-content]:mb-2! [&_.p-accordion-content]:rounded-xl!`}>
+                <AccordionTab header="Pesan Laporan" className={`${accordionIndex == 0 && ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-header-link]:bg-[#FD8B51]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:bg-transparent! [&_.p-accordion-content]:border! [&_.p-accordion-content]:border-white! [&_.p-accordion-content]:*:text-white! [&_.p-accordion-content]:mt-2! [&_.p-accordion-content]:mb-2! [&_.p-accordion-content]:rounded-xl!`}>
                   <p className="break-words whitespace-pre-line w-full overflow-y-auto overflow-x-auto">{report_data?.message}</p>
                 </AccordionTab>
                 <AccordionTab
                   header="Detail Laporan"
-                  className={`${accordionIndex == 1 && ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-content]:overflow-y-auto [&_.p-accordion-header-link]:bg-[#FD8B51]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:mt-2! [&_.p-accordion-content]:mb-2! [&_.p-accordion-content]:rounded-xl!`}
+                  className={`${accordionIndex == 1 && ""} [&.p-toggleable-content]:*:h-[30vh] [&_.p-accordion-content]:overflow-y-auto [&_.p-accordion-header-link]:bg-[#FD8B51]! [&_.p-accordion-header-link]:text-white! [&_.p-accordion-header-link]:rounded-xl! [&_.p-accordion-content]:bg-transparent! [&_.p-accordion-content]:border! [&_.p-accordion-content]:border-white! [&_.p-accordion-content]:*:text-white! [&_.p-accordion-content]:mt-2! [&_.p-accordion-content]:mb-2! [&_.p-accordion-content]:rounded-xl!`}
                 >
                   <div className="w-full flex flex-col space-y-2 overflow-y-auto">
                     {/* Report Details */}
@@ -115,13 +117,18 @@ export default function ReportDetailModal() {
 
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-4 w-full pt-4">
-            <button
+            {report_data?.status === ReportStatus.Complete ? <button
+              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+              onClick={() => setReportImageURL(report_data.image_after_finish)}
+            >
+              Lihat Bukti
+            </button> : <button
               className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => setEditVisible(true)}
               disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateReport)}
             >
               Edit
-            </button>
+            </button>}
             <button
               className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => (report_data ? handleDelete(report_data.id) : null)}

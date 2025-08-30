@@ -1,10 +1,10 @@
 import { create } from "zustand"
-import UseUserAccountHookEffect, { useUserAccountHook } from "../UsersTab/useUserAccount";
 import { useEffect } from "react";
 import UseReportDataHookEffect, { useReportDataHook } from "../../shared/useReportData";
 import { ReportStatus } from "../../../types/variables";
 import { usePICReportCountHook } from "./usePICReportCountHook";
 import { usePICFilterHook } from "./usePICFilterHook";
+import UseReportConfigHookEffect, { useReportConfigHook } from "../../shared/useReportConfig";
 
 const maxPICRankPerPage = 10;
 
@@ -76,19 +76,19 @@ export const usePICRankHook = create<usePICRankHookType>((set) => ({
 
 
 export default function UsePICRankHookEffect() {
-  const { userAccountData } = useUserAccountHook();
+  const { picNamesOptions } = useReportConfigHook();
   const { setShowedPICRank, setSortedPICData, page, maxPage, sortedPICData } = usePICRankHook();
   const { reportData } = useReportDataHook();
   const { currentTimeSpan, startDateFilter, endDateFilter } = usePICFilterHook();
    
   // Report data processing to get the sorted PIC Rank
   useEffect(() => {
-    if(!userAccountData || !reportData) return;
+    if(!picNamesOptions || !reportData) return;
     const result: IndexedPICData = {};
 
-    userAccountData.forEach((picData, index) => {
-      result[picData.username] = {
-        name: picData.username,
+    picNamesOptions.forEach((picName) => {
+      result[picName] = {
+        name: picName,
         rank: 0,
         reportCountTotal: 0,
         reportCountByStatus: {
@@ -118,7 +118,7 @@ export default function UsePICRankHookEffect() {
     const newSortedPICData = Object.values(result).sort((a, b) => b.reportCountTotal - a.reportCountTotal).map((data, index) => ({ ...data, rank: (index + 1) }));
 
     setSortedPICData(newSortedPICData);
-  }, [userAccountData, reportData, startDateFilter, endDateFilter, currentTimeSpan]);
+  }, [picNamesOptions, reportData, startDateFilter, endDateFilter, currentTimeSpan]);
 
   // Pagination handler
   useEffect(() => {
@@ -130,6 +130,6 @@ export default function UsePICRankHookEffect() {
   
   return <>
     <UseReportDataHookEffect />
-    <UseUserAccountHookEffect />
+    <UseReportConfigHookEffect />
   </>;
 }

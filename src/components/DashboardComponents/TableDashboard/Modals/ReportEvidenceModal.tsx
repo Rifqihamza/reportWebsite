@@ -18,8 +18,10 @@ export default function ReportEvidenceModal() {
   }
 
   return <>
-    <Dialog visible={reportImageURL !== null} draggable={false} header={"Bukti Foto"} onHide={() => setReportImageURL(null)}>
-      <Image ref={reportEvidenceElement} src={reportImageURL} preview />
+    <Dialog visible={reportImageURL !== null} draggable={false} header={"Bukti Foto"} onHide={() => setReportImageURL(null)} headerClassName="bg-[#374151]! text-white!" contentClassName="bg-[#1a1d24]! p-2! md:p-10!">
+      <div className="max-w-[70vmin] min-w-[50vmin] overflow-hidden">
+        <Image ref={reportEvidenceElement} src={reportImageURL} preview className="" imageClassName="object-cover rounded-lg w-full aspect-square" />
+      </div>
     </Dialog>
   </>
 }

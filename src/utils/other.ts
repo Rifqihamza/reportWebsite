@@ -10,7 +10,7 @@ export function date_to_str(date: Date | string | null): string {
     year: "numeric",
   });
 
-  return `${formattedDate}, ${strftime("%H:%M", date)}`;
+  return `${formattedDate}`;
 }
 
 export function capitalize(text: string): string {

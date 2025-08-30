@@ -35,7 +35,7 @@ export default function PICStatisticsPage() {
         {/* Reports Count Chart */}
         <div className="mt-10 rounded-2xl border border-white bg-[#2b3440] py-4 px-2 md:px-4 min-h-68">
           <h1 className="mb-4 text-2xl">Grafik Laporan PIC</h1>
-          <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
+          <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation dark_bg /></div>}>
             <ReportCountChart />
           </Suspense>
         </div>
@@ -43,7 +43,7 @@ export default function PICStatisticsPage() {
         {/* Ranking Table */}
         <div className="mt-10 rounded-2xl border border-white bg-[#2b3440] p-4 min-h-80">
           <h1 className="mb-4 text-2xl">Tabel Ranking PIC</h1>
-          <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
+          <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation dark_bg /></div>}>
             <RankingTable />
           </Suspense>
         </div>
@@ -51,7 +51,7 @@ export default function PICStatisticsPage() {
         {/* Ranking Table */}
         <div className="mt-10 rounded-2xl border border-white bg-[#2b3440] p-4 min-h-80">
           <h1 className="mb-4 text-2xl">Tabel Ranking Pelapor</h1>
-          <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation /></div>}>
+          <Suspense fallback={<div className="w-full h-full relative"><LoadingAnimation dark_bg /></div>}>
             <UserRankTable />
           </Suspense>
         </div>

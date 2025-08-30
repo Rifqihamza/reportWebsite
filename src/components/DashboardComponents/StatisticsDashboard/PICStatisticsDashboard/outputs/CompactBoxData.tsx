@@ -14,7 +14,7 @@ export default function CompactBoxData(props: Props) {
       <h1 className="text-2xl absolute top-3 left-4">{props.label}</h1>
       {(() => {
         if(props.loading) {
-          return <LoadingAnimation />;
+          return <LoadingAnimation dark_bg />;
         }
         
         return <>

@@ -203,7 +203,7 @@ export function UseReportStatisticsEffect() {
   const { setInsight } = useInsightHook();
   const { appliedChartTimeFilter, setLineChartFilteredReports, lineChartFilteredReports, appliedChartCampusFilter, appliedChartLocationFilter } = useLineChartHook();
   const { setPercentCategory, setPercentStatus } = usePercentChartHook();
-  const { picNamesOptions } = useReportConfigHook();
+  const { locationOptions, picNamesOptions } = useReportConfigHook();
 
   useEffect(() => {
     if (!reportData) {
@@ -242,10 +242,8 @@ export function UseReportStatisticsEffect() {
     });
 
     // Insert all of the PIC to the data first
-    Object.values(picNamesOptions).forEach((picNames) => {
-      picNames.forEach((picName) => {
-        result.totalReportPerPIC[picName] = 0;
-      });
+    picNamesOptions.forEach((picName) => {
+      result.totalReportPerPIC[picName] = 0;
     });
 
     // Calculate the result

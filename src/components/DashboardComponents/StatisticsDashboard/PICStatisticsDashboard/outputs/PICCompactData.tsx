@@ -1,4 +1,4 @@
-import { usePICRankHook } from "../../../../../hooks/pages/Statistics/usePICRankHook";
+import UsePICRankHookEffect, { usePICRankHook } from "../../../../../hooks/pages/Statistics/usePICRankHook";
 import UseUserAccountHookEffect from "../../../../../hooks/pages/UsersTab/useUserAccount";
 import UseReportDataHookEffect from "../../../../../hooks/shared/useReportData";
 import CompactBoxData from "./CompactBoxData";
@@ -10,6 +10,7 @@ export default function PICCOmpactData() {
   return <>
     <UseUserAccountHookEffect />
     <UseReportDataHookEffect />
+    <UsePICRankHookEffect />
     <div className="flex flex-col md:flex-row gap-2">
       <CompactBoxData loading={!isReady} label="MIN" value={!isReady ? undefined : sortedPICData[sortedPICData.length - 1].reportCountTotal} description="Jumlah laporan paling sedikit yang dimiliki PIC" unit="laporan" />
       <CompactBoxData loading={!isReady} label="MED" value={!isReady ? undefined : medianReportData} description="Nilai median dari jumlah laporan yang dimiliki PIC"  unit="laporan" />

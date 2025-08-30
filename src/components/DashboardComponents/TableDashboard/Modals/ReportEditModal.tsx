@@ -147,25 +147,16 @@ export default function ReportEditModal() {
             </div>
           }
         >
-          <div className="w-full grid grid-rows-4 md:grid-rows-2 md:grid-cols-2 gap-2">
-            {(() => {
-              const picNameIsNotLoaded = Object.values(picNamesOptions).length == 0;
-              return (
-                <DropdownField
-                  label="PIC"
-                  options={report?.campus && !picNameIsNotLoaded ? picNamesOptions[report.campus].map((val) => ({ label: val, value: val })) : []}
-                  value={formState.pic_name}
-                  onChange={(e) => updateField("pic_name", e.target.value)}
-                  disabled={picNameIsNotLoaded}
-                  filter
-                />
-              );
-            })()}
-            <CalendarField label="Due Date" value={formState.due_date ? new Date(formState.due_date) : null} onChange={(e) => updateField("due_date", e.value ? new Date(e.value) : "")} />
-            <DropdownField label="Follow Up" options={accountTypeOptions} value={formState.follow_up} onChange={(e) => updateField("follow_up", e.value as AccountType)} />
-            <InputField label="Nama Follow Up" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} max={30} />
+          <div className="w-full grid grid-rows-2 grid-cols-1 gap-2 *:gap-2">
+            <div className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1">
+              <CalendarField label="Due Date" value={formState.due_date ? new Date(formState.due_date) : null} onChange={(e) => updateField("due_date", e.value ? new Date(e.value) : "")} />
+              <DropdownField label="Follow Up" options={accountTypeOptions} value={formState.follow_up} onChange={(e) => updateField("follow_up", e.value as AccountType)} />
+            </div>
+            <div className="grid grid-cols-1 grid-rows-1">
+              <InputField label="Nama Follow Up" value={formState.follow_up_name} onChange={(e) => updateField("follow_up_name", e.target.value)} max={30} />
+            </div>
           </div>
-          <DropdownField label="Status" options={reportStatusOptions} value={formState.status} onChange={(e) => updateField("status", e.value as ReportStatus)} />
+          <DropdownField label="Status" options={reportStatusOptions} value={formState.status} onChange={(e) => updateField("status", e.value as ReportStatus)}/>
         </Dialog>
       </PrimeReactProvider>
     </>
@@ -179,15 +170,17 @@ function InputField({
   onChange,
   disabled = false,
   max = 191,
+  className = ""
 }: {
   label: string;
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   max?: number;
+  className?: string
 }) {
   return (
-    <div className="w-full flex flex-col">
+    <div className={"w-full flex flex-col" + className}>
       <div className="flex justify-between px-2">
         <label className="font-semibold mb-1">{label}</label>
         {disabled ? (
