@@ -118,12 +118,12 @@ export default function ReportDetailModal() {
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-4 w-full pt-4">
             {report_data?.status === ReportStatus.Complete ? <button
-              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-[#1f324d] hover:bg-[#1f324d] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => setReportImageURL(report_data.image_after_finish)}
             >
               Lihat Bukti
             </button> : <button
-              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-[#1f324d] hover:bg-[#1f324d] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+              className="uppercase font-medium tracking-widest disabled:opacity-50 flex items-center justify-center gap-1 w-full px-2 py-3 rounded-xl border text-white hover:bg-[#FD8B51] hover:text-white hover:boder-white duration-300 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               onClick={() => setEditVisible(true)}
               disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateReport)}
             >
