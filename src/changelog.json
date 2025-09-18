@@ -151,5 +151,17 @@
         "Change the way report date is formatted"
       ]
     }
+  },
+  {
+    "version": "1.6.1",
+    "date": "18 September 2025",
+    "changes": {
+      "features": [
+        "Now, admin can include category in exported excel"
+      ],
+      "fixes": [],
+      "improvements": [],
+      "adjustments": []
+    }
   }
 ]
