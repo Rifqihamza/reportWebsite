@@ -122,6 +122,7 @@ export const exportable_rows: {
     [key: string]: (keyof ReportData)
 } = {
     "Status": "status",
+    "Kategori": "type",
     "Nama": "submitted_by",
     "PIC": "pic_name",
     "Laporan": "message",
