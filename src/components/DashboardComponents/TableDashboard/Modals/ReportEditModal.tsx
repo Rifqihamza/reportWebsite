@@ -258,7 +258,7 @@ function CalendarField({ label, value, onChange, disabled = false }: { label: st
         )}
       </div>
 
-      <Calendar value={value} onChange={onChange} showTime className="bg-transparent! **:bg-transparent! outline-none! px-4! border! border-gray-400! focus:border-gray-800! rounded-lg!" disabled={disabled} />
+      <Calendar value={value} onChange={onChange} showTime showButtonBar className="bg-transparent! **:bg-transparent! outline-none! px-4! border! border-gray-400! focus:border-gray-800! rounded-lg!" disabled={disabled} />
     </div>
   );
 }
