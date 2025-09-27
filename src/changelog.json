@@ -163,5 +163,20 @@
       "improvements": [],
       "adjustments": []
     }
+  },
+  {
+    "version": "1.6.3",
+    "date": "18 September 2025",
+    "changes": {
+      "features": [],
+      "fixes": [
+        "Fix error when trying to update the report data"
+      ],
+      "improvements": [
+        "Improve design for some components in report table",
+        "Add a button to quickly select the current date in some date inputs"
+      ],
+      "adjustments": []
+    }
   }
 ]
