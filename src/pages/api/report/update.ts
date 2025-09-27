@@ -70,18 +70,10 @@ export async function PUT({ request, clientAddress }: APIContext) {
                 follow_up_name: new_report_data.follow_up_name ?? undefined,
                 report_date: new_report_data.report_date ?? undefined,
                 due_date: new_report_data.due_date === "" ? null : (new_report_data.due_date || undefined),
-                responsible_pic: new_report_data.pic_name ? {
+                report_location: (new_report_data.location_name && new_report_data.pic_name) ? {
                     connect: {
-                        name_campus_name: {
-                            campus_name: prev_report_data.campus,
-                            name: new_report_data.pic_name
-                        }
-                    }
-                } : undefined,
-                report_location: new_report_data.location_name ? {
-                    connect: {
-                        location_campus_name: {
-                            campus_name: prev_report_data.campus,
+                        location_pic_name: {
+                            pic_name: new_report_data.pic_name,
                             location: new_report_data.location_name
                         }
                     }

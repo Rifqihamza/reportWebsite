@@ -129,18 +129,18 @@ export default function ReportEditModal() {
               <p className="text-sm font-thin">Mengedit data laporan yang telah terdaftar</p>
             </div>
           }
-          className="w-full max-w-6xl border border-white [&_.p-dialog-footer]:bg-[#257180]! **:text-white!"
+          className="w-full max-w-6xl border border-white [&_.p-dialog-footer]:bg-[#1a1d24]! **:text-white!"
           visible={editVisible}
           draggable={false}
           onHide={() => setEditVisible(false)}
           headerClassName="bg-[#fd8b51]!"
-          contentClassName="bg-[#257180]! py-5! flex flex-col gap-2"
+          contentClassName="bg-[#1a1d24]! py-5! flex flex-col gap-2"
           footer={
             <div className="flex justify-end gap-2">
-              <button onClick={() => setEditVisible(false)} className="text-gray-300 hover:text-gray-400">
+              <button onClick={() => setEditVisible(false)} className="text-gray-200 hover:text-gray-600!">
                 Batal
               </button>
-              <button onClick={handleSave} disabled={disableSave || !isChange} className="text-green-200 hover:text-gray-600 disabled:text-white disabled:opacity-25 disabled:pointer-events-none">
+              <button onClick={handleSave} disabled={disableSave || !isChange} className="text-gray-200 hover:text-gray-600! disabled:text-white disabled:opacity-25 disabled:pointer-events-none">
                 {disableSave && <i className="pi pi-spinner pi-spin mr-2" />}
                 Simpan
               </button>
@@ -258,7 +258,7 @@ function CalendarField({ label, value, onChange, disabled = false }: { label: st
         )}
       </div>
 
-      <Calendar value={value} onChange={onChange} showTime className="bg-transparent! **:bg-transparent! outline-none! px-4! border! border-gray-400! focus:border-gray-800! rounded-lg!" disabled={disabled} />
+      <Calendar value={value} onChange={onChange} showTime showButtonBar className="bg-transparent! **:bg-transparent! outline-none! px-4! border! border-gray-400! focus:border-gray-800! rounded-lg!" disabled={disabled} />
     </div>
   );
 }

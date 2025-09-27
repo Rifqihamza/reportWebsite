@@ -223,7 +223,7 @@ export default function ReportFormComponent() {
                 value={reportDate}
                 required
               /> */}
-              <Calendar showTime inputClassName="bg-[#f2e5bf]! p-4!" panelClassName="bg-[#f2e5bf]! **:[&:not(.p-highlight)]:bg-[#f2e5bf]! [&_.p-highlight]:bg-[#cb6040]!" value={reportDate} onChange={(event) => setReportDate(event.value || null)} />
+              <Calendar showTime inputClassName="bg-[#f2e5bf]! p-4!" showButtonBar required panelClassName="bg-[#f2e5bf]! **:[&:not(.p-highlight)]:bg-[#f2e5bf]! [&_.p-highlight]:bg-[#cb6040]!" value={reportDate} onChange={(event) => setReportDate(event.value || null)} />
             </div>
             {/* End Tanggal Temuan */}
 
