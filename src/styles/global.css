@@ -16,15 +16,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #257180;
+  background-color: #fd8b51;
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: content-box;
-  transition: all 0.5s;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #fd8b51;
   transition: all 0.5s;
 }
 

@@ -66,15 +66,15 @@ export default function ReportCompletionModal() {
     <Dialog 
       visible={isOpen} 
       onHide={() => setReportId(null)}
-      className="[&_.p-dialog-footer]:bg-[#257180]!"
+      className="[&_.p-dialog-footer]:bg-[#1a1d24]!"
       headerClassName="bg-[#fd8b51]! **:text-white!"
-      contentClassName="bg-[#257180]! py-4!"
+      contentClassName="bg-[#1a1d24]! py-4!"
       footer={
         <div className="flex justify-end gap-2">
-          <button onClick={() => setReportId(null)} className="text-gray-200 hover:text-gray-200">
+          <button onClick={() => setReportId(null)} className="text-gray-200 hover:text-gray-600">
             Batal
           </button>
-          <button onClick={setReportComplete} disabled={disableComplete} className="text-green-400 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none">
+          <button onClick={setReportComplete} disabled={disableComplete} className="text-gray-200 hover:text-gray-600 disabled:text-gray-800 disabled:opacity-50 disabled:pointer-events-none">
             {disableComplete && <i className="pi pi-spinner pi-spin mr-2" />}
             Submit
           </button>
@@ -90,7 +90,7 @@ export default function ReportCompletionModal() {
       <div className="flex items-center justify-center w-full z-10">
         <label
           htmlFor="foto"
-          className={`cursor-pointer **:text-white outline-none px-6 py-8 w-full ${image ? "bg-[#fd8b51]" : "bg-transparent"} border-2 border-[#fd8b51] hover:bg-neutral-50 duration-300 rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease`}
+          className={`cursor-pointer **:text-white outline-none px-6 py-8 w-full ${image ? "bg-[#fd8b51]" : "bg-transparent"} border-2 border-[#fd8b51] hover:bg-[#cccccc55] duration-200 rounded-2xl focus:shadow-inner focus:shadow-gray-400 focus:duration-300 focus:ease`}
         >
           <div className="flex flex-col items-center justify-center">
             <i className="pi pi-cloud text-black" />
