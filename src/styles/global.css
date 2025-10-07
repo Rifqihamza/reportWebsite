@@ -43,12 +43,11 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: var(--background);
   color: var(--foreground);
 }
 
 .bg-form {
-  background: #1a1d24;
+  background: var(--background);
 }
 
 .bg-form::-webkit-scrollbar {
@@ -61,60 +60,26 @@ body {
   background: #2b3440;
 }
 
+.pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 1;
+  background-image: radial-gradient(#444cf7 0.8px, transparent 0.8px),
+    radial-gradient(#444cf7 0.8px, #ffffff 0.8px);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+}
+
 .titlePage {
   font-size: 18px;
   font-weight: 700;
   color: #000;
   text-transform: uppercase;
   letter-spacing: 2px;
-}
-
-.wave {
-  background: #f2e5bf;
-  border-radius: 1000% 1000% 0 0;
-  position: fixed;
-  width: 150%;
-  height: 12em;
-  animation: wave 10s -3s linear infinite;
-  transform: translate3d(0, 0, 0);
-  opacity: 0.8;
-  bottom: 0;
-  left: 0;
-  z-index: -99;
-}
-
-.wave:nth-of-type(2) {
-  bottom: -1.25em;
-  animation: wave 18s linear reverse infinite;
-  opacity: 0.8;
-}
-
-.wave:nth-of-type(3) {
-  bottom: -2.5em;
-  animation: wave 15s -1s reverse infinite;
-  opacity: 0.9;
-}
-
-@keyframes wave {
-  2% {
-    transform: translateX(-10);
-  }
-
-  25% {
-    transform: translateX(-10%);
-  }
-
-  50% {
-    transform: translateX(-25%);
-  }
-
-  75% {
-    transform: translateX(-10%);
-  }
-
-  100% {
-    transform: translateX(-10);
-  }
 }
 
 .p-image-preview {

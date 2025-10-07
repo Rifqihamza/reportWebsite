@@ -36,7 +36,7 @@ export default function LoginFormComponent() {
       else {
         setPassword("");
       }
-      
+
       if (result === APIResultType.Unauthorized) {
         setIsPasswordCorrect(false);
         showMessage("Unauthorized!", "error", "Wrong password or username");
@@ -62,26 +62,57 @@ export default function LoginFormComponent() {
     <>
       {/* Username */}
       <div className="space-y-2 mt-6">
-        <label htmlFor="username" className={`font-bold text-white ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
+        <label htmlFor="username" className={`font-bold ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Username
         </label>
-        <input type="text" name="username" placeholder="Username..." autoComplete="off" className={`mt-3 rounded-xl w-full px-4 py-3 border border-white outline-none placeholder-white! text-white ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input
+          type="text"
+          name="username"
+          placeholder="Username..."
+          autoComplete="off"
+          className={`mt-3 rounded-xl w-full px-4 py-3 border border-[var(--secondary)] outline-none 
+          ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}
+          onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")}
+          required
+        />
       </div>
 
       {/* Password */}
       <div className="space-y-2 mt-2">
-        <label htmlFor="password" className={`font-bold text-white ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
+        <label htmlFor="password" className={`font-bold ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
           Passsword
         </label>
-        <input type="password" name="password" placeholder="Password..." className={`mt-3 rounded-xl w-full px-4 py-3 border border-white outline-none placeholder-white! text-white ${(isPasswordCorrect === false) ? "text-red-600" : ""}`} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")} required />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password..."
+          className={`mt-3 rounded-xl w-full px-4 py-3 border border-[var(--secondary)] outline-none 
+           ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")}
+          required
+        />
       </div>
-      <p className={`${isPasswordCorrect ? "text-green-600" : "text-red-600"} h-1`}>{(isPasswordCorrect === false) ? "username / password is wrong" : ""}{(isPasswordCorrect === true) ? "username & password are correct!" : ""}</p>
+      <p className={`
+        ${isPasswordCorrect
+          ? "text-green-600"
+          : "text-red-600"}
+           h-1`}
+      >
+        {(isPasswordCorrect === false)
+          ? "username / password is wrong"
+          : ""}
+        {(isPasswordCorrect === true)
+          ? "username & password are correct!"
+          : ""}
+      </p>
 
       {/* Login Button */}
       <div className="space-y-2 mt-8">
         <button
           type="button"
-          className={`disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 bg-[#C86B3F] -translate-y-[10px] [box-shadow:0_10px_0_#A8492F] active:[box-shadow:0_5px_0_#A8492F] active:-translate-y-[5px] text-[#F2E5BF] rounded-xl cursor-pointer`}
+          className={`disabled:opacity-50 w-full uppercase tracking-[2px] font-bold px-6 py-2 rounded-xl bg-[var(--primary)] text-white hover:opacity-80 duration-200 cursor-pointer`}
           disabled={loginDisabled}
           onClick={handleLogin}
         >

@@ -6,14 +6,13 @@ import Layout from "../../layouts/Layout.astro";
 
 <Layout>
   <HelpButton client:load />
+  <div class="pattern"></div>
   <div class="flex justify-center items-center w-full h-screen">
     <div
-      class="w-full overflow-auto max-w-3xl h-auto rounded-4xl mx-6 px-8 py-10 relative"
+      class="w-full max-w-xl h-fit rounded-4xl mx-6 px-8 py-5 relative bg-white shadow border-2 border-[var(--secondary)]/10"
     >
-      <div
-        class="bg-[#9CA3AF] w-full h-fit p-5 absolute top-0 left-0 right-0 rounded-b-full"
-      >
-        <div class="text-center text-white">
+      <div class="w-full h-fit absolute top-5 left-0 right-0 rounded-b-full">
+        <div class="text-center">
           <h1 class="font-bold text-2xl">Login Page</h1>
           <p class="font-medium">Please, Login First!</p>
         </div>
