@@ -6,8 +6,15 @@
 }
 
 @font-face {
-  font-family: Saira;
-  src: url("/sairaFont/Saira-VariableFont_wdth\,wght.ttf");
+  font-family: Exo;
+  src: url("/exoFont/Exo2-VariableFont_wght.ttf");
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  --primary: #615fff;
+  --secondary: #7c86ff;
 }
 
 ::-webkit-scrollbar {
@@ -29,13 +36,15 @@
 }
 
 body {
-  font-family: Saira;
+  font-family: Exo, sans-serif;
   overflow-x: hidden;
   overflow-y: auto;
   width: 100vw;
   height: 100%;
   margin: 0;
   padding: 0;
+  background: var(--background);
+  color: var(--foreground);
 }
 
 .bg-form {
@@ -291,6 +300,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   appearance: textfield;
 }
