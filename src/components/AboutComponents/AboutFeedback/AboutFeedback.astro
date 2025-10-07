@@ -2,29 +2,45 @@
 
 ---
 
-<div
-  class="bg-[#1A1D24] w-[100vw] h-[100vh] relative flex justify-center items-center overflow-hidden"
+<section
+  id="feedback"
+  class="w-full max-w-6xl min-h-[90vh] mx-auto flex justify-center items-center"
+  aria-labelledby="feedback-title"
 >
-  <div class="flex flex-col justify-center items-center px-3">
-    <h1
-      class="text-[#F2E5BF] text-2xl md:text-5xl font-semibold text-center w-full"
-    >
-      Feedback
-    </h1>
-    <p
-      class="text-white text-md font-medium mt-6 text-center max-w-[864px] w-[80vw] space-y-1.5"
-    >
-      Banyak sekali hal yang perlu diperbaiki dari website ini, dan kami sedang
-      berusaha untuk memperbaiki nya. Walaupun begitu, tidak menutup kemungkinan
-      ada hal yang kami lewatkan. Jadi, jika anda menemukan sesuatu yang kurang
-      atau mempunyai saran yang bisa meningkatkan kualitas dari website ini,
-      jangan ragu untuk memberi tahu kami!
-    </p>
+  <div class="flex flex-col justify-center items-center px-3 w-full">
+    <header class="flex flex-row items-center justify-between w-full">
+      <div class="w-full">
+        <h2 id="feedback-title" class="text-2xl md:text-4xl font-semibold">
+          Feedback
+        </h2>
+        <p class="text-md md:text-lg font-normal pb-6">Beri Saran untuk kami</p>
+      </div>
+      <div>
+        <i
+          class="pi pi-comments text-4xl!"
+          aria-hidden="true"
+          title="Feedback icon"></i>
+      </div>
+    </header>
+
+    <article>
+      <p class="text-lg font-medium mt-6 text-center space-y-1.5">
+        Banyak sekali hal yang perlu diperbaiki dari website ini, dan kami
+        sedang berusaha untuk memperbaikinya. Walaupun begitu, tidak menutup
+        kemungkinan ada hal yang kami lewatkan. Jadi, jika Anda menemukan
+        sesuatu yang kurang atau mempunyai saran yang bisa meningkatkan kualitas
+        dari website ini, jangan ragu untuk memberi tahu kami!
+      </p>
+    </article>
+
     <a
-      class="bg-transparent border-white border-2 text-white px-4 py-3 rounded-2xl mt-10 cursor-pointer duration-200 hover:[box-shadow:0_0_10px_2px_#DCD7C9] hover:px-8"
+      class="bg-[var(--primary)] border-[var(--primary)] border-2 text-white px-4 py-2 rounded-2xl mt-10 cursor-pointer duration-200 hover:bg-white hover:text-[var(--primary)] hover:px-8"
       target="_blank"
+      rel="noopener noreferrer"
       href="https://mail.google.com/mail/?view=cm&fs=1&to=ridwansetiawan@elapor.smkind-mm2100.sch.id&su=Saya ada saran terkait E-Lapor: "
-      >Saya ada saran!</a
+      title="Kirim saran melalui email"
     >
+      Saya ada saran!
+    </a>
   </div>
-</div>
+</section>

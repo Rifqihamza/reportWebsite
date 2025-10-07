@@ -6,5 +6,5 @@ export default function DirectButton({ label }: propsBtn) {
     const handleRedirect = () => {
         window.location.href = "/loginPage"
     }
-    return <button onClick={handleRedirect} className="bg-transparent border-white border-2 text-white px-4 py-2 rounded-2xl cursor-pointer duration-300 hover:[box-shadow:0_0_10px_2px_#DCD7C9]">{label}</button>
+    return <button onClick={handleRedirect} className="cursor-pointer uppercase tracking-wide px-3 py-1 rounded-xl bg-[var(--primary)] border border-[var(--primary)] text-white hover:bg-white hover:text-[var(--primary)] duration-300">{label}</button>
 }
