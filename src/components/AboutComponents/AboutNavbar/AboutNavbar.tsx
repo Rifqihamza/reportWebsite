@@ -14,10 +14,7 @@ export default function AboutNavbar() {
 
   return (
     <nav
-      className={`w-full fixed top-0 z-50 flex flex-row items-center justify-between px-6 py-4 md:py-4 transition-all duration-500 backdrop-blur-md ${isScrolled
-        ? "bg-[var(--background)]/90 shadow-lg shadow-[var(--primary)]/10"
-        : "bg-[var(--background)]/50 shadow-none"
-        }`}
+      className={`w-full fixed top-0 z-50 flex flex-row items-center justify-between px-6 py-4 md:py-4 transition-all duration-500 bg-black/50 backdrop-blur-xs`}
     >
       {/* Logo */}
       <a
@@ -31,7 +28,7 @@ export default function AboutNavbar() {
       {/* Login Button */}
       <button
         onClick={() => (window.location.href = "/loginPage")}
-        className="cursor-pointer text-sm md:text-md uppercase tracking-wider font-medium flex items-center gap-2 border-2 border-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/10 hover:text-white hover:bg-[var(--secondary)] hover:border-[var(--secondary)] transition-all duration-300 rounded-lg px-3 md:px-4 py-1.5"
+        className="cursor-pointer text-sm md:text-md uppercase tracking-wider font-medium flex items-center gap-2 border-2 border-(--primary) text-white bg-[var(--primary)] hover:text-white hover:bg-transparent hover:border-white transition-all duration-300 rounded-lg px-3 md:px-4 py-1.5"
       >
         <i className="pi pi-sign-in"></i>
         Login

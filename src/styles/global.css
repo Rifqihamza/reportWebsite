@@ -11,9 +11,9 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
-  --primary: #615fff;
+  --background: #111;
+  --foreground: #fff;
+  --primary: rgb(80, 78, 252);
   --secondary: #7c86ff;
 }
 
@@ -44,6 +44,7 @@ body {
   margin: 0;
   padding: 0;
   color: var(--foreground);
+  background-color: var(--background);
 }
 
 .bg-form {
@@ -58,20 +59,6 @@ body {
 .sidebarDashboard,
 .headerDashboard {
   background: #2b3440;
-}
-
-.pattern {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 1;
-  background-image: radial-gradient(#444cf7 0.8px, transparent 0.8px),
-    radial-gradient(#444cf7 0.8px, #ffffff 0.8px);
-  background-size: 32px 32px;
-  background-position: 0 0, 16px 16px;
 }
 
 .titlePage {

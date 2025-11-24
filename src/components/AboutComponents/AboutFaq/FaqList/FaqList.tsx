@@ -12,10 +12,10 @@ export default function FaqList() {
              [&_.p-accordion-header-link]:text-white! 
              [&_.p-accordion-header-link]:font-medium! 
              [&_.p-accordion-header-link:hover]:bg-[color-mix(in_srgb,var(--primary)_90%,white_10%)]! 
-             [&_.p-accordion-content]:bg-[var(--primary)]/5! 
+             [&_.p-accordion-content]:bg-[var(--primary)]/60! 
              [&_.p-accordion-content]:border-2! 
              [&_.p-accordion-content]:border-[var(--secondary)]! 
-             [&_.p-accordion-content]:text-black! 
+             [&_.p-accordion-content]:text-white! 
              [&_.p-accordion-content]:mt-2! 
              w-full"
     >
@@ -25,7 +25,7 @@ export default function FaqList() {
           header={question}
           className="text-sm md:text-md"
         >
-          <p className="text-black">{list_of_faq[question]}</p>
+          <p className="text-white">{list_of_faq[question]}</p>
         </AccordionTab>
       ))}
     </Accordion>

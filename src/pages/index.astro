@@ -9,33 +9,102 @@ import AboutMain from "../components/AboutComponents/AboutMain/AboutMain.astro";
 ---
 
 <Layout pageType="faq">
-  <div class="pattern"></div>
-  <AboutNavbar client:load />
-  <AboutMain />
-  <AboutTutorial />
-  <AboutFeedback />
-  <AboutFaq />
-  <AboutFooter />
+      <div class="pattern-opacity">
+            <div class="pattern"></div>
+      </div>
+      <AboutNavbar client:load />
+      <AboutMain />
+      <AboutTutorial />
+      <AboutFeedback />
+      <AboutFaq />
+      <AboutFooter />
 </Layout>
 
-<style is?="global">
-  body::-webkit-scrollbar {
-    display: none;
-  }
+<style is:global>
+      html,
+      body {
+            position: relative;
+            height: fit-content;
+            min-height: 100vh;
+      }
+      body {
+            margin: 0;
+            padding: 0;
+      }
+      body::-webkit-scrollbar {
+            display: none;
+      }
+</style>
 
-  .pattern {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 1;
-    background-image: radial-gradient(#444cf7 0.8px, transparent 0.8px),
-      radial-gradient(#444cf7 0.8px, #ffffff 0.8px);
-    background-size: 32px 32px;
-    background-position:
-      0 0,
-      16px 16px;
-  }
+<style>
+      .pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 1;
+            background-image: radial-gradient(#888 0.5px, transparent 0.8px), radial-gradient(#aaa 0.8px, var(--background) 0.8px);
+            background-size: 64px 64px;
+            background-position:
+                  0 0,
+                  32px 32px;
+
+            animation-name: pattern-keyramme;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+      }
+
+      .pattern-opacity {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            animation-name: pattern-opacity-keyframe;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+      }
+
+      @keyframes pattern-opacity-keyframe {
+            0% {
+                  opacity: 1;
+            }
+            50% {
+                  opacity: 0.5;
+            }
+            100% {
+                  opacity: 1;
+            }
+      }
+
+      @keyframes pattern-keyramme {
+            0% {
+                  background-position:
+                        0 0,
+                        32px 32px;
+            }
+            25% {
+                  background-position:
+                        32px 32px,
+                        64px 32px;
+            }
+            50% {
+                  background-position:
+                        32px 0,
+                        64px 64px;
+            }
+            75% {
+                  background-position:
+                        0 32px,
+                        32px 64px;
+            }
+            100% {
+                  background-position:
+                        0 0,
+                        32px 32px;
+            }
+      }
 </style>

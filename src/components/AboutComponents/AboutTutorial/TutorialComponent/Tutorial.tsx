@@ -26,14 +26,14 @@ export default function TimelineComponent() {
         <Timeline
             value={events}
             layout="vertical"
-            align="alternate"
-            content={(item) => (
+            align="right"
+            className="w-full [&_.p-timeline-event-content]:hidden [&_.p-timeline-event-opposite]:text-left [&_.p-timeline-event-opposite]:-translate-y-1 [&_.p-timeline-event]:w-full"
+            opposite={(item) => (
                 <p
                     className="text-lg"
                     dangerouslySetInnerHTML={{ __html: item.status }}
                 />
             )}
-            opposite={() => <span></span>}
         />
     );
 }
