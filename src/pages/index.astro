@@ -9,6 +9,7 @@ import AboutMain from "../components/AboutComponents/AboutMain/AboutMain.astro";
 ---
 
 <Layout pageType="faq">
+  <div class="pattern"></div>
   <AboutNavbar client:load />
   <AboutMain />
   <AboutTutorial />
@@ -20,5 +21,21 @@ import AboutMain from "../components/AboutComponents/AboutMain/AboutMain.astro";
 <style is?="global">
   body::-webkit-scrollbar {
     display: none;
+  }
+
+  .pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 1;
+    background-image: radial-gradient(#444cf7 0.8px, transparent 0.8px),
+      radial-gradient(#444cf7 0.8px, #ffffff 0.8px);
+    background-size: 32px 32px;
+    background-position:
+      0 0,
+      16px 16px;
   }
 </style>
