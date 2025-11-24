@@ -34,7 +34,7 @@ export default function StatisticsPage() {
                 <div className='flex flex-col gap-4 mx-4 mt-2'>
                     <h1 className="text-3xl text-white">Report Statistics</h1>
                     <Accordion>
-                        <AccordionTab header="Filter Grafik Laporan Temuan" className="[&_.p-accordion-header-link]:bg-[#2b3440]! [&_>.p-accordion-header-link]:rounded-xl! [&_.p-accordion-header-link]:text-white! [&_>.p-accordion-header-link]:border-1! [&_.p-accordion-header-link]:z-12 [&_a.p-accordion-header-link]:bg-[#2b3440]! [&_.>p-accordion-content]:z-10 [&_>.p-accordion-content]:-translate-y-2 [&_.p-accordion-content]:bg-[#222]! [&_.p-accordion-content]:flex [&_.p-accordion-content]:flex-col [&_.p-accordion-content]:gap-2">
+                        <AccordionTab header="Filter Grafik Laporan Temuan" className="[&_.p-accordion-header-link]:bg-[#2b3440]! [&_>.p-accordion-header-link]:rounded-xl! [&_.p-accordion-header-link]:text-white! [&_>.p-accordion-header-link]:border! [&_.p-accordion-header-link]:z-12 [&_a.p-accordion-header-link]:bg-[#2b3440]! [&_>p-accordion-content]:z-10 [&_>.p-accordion-content]:-translate-y-2 [&_.p-accordion-content]:bg-[#222]! [&_.p-accordion-content]:flex [&_.p-accordion-content]:flex-col [&_.p-accordion-content]:gap-2">
                             {/* Time Filter */}
                             <TimeChartFilter />
 

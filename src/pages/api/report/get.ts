@@ -8,39 +8,39 @@ import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/
 export async function GET({ request, clientAddress }: APIContext) {
     // Verify user token
     const cookies = get_cookies_from_request(request);
-          
-    const [verification_result, verification_output, user_data] = await verify_user_data_token(cookies ? (cookies["user_token"] ?? "") :  "");
-    if(!verification_result) {
-        if(verification_output === APIResultType.DatabaseError) {
+
+    const [verification_result, verification_output, user_data] = await verify_user_data_token(cookies ? (cookies["user_token"] ?? "") : "");
+    if (!verification_result) {
+        if (verification_output === APIResultType.DatabaseError) {
             return create_response_status(503);
         }
-        else if(verification_output === APIResultType.InternalServerError) {
+        else if (verification_output === APIResultType.InternalServerError) {
             return create_response_status(500);
         }
-        
+
         return create_response_status(401);
     }
 
 
     // Verify user role
-    if(!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.GetReport)) {
+    if (!account_to_api_privillage[user_data.role].includes(AccountAPIPrivillage.GetReport)) {
         return create_response_status(401);
     }
-    
+
 
     // Get the report data
     let report_data: Report[];
     try {
-      report_data = await prisma.report.findMany();
-    }    
-    catch(err) {
-      if(err instanceof Prisma.PrismaClientInitializationError) {
-          return create_response_status(503);
-      }
-      console.error(`There's an error when trying to get report data. Error: ${err}`);
-      return create_response_status(500);
+        report_data = await prisma.report.findMany();
     }
-        
+    catch (err) {
+        if (err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
+        }
+        console.error(`There's an error when trying to get report data. Error: ${err}`);
+        return create_response_status(500);
+    }
+
     // Record Activity
     try {
         await record_activity({
@@ -50,14 +50,14 @@ export async function GET({ request, clientAddress }: APIContext) {
             user_id: user_data.id
         });
     }
-    catch(err) {
+    catch (err) {
         if (err instanceof Prisma.PrismaClientValidationError) {
             return create_response_status(400);
         }
-        else if(err instanceof Prisma.PrismaClientInitializationError) {
+        else if (err instanceof Prisma.PrismaClientInitializationError) {
             return create_response_status(503);
         }
-        
+
         console.error(`There's an error when trying to add activity record data. Error: ${err}`);
         return create_response_status(500);
     }

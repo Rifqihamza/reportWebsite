@@ -70,7 +70,7 @@ export default function LoginFormComponent() {
           name="username"
           placeholder="Username..."
           autoComplete="off"
-          className={`mt-3 rounded-xl w-full px-4 py-3 border border-[var(--secondary)] outline-none 
+          className={`mt-3 rounded-xl w-full px-4 py-3 border border-(--secondary) outline-none 
           ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}
           onChange={(e) => setUsername(e.target.value)}
           onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")}
@@ -87,7 +87,7 @@ export default function LoginFormComponent() {
           type="password"
           name="password"
           placeholder="Password..."
-          className={`mt-3 rounded-xl w-full px-4 py-3 border border-[var(--secondary)] outline-none 
+          className={`mt-3 rounded-xl w-full px-4 py-3 border border-(--secondary) outline-none 
            ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}
           onChange={(e) => setPassword(e.target.value)}
           onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")}
