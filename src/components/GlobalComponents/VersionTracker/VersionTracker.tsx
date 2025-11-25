@@ -46,7 +46,10 @@ export default function VersionTracker() {
           <h1>What's new?</h1>
           <p className="text-sm italic font-thin">Version: {changes.version}  ( {changes.date} )</p>
         </div>
-      } className="w-[100vw] max-h-[80vh] overflow-y-auto md:w-[50vw]" visible={true} onHide={() => setChanges(null)}>
+      } className="w-screen max-h-[80vh] overflow-y-auto md:w-[50vw]" visible={true} onHide={() => setChanges(null)}
+        headerClassName="bg-gray-700! text-white!"
+        contentClassName="bg-gray-600! text-white! pt-4! pb-2!"
+      >
         {changes.changes.features.length > 0 ? <ChangesGroup label="Features" changes={changes.changes.features} /> : <></>}
         {changes.changes.improvements.length > 0 ? <ChangesGroup label="Improvements" changes={changes.changes.improvements} /> : <></>}
         {changes.changes.fixes.length > 0 ? <ChangesGroup label="Fixes" changes={changes.changes.fixes} /> : <></>}
@@ -59,10 +62,10 @@ export default function VersionTracker() {
 function ChangesGroup(props: { label: string, changes: string[] }): React.ReactNode {
   return <>
       <div className="w-full px-2 pb-6">
-        <h1 className="text-xl">{props.label}</h1>
+        <h1 className="text-xl font-semibold">{props.label}</h1>
         <ul>
           {props.changes.map((change) => {
-            return <li className="list-disc">{change}</li>
+            return <li className="list-disc text-md font-thin">{change}</li>
           })}
         </ul>
       </div>
