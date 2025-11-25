@@ -101,18 +101,10 @@ export default function ReportFormComponent() {
     setSubmitDisabled(false);
   };
 
-  // Get the location and PIC data
-  useEffect(() => {
-    if (!selectedCampus) {
-      return;
-    }
-  }, [selectedCampus]);
-
   return (
     <>
       <div className="max-w-5xl mx-auto px-8">
         <UseReportConfigHookEffect />
-        <p className="text-[#cb6040] w-full text-center mt-4">Campus: {selectedCampus}</p>
         <form id="report-form" autoComplete="off">
           {/* Container Form input */}
           <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>
