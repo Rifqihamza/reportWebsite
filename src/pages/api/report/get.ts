@@ -3,7 +3,9 @@ import { create_response_json, create_response_status, get_cookies_from_request,
 import { prisma } from "../../../utils/db";
 import { ActivityType, Prisma, type Report } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
-import { account_to_api_privillage, AccountAPIPrivillage } from "../../../types/variables";
+import { account_to_api_privillage, AccountAPIPrivillage, ReportData_TypeGuard } from "../../../types/variables";
+import { redisClient } from "../../../utils/redis";
+import { z } from "zod";
 
 export async function GET({ request, clientAddress }: APIContext) {
     // Verify user token
@@ -30,16 +32,30 @@ export async function GET({ request, clientAddress }: APIContext) {
 
     // Get the report data
     let report_data: Report[];
-    try {
-        report_data = await prisma.report.findMany();
+
+    // Get cache
+    const redis = await redisClient;
+    const cached_report_data: any = JSON.parse(await redis.get("cached-report-data") || "[0]");
+    const parsed_cached_report_data = z.array(ReportData_TypeGuard).safeParse(cached_report_data);
+    if(parsed_cached_report_data.success) {
+        report_data = parsed_cached_report_data.data as Report[];
     }
-    catch (err) {
-        if (err instanceof Prisma.PrismaClientInitializationError) {
-            return create_response_status(503);
+
+    // Get data straight to database
+    else {
+        try {
+            report_data = await prisma.report.findMany();
+            await redis.setEx("cached-report-data", 60*60, JSON.stringify(report_data)); // Cache expire in an hour
         }
-        console.error(`There's an error when trying to get report data. Error: ${err}`);
-        return create_response_status(500);
+        catch (err) {
+            if (err instanceof Prisma.PrismaClientInitializationError) {
+                return create_response_status(503);
+            }
+            console.error(`There's an error when trying to get report data. Error: ${err}`);
+            return create_response_status(500);
+        }
     }
+    
 
     // Record Activity
     try {

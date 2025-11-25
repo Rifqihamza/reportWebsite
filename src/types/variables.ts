@@ -68,7 +68,7 @@ export const ReportData_TypeGuard = z.strictObject({
     message: z.string(),
     type: z.nativeEnum(ReportType),
     follow_up: z.nativeEnum(AccountType).nullable(),
-    follow_up_name: z.nativeEnum(AccountType).nullable(),
+    follow_up_name: z.string().nullable(),
     status: z.nativeEnum(ReportStatus),
     location_name: z.string().nullable(),
     detail_location: z.string(),
@@ -89,7 +89,7 @@ export const User_TypeGuard = z.strictObject({
     username: z.string(),
     password: z.string(),
     role: z.nativeEnum(AccountType),
-    created_at: z.date().or(z.string()),
+    created_at: z.string().transform((value) => new Date(value)),
     lowercased_username: z.string(),
     inactive: z.boolean()
 });
@@ -100,7 +100,7 @@ export const Report_Location_TypeGuard = z.strictObject({
     location: z.string(),
     campus_name: z.nativeEnum(Campus),
     pic_name: z.string(),
-    created_at: z.date()
+    created_at: z.string().transform((value) => new Date(value))
 });
 export type Report_Location = z.infer<typeof Report_Location_TypeGuard>;
 

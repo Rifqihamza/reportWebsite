@@ -14,7 +14,6 @@ export async function GET({ request }: APIContext) {
     }
 
 
-
     // Return user data
     return create_response_json(user_data);
 }

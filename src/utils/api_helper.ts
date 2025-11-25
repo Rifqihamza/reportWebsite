@@ -2,8 +2,10 @@ import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
 import cookie from 'cookie';
 import { prisma } from "./db";
-import { AccountType, ActivityType, Prisma, type Users } from "@prisma/client";
+import { ActivityType, Prisma, type Users } from "@prisma/client";
 import { APIResultType } from "./api_interface";
+import { redisClient } from "./redis";
+import { User_TypeGuard } from "../types/variables";
 
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -101,20 +103,32 @@ export async function verify_user_data_token(token: string): Promise<[true, true
     }
 
     let user_data;
-    try {
-        user_data = await prisma.users.findUnique({
-            where: {
-                lowercased_username: result.toLowerCase(),
-            }
-        });
+
+    // Use cached data
+    const redis = await redisClient;
+    const cached_user_data = JSON.parse(await redis.get(`user_data_${result}`) || "{}");
+    const parsed_cached_user_data = User_TypeGuard.safeParse(cached_user_data);
+    if(parsed_cached_user_data.success) {
+        user_data = parsed_cached_user_data.data;
     }
-    catch (err) {
-        if (err instanceof Prisma.PrismaClientInitializationError) {
-            return [false, APIResultType.DatabaseError, undefined];
+    else {
+        try {
+            user_data = await prisma.users.findUnique({
+                where: {
+                    lowercased_username: result.toLowerCase(),
+                }
+            });
+            await redis.setEx(`user_data_${result}`, 60*60*24*2, JSON.stringify(user_data));
         }
-        console.error(`There's an error when trying to get user data : ${err}`);
-        return [false, APIResultType.InternalServerError, undefined];
+        catch (err) {user_data
+            if (err instanceof Prisma.PrismaClientInitializationError) {
+                return [false, APIResultType.DatabaseError, undefined];
+            }
+            console.error(`There's an error when trying to get user data : ${err}`);
+            return [false, APIResultType.InternalServerError, undefined];
+        }
     }
+    
 
     return (user_data && !user_data.inactive) ? [true, true, user_data] : [false, undefined, undefined];
 }

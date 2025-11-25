@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import Cookies from 'js-cookie';
 import { APIResultType, checkAuthentication } from "../../../utils/api_interface";
 import { useNetworkConnectivityHook } from "../../../hooks/shared/useNetworkConnectivity";
 import { useMessageToastHook } from "../../../hooks/shared/useMessageToast";
