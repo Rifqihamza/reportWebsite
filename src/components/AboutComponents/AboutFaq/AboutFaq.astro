@@ -2,18 +2,29 @@
 import FaqList from "./FaqList/FaqList";
 ---
 
-<div
-  class="px-10 md:px-50 bg-[#2b3440] py-[20vh] flex flex-col items-center justify-center"
+<section
+  id="faq"
+  class="w-full max-w-6xl min-h-[90vh] mx-auto flex items-center justify-center"
+  aria-labelledby="faq-title"
 >
-  <div class="p-4 rounded-2xl w-[90vw] md:w-[70vw] h-full -translate-y-4">
-    <h1
-      class="text-[#F2E5BF] text-2xl md:text-5xl text-center font-semibold"
-    >
-      FAQ
-    </h1>
-    <p class="text-white text-md md:text-xl text-center font-normal pb-6">
-      Frequently Asked Question
-    </p>
-    <FaqList client:only />
+  <div class="flex flex-col justify-center items-center px-3 w-full">
+    <header class="flex flex-row items-center justify-between w-full">
+      <div>
+        <h2 id="faq-title" class="text-2xl md:text-4xl font-semibold">FAQ</h2>
+        <p class="text-md md:text-lg font-normal pb-6">
+          Frequently Asked Questions
+        </p>
+      </div>
+      <div>
+        <i
+          class="pi pi-question-circle text-4xl!"
+          aria-hidden="true"
+          title="FAQ icon"></i>
+      </div>
+    </header>
+
+    <section aria-label="Daftar pertanyaan umum" class="w-full">
+      <FaqList client:only />
+    </section>
   </div>
-</div>
+</section>

@@ -25,3 +25,6 @@ pnpm-debug.log*
 .idea/
 
 prisma/*.sql
+/src/generated/prisma
+
+/src/generated/prisma

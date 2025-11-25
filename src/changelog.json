@@ -178,5 +178,19 @@
       ],
       "adjustments": []
     }
+  },
+  {
+    "version": "1.7",
+    "date": "24 November 2025",
+    "changes": {
+      "features": [],
+      "fixes": [
+        "Fix error in database"
+      ],
+      "improvements": [
+        "Change overall design across pages"
+      ],
+      "adjustments": []
+    }
   }
 ]

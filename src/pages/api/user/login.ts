@@ -4,10 +4,24 @@ import cookie from 'cookie';
 import { prisma } from "../../../utils/db";
 import sha3 from "js-sha3";
 import { ActivityType, Prisma } from "@prisma/client";
+import z from "zod";
+
+const post_request_object = z.object({
+    username: z.string(),
+    password: z.string()
+});
+
 
 export async function POST({ request, clientAddress }: APIContext) {
     // Get username and password to check
-    const { username, password } = await request.json();
+    const optional_data = post_request_object.safeParse(await request.json());
+    if(!optional_data.success) {
+        return new Response("", {
+            status: 400
+        });
+    }
+    
+    const { username, password } = optional_data.data;
     if(!username || !password) {
         return new Response("", {
             status: 400
@@ -17,19 +31,17 @@ export async function POST({ request, clientAddress }: APIContext) {
     // Get user data
     let user;
     try {
-        user = await prisma.users.findFirst({
+        user = await prisma.users.findUnique({
             where: {
-                lowercased_username: {
-                    equals: username.toLowerCase(),
-                },
-            },
+                lowercased_username: username.toLowerCase()
+            }
         })
     }
     catch(err) {
         if(err instanceof Prisma.PrismaClientInitializationError) {
             return create_response_status(503);
         }
-        console.error(`There's an error when trying to create report_PIC data : ${err}`);
+        console.error(`There's an error when trying to get user data : ${err}`);
         return create_response_status(500);
     }
     

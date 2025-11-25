@@ -1,68 +1,44 @@
 ---
-const linkFooter: { icon: string, link: string, tooltip: string }[] = [
-  {
-    icon: "pi-envelope",
-    link: "https://mail.google.com/mail/?view=cm&fs=1&to=ridwansetiawan@elapor.smkind-mm2100.sch.id",
-    tooltip: "Email",
-  },
-  {
-    icon: "pi-instagram",
-    link: "https://www.instagram.com/mitra_industri?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
-    tooltip: "Instagram",
-  },
-  {
-    icon: "pi-facebook",
-    link: "https://www.facebook.com/SmkMitraIndustriMM2100/",
-    tooltip: "Facebook",
-  },
-  {
-    icon: "pi-youtube",
-    link: "https://www.youtube.com/channel/UCXyS8encGuXjGfzZdpOHPYw",
-    tooltip: "Youtube",
-  },
+const linkFooter: { icon: string; link: string; tooltip: string }[] = [
+      {
+            icon: "pi-envelope",
+            link: "https://mail.google.com/mail/?view=cm&fs=1&to=ridwansetiawan@elapor.smkind-mm2100.sch.id",
+            tooltip: "Email",
+      },
+      {
+            icon: "pi-instagram",
+            link: "https://www.instagram.com/mitra_industri?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+            tooltip: "Instagram",
+      },
+      {
+            icon: "pi-facebook",
+            link: "https://www.facebook.com/SmkMitraIndustriMM2100/",
+            tooltip: "Facebook",
+      },
+      {
+            icon: "pi-youtube",
+            link: "https://www.youtube.com/channel/UCXyS8encGuXjGfzZdpOHPYw",
+            tooltip: "YouTube",
+      },
 ];
 ---
 
-<footer
-  class="bg-[#1A1D24] text-white px-6 md:px-16 py-10 flex flex-row justify-center items-center relative"
->
-  <div class="w-full p-6 flex flex-col gap-4 md:flex-row justify-between items-center relative border border-white rounded-xl">
-    <h1 class="font-normal text-2xl">E-LAPOR</h1>
-    <div class="w-full md:w-fit flex flex-row justify-center gap-6">
-      {
-        linkFooter.map((item) => (
-          <a target="_blank" href={item.link} title={item.tooltip}>
-            <i class={`pi ${item.icon} text-2xl!`}></i>
-          </a>
-        ))
-      }
-    </div>
-  
-  </div>
-  <h1
-    class="text-[10px] text-white absolute bottom-1 left-0 right-0 w-full flex justify-center"
-  >
-    © {new Date().getFullYear()} IT MIVHS. All Rights Reserved.
-  </h1>
+<footer class="w-full max-w-7xl mx-auto px-6 md:px-16 py-10 flex flex-row justify-center items-center relative text-white">
+      <div class="w-full p-6 flex flex-col gap-4 md:flex-row justify-between items-center relative border border-white rounded-xl">
+            <h1 class="font-semibold text-2xl uppercase tracking-wide text-white">E-LAPOR</h1>
+
+            <div class="w-full md:w-fit flex flex-row justify-center gap-6">
+                  {
+                        linkFooter.map((item) => (
+                              <a target="_blank" href={item.link} title={item.tooltip} class="text-white hover:text-white duration-300">
+                                    <i class={`pi ${item.icon} text-2xl!`} style="color: white !important;" />
+                              </a>
+                        ))
+                  }
+            </div>
+      </div>
+
+      <p class="text-[10px] text-gray-300 absolute bottom-1 left-0 right-0 w-full flex justify-center">
+            © {new Date().getFullYear()} IT MIVHS. All Rights Reserved.
+      </p>
 </footer>
-<style>
-  a {
-    position: relative;
-  }
-
-  a::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    transition-duration: 500ms;
-  }
-
-  a:hover::after {
-    left: 0;
-    width: 100%;
-  }
-</style>

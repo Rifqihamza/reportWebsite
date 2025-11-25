@@ -2,14 +2,16 @@ import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
 import cookie from 'cookie';
 import { prisma } from "./db";
-import { AccountType, ActivityType, Prisma, type Users } from "@prisma/client";
+import { ActivityType, Prisma, type Users } from "@prisma/client";
 import { APIResultType } from "./api_interface";
+import { redisClient } from "./redis";
+import { User_TypeGuard } from "../types/variables";
 
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 export function apiresult_to_status(api_result: any): Response {
-    switch(api_result) {
+    switch (api_result) {
         case APIResultType.DatabaseError:
             return create_response_status(503);
         case APIResultType.InternalServerError:
@@ -85,7 +87,7 @@ export function verify_token_valid(token: string): string | undefined {
 
         return result.username;
     }
-    catch(err) {
+    catch (err) {
         return undefined;
     }
 }
@@ -101,20 +103,32 @@ export async function verify_user_data_token(token: string): Promise<[true, true
     }
 
     let user_data;
-    try {
-        user_data = await prisma.users.findUnique({
-            where: {
-                lowercased_username: result.toLowerCase(),
-            }
-        });
+
+    // Use cached data
+    const redis = await redisClient;
+    const cached_user_data = JSON.parse(await redis.get(`user_data_${result}`) || "{}");
+    const parsed_cached_user_data = User_TypeGuard.safeParse(cached_user_data);
+    if(parsed_cached_user_data.success) {
+        user_data = parsed_cached_user_data.data;
     }
-    catch(err) {
-        if(err instanceof Prisma.PrismaClientInitializationError) {
-            return [false, APIResultType.DatabaseError, undefined];
+    else {
+        try {
+            user_data = await prisma.users.findUnique({
+                where: {
+                    lowercased_username: result.toLowerCase(),
+                }
+            });
+            await redis.setEx(`user_data_${result}`, 60*60*24*2, JSON.stringify(user_data));
         }
-        console.error(`There's an error when trying to get user data : ${err}`);
-        return [false, APIResultType.InternalServerError, undefined];
+        catch (err) {user_data
+            if (err instanceof Prisma.PrismaClientInitializationError) {
+                return [false, APIResultType.DatabaseError, undefined];
+            }
+            console.error(`There's an error when trying to get user data : ${err}`);
+            return [false, APIResultType.InternalServerError, undefined];
+        }
     }
+    
 
     return (user_data && !user_data.inactive) ? [true, true, user_data] : [false, undefined, undefined];
 }
@@ -127,7 +141,7 @@ export function process_server_token(): string {
     return jwt.sign({ key: process.env.PHP_SERVER_KEY! }, process.env.JWT_SECRET!);
 }
 
-export async function verify_captcha_token(token: string): Promise<boolean|APIResultType> {
+export async function verify_captcha_token(token: string): Promise<boolean | APIResultType> {
     try {
         const result = await prisma.verifiedCaptcha.findUnique({
             where: {
@@ -156,8 +170,8 @@ export async function verify_captcha_token(token: string): Promise<boolean|APIRe
 
         return true;
     }
-    catch(err) {
-        if(err instanceof Prisma.PrismaClientInitializationError) {
+    catch (err) {
+        if (err instanceof Prisma.PrismaClientInitializationError) {
             return APIResultType.DatabaseError;
         }
         console.error(`There's an error when trying to get user data : ${err}`);
@@ -186,7 +200,7 @@ export function generate_captcha_token(): string {
     return result;
 }
 
-export function record_activity({ip_address, url, activity_type, user_id}: { ip_address: string, url: string, activity_type: ActivityType, user_id: string }) {
+export function record_activity({ ip_address, url, activity_type, user_id }: { ip_address: string, url: string, activity_type: ActivityType, user_id: string }) {
     return prisma.recordedActivity.create({
         data: {
             ip_address: ip_address,

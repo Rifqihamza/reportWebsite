@@ -2,104 +2,109 @@
 import DirectButton from "../../GlobalComponents/DirectButton/DirectButton";
 ---
 
-<div
-  class="overflow-hidden relative bg-[#1A1D24] py-2 px-5 md:px-5 lg:px-15 w-full min-h-[100vh] md:min-h-[100vh] flex flex-col md:flex-row gap-4 md:gap-14 justify-evenly md:justify-between items-center transition-all duration-400"
+<section
+  id="hero"
+  class="overflow-hidden py-2 px-5 md:px-5 lg:px-15 w-full max-w-7xl mx-auto min-h-[100vh] md:min-h-[100vh] flex flex-col md:flex-row gap-4 md:gap-14 justify-evenly md:justify-between items-center transition-all duration-400 relative"
+  aria-labelledby="hero-title"
 >
+  <!-- Left Content -->
   <div
-    class="w-full h-full bg-[#2B3440] absolute md:top-0 md:left-1/2 lg:left-1/2 md:bottom-0 -bottom-[30rem] md:rounded-full rounded-[10rem]"
+    class="z-10 flex flex-col items-center md:items-start text-center md:text-left"
   >
-  </div>
-  <!-- Short Desc -->
-  <div class="z-10">
-    <span class="text-white">
-      <h1 class="text-4xl md:text-5xl text-center md:text-left font-normal">
+    <header>
+      <p class="text-md md:text-lg">Selamat Datang di</p>
+      <h1
+        id="hero-title"
+        class="text-4xl md:text-5xl mb-3 uppercase font-semibold"
+      >
         e-Lapor
       </h1>
-      <p class="text-md md:text-lg text-center md:text-left font-thin pb-3">
-        Tentang e-Lapor
-      </p>
-    </span>
-    <p
-      class="text-md md:text-xl text-white font-thin max-w-lg md:max-w-sm lg:max-w-sm text-center md:text-justify"
-    >
+    </header>
+
+    <p class="w-full max-w-sm text-sm md:text-base md:text-justify">
       Platform ini dirancang untuk memfasilitasi pelaporan temuan di lingkungan
       sekolah dan mengelolanya dalam satu sistem terintegrasi, guna
-      <b
-        >mendukung melihat, menganalisis dan pengambilan keputusan berbasis
+      <b>
+        mendukung visualisasi, analisis, dan pengambilan keputusan berbasis
         data.
       </b>
     </p>
+
     <div class="flex items-center md:justify-start justify-center mt-4 md:mt-5">
-      <DirectButton label="Laporkan Sekarang!" client:only />
+      <DirectButton label="Lapor Sekarang" client:only />
     </div>
   </div>
 
-  <!-- Img -->
-  <div
-    class="about-main-image w-[80vw] h-[40vh] md:w-[30vw] md:h-[40vh] bg-[#9CA3AF] shadow shadow-white hover:shadow-lg overflow-hidden md:py-6 md:px-2 py-12 px-6 rounded-xl relative duration-200 hover:scale-110"
+  <!-- Right Image -->
+  <figure
+    class="about-main-image w-[80vw] h-[40vh] md:w-[24vw] md:h-[38vh] border-2 border-[var(--primary)]/10 bg-white/5 backdrop-blur-sm shadow shadow-white hover:shadow-lg overflow-hidden md:py-8 md:px-4 py-12 px-6 rounded-xl relative duration-400 hover:scale-105"
   >
     <span class="blinky"></span>
+    <figcaption class="sr-only">Tampilan formulir pelaporan e-Lapor</figcaption>
+
+    <!-- Fake window header -->
     <div>
-      <span class="w-3 h-3 bg-red-600 rounded-full absolute top-2 left-2"
+      <span class="w-3 h-3 bg-red-600 rounded-full absolute top-3 left-4"
       ></span>
-      <span class="w-3 h-3 bg-yellow-400 rounded-full absolute top-2 left-6"
+      <span class="w-3 h-3 bg-yellow-400 rounded-full absolute top-3 left-8"
       ></span>
-      <span class="w-3 h-3 bg-green-500 rounded-full absolute top-2 left-10"
+      <span class="w-3 h-3 bg-green-500 rounded-full absolute top-3 left-12"
       ></span>
       <span
-        class="text-center text-[#F4F4F5] font-semibold text-sm absolute top-0.5 left-0 right-0"
-        >Report Form</span
+        class="text-center font-semibold text-sm absolute top-0.5 left-0 right-0"
       >
+        Report Form
+      </span>
     </div>
+
     <img
       src="/img/reportScreenshot.png"
       class="w-fit h-full mx-auto object-cover aspect-square rounded-xl"
-      alt=""
+      alt="Tangkapan layar halaman formulir laporan e-Lapor"
+      loading="lazy"
     />
-  </div>
-</div>
+  </figure>
 
-<style>
-  span.blinky {
-    width: 200%;
-    height: 25%;
-    transform-origin: 50% 50%;
-    transform: translateX(-50%) translateY(-50%) rotate(-45deg);
-    
-    position: absolute;
-    top: 0;
-    left: 0;
-    
-    opacity: 0;
-    background-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 1px rgba(255, 255, 255, 0.75);
-  }
-  
-  .about-main-image:hover > span.blinky {
-    animation-name: blinky-anim;
-    animation-duration: 2.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  }
+  <style>
+    span.blinky {
+      width: 200%;
+      height: 25%;
+      transform-origin: 50% 50%;
+      transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      background-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 1px rgba(255, 255, 255, 0.75);
+    }
 
-  @keyframes blinky-anim {
-    0% {
-      top: -25%;
-      left: -25%;
-      opacity: 0.5;
+    .about-main-image:hover > span.blinky {
+      animation-name: blinky-anim;
+      animation-duration: 2.5s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
     }
-    25% {
-      opacity: 1;
+
+    @keyframes blinky-anim {
+      0% {
+        top: -25%;
+        left: -25%;
+        opacity: 0.5;
+      }
+      25% {
+        opacity: 1;
+      }
+      50% {
+        top: 125%;
+        left: 125%;
+        opacity: 0.5;
+      }
+      100% {
+        top: 125%;
+        left: 125%;
+        opacity: 0.5;
+      }
     }
-    50% {
-      top: 125%;
-      left: 125%;
-      opacity: 0.5;
-    }
-    100% {
-      top: 125%;
-      left: 125%;
-      opacity: 0.5;
-    }
-  }
-</style>
+  </style>
+</section>

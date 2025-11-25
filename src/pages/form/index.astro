@@ -7,9 +7,18 @@ import WrapperPage from "../MainPages/_wrapper";
 ---
 
 <Layout pageType="form">
-  <HelpButton client:load />
-  <ThanksOverlay />
-  <section id="container" class="w-full mx-auto relative">
-    <WrapperPage client:only />
-  </section>
+      <div class="pattern-opacity slowed">
+            <div class="pattern slowed"></div>
+      </div>
+      <HelpButton client:load />
+      <ThanksOverlay />
+      <section id="container" class="w-full mx-auto relative">
+            <WrapperPage client:only />
+      </section>
 </Layout>
+
+<style is:global>
+      body {
+            position: relative;
+      }
+</style>

@@ -9,16 +9,31 @@ import AboutMain from "../components/AboutComponents/AboutMain/AboutMain.astro";
 ---
 
 <Layout pageType="faq">
-  <AboutNavbar client:load />
-  <AboutMain />
-  <AboutTutorial />
-  <AboutFaq />
-  <AboutFeedback />
-  <AboutFooter />
+      <div class="pattern-opacity">
+            <div class="pattern"></div>
+      </div>
+      <AboutNavbar client:load />
+      <AboutMain />
+      <AboutTutorial />
+      <AboutFeedback />
+      <AboutFaq />
+      <AboutFooter />
 </Layout>
 
-<style is?="global">
-  body::-webkit-scrollbar {
-    display: none;
-  }
+<style is:global>
+      html,
+      body {
+            position: relative;
+            height: fit-content;
+            min-height: 100vh;
+      }
+      body {
+            margin: 0;
+            padding: 0;
+      }
+      body::-webkit-scrollbar {
+            display: none;
+      }
 </style>
+
+<style></style>
