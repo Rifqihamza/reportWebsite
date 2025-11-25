@@ -68,9 +68,9 @@ export default function LoginFormComponent() {
         <input
           type="text"
           name="username"
-          placeholder="Username..."
+          placeholder="Username akun mu"
           autoComplete="off"
-          className={`mt-3 rounded-xl w-full px-4 py-3 border border-(--secondary) outline-none 
+          className={`mt-3 rounded-xl w-full px-4 py-3 border-2 border-(--primary) outline-none 
           ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}
           onChange={(e) => setUsername(e.target.value)}
           onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")}
@@ -81,13 +81,13 @@ export default function LoginFormComponent() {
       {/* Password */}
       <div className="space-y-2 mt-2">
         <label htmlFor="password" className={`font-bold ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}>
-          Passsword
+          Password
         </label>
         <input
           type="password"
           name="password"
-          placeholder="Password..."
-          className={`mt-3 rounded-xl w-full px-4 py-3 border border-(--secondary) outline-none 
+          placeholder={`Password akun ${username || "mu"}`}
+          className={`mt-3 rounded-xl w-full px-4 py-3 border-2 border-(--primary) outline-none 
            ${(isPasswordCorrect === false) ? "text-red-600" : ""}`}
           onChange={(e) => setPassword(e.target.value)}
           onKeyDown={(e) => (e.key == "Enter" ? handleLogin() : "")}

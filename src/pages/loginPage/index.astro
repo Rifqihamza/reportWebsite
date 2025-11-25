@@ -5,21 +5,21 @@ import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout>
-  <HelpButton client:load />
-  <div class="pattern"></div>
-  <div class="flex justify-center items-center w-full h-screen">
-    <div
-      class="w-full max-w-xl h-fit rounded-4xl mx-6 px-8 py-5 relative bg-white shadow border-2 border-[var(--secondary)]/10"
-    >
-      <div class="w-full h-fit absolute top-5 left-0 right-0 rounded-b-full">
-        <div class="text-center">
-          <h1 class="font-bold text-2xl">Login Page</h1>
-          <p class="font-medium">Please, Login First!</p>
-        </div>
+      <HelpButton client:load />
+      <div class="pattern-opacity">
+            <div class="pattern"></div>
       </div>
-      <form method="POST" action="" class="mt-20">
-        <LoginFormComponent client:load />
-      </form>
-    </div>
-  </div>
+      <div class="flex justify-center items-center w-full h-screen">
+            <div class="w-full max-w-xl h-fit text-white rounded-4xl mx-6 px-8 py-5 relative bg-white/10 shadow border-2 border-[var(--primary)]">
+                  <div class="w-full h-fit absolute top-5 left-0 right-0 rounded-b-full">
+                        <div class="text-center">
+                              <h1 class="font-bold text-2xl">Login Page</h1>
+                              <p class="font-medium">Please, Login First!</p>
+                        </div>
+                  </div>
+                  <form method="POST" action="" class="mt-20">
+                        <LoginFormComponent client:load />
+                  </form>
+            </div>
+      </div>
 </Layout>
