@@ -201,7 +201,8 @@ export function generate_captcha_token(): string {
 }
 
 export function record_activity({ ip_address, url, activity_type, user_id }: { ip_address: string, url: string, activity_type: ActivityType, user_id: string }) {
-    return prisma.recordedActivity.create({
+    return;
+    prisma.recordedActivity.create({
         data: {
             ip_address: ip_address,
             url: url,

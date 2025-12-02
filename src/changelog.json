@@ -192,5 +192,18 @@
       ],
       "adjustments": []
     }
+  },
+  {
+    "version": "1.7.1",
+    "date": "2 December 2025",
+    "changes": {
+      "features": [],
+      "fixes": [
+        "Fix background animation too fast",
+        "Fix some weird color contrast"
+      ],
+      "improvements": [],
+      "adjustments": []
+    }
   }
 ]

@@ -11,9 +11,9 @@
 }
 
 :root {
-  --background: #222;
+  --background: #111;
   --foreground: #fff;
-  --primary: rgb(80, 78, 252);
+  --primary: #504efc;
   --secondary: #7c86ff;
 }
 
@@ -175,6 +175,22 @@ html {
   color: #257180;
 }
 
+.p-dropdown-header {
+  background-color: #fd8b51;
+}
+
+.p-dropdown-filter {
+  background-color: #f2e5bf;
+}
+
+.p-dropdown-item.p-focus {
+  background-color: transparent;
+}
+
+.p-dropdown-item:hover {
+  background-color: #f2e5bf;
+}
+
 .swiper {
   --swiper-navigation-size: 100px;
   --swiper-navigation-top-offset: 50%;
@@ -248,6 +264,10 @@ html {
   cursor: pointer;
 }
 
+.apexcharts-tooltip, .apexcharts-tooltip-title {
+  background-color: var(--background) !important;
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -299,6 +319,10 @@ input[type="number"] {
 
 .pattern-opacity.slowed {
   animation-duration: 5s;
+}
+
+.pattern-opacity.super-slowed {
+  animation-duration: 10s;
 }
 
 @keyframes pattern-opacity-keyframe-slowed {

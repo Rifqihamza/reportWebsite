@@ -18,7 +18,7 @@ export default function SettingPage() {
       <UseUserDataHookEffect adminOnly />
       <section className="flex md:flex-row flex-col gap-4 w-full rounded-2xl p-6">
         {/* Data Profile */}
-        <div className="w-full flex flex-row items-center gap-8 bg-[#2B3440] shadow shadow-gray-500 rounded-2xl px-8 py-6">
+        <div className="w-full flex flex-row items-center gap-8 bg-[#2b3440] shadow shadow-gray-500 rounded-2xl px-8 py-6">
           <div className="ring-2 ring-[#9CA3AF]/50 rounded-full p-4 w-fit h-fit">
             <i className="pi pi-user" style={{ padding: 60, fontSize: 80, color: "#9CA3AF" }}></i>
           </div>
