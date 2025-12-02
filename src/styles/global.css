@@ -301,6 +301,10 @@ input[type="number"] {
   animation-duration: 5s;
 }
 
+.pattern-opacity.super-slowed {
+  animation-duration: 10s;
+}
+
 @keyframes pattern-opacity-keyframe-slowed {
   0% {
     opacity: 0.2;
