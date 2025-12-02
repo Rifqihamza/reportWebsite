@@ -199,7 +199,8 @@
     "changes": {
       "features": [],
       "fixes": [
-        "Fix background animation too fast"
+        "Fix background animation too fast",
+        "Fix some weird color contrast"
       ],
       "improvements": [],
       "adjustments": []
