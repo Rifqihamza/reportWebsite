@@ -78,10 +78,10 @@ export default function UsersPage() {
             type="text"
             id="search-input"
             placeholder="Cari nama pengguna..."
-            className={`w-full pl-4 pr-6 py-2 rounded-xl placeholder:text-white! outline-none ${usernameFilter.length > 0 ? "bg-[#2B3440] text-white" : "bg-[#2B3440]"}`}
+            className={`w-full pl-4 pr-6 py-2 rounded-xl placeholder:text-white! outline-none ${usernameFilter.length > 0 ? "bg-[#2b3440] text-white" : "bg-[#2b3440]"}`}
             onChange={(e) => setUsernameFilter(e.target.value.toLowerCase())}
           />
-          <button className="w-full md:w-max flex flex-row gap-2 items-center justify-center cursor-pointer duration-200 hover:brightness-75 bg-[#2B3440] text-white px-3 py-2 rounded-xl disabled:brightness-75 disabled:cursor-not-allowed disabled:opacity-50" onClick={() => { setEditedUser({ username: "", password: "", role: AccountType.Siswa, mode: "new" }); setVisibleDialog(true); }} disabled={!userDataPrivillages.includes(AccountAPIPrivillage.CreateUser)}><i className="pi pi-user-plus"></i><p className="w-max">Tambah Pengguna</p></button>
+          <button className="w-full md:w-max flex flex-row gap-2 items-center justify-center cursor-pointer duration-200 hover:brightness-75 bg-[#2b3440] text-white px-3 py-2 rounded-xl disabled:brightness-75 disabled:cursor-not-allowed disabled:opacity-50" onClick={() => { setEditedUser({ username: "", password: "", role: AccountType.Siswa, mode: "new" }); setVisibleDialog(true); }} disabled={!userDataPrivillages.includes(AccountAPIPrivillage.CreateUser)}><i className="pi pi-user-plus"></i><p className="w-max">Tambah Pengguna</p></button>
         </div>
 
 
@@ -145,7 +145,7 @@ export default function UsersPage() {
 
             <div className="md:hidden h-max flex flex-col items-center gap-4 w-full pr-4 box-border!">
               {showedUserAccountData.map((user, index) => (
-                <div key={user.id} className="flex flex-col p-6 gap-2 bg-white w-full rounded-2xl">
+                <div key={user.id} className="flex flex-col p-6 gap-2 bg-[#374151] w-full rounded-2xl">
                   <p className="">
                     {index + 1}. {user.username}
                   </p>
@@ -158,11 +158,10 @@ export default function UsersPage() {
                       {new Date(user.created_at).toLocaleDateString("id-ID")}
                     </p>
                   </div>
-                  <div className="flex flex-row items-center justify-center py-2 gap-2 border-b border-gray-300 h-full">
+                  <div className="flex flex-row items-center justify-center py-2 gap-2 h-full">
                     <button onClick={() => handleEditClick(user)} className="bg-blue-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" disabled={!userDataPrivillages.includes(AccountAPIPrivillage.UpdateUser)}>
                       Edit
                     </button>
-                    <span>|</span>
                     <button className="bg-red-400 text-white px-4 py-1 rounded-xl w-full disabled:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => handleDelete(user)} disabled={(!userDataPrivillages.includes(AccountAPIPrivillage.DeleteUser) || deletedUserIDProcess) ? true : false}>
                       Delete
                     </button>

@@ -56,7 +56,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
     const options: ApexCharts.ApexOptions = {
         chart: {
             type: 'line' as const,
-            background: "#2b3440",
+            background: "transparent",
             foreColor: "#fff"
         },
         theme: {

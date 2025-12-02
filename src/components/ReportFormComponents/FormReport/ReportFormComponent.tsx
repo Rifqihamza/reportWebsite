@@ -110,7 +110,7 @@ export default function ReportFormComponent() {
           <div className={submitDisabled ? " opacity-50 bg-[#ccc55] pointer-events-none" : ""}>
             {/* Detail Laporan */}
             <div className="flex flex-col w-full">
-              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-6 -z-10">
                 <label
                   htmlFor="laporan"
                   className="md:text-lg font-semibold mb-6 text-xs text-white flex flex-row gap-2 items-center"
@@ -135,7 +135,7 @@ export default function ReportFormComponent() {
 
             {/* Nama Pelapor */}
             <div className="flex flex-col gap-2 w-full">
-              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-6 -z-10">
                 <label
                   htmlFor="submitted_by"
                   className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
@@ -173,7 +173,7 @@ export default function ReportFormComponent() {
 
             {/* Detail Lokasi */}
             <div className="flex flex-col gap-2 w-full">
-              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-6 -z-10">
                 <label
                   htmlFor="detail_location"
                   className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
@@ -238,7 +238,7 @@ export default function ReportFormComponent() {
 
           {/* File Image Upload */}
           <div className={`flex flex-col gap-2 w-full ${submitDisabled ? "opacity-50 bg-[#ccc55] pointer-events-none" : ""}`}>
-            <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+            <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-6 -z-10">
               <label
                 htmlFor="foto"
                 className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
