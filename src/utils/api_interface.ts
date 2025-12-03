@@ -198,7 +198,12 @@ export async function userLogout(): Promise<boolean> {
     return response.ok;
 }
 
-export async function getUser(): Promise<User | APIResultType> {
+type GetUserResultType = {
+    user_data: User,
+    is_pic: boolean
+}
+
+export async function getUser(): Promise<GetUserResultType | APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/get", {
         method: "GET",
@@ -208,7 +213,7 @@ export async function getUser(): Promise<User | APIResultType> {
 
     const api_result = status_to_apiresult(response.status);
     if(api_result === APIResultType.NoError) {
-        return (await response.json()) as User;
+        return (await response.json()) as GetUserResultType;
     }
 
     return api_result;

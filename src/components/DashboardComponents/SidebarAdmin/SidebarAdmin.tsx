@@ -103,7 +103,7 @@ export default function SidebarDashboard() {
 
     return (
         <div
-            className={`lg:relative lg:w-[14rem] lg:translate-x-0 h-full w-full sidebarDashboard fixed left-0 duration-500 z-20
+            className={`lg:relative lg:w-56 lg:translate-x-0 h-full w-full sidebarDashboard fixed left-0 duration-500 z-20
                 ${showSidebar ? "translate-x-0" : "-translate-x-full"}`}>
             <div className="flex flex-col gap-2 h-full px-4 transform transition-all duration-300 ease-in-out whitespace-nowrap opacity-100 translate-x-0">
                 <ul className="relative h-full space-y-2">

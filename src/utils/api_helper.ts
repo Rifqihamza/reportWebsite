@@ -106,7 +106,7 @@ export async function verify_user_data_token(token: string): Promise<[true, true
 
     // Use cached data
     const redis = await redisClient;
-    const cached_user_data = JSON.parse(await redis.get(`user_data_${result}`) || "{}");
+    const cached_user_data = JSON.parse(await redis.get(`user-data-${result}`) || "{}");
     const parsed_cached_user_data = User_TypeGuard.safeParse(cached_user_data);
     if(parsed_cached_user_data.success) {
         user_data = parsed_cached_user_data.data;
@@ -118,7 +118,7 @@ export async function verify_user_data_token(token: string): Promise<[true, true
                     lowercased_username: result.toLowerCase(),
                 }
             });
-            await redis.setEx(`user_data_${result}`, 60*60*24*2, JSON.stringify(user_data));
+            await redis.setEx(`user-data-${result}`, 60*60*24*2, JSON.stringify(user_data));
         }
         catch (err) {user_data
             if (err instanceof Prisma.PrismaClientInitializationError) {

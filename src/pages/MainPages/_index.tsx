@@ -1,9 +1,7 @@
-import NavbarComponents from "../../components/ReportFormComponents/Navbar/NavbarComponent";
-
 import { PrimeReactProvider } from "primereact/api";
 
 import ReportFormComponent from "../../components/ReportFormComponents/FormReport/ReportFormComponent";
-import FooterComponent from "../../components/ReportFormComponents/Footer/FooterComponent";
+import FooterComponent from "../../components/ReportFormComponents/FormFooter/FooterComponent";
 import UseUserDataHookEffect from "../../hooks/shared/useUserData";
 
 export default function MainPage() {
@@ -12,8 +10,7 @@ export default function MainPage() {
     <>
       <UseUserDataHookEffect />
       <PrimeReactProvider>
-        {/* Navbar */}
-        <NavbarComponents />
+        <div className="h-24"></div>
 
         {/* Form */}
         <ReportFormComponent />

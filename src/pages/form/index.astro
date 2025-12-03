@@ -2,6 +2,8 @@
 // index.astro
 import HelpButton from "../../components/GlobalComponents/HelpButton/HelpButton";
 import ThanksOverlay from "../../components/GlobalComponents/ThanksOverlay/ThanksOverlay.astro";
+import FormNavbarComponent from "../../components/ReportFormComponents/FormNavbar/FormNavbarComponent";
+import FormSidebarComponent from "../../components/ReportFormComponents/FormSidebar/FormSidebarComponent";
 import Layout from "../../layouts/Layout.astro";
 import WrapperPage from "../MainPages/_wrapper";
 ---
@@ -9,6 +11,10 @@ import WrapperPage from "../MainPages/_wrapper";
 <Layout pageType="form">
       <div class="pattern-opacity slowed">
             <div class="pattern slowed"></div>
+      </div>
+      <div class="fixed w-0 h-screen flex flex-col top-0 left-0 z-101">
+            <FormNavbarComponent client:visible />
+            <FormSidebarComponent client:visible />
       </div>
       <HelpButton client:load />
       <ThanksOverlay />

@@ -10,7 +10,9 @@ type useUserDataType = {
   userData: User | null,
   isAuthorized: boolean | null,
   setUserData: (data?: User) => void,
-  userPrivillages: AccountAPIPrivillage[]
+  userPrivillages: AccountAPIPrivillage[],
+  isPIC: boolean | null,
+  setIsPIC: (newValue: boolean) => void
 }
 
 export const useUserDataHook = create<useUserDataType>((set) => ({
@@ -18,13 +20,15 @@ export const useUserDataHook = create<useUserDataType>((set) => ({
   isAuthorized: null,
   setUserData: (data?: User) => set(() => ({ userData: data, isAuthorized: (data ? true : false), userPrivillages: data ? account_to_api_privillage[data.role] : [] })),
   userPrivillages: [],
+  isPIC: null,
+  setIsPIC: (newValue: boolean) => set(() => ({ isPIC: newValue }))
 }));
 
 // Setting up for one-time logic
 let initalized = false;
 
 export default function UseUserDataHookEffect(props: { onResolve?: (res: { userData: User | null, isAuthorized: boolean }) => void, adminOnly?: boolean }) {
-  const { setUserData } = useUserDataHook();
+  const { setUserData, setIsPIC } = useUserDataHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
@@ -36,20 +40,23 @@ export default function UseUserDataHookEffect(props: { onResolve?: (res: { userD
     initalized = true;
     
     // Get user data
-    getUser().then(user_data => {
-      if (typeof user_data === "object") {
+    getUser().then(result => {
+      if (typeof result === "object") {
+        const user_data = result.user_data;
+        
         if(props.adminOnly && !has_access_to_dashboard(user_data.role)) {
           window.location.href = "/form";
         }
         
         setUserData(user_data);
+        setIsPIC(result.is_pic);
         props.onResolve ? props.onResolve({ isAuthorized: true, userData: user_data }) : "";
       }
-      else if(user_data === APIResultType.Unauthorized) {
+      else if(result === APIResultType.Unauthorized) {
         setUserData();
         props.onResolve ? props.onResolve({ isAuthorized: false, userData: null }) : "";
       }
-      else if(user_data === APIResultType.DatabaseError) {
+      else if(result === APIResultType.DatabaseError) {
         showMessage("There's an error in database.", "error", "Please reload the website after a while.");
       }
     }).catch((err) => {

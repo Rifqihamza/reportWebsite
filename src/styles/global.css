@@ -280,6 +280,10 @@ input[type="number"] {
   appearance: textfield;
 }
 
+input, textarea {
+  color: black;
+}
+
 .pattern {
   position: absolute;
   top: 0;
