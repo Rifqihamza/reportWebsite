@@ -27,7 +27,7 @@ export async function GET({ request }: APIContext) {
     if(user_responsible_locations_data_json === null) {
         const user_responsible_locations_data_db = await prisma.userResponsibleLocation.findMany();
         user_responsible_locations_data_json = JSON.stringify(user_responsible_locations_data_db);
-        await redis.set("cached-user-responsible-locations", user_responsible_locations_data_json);
+        await redis.setEx("cached-user-responsible-locations", 60*60*24, user_responsible_locations_data_json); // Expire after a day
     }
 
     // Get the responsible locations data
@@ -42,11 +42,9 @@ export async function GET({ request }: APIContext) {
 
     const user_responsible_locations_data = user_responsible_locations_data_parsed_result.data;
 
-
-
     // Return user data
     return create_response_json({
         user_data: user_data,
-        is_pic: user_responsible_locations_data.find((data) => data.responsible_user_name == user_data.username)
+        is_pic: user_responsible_locations_data.find((data) => data.responsible_user_name == user_data.username) ?? false
     });
 }
