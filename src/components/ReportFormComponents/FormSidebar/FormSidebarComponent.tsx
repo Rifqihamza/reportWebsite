@@ -33,7 +33,7 @@ export default function FormSidebarComponent() {
                         <div>
                               <div className="flex flex-col gap-2 p-2 *:p-4 *:rounded-lg *:bg-[#1a1d24] *:cursor-pointer *:duration-200 *:hover:brightness-50">
                                     {
-                                          selectedCampus && <button onClick={changeCampus}>Change Campus</button>
+                                          selectedCampus && <button onClick={changeCampus}>Change Campus <br /> <span className="text-sm opacity-50">[selected campus: {selectedCampus}]</span></button>
                                     }
                                     {
                                           isAuthorized && <button onClick={goToAdminDashboard}>Admin Dashboard</button>
