@@ -1,15 +1,10 @@
 import { create } from "zustand";
-
-type NotificationType = {
-      message: string,
-      created_at: boolean,
-      opened: boolean
-}
+import type { Notification } from "../../types/variables";
 
 type UseNotificationDataType = {
-      notifications: NotificationType[] | null,
-      setNotifications: (newNotifications: NotificationType[]) => void,
-      addNotification: (newNotification: NotificationType) => void
+      notifications: Notification[] | null,
+      setNotifications: (newNotifications: Notification[]) => void,
+      addNotification: (newNotification: Notification) => void
 };
 
 export const useNotificationData = create<UseNotificationDataType>((set) => ({

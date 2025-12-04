@@ -146,9 +146,11 @@ model RecordedActivity {
 model Notification {
   id         String   @id @default(uuid())
   created_at DateTime @default(now())
+  title      String
   message    String
+  isNew      Boolean  @default(false)
 
   // Relations
   account      Users  @relation(fields: [account_name], references: [username], onDelete: Cascade, onUpdate: Cascade)
-  account_name String @unique
+  account_name String
 }

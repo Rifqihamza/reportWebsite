@@ -114,7 +114,9 @@ export type UserResponsibleLocation = z.infer<typeof UserResponsibleLocation_Typ
 export const Notification_TypeGuard = z.strictObject({
     id: z.string(),
     created_at: z.string().transform((value) => new Date(value)),
+    title: z.string(),
     message: z.string(),
+    isNew: z.boolean(),
     account_name: z.string()
 });
 export type Notification = z.infer<typeof Notification_TypeGuard>;
