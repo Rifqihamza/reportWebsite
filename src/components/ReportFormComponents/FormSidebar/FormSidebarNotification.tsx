@@ -19,7 +19,7 @@ export default function FormSidebarNotification() {
                         unreadNotificationLength > 0 && <p className="p-4 h-10 flex justify-center items-center text-sm border border-white aspect-square rounded-full">{unreadNotificationLength}</p>
                   }
             </div>
-            <div>
+            <div className="h-60 max-h-full py-4">
                   {(() => {
                         if(notifications === null) {
                               return <>Loading..</>;
@@ -28,11 +28,11 @@ export default function FormSidebarNotification() {
                               return <>No Notifications!</>;
                         }
                         else {
-                              return <div className="relative flex flex-col gap-2 py-4">
+                              return <div className={`relative flex flex-col gap-2 h-60 ${activeNotification === null ? "overflow-y-auto snap-y snap-mandatory" : "overflow-hidden"}`}>
                                     {
                                           notifications.map((notification_data, index) => {
                                           return <div 
-                                                className={`cursor-pointer [transition:all_0.3s,opacity_0s]  w-full h-24 flex flex-col p-2 box-content bg-[#1a1d24] rounded-lg ${!notification_data.isNew && "brightness-50"} ${activeNotification === null ? "relative hover:h-28" : (index === activeNotification) ? "absolute top-4 left-0 h-48 brightness-100 [transition:all_0.3s,height_0.8s,opacity_0s]" : "opacity-0 pointer-events-none" }`}
+                                                className={`cursor-pointer min-h-1/2 max-h-1/2 [transition:all_0.3s,opacity_0s] snap-start w-full flex flex-col p-2 box-content bg-[#1a1d24] rounded-lg ${!notification_data.isNew && "brightness-50"} ${activeNotification === null ? "relative hover:min-h-2/3 hover:max-h-2/3" : (index === activeNotification) ? "absolute top-4 left-0 max-h-full min-h-full brightness-100 [transition:all_0.3s,height_0.8s,opacity_0s]" : "opacity-0 pointer-events-none" }`}
                                                 onClick={
                                                       () => {
                                                             setActiveNotification(index == activeNotification ? null : index);
