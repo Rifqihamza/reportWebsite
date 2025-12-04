@@ -148,7 +148,7 @@ model Notification {
   created_at DateTime @default(now())
   title      String
   message    String
-  isNew      Boolean  @default(false)
+  isNew      Boolean  @default(true)
 
   // Relations
   account      Users  @relation(fields: [account_name], references: [username], onDelete: Cascade, onUpdate: Cascade)
