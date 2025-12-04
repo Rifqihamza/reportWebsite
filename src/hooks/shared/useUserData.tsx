@@ -11,8 +11,8 @@ type useUserDataType = {
   isAuthorized: boolean | null,
   setUserData: (data?: User) => void,
   userPrivillages: AccountAPIPrivillage[],
-  isPIC: boolean | null,
-  setIsPIC: (newValue: boolean) => void
+  responsibleLocation: string | null,
+  setResponsibleLocation: (newValue: string) => void
 }
 
 export const useUserDataHook = create<useUserDataType>((set) => ({
@@ -20,15 +20,15 @@ export const useUserDataHook = create<useUserDataType>((set) => ({
   isAuthorized: null,
   setUserData: (data?: User) => set(() => ({ userData: data, isAuthorized: (data ? true : false), userPrivillages: data ? account_to_api_privillage[data.role] : [] })),
   userPrivillages: [],
-  isPIC: null,
-  setIsPIC: (newValue: boolean) => set(() => ({ isPIC: newValue }))
+  responsibleLocation: null,
+  setResponsibleLocation: (newValue: string) => set(() => ({ responsibleLocation: newValue }))
 }));
 
 // Setting up for one-time logic
 let initalized = false;
 
 export default function UseUserDataHookEffect(props: { onResolve?: (res: { userData: User | null, isAuthorized: boolean }) => void, adminOnly?: boolean }) {
-  const { setUserData, setIsPIC } = useUserDataHook();
+  const { setUserData, setResponsibleLocation } = useUserDataHook();
   const { showMessage } = useMessageToastHook();
   const { isConnected } = useNetworkConnectivityHook();
 
@@ -49,7 +49,7 @@ export default function UseUserDataHookEffect(props: { onResolve?: (res: { userD
         }
         
         setUserData(user_data);
-        setIsPIC(result.is_pic);
+        setResponsibleLocation(result.responsible_location);
         props.onResolve ? props.onResolve({ isAuthorized: true, userData: user_data }) : "";
       }
       else if(result === APIResultType.Unauthorized) {

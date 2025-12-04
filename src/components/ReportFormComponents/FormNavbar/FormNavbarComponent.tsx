@@ -1,9 +1,7 @@
 import { useFormSidebarHooks } from "../../../hooks/pages/ReportForm/useFormSidebarHooks";
-import { useUserDataHook } from "../../../hooks/shared/useUserData";
 
 
 export default function FormNavbarComponent() {
-      const { userData, isAuthorized, isPIC } = useUserDataHook();
       const { isOpen, setIsOpen } = useFormSidebarHooks();
       
       

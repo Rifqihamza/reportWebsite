@@ -8,7 +8,7 @@ import FormSidebarNotification from "./FormSidebarNotification";
 
 export default function FormSidebarComponent() {
       const { isOpen, setIsOpen } = useFormSidebarHooks();
-      const { userData, isPIC, isAuthorized } = useUserDataHook();
+      const { userData, responsibleLocation, isAuthorized } = useUserDataHook();
       const { selectedCampus, setSelectedCampus } = useCampusDataHook();
 
       const goToAdminDashboard = () => {
@@ -47,7 +47,8 @@ export default function FormSidebarComponent() {
                         </div>
                         
                         <div className="py-4">
-                              <p className={`font-thin ${isAuthorized == null && "opacity-50"}`}>Username: <span className="font-semibold">{userData?.username || "-"}</span> {isPIC !== null && (isPIC ? "[PIC]" : "")}</p>
+                              <p className={`font-thin ${isAuthorized == null && "opacity-50"}`}>Username: <span className="font-semibold">{userData?.username || "-"}</span> {responsibleLocation !== null && (responsibleLocation ? <span className="font-semibold text-blue-300">[PIC]</span> : "")}</p>
+                              {responsibleLocation && <p className="font-thin">PIC Location: <span className="font-semibold">{responsibleLocation}</span></p>}
                         </div>
                   </div>
             </div>

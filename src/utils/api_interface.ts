@@ -200,7 +200,7 @@ export async function userLogout(): Promise<boolean> {
 
 type GetUserResultType = {
     user_data: User,
-    is_pic: boolean
+    responsible_location: string
 }
 
 export async function getUser(): Promise<GetUserResultType | APIResultType> {

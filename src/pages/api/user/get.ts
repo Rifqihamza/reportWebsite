@@ -45,6 +45,6 @@ export async function GET({ request }: APIContext) {
     // Return user data
     return create_response_json({
         user_data: user_data,
-        is_pic: user_responsible_locations_data.find((data) => data.responsible_user_name == user_data.username) ?? false
+        responsible_location: user_responsible_locations_data.find((data) => data.responsible_user_name == user_data.username)?.location ?? null
     });
 }
