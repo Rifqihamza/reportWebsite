@@ -1,6 +1,5 @@
 import type { APIContext } from "astro";
-import { apiresult_to_status, create_response_status, get_cookies_from_request, verify_user_data_token } from "../../../../utils/api_helper";
-import { redisClient } from "../../../../utils/redis";
+import { apiresult_to_status, create_response_status, del_cache, get_cookies_from_request, verify_user_data_token } from "../../../../utils/api_helper";
 import { prisma } from "../../../../utils/db";
 import z from "zod";
 
@@ -27,8 +26,7 @@ export async function POST({ request }: APIContext) {
       const { notification_id } = safe_result_body_data.data;
 
       // Remove the cache
-      const redis = await redisClient;
-      await redis.del(`cached-notifications-${user_data.username}`);
+      await del_cache(`cached-notifications-${user_data.username}`);
 
       // Update the cached notifications
       try {

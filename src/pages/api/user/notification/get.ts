@@ -1,6 +1,5 @@
 import type { APIContext } from "astro";
-import { apiresult_to_status, create_response_json, create_response_status, get_cookies_from_request, verify_user_data_token } from "../../../../utils/api_helper";
-import { redisClient } from "../../../../utils/redis";
+import { apiresult_to_status, create_response_json, create_response_status, get_cache, get_cookies_from_request, set_cache, verify_user_data_token } from "../../../../utils/api_helper";
 import { prisma } from "../../../../utils/db";
 import { Notification_TypeGuard, UserResponsibleLocation_TypeGuard } from "../../../../types/variables";
 import z from "zod";
@@ -21,9 +20,7 @@ export async function GET({ request }: APIContext) {
       // Get the status if they're a PIC or not
 
       // Get from cache
-      const redis = await redisClient;
-      const cached_notifications_data_json = await redis.get(`cached-notifications-${user_data.username}`);
-      const cached_notifications_data: any = JSON.parse(cached_notifications_data_json ?? "[0]");
+      const cached_notifications_data = await get_cache(`cached-notifications-${user_data.username}`) ?? [0];
       const cached_notifications_data_parsed = z.array(Notification_TypeGuard).safeParse(cached_notifications_data);
 
       let notifications_data: Notification[] = [];
@@ -38,7 +35,7 @@ export async function GET({ request }: APIContext) {
                         }
                   }
             });
-            await redis.setEx(`cached-notifications-${user_data.username}`, 60, JSON.stringify(notifications_data)); // Expire in minute
+            await set_cache(`cached-notifications-${user_data.username}`, notifications_data, 60);
       }
       // Return user data
       return create_response_json({

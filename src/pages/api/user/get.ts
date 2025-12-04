@@ -1,6 +1,5 @@
 import type { APIContext } from "astro";
-import { apiresult_to_status, create_response_json, create_response_status, get_cookies_from_request, verify_user_data_token } from "../../../utils/api_helper";
-import { redisClient } from "../../../utils/redis";
+import { apiresult_to_status, create_response_json, create_response_status, get_cache, get_cookies_from_request, set_cache, verify_user_data_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { UserResponsibleLocation_TypeGuard } from "../../../types/variables";
 import z from "zod";
@@ -20,18 +19,14 @@ export async function GET({ request }: APIContext) {
     // Get the status if they're a PIC or not
 
     // Get from cache
-    const redis = await redisClient;
-    let user_responsible_locations_data_json = await redis.get("cached-user-responsible-locations");
+    let user_responsible_locations_data_insecure = await get_cache("cached-user-responsible-locations");
 
     // If there's no cached data,
-    if(user_responsible_locations_data_json === null) {
+    if(user_responsible_locations_data_insecure === null) {
         const user_responsible_locations_data_db = await prisma.userResponsibleLocation.findMany();
-        user_responsible_locations_data_json = JSON.stringify(user_responsible_locations_data_db);
-        await redis.setEx("cached-user-responsible-locations", 60*60*24, user_responsible_locations_data_json); // Expire after a day
+        user_responsible_locations_data_insecure = user_responsible_locations_data_db;
+        await set_cache("cached-user-responsible-locations", user_responsible_locations_data_db, 60*60*24); // Expire after a day
     }
-
-    // Get the responsible locations data
-    const user_responsible_locations_data_insecure: any = JSON.parse(user_responsible_locations_data_json);
 
     // Making sure the returned value is valid
     const user_responsible_locations_data_parsed_result = z.array(UserResponsibleLocation_TypeGuard).safeParse(user_responsible_locations_data_insecure);
