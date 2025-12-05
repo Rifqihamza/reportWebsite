@@ -1,2 +1,3 @@
--- This is an empty migration.
+-- DropIndex
+DROP INDEX "Notification_account_name_key";
 

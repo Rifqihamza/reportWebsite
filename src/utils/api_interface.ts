@@ -1,5 +1,5 @@
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
-import type { Campus, Report_Location, ReportData, User } from "../types/variables";
+import type { Campus, Notification, Report_Location, ReportData, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
 const base_url_endpoint: string = "";
@@ -198,7 +198,12 @@ export async function userLogout(): Promise<boolean> {
     return response.ok;
 }
 
-export async function getUser(): Promise<User | APIResultType> {
+type GetUserResultType = {
+    user_data: User,
+    responsible_location: string
+}
+
+export async function getUser(): Promise<GetUserResultType | APIResultType> {
     // Fetch to API
     const response = await fetch(base_url_endpoint + "/api/user/get", {
         method: "GET",
@@ -208,7 +213,7 @@ export async function getUser(): Promise<User | APIResultType> {
 
     const api_result = status_to_apiresult(response.status);
     if(api_result === APIResultType.NoError) {
-        return (await response.json()) as User;
+        return (await response.json()) as GetUserResultType;
     }
 
     return api_result;
@@ -259,7 +264,7 @@ export async function updateUser(userId: string, data: { username: string; passw
 }
 
 
-type updatedDataType = {
+type UpdatedDataType = {
     pic_name: string,
     follow_up: AccountType,
     due_date: string,
@@ -267,7 +272,7 @@ type updatedDataType = {
     status: ReportStatus,
 };
 
-export async function updateReport(report_id: string, updated_data: updatedDataType): Promise<APIResultType | false> {
+export async function updateReport(report_id: string, updated_data: UpdatedDataType): Promise<APIResultType | false> {
     // Fetch to API
     try {
         const response = await fetch(base_url_endpoint + "/api/report/update", {
@@ -316,11 +321,11 @@ export async function markCompleteReport(report_id: string, confirmation_photo: 
     }
 }
 
-export type formConfigurationResponse = {
+type FormConfigurationResponse = {
     location_data: Report_Location[]
 }
 
-export async function getFormConfiguration(): Promise<APIResultType | formConfigurationResponse | false> {
+export async function getFormConfiguration(): Promise<APIResultType | FormConfigurationResponse | false> {
     // Fetch to API
     let response;
     try {
@@ -336,7 +341,7 @@ export async function getFormConfiguration(): Promise<APIResultType | formConfig
         
     const api_result = status_to_apiresult(response.status);
     if(api_result === APIResultType.NoError) {
-        return (await response.json()) as formConfigurationResponse;
+        return (await response.json()) as FormConfigurationResponse;
     }
 
     return api_result;
@@ -358,6 +363,47 @@ export async function deleteUser(id: string): Promise<APIResultType> {
     return status_to_apiresult(response.status);
 }
 
+type GetNotificationReturnType = {
+    notifications: Notification[]
+};
+
+export async function getNotifications(): Promise<APIResultType | Notification[]> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/user/notification/get", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    });
+
+    const status = status_to_apiresult(response.status)
+    if(status !== APIResultType.NoError) {
+        return status;
+    }
+
+    const notifications: GetNotificationReturnType = (await response.json()) as GetNotificationReturnType;
+
+    return notifications.notifications;
+}
+
+export async function readNotifications(notification_id: string): Promise<APIResultType> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/user/notification/read", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "notification_id": notification_id
+        })
+    });
+
+    return status_to_apiresult(response.status);
+}
+
+// -------- Others
 
 export function string_to_reporttype(data: string): ReportType | undefined {
     return Object.values(ReportType).find(value => value.toString() == data);

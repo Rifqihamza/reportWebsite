@@ -66,6 +66,9 @@ model Users {
   // Relation
   recorded_activities RecordedActivity[]
   recorded_reports    Report[]
+
+  responsible_location UserResponsibleLocation[]
+  notifications        Notification[]
 }
 
 model Report_Location {
@@ -77,10 +80,21 @@ model Report_Location {
   created_at DateTime @default(now())
 
   // Relation
-  reports_location Report[] @relation
-  
-  
+  reports_location Report[]
+  responsible_user UserResponsibleLocation[]
+
   @@unique([location, pic_name])
+}
+
+model UserResponsibleLocation {
+  id String @id @default(uuid())
+
+  // Relation
+  report_location Report_Location @relation(fields: [location], references: [location])
+  location        String
+
+  responsible_user      Users  @relation(fields: [responsible_user_name], references: [username])
+  responsible_user_name String
 }
 
 model Report {
@@ -126,5 +140,17 @@ model RecordedActivity {
 
   // Relations
   account      Users  @relation(references: [username], fields: [account_name], onDelete: Cascade)
+  account_name String
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  title      String
+  message    String
+  isNew      Boolean  @default(true)
+
+  // Relations
+  account      Users  @relation(fields: [account_name], references: [username], onDelete: Cascade, onUpdate: Cascade)
   account_name String
 }

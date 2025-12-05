@@ -74,29 +74,27 @@ export async function POST({ request, cookies, clientAddress }: APIContext) {
 
 
     // Verify location
-    if (location) {
-        let location_data: Report_Location | null = null;
-        if (verified_campus_name) {
-            try {
-                location_data = await prisma.report_Location.findUnique({
-                    where: {
-                        location: location,
-                    }
-                });
-            }
-            catch(err) {
-                if(err instanceof Prisma.PrismaClientInitializationError) {
-                    return create_response_status(503);
+    let location_data: Report_Location | null = null;
+    if (verified_campus_name) {
+        try {
+            location_data = await prisma.report_Location.findUnique({
+                where: {
+                    location: location,
                 }
-                console.error(`There's an error when trying to get report data. Error: ${err}`);
-                return create_response_status(500);
+            });
+        }
+        catch(err) {
+            if(err instanceof Prisma.PrismaClientInitializationError) {
+                return create_response_status(503);
             }
+            console.error(`There's an error when trying to get report data. Error: ${err}`);
+            return create_response_status(500);
         }
+    }
 
-        if (!location_data) {
-            console.log("Location is not valid!");
-            return create_response_status(400);
-        }
+    if (!location_data) {
+        console.log("Location is not valid!");
+        return create_response_status(400);
     }
 
 
@@ -175,6 +173,48 @@ export async function POST({ request, cookies, clientAddress }: APIContext) {
                 }
             }
         });
+    }
+    catch (err) {
+        if (err instanceof Prisma.PrismaClientValidationError) {
+            return create_response_status(400);
+        }
+        else if(err instanceof Prisma.PrismaClientInitializationError) {
+            return create_response_status(503);
+        }
+        
+        console.error(`There's an error when trying to add report data. Error: ${err}`);
+        return create_response_status(500);
+    }
+
+
+    // Notify the PIC through notifications
+    try {
+        const pic_data = await prisma.users.findFirst({
+            where: {
+                responsible_location: {
+                    some: {
+                        report_location: {
+                            id: location_data.id
+                        }
+                    }
+                }
+            }
+        });
+
+        if(pic_data) {
+            await prisma.notification.create({
+                data: {
+                    title: `[New Report] ${message.substring(0, Math.min(message.length, 10))}${message.length > 10 ? ".." : ""}`,
+                    message: message,
+                    account: {
+                        connect: {
+                            id: pic_data.id
+                        }
+                    }
+                }
+            });
+        }
+        
     }
     catch (err) {
         if (err instanceof Prisma.PrismaClientValidationError) {

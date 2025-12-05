@@ -191,6 +191,10 @@ html {
   background-color: #f2e5bf;
 }
 
+.p-progressbar-value {
+  background-color: black !important;
+}
+
 .swiper {
   --swiper-navigation-size: 100px;
   --swiper-navigation-top-offset: 50%;
@@ -278,6 +282,10 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   appearance: textfield;
+}
+
+input, textarea {
+  color: black;
 }
 
 .pattern {

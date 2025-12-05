@@ -9,6 +9,7 @@ import { User_TypeGuard } from "../types/variables";
 
 let done_initialization = false;
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const REDIS_TIMEOUT = 1000;
 
 export function apiresult_to_status(api_result: any): Response {
     switch (api_result) {
@@ -105,8 +106,7 @@ export async function verify_user_data_token(token: string): Promise<[true, true
     let user_data;
 
     // Use cached data
-    const redis = await redisClient;
-    const cached_user_data = JSON.parse(await redis.get(`user_data_${result}`) || "{}");
+    const cached_user_data = await get_cache(`cached-user-data-${result}`) ?? {};
     const parsed_cached_user_data = User_TypeGuard.safeParse(cached_user_data);
     if(parsed_cached_user_data.success) {
         user_data = parsed_cached_user_data.data;
@@ -118,7 +118,7 @@ export async function verify_user_data_token(token: string): Promise<[true, true
                     lowercased_username: result.toLowerCase(),
                 }
             });
-            await redis.setEx(`user_data_${result}`, 60*60*24*2, JSON.stringify(user_data));
+            await set_cache(`cached-user-data-${result}`, user_data, 60*60*24*2);
         }
         catch (err) {user_data
             if (err instanceof Prisma.PrismaClientInitializationError) {
@@ -200,9 +200,8 @@ export function generate_captcha_token(): string {
     return result;
 }
 
-export function record_activity({ ip_address, url, activity_type, user_id }: { ip_address: string, url: string, activity_type: ActivityType, user_id: string }) {
-    return;
-    prisma.recordedActivity.create({
+export async function record_activity({ ip_address, url, activity_type, user_id }: { ip_address: string, url: string, activity_type: ActivityType, user_id: string }) {
+    await prisma.recordedActivity.create({
         data: {
             ip_address: ip_address,
             url: url,
@@ -214,4 +213,67 @@ export function record_activity({ ip_address, url, activity_type, user_id }: { i
             }
         }
     });
+}
+
+export async function race_functions<T, U>(f: () => Promise<T>, g: () => Promise<U>): Promise<T | U> {
+    return (await Promise.race([
+        new Promise<T>((res, _) => {
+            f().then((result) => res(result));
+        }),
+        new Promise<U>((res, _) => {
+            g().then((result) => res(result));
+        })
+    ]));
+}
+
+export async function await_for<T>(f: () => Promise<T>, timeout: number): Promise<T|null> {
+    return race_functions<T, null>(f, async () => {
+        return await (new Promise((res, _) => { setTimeout(() => { res(null); }, timeout) }));
+    })
+}
+
+export async function await_for_with_default<T, U>(f: () => Promise<T>, timeout: number, def: U): Promise<T|U> {
+    return (await await_for(async () => {
+        try {
+            return await f();
+        }
+        catch(_) {
+            return def;
+        }
+    }, timeout)) ?? def;
+}
+
+export async function get_cache(key: string): Promise<null | any> {
+    // Get Redis for several seconds before using database
+    const redis = await await_for_with_default(async () => (await redisClient), REDIS_TIMEOUT, null);
+    if(!redis) return null;
+
+    // Get the data
+    let data_json = await await_for_with_default(async () => (await redis.get(key)), REDIS_TIMEOUT, null);
+
+    // If the data is not found
+    if(!data_json) {
+        return null
+    }
+
+    // Return the object
+    return JSON.parse(data_json);
+}
+
+export async function set_cache(key: string, value: any, expire: number): Promise<void> {
+    // Get Redis
+    const redis = await await_for_with_default(async () => (await redisClient), REDIS_TIMEOUT, null);
+    if(!redis) return;
+
+    // Set the cache
+    await await_for(async () => (await redis.setEx(key, expire, JSON.stringify(value))), REDIS_TIMEOUT); // Expire after a day
+}
+
+export async function del_cache(key: string): Promise<void> {
+    // Get Redis
+    const redis = await await_for_with_default(async () => (await redisClient), REDIS_TIMEOUT, null);
+    if(!redis) return;
+    
+    // Delete the cache data
+    await await_for(async () => (await redis.del(key)), REDIS_TIMEOUT); // Expire after a day
 }

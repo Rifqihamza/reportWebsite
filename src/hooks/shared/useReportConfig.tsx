@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { APIResultType, getFormConfiguration, type formConfigurationResponse } from "../../utils/api_interface";
+import { APIResultType, getFormConfiguration, type FormConfigurationResponse } from "../../utils/api_interface";
 import { useCampusDataHook } from "../pages/ReportForm/useCampusData";
 import { useMessageToastHook } from "./useMessageToast";
 import { useNetworkConnectivityHook } from "./useNetworkConnectivity";
@@ -51,8 +51,8 @@ export default function UseReportConfigHookEffect(props: { useAllCampus?: boolea
 
     // Get Form Configuration
     getFormConfiguration().then((result) => {
-      if ((result as formConfigurationResponse).location_data !== undefined) {
-        result = result as formConfigurationResponse;
+      if ((result as FormConfigurationResponse).location_data !== undefined) {
+        result = result as FormConfigurationResponse;
         let resultPicNamesOptions: { [key: string]: string[] } = {};
         let resultLocationOptions: { [key: string]: string[] } = {};
 

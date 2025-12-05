@@ -51,7 +51,7 @@ export default function SelectCampusOverlay() {
             <SelectCampusButton label={value} value={value} />
           </SwiperSlide>
         ))}
-        <div className="z-10 pointer-events-none bg-[linear-gradient(to_right,rgba(0,_0,_0,_1),rgba(0,_0,_0,_0)_20%,rgba(0,_0,_0,_0)_80%,rgba(0,_0,_0,_1))] w-full h-full absolute top-0 left-0"></div>
+        <div className="z-10 pointer-events-none bg-[linear-gradient(to_right,rgba(0,0,0,1),rgba(0,0,0,0)_20%,rgba(0,0,0,0)_80%,rgba(0,0,0,1))] w-full h-full absolute top-0 left-0"></div>
       </Swiper>
     </div >
   );

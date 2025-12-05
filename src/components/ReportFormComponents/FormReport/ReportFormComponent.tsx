@@ -197,7 +197,7 @@ export default function ReportFormComponent() {
 
             {/* Tanggal Temuan section */}
             <div className="flex flex-col gap-2 w-full">
-              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-[1.5rem] -z-10">
+              <div className="bg-[#CB6040] px-4 py-3 w-full rounded-t-2xl translate-y-6 -z-10">
                 <label
                   htmlFor="tanggal"
                   className="md:text-lg font-semibold mb-4 text-xs text-white flex flex-row gap-2 items-center"
@@ -289,25 +289,25 @@ export default function ReportFormComponent() {
           {/* End Submit Button */}
         </form >
 
-        {/* Message Toast */}
+        {/* Upload Progress Toast */}
         <Toast
           ref={toastProgress}
           content={({ message }) => (
             <section
-              className="flex p-3 gap-3 w-full bg-[#fffa] backdrop-blur-xl shadow-2 fadeindown"
+              className="flex p-3 gap-3 w-full bg-[#f2e5bf] backdrop-blur-xl shadow-2 fadeindown"
               style={{ borderRadius: "10px" }}
             >
-              <i className="pi pi-cloud-upload text-primary-500 text-2xl"></i>
+              <i className="pi pi-cloud-upload text-primary-500 text-2xl text-black!"></i>
               <div className="flex flex-col gap-3 w-full">
-                <p className="m-0 font-semibold text-base text-[#7FA1C3]">{message.summary}</p>
-                <p className="m-0 text-base text-700">{message.detail}</p>
+                <p className="m-0 font-semibold text-base text-black">{message.summary}</p>
+                <p className="m-0 text-base text-700 text-black">{message.detail}</p>
                 <div className="flex flex-col gap-2">
                   <ProgressBar
                     mode="indeterminate"
                     showValue={true}
-                    style={{ height: "6px" }}
+                    style={{ height: "6px", backgroundColor: "#cb6040" }}
                   ></ProgressBar>
-                  <label className="text-right text-xs text-[#7FA1C3]">uploading...</label>
+                  <label className="text-right text-xs text-black">uploading...</label>
                 </div>
               </div>
             </section>

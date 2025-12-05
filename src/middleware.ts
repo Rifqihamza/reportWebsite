@@ -1,6 +1,6 @@
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import type { MiddlewareHandler } from 'astro';
-import { check_database_connection, create_response_cookie, create_response_status, first_initialization, verify_captcha_token, verify_user_data_token } from "./utils/api_helper";
+import { check_database_connection, create_response_status, first_initialization, verify_user_data_token } from "./utils/api_helper";
 
 const rateLimiterMemory = new RateLimiterMemory({
     points: 50, // Max 50 requests

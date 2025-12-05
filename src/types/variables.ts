@@ -104,6 +104,23 @@ export const Report_Location_TypeGuard = z.strictObject({
 });
 export type Report_Location = z.infer<typeof Report_Location_TypeGuard>;
 
+export const UserResponsibleLocation_TypeGuard = z.strictObject({
+    id: z.string(),
+    location: z.string(),
+    responsible_user_name: z.string()
+});
+export type UserResponsibleLocation = z.infer<typeof UserResponsibleLocation_TypeGuard>;
+
+export const Notification_TypeGuard = z.strictObject({
+    id: z.string(),
+    created_at: z.string().transform((value) => new Date(value)),
+    title: z.string(),
+    message: z.string(),
+    isNew: z.boolean(),
+    account_name: z.string()
+});
+export type Notification = z.infer<typeof Notification_TypeGuard>;
+
 
 // Table variables
 export const table_rows: {

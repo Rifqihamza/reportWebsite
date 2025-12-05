@@ -1,10 +1,9 @@
 import type { APIContext } from "astro";
-import { create_response_json, create_response_status, get_cookies_from_request, record_activity, verify_user_data_token } from "../../../utils/api_helper";
+import { create_response_json, create_response_status, get_cache, get_cookies_from_request, record_activity, set_cache, verify_user_data_token } from "../../../utils/api_helper";
 import { prisma } from "../../../utils/db";
 import { ActivityType, Prisma, type Report } from "@prisma/client";
 import { APIResultType } from "../../../utils/api_interface";
 import { account_to_api_privillage, AccountAPIPrivillage, ReportData_TypeGuard } from "../../../types/variables";
-import { redisClient } from "../../../utils/redis";
 import { z } from "zod";
 
 export async function GET({ request, clientAddress }: APIContext) {
@@ -34,8 +33,7 @@ export async function GET({ request, clientAddress }: APIContext) {
     let report_data: Report[];
 
     // Get cache
-    const redis = await redisClient;
-    const cached_report_data: any = JSON.parse(await redis.get("cached-report-data") || "[0]");
+    const cached_report_data = await get_cache("cached-report-data") ?? [0];
     const parsed_cached_report_data = z.array(ReportData_TypeGuard).safeParse(cached_report_data);
     if(parsed_cached_report_data.success) {
         report_data = parsed_cached_report_data.data as Report[];
@@ -45,7 +43,7 @@ export async function GET({ request, clientAddress }: APIContext) {
     else {
         try {
             report_data = await prisma.report.findMany();
-            await redis.setEx("cached-report-data", 60*60, JSON.stringify(report_data)); // Cache expire in an hour
+            await set_cache("cached-report-data", report_data, 60*60);
         }
         catch (err) {
             if (err instanceof Prisma.PrismaClientInitializationError) {
