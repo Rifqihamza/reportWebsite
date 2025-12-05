@@ -11,7 +11,7 @@ export const useNotificationData = create<UseNotificationDataType>((set) => ({
       notifications: null,
       setNotifications(newNotifications) {
             set(() => ({
-                  notifications: newNotifications
+                  notifications: newNotifications.sort((a, b) => b.created_at.valueOf() - a.created_at.valueOf()).reverse()
             }));
       },
       addNotification(newNotification) {

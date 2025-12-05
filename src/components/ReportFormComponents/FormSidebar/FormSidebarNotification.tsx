@@ -32,7 +32,7 @@ export default function FormSidebarNotification() {
                                     {
                                           notifications.map((notification_data, index) => {
                                           return <div 
-                                                className={`cursor-pointer min-h-1/2 max-h-1/2 [transition:all_0.3s,opacity_0s] snap-start w-full flex flex-col p-2 box-content bg-[#1a1d24] rounded-lg ${!notification_data.isNew && "brightness-50"} ${activeNotification === null ? "relative hover:min-h-2/3 hover:max-h-2/3" : (index === activeNotification) ? "absolute top-4 left-0 max-h-full min-h-full brightness-100 [transition:all_0.3s,height_0.8s,opacity_0s]" : "opacity-0 pointer-events-none" }`}
+                                                className={`cursor-pointer min-h-1/2 max-h-1/2 [transition:all_0.3s,opacity_0s] snap-start w-full flex flex-col p-2 box-content bg-[#1a1d24] rounded-lg ${!notification_data.isNew && "brightness-50"} ${activeNotification === null ? "relative hover:bg-[#4b4b4b]" : (index === activeNotification) ? "absolute top-4 left-0 max-h-full min-h-full brightness-100 [transition:all_0.3s,height_0.8s,opacity_0s]" : "opacity-0 pointer-events-none" }`}
                                                 onClick={
                                                       () => {
                                                             setActiveNotification(index == activeNotification ? null : index);
