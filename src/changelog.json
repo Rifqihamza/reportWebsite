@@ -205,5 +205,21 @@
       "improvements": [],
       "adjustments": []
     }
+  },
+  {
+    "version": "1.7.5",
+    "date": "5 December 2025",
+    "changes": {
+      "features": [
+        "Add notifications if there's a report for PIC"
+      ],
+      "fixes": [
+        "Fix some weird color for several components"
+      ],
+      "improvements": [
+        "Better overall performance across pages"
+      ],
+      "adjustments": []
+    }
   }
 ]
