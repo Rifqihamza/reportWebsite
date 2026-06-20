@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useDashboardNavbarHook } from "../../../hooks/shared/useDashboardNavbar";
+import { useDashboardSidebarHook } from "../../../hooks/shared/useDashboardSidebar";
 import UseUserDataHookEffect, { useUserDataHook } from "../../../hooks/shared/useUserData";
 import EditProfileModal, { type EditKey } from "./EditProfileModal";
 
 export default function SettingPage() {
-  const { activeTab } = useDashboardNavbarHook();
+  const { activeTab } = useDashboardSidebarHook();
   const { userData } = useUserDataHook();
 
   const [editKey, setEditKey] = useState<EditKey | undefined>();
@@ -24,7 +24,10 @@ export default function SettingPage() {
           </div>
           <ul className="flex flex-col w-full text-[#9CA3AF]">
             {/* Username */}
-            <li className="flex flex-row gap-2 md:gap-6 items-center w-full p-2 md:p-8 cursor-pointer hover:bg-[#F97316] hover:text-white hover:rounded-xl duration-300" onClick={() => setEditKey("username")}>
+            <li
+              className="flex flex-row gap-2 md:gap-6 items-center w-full p-2 md:p-8 cursor-pointer hover:bg-[#F97316] hover:text-white hover:rounded-xl duration-300"
+              onClick={() => setEditKey("username")}
+            >
               <div className="w-full">
                 <p className="text-left text-md font-medium">Name</p>
                 <p className="w-full text-xl font-medium">{userData?.username}</p>
@@ -35,7 +38,10 @@ export default function SettingPage() {
             <hr className="my-4" />
 
             {/* Password */}
-            <li className="flex flex-row gap-2 md:gap-6 items-center w-full p-2 md:p-8 cursor-pointer hover:bg-[#F97316] hover:text-white hover:rounded-xl duration-300" onClick={() => setEditKey("password")}>
+            <li
+              className="flex flex-row gap-2 md:gap-6 items-center w-full p-2 md:p-8 cursor-pointer hover:bg-[#F97316] hover:text-white hover:rounded-xl duration-300"
+              onClick={() => setEditKey("password")}
+            >
               <div className="w-full">
                 <p className="text-left text-md font-medium">Password</p>
                 <p className="w-full text-xl font-medium opacity-50">You know it. Right?</p>

@@ -1,16 +1,16 @@
 import { create } from "zustand";
 
-type useDashboardNavbarType = {
+type useDashboardSidebarType = {
   activeTab: number;
   setActiveTab: (newActiveTab: number) => void;
-  
-  showSidebar: boolean
-  setShowSidebar: (newShowSidebar: boolean) => void
+
+  showSidebar: boolean;
+  setShowSidebar: (newShowSidebar: boolean) => void;
 };
 
-export const useDashboardNavbarHook = create<useDashboardNavbarType>((set) => {
+export const useDashboardSidebarHook = create<useDashboardSidebarType>((set) => {
   return {
-    activeTab: 0,
+    activeTab: 7,
     setActiveTab(newActiveTab) {
       set(() => ({ activeTab: newActiveTab }));
     },
@@ -19,5 +19,5 @@ export const useDashboardNavbarHook = create<useDashboardNavbarType>((set) => {
     setShowSidebar(newShowSidebar) {
       set(() => ({ showSidebar: newShowSidebar }));
     },
-  }
-})
+  };
+});
