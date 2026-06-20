@@ -260,13 +260,13 @@ export async function get_cache(key: string): Promise<null | any> {
     return JSON.parse(data_json);
 }
 
-export async function set_cache(key: string, value: any, expire: number): Promise<void> {
+export async function set_cache(key: string, value: any, expire?: number): Promise<void> {
     // Get Redis
     const redis = await await_for_with_default(async () => (await redisClient), REDIS_TIMEOUT, null);
     if(!redis) return;
 
     // Set the cache
-    await await_for(async () => (await redis.setEx(key, expire, JSON.stringify(value))), REDIS_TIMEOUT); // Expire after a day
+    await await_for(async () => (expire?(await redis.setEx(key, expire, JSON.stringify(value))):(await redis.set(key, JSON.stringify(value)))), REDIS_TIMEOUT); // Expire after a day
 }
 
 export async function del_cache(key: string): Promise<void> {
