@@ -6,6 +6,7 @@ import ReportStatisticsPage from "../../components/DashboardComponents/Statistic
 import PICStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/PICStatisticsDashboard/PICStatisticsPage";
 import ExportPage from "../../components/DashboardComponents/ExportDashboard/ExportPage";
 import UsersPage from "../../components/DashboardComponents/UsersDashboard/UsersPage";
+import LocationPage from "../../components/DashboardComponents/LocationDashboard/LocationPage.astro";
 import SettingPage from "../../components/DashboardComponents/SettingDashboard/SettingPage";
 
 // Others
@@ -37,6 +38,7 @@ import NavbarDashboad from "../../components/DashboardComponents/NavbarDashboard
         <PICStatisticsPage client:only />
         <ExportPage client:only />
         <UsersPage client:only />
+        <LocationPage />
         <SettingPage client:only />
       </main>
     </div>
