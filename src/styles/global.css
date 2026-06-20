@@ -216,13 +216,7 @@ html {
 }
 
 .MyGradient {
-  mask-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 1) 20%,
-    rgba(0, 0, 0, 1) 80%,
-    rgba(0, 0, 0, 0)
-  );
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0));
 }
 
 .p-progressbar {
@@ -268,10 +262,6 @@ html {
   cursor: pointer;
 }
 
-.apexcharts-tooltip, .apexcharts-tooltip-title {
-  background-color: var(--background) !important;
-}
-
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -284,7 +274,8 @@ input[type="number"] {
   appearance: textfield;
 }
 
-input, textarea {
+input,
+textarea {
   color: black;
 }
 
@@ -298,7 +289,9 @@ input, textarea {
   opacity: 1;
   background-image: radial-gradient(#888 0.6px, transparent 0.8px), radial-gradient(#aaa 0.8px, transparent 0.8px);
   background-size: 64px 64px;
-  background-position: 0 0, 32px 32px;
+  background-position:
+    0 0,
+    32px 32px;
 
   animation-name: pattern-keyramme;
   animation-duration: 5s;
@@ -359,9 +352,13 @@ input, textarea {
 
 @keyframes pattern-keyramme {
   0% {
-    background-position: 32px 32px, 0 0;
+    background-position:
+      32px 32px,
+      0 0;
   }
   100% {
-    background-position: 160px 96px, 64px 64px;
+    background-position:
+      160px 96px,
+      64px 64px;
   }
-} 
+}
