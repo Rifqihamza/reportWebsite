@@ -1,19 +1,20 @@
 import { create } from "zustand";
 import { useEffect } from "react";
 import UsePICRankHookEffect, { usePICRankHook } from "./usePICRankHook";
+import type { ApexOptions } from "apexcharts";
 
 const maxPICReportCountPerPage = 15;
 
 type usePICReportCountType = {
-  picReportCountSeries: ApexAxisChartSeries;
-  setPICReportCountSeries: (newPICReportCountSeries: ApexAxisChartSeries) => void;
+  picReportCountSeries: ApexOptions["series"];
+  setPICReportCountSeries: (newPICReportCountSeries: ApexOptions["series"]) => void;
 
   picReportCountNames: string[];
   setPICReportCountNames: (newPICReportCountNames: string[]) => void;
 
   page: number;
   setPage: (newPage: number) => void;
-  
+
   maxPage: number;
   setMaxPage: (newMaxPage: number) => void;
 
@@ -42,46 +43,45 @@ export const usePICReportCountHook = create<usePICReportCountType>((set) => {
       },
     ],
     setPICReportCountSeries: (newPICReportCountSeries) => set((state) => ({ picReportCountSeries: newPICReportCountSeries })),
-    
+
     picReportCountNames: [],
     setPICReportCountNames: (newPICReportCountNames) => set((state) => ({ picReportCountNames: newPICReportCountNames })),
 
     page: 1,
-    setPage: (newPage) => set((state) => {
-      const { maxPage } = usePICReportCountHook.getState();
-      
-      if(newPage < 1) {
-        newPage = 1;
-      }
-      else if(newPage > maxPage) {
-        newPage = maxPage;
-      }
-        
-      return {
-        page: newPage
-      };
-    }),
+    setPage: (newPage) =>
+      set((state) => {
+        const { maxPage } = usePICReportCountHook.getState();
+
+        if (newPage < 1) {
+          newPage = 1;
+        } else if (newPage > maxPage) {
+          newPage = maxPage;
+        }
+
+        return {
+          page: newPage,
+        };
+      }),
 
     maxPage: 1,
     setMaxPage: (newMaxPage) => set(() => ({ maxPage: newMaxPage })),
 
     maxValue: 1,
-    setMaxValue: (newMaxValue) => set(() => ({ maxValue: newMaxValue }))
+    setMaxValue: (newMaxValue) => set(() => ({ maxValue: newMaxValue })),
   };
 });
 
-
-export default  function UsePICReportCountHookEffect() {
+export default function UsePICReportCountHookEffect() {
   const { sortedPICData } = usePICRankHook();
   const { setPICReportCountSeries, setPICReportCountNames, setMaxPage, page } = usePICReportCountHook();
 
   useEffect(() => {
-    if(!sortedPICData || page == 0) return;
+    if (!sortedPICData || page == 0) return;
     setMaxPage(sortedPICData.length / maxPICReportCountPerPage);
 
     const resultSeries: {
-      name: string,
-      data: number[]
+      name: string;
+      data: number[];
     }[] = [
       {
         name: "Completed",
@@ -98,24 +98,25 @@ export default  function UsePICReportCountHookEffect() {
       {
         name: "In Process",
         data: [],
-      }
+      },
     ];
     const resultNames: string[] = [];
 
-    sortedPICData.slice((page-1)*maxPICReportCountPerPage, page*maxPICReportCountPerPage).forEach((picData, index) => {
+    sortedPICData.slice((page - 1) * maxPICReportCountPerPage, page * maxPICReportCountPerPage).forEach((picData, index) => {
       resultNames.push(picData.name);
       resultSeries[0].data.push(picData.reportCountByStatus["Complete"]);
       resultSeries[1].data.push(picData.reportCountByStatus["Hold"]);
       resultSeries[2].data.push(picData.reportCountByStatus["NotStarted"]);
       resultSeries[3].data.push(picData.reportCountByStatus["InProcess"]);
-    })
+    });
 
     setPICReportCountSeries(resultSeries);
     setPICReportCountNames(resultNames);
   }, [sortedPICData, page]);
 
-  return <>
-    <UsePICRankHookEffect />
-  </>;
+  return (
+    <>
+      <UsePICRankHookEffect />
+    </>
+  );
 }
-

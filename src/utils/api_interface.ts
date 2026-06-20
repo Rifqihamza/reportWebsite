@@ -13,6 +13,7 @@ export enum APIResultType {
     DatabaseError = "Database Error",
     Conflict = "Conflict",
     RateLimited = "RateLimited",
+    DataMismatch = "Data Mismatch"
 }
 
 function status_to_apiresult(status: number): APIResultType {
@@ -26,9 +27,9 @@ function status_to_apiresult(status: number): APIResultType {
         case 401:
             return APIResultType.Unauthorized;
         case 409:
-            return APIResultType.Conflict
+            return APIResultType.Conflict;
         case 429:
-            return APIResultType.RateLimited
+            return APIResultType.RateLimited;
         default:
             return APIResultType.NoError;
     }
@@ -59,7 +60,7 @@ export async function userLogin(username: string, password: string): Promise<API
 
         return result;
     }
-    
+
     return status_to_apiresult(response.status);
 }
 
@@ -82,7 +83,7 @@ export async function addReport(
     // Setting up Form Data
     const form_data = new FormData();
 
-    add_to_formdata(form_data, "submitted_by", submitted_by)
+    add_to_formdata(form_data, "submitted_by", submitted_by);
     add_to_formdata(form_data, "message", message);
     add_to_formdata(form_data, "report_type", report_type);
     add_to_formdata(form_data, "location", location);
@@ -130,9 +131,9 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
         credentials: "include",
     });
 
-    
+
     const api_result = status_to_apiresult(response.status);
-    if(api_result === APIResultType.NoError) {
+    if (api_result === APIResultType.NoError) {
         // Sorting report data by date
         let result = (await response.json()) as ReportData[];
         result = result.sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf());
@@ -142,7 +143,7 @@ export async function getReport(): Promise<ReportData[] | APIResultType> {
     return api_result;
 }
 
-export async function addUser(data: {username: string, password: string, role: AccountType}): Promise<APIResultType|User> {
+export async function addUser(data: { username: string, password: string, role: AccountType; }): Promise<APIResultType | User> {
     // Fetch API
     const response = await fetch(`${base_url_endpoint}/api/user/create`, {
         method: "POST",
@@ -154,7 +155,7 @@ export async function addUser(data: {username: string, password: string, role: A
     });
 
     const api_result = status_to_apiresult(response.status);
-    if(api_result === APIResultType.NoError) {
+    if (api_result === APIResultType.NoError) {
         return (await response.json()) as User;
     }
 
@@ -167,7 +168,7 @@ export async function checkAuthentication(): Promise<APIResultType> {
         method: "GET",
         credentials: "include",
     });
-    
+
     return status_to_apiresult(response.status);
 }
 
@@ -200,8 +201,8 @@ export async function userLogout(): Promise<boolean> {
 
 type GetUserResultType = {
     user_data: User,
-    responsible_location: string
-}
+    responsible_location: string;
+};
 
 export async function getUser(): Promise<GetUserResultType | APIResultType> {
     // Fetch to API
@@ -212,7 +213,7 @@ export async function getUser(): Promise<GetUserResultType | APIResultType> {
 
 
     const api_result = status_to_apiresult(response.status);
-    if(api_result === APIResultType.NoError) {
+    if (api_result === APIResultType.NoError) {
         return (await response.json()) as GetUserResultType;
     }
 
@@ -224,7 +225,7 @@ export async function getAllUsers(): Promise<User[] | false | APIResultType> {
         response = await fetch(base_url_endpoint + "/api/user/allUsers", {
             method: "GET",
             credentials: "include"
-        })
+        });
     }
     catch (err) {
         return false;
@@ -232,14 +233,14 @@ export async function getAllUsers(): Promise<User[] | false | APIResultType> {
 
 
     const api_result = status_to_apiresult(response.status);
-    if(api_result === APIResultType.NoError) {
+    if (api_result === APIResultType.NoError) {
         return (await response.json()) as User[];
     }
 
     return api_result;
 }
 
-export async function updateUser(userId: string, data: { username: string; password: string }): Promise<APIResultType | User | false> {
+export async function updateUser(userId: string, data: { username: string; password: string; }): Promise<APIResultType | User | false> {
     try {
         const response = await fetch(`/api/user/update`, {
             method: "PUT",
@@ -251,9 +252,9 @@ export async function updateUser(userId: string, data: { username: string; passw
             }),
         });
 
-        
+
         const api_result = status_to_apiresult(response.status);
-        if(api_result === APIResultType.NoError) {
+        if (api_result === APIResultType.NoError) {
             return (await response.json()) as User;
         }
 
@@ -289,7 +290,7 @@ export async function updateReport(report_id: string, updated_data: UpdatedDataT
 
         return status_to_apiresult(response.status);
     }
-    catch(err) {
+    catch (err) {
         return false;
     }
 }
@@ -299,7 +300,7 @@ export async function markCompleteReport(report_id: string, confirmation_photo: 
 
     add_to_formdata(formData, "report_id", report_id);
     add_to_formdata(formData, "confirmation_photo", confirmation_photo);
-    
+
     // Fetch to API
     try {
         const response = await fetch(base_url_endpoint + "/api/report/complete", {
@@ -310,20 +311,20 @@ export async function markCompleteReport(report_id: string, confirmation_photo: 
 
         const result = status_to_apiresult(response.status);
 
-        if(result === APIResultType.NoError) {
+        if (result === APIResultType.NoError) {
             return (await response.json()) as ReportData;
         }
 
         return result;
     }
-    catch(err) {
+    catch (err) {
         return false;
     }
 }
 
-type FormConfigurationResponse = {
-    location_data: Report_Location[]
-}
+export type FormConfigurationResponse = {
+    location_data: Report_Location[];
+};
 
 export async function getFormConfiguration(): Promise<APIResultType | FormConfigurationResponse | false> {
     // Fetch to API
@@ -338,9 +339,9 @@ export async function getFormConfiguration(): Promise<APIResultType | FormConfig
         return false;
     }
 
-        
+
     const api_result = status_to_apiresult(response.status);
-    if(api_result === APIResultType.NoError) {
+    if (api_result === APIResultType.NoError) {
         return (await response.json()) as FormConfigurationResponse;
     }
 
@@ -364,7 +365,7 @@ export async function deleteUser(id: string): Promise<APIResultType> {
 }
 
 type GetNotificationReturnType = {
-    notifications: Notification[]
+    notifications: Notification[];
 };
 
 export async function getNotifications(): Promise<APIResultType | Notification[]> {
@@ -377,8 +378,8 @@ export async function getNotifications(): Promise<APIResultType | Notification[]
         },
     });
 
-    const status = status_to_apiresult(response.status)
-    if(status !== APIResultType.NoError) {
+    const status = status_to_apiresult(response.status);
+    if (status !== APIResultType.NoError) {
         return status;
     }
 
