@@ -84,9 +84,9 @@ export default function EditUserDataModal() {
         <Dialog
           visible={visibleDialog}
           onHide={() => setVisibleDialog(false)}
-          className="w-full max-w-xl mx-4 *:text-white!"
+          className="w-full max-w-xl mx-4 **:text-white!"
           headerClassName="bg-[#1a1d24]!"
-          contentClassName="bg-[#1a1d24]!" 
+          contentClassName="bg-[#1a1d24]!"
           header={changingUserData.mode === "edit" ? "Edit Pengguna" : "Tambah Pengguna"}
           draggable={false}
         >

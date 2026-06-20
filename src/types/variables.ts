@@ -34,7 +34,7 @@ export enum Campus {
 }
 
 export function reporttype_to_string(data: any): string {
-    return data == "VR" ? "5R" : data.toString()
+    return data == "VR" ? "5R" : data.toString();
 }
 
 export function string_to_reporttype(data?: string): ReportType | undefined {
@@ -124,7 +124,7 @@ export type Notification = z.infer<typeof Notification_TypeGuard>;
 
 // Table variables
 export const table_rows: {
-    [key: string]: (keyof ReportData)
+    [key: string]: (keyof ReportData);
 } = {
     "Status": "status",
     "Nama": "submitted_by",
@@ -133,10 +133,10 @@ export const table_rows: {
     "Kampus": "campus",
     "Lokasi": "location_name",
     "Tanggal": "created_at",
-}
+};
 
 export const exportable_rows: {
-    [key: string]: (keyof ReportData)
+    [key: string]: (keyof ReportData);
 } = {
     "Status": "status",
     "Kategori": "type",
@@ -148,7 +148,7 @@ export const exportable_rows: {
     "Tanggal": "created_at",
     "Bukti Temuan": "image",
     "Bukti Selesai": "image_after_finish"
-}
+};
 
 export const keyto_table_rows: Partial<{
     [key in (keyof ReportData)]: string
@@ -163,7 +163,7 @@ export const keyto_table_rows: Partial<{
     "campus": "Kampus",
     "image": "Bukti Temuan",
     "image_after_finish": "Bukti Selesai"
-}
+};
 
 // Other things
 export const statusColorHex: Record<string, string> = {
@@ -190,7 +190,7 @@ export const ExportOutputTitles = [
 
 export enum AccountAPIPrivillage {
     AllPrivillages = "AllPrivillages",
-    
+
     // User Related Privillage
     CreateUser = "CreateUser",
     UpdateUser = "UpdateUser",
@@ -204,12 +204,12 @@ export enum AccountAPIPrivillage {
     MarkCompeleteReport = "MarkCompeleteReport",
     DeleteReport = "DeleteReport",
     GetReport = "GetReport",
-    
-    // Umm Related Privillage
+
+    // Page Access Privillage
     ReportStatisticsPage = "ReportStatisticsPage",
     PICStatisticsPage = "PICStatisticsPage",
     ExportPage = "ExportPage",
-    UsersPage = "UsersPage"
+    UsersPage = "UsersPage",
 }
 
 export const account_to_api_privillage: {
@@ -258,7 +258,7 @@ export interface MenuItem {
     label: string;
     icon: string;
     description: string;
-    privillage?: AccountAPIPrivillage
+    privillage?: AccountAPIPrivillage;
 }
 
 export interface MenuItemGroup {
@@ -269,25 +269,25 @@ export interface MenuItemGroup {
         label: string;
         icon: string;
         description: string;
-        privillage?: AccountAPIPrivillage
-    }[]
+        privillage?: AccountAPIPrivillage;
+    }[];
 }
 
-export const menuItems: (MenuItem|MenuItemGroup)[] = [
-    { 
+export const menuItems: (MenuItem | MenuItemGroup)[] = [
+    {
         id: 0,
         label: "Home",
         icon: "pi pi-home",
         description: "Kembali ke menu utama untuk melihat navigasi ke tempat-tempat lain"
     },
-    { 
+    {
         id: 1,
         label: "Table",
         icon: "pi pi-table",
         privillage: AccountAPIPrivillage.GetReport,
         description: "Lihat dan kelola data laporan yang disimpan"
     },
-    { 
+    {
         label: "Statistics",
         icon: "pi pi-chart-pie",
         items: [
@@ -307,21 +307,21 @@ export const menuItems: (MenuItem|MenuItemGroup)[] = [
             }
         ]
     },
-    { 
+    {
         id: 3,
         label: "Export",
         icon: "pi pi-file-export",
         privillage: AccountAPIPrivillage.ExportPage,
         description: "Download data yang telah terekam sistem"
     },
-    { 
+    {
         id: 4,
         label: "Users",
         icon: "pi pi-user",
         privillage: AccountAPIPrivillage.UsersPage,
         description: "Lihat data pengguna yang menggunakan website ini"
     },
-    { 
+    {
         id: 5,
         label: "Setting",
         icon: "pi pi-cog",
