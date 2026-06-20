@@ -210,6 +210,7 @@ export enum AccountAPIPrivillage {
     PICStatisticsPage = "PICStatisticsPage",
     ExportPage = "ExportPage",
     UsersPage = "UsersPage",
+    LocationPage = "LocationPage",
 }
 
 export const account_to_api_privillage: {
@@ -320,6 +321,13 @@ export const menuItems: (MenuItem | MenuItemGroup)[] = [
         icon: "pi pi-user",
         privillage: AccountAPIPrivillage.UsersPage,
         description: "Lihat data pengguna yang menggunakan website ini"
+    },
+    {
+        id: 7,
+        label: "Location",
+        icon: "pi pi-map-marker",
+        privillage: AccountAPIPrivillage.LocationPage,
+        description: "Atur lokasi pelaporan yang bisa dipilih user"
     },
     {
         id: 5,
