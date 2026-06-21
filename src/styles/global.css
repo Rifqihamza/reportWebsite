@@ -15,6 +15,13 @@
   --foreground: #fff;
   --primary: #504efc;
   --secondary: #7c86ff;
+  --tab-1-display: none;
+  --tab-2-display: none;
+  --tab-3-display: none;
+  --tab-4-display: none;
+  --tab-5-display: none;
+  --tab-6-display: none;
+  --tab-7-display: none;
 }
 
 ::-webkit-scrollbar {
@@ -276,7 +283,7 @@ input[type="number"] {
 
 input,
 textarea {
-  color: black;
+  color: white;
 }
 
 .pattern {
