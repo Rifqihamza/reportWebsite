@@ -1,76 +1,66 @@
-import React from 'react';
-import ReactApexChart from 'react-apexcharts';
-import { statusColorHex, string_to_reporttype, type ReportType } from "../../../../../types/variables";
+import ReactApexChart from "react-apexcharts";
+import { statusColorHex } from "../../../../../types/variables";
 import { usePieChartHook } from "../../../../../hooks/pages/Statistics/useReportStatisticsHook";
-interface ApexInternalConfig {
-  config: {
-    labels: string[];
-    series: number[];
-  };
+
+interface Props {
+  pieType: "category" | "status";
 }
 
-interface PieChartProps {
-    pieData: Record<string, number>
-}
+export default function PieChartComponent({ pieType }: Props) {
+  const { pieCategory, pieStatus } = usePieChartHook();
+  // Hitung jumlah masing-masing jenis laporan
+  const labels = Object.keys(pieType == "category" ? pieCategory : pieStatus);
+  const series = Object.values(pieType == "category" ? pieCategory : pieStatus);
+  const colors = labels.map((label) => statusColorHex[label] || "#E0E0E0"); // default gray if not matched
 
-const PieChart: React.FC<PieChartProps> = ({ pieData }) => {
-    // Hitung jumlah masing-masing jenis laporan
-    const labels = Object.keys(pieData);
-    const series = Object.values(pieData);
-    const colors = labels.map(label => statusColorHex[label] || '#E0E0E0'); // default gray if not matched
-
-    const options = {
-        chart: {
-            type: 'pie' as const,
-            data: series,
-        },
-        labels,
-        colors,
-        theme: {
-            monochrome: {
-                enabled: false
-            }
-        },
-        plotOptions: {
-            pie: {
-                dataLabels: {
-                    offset: -20,
-                },
-            },
-        },
-        grid: {
-            padding: {
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-            },
-        },
+  const options = {
+    chart: {
+      type: "pie" as const,
+      data: series,
+    },
+    labels,
+    colors,
+    theme: {
+      monochrome: {
+        enabled: false,
+      },
+    },
+    plotOptions: {
+      pie: {
         dataLabels: {
-            enabled: true,
-            offsetY: -20,
-            style: {
-                fontSize: '10px',
-                colors: ["#fff"]
-            }
+          offset: -20,
         },
-        legend: {
-            show: true,
-            position: 'bottom' as 'bottom'
-        },
-    };
+      },
+    },
+    grid: {
+      padding: {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
+    },
+    dataLabels: {
+      enabled: true,
+      offsetY: -20,
+      style: {
+        fontSize: "10px",
+        colors: ["#fff"],
+      },
+    },
+    legend: {
+      show: true,
+      position: "bottom" as "bottom",
+    },
+  };
 
-    if(!series.some((value) => value > 0)) {
-        return (
-            <div className="w-full h-full flex justify-center items-center">
-                <p className="text-white text-center opacity-50">Tidak ada yang dapat ditampilkan</p>
-            </div>
-        );
-    }
-
+  if (!series.some((value) => value > 0)) {
     return (
-        <ReactApexChart options={options} series={series} type="pie" width="300" />
+      <div className="w-full h-full flex justify-center items-center">
+        <p className="text-white text-center opacity-50">Tidak ada yang dapat ditampilkan</p>
+      </div>
     );
-};
+  }
 
-export default PieChart;
+  return <ReactApexChart options={options} series={series} type="pie" width="300" />;
+}

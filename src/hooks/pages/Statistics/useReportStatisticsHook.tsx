@@ -67,28 +67,34 @@ export const usePieChartHook = create<UsePieChartype>((set) => {
     pieCategory: {},
     setPieCategory: (newPieCategory) => {
       set(() => ({
-        pieCategory: newPieCategory.reduce((acc, report) => {
-          report.labels = report.labels == "VR" ? "5R" : report.labels;
-          if (!acc[report.labels]) {
-            acc[report.labels] = 0;
-          }
-          acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
-          return acc;
-        }, {} as Record<string, number>),
+        pieCategory: newPieCategory.reduce(
+          (acc, report) => {
+            report.labels = report.labels == "VR" ? "5R" : report.labels;
+            if (!acc[report.labels]) {
+              acc[report.labels] = 0;
+            }
+            acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
+            return acc;
+          },
+          {} as Record<string, number>,
+        ),
       }));
     },
 
     pieStatus: {},
     setPieStatus: (newPieStatus) => {
       set(() => ({
-        pieStatus: newPieStatus.reduce((acc, report) => {
-          report.labels = report.labels == "VR" ? "5R" : report.labels;
-          if (!acc[report.labels]) {
-            acc[report.labels] = 0;
-          }
-          acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
-          return acc;
-        }, {} as Record<string, number>),
+        pieStatus: newPieStatus.reduce(
+          (acc, report) => {
+            report.labels = report.labels == "VR" ? "5R" : report.labels;
+            if (!acc[report.labels]) {
+              acc[report.labels] = 0;
+            }
+            acc[report.labels] += report.value; // Tambahkan nilai ke kategori yang sesuai
+            return acc;
+          },
+          {} as Record<string, number>,
+        ),
       }));
     },
   };
@@ -203,7 +209,7 @@ export function UseReportStatisticsEffect() {
   const { setInsight } = useInsightHook();
   const { appliedChartTimeFilter, setLineChartFilteredReports, lineChartFilteredReports, appliedChartCampusFilter, appliedChartLocationFilter } = useLineChartHook();
   const { setPercentCategory, setPercentStatus } = usePercentChartHook();
-  const { locationOptions, picNamesOptions } = useReportConfigHook();
+  const { picNamesOptions } = useReportConfigHook();
 
   useEffect(() => {
     if (!reportData) {
@@ -274,7 +280,7 @@ export function UseReportStatisticsEffect() {
       string_to_reporttype(
         Object.entries(result.totalReportPerCategory).sort((category_a, category_b) => {
           return category_b[1] - category_a[1];
-        })[0][0]
+        })[0][0],
       ) ?? null;
     result.highestOccuranceDay = Object.entries(result.totalReportPerDay).sort((day_a, day_b) => {
       return day_b[1] - day_a[1];

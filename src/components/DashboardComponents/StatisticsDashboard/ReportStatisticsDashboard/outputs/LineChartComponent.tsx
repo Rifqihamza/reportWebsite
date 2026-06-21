@@ -1,23 +1,19 @@
-import React from "react";
 import ReactApexChart from "react-apexcharts";
-import { LineChartTimeCategoryOption, listOfDay, listOfMonths, useLineChartHook } from "../../../../../hooks/pages/Statistics/useReportStatisticsHook";
+import { LineChartTimeCategoryOption, listOfDay, listOfMonths, useLineChartHook, usePieChartHook } from "../../../../../hooks/pages/Statistics/useReportStatisticsHook";
+import { ReportType, reporttype_to_string, statusColorHex } from "../../../../../types/variables";
 
 const maxYAxisSnapLength = 10;
 
-interface Report {
-  type: string;
-  labels: string;
-  value: number;
-}
-
-interface LineChartProps {
-  reports: Report[];
-  colors: string[];
-}
-
-const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
+export default function LineCharComponent() {
+  const { lineChartFilteredReports } = useLineChartHook();
   const { appliedChartTimeFilter } = useLineChartHook();
-  reports.sort((a, b) => {
+  const { lineChartCategoryFilter } = usePieChartHook();
+
+  const lineChartFilteredReportColors = lineChartCategoryFilter
+    ? [statusColorHex[reporttype_to_string(lineChartCategoryFilter)]]
+    : Object.values(ReportType).map((type) => statusColorHex[reporttype_to_string(type)]);
+
+  lineChartFilteredReports.sort((a, b) => {
     if (appliedChartTimeFilter === LineChartTimeCategoryOption.Year) {
       return listOfMonths.indexOf(a.labels) - listOfMonths.indexOf(b.labels);
     } else if (appliedChartTimeFilter === LineChartTimeCategoryOption.Month) {
@@ -30,12 +26,12 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
   });
   const categories = Array.from(
     new Set(
-      [...reports].map((r) => {
+      [...lineChartFilteredReports].map((r) => {
         return r.labels;
       }),
     ),
   );
-  const types = Array.from(new Set(reports.map((r) => r.type)));
+  const types = Array.from(new Set(lineChartFilteredReports.map((r) => r.type)));
 
   const grouped: Record<string, Record<string, number>> = {};
   types.forEach((type) => {
@@ -45,7 +41,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
     });
   });
 
-  reports.forEach((report) => {
+  lineChartFilteredReports.forEach((report) => {
     grouped[report.type][report.labels] += report.value;
   });
 
@@ -63,7 +59,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
     theme: {
       palette: "palette1",
     },
-    colors: colors,
+    colors: lineChartFilteredReportColors,
     dataLabels: {
       enabled: true,
     },
@@ -71,7 +67,7 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
       categories,
     },
     yaxis: {
-      max: reports.length > 0 ? maxYAxisSnapLength * Math.ceil(reports.sort((a, b) => b.value - a.value)[0].value / maxYAxisSnapLength + 0.1) : 0,
+      max: lineChartFilteredReports.length > 0 ? maxYAxisSnapLength * Math.ceil(lineChartFilteredReports.sort((a, b) => b.value - a.value)[0].value / maxYAxisSnapLength + 0.1) : 0,
     },
     markers: {
       size: 4,
@@ -90,6 +86,4 @@ const LineChart: React.FC<LineChartProps> = ({ reports, colors }) => {
   };
 
   return <ReactApexChart options={options} series={series} type="line" height={300} />;
-};
-
-export default LineChart;
+}
