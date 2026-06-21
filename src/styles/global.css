@@ -15,13 +15,20 @@
   --foreground: #fff;
   --primary: #504efc;
   --secondary: #7c86ff;
-  --tab-1-display: none;
-  --tab-2-display: none;
-  --tab-3-display: none;
-  --tab-4-display: none;
-  --tab-5-display: none;
-  --tab-6-display: none;
-  --tab-7-display: none;
+  --tab-1-position: absolute;
+  --tab-1-visibility: collapse;
+  --tab-2-position: absolute;
+  --tab-2-visibility: collapse;
+  --tab-3-position: absolute;
+  --tab-3-visibility: collapse;
+  --tab-4-position: absolute;
+  --tab-4-visibility: collapse;
+  --tab-5-position: absolute;
+  --tab-5-visibility: collapse;
+  --tab-6-position: absolute;
+  --tab-6-visibility: collapse;
+  --tab-7-position: absolute;
+  --tab-7-visibility: collapse;
 }
 
 ::-webkit-scrollbar {

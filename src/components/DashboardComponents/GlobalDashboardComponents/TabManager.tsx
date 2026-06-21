@@ -11,14 +11,18 @@ export default function TabManager() {
       if ((menu as any).items) {
         menu = menu as MenuItemGroup;
         menu.items.forEach((submenu) => {
-          body.style.setProperty(`--tab-${submenu.id}-display`, "none");
+          body.style.setProperty(`--tab-${submenu.id}-visibility`, "hidden");
+          body.style.setProperty(`--tab-${submenu.id}-position`, "absolute");
         });
       } else {
         menu = menu as MenuItem;
-        body.style.setProperty(`--tab-${menu.id}-display`, "none");
+        body.style.setProperty(`--tab-${menu.id}-visibility`, "hidden");
+        body.style.setProperty(`--tab-${menu.id}-position`, "absolute");
       }
     });
-    body.style.setProperty(`--tab-${activeTab}-display`, "flex");
+
+    body.style.setProperty(`--tab-${activeTab}-visibility`, "visible");
+    body.style.setProperty(`--tab-${activeTab}-position`, "relative");
   }, [activeTab]);
 
   return <></>;
