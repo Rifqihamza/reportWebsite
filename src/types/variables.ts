@@ -121,6 +121,15 @@ export const Notification_TypeGuard = z.strictObject({
 });
 export type Notification = z.infer<typeof Notification_TypeGuard>;
 
+export const ReportLocation_TypeGuard = z.strictObject({
+    id: z.string(),
+    location: z.string(),
+    campus_name: z.string(),
+    pic_name: z.string(),
+    created_at: z.string().transform((value) => new Date(value)),
+});
+export type ReportLocation = z.infer<typeof ReportLocation_TypeGuard>;
+
 
 // Table variables
 export const table_rows: {

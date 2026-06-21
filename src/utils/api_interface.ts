@@ -1,5 +1,5 @@
 import { AccountType, ReportType, ReportStatus } from '../types/variables';
-import type { Campus, Notification, Report_Location, ReportData, User } from "../types/variables";
+import type { Campus, Notification, Report_Location, ReportData, ReportLocation, User } from "../types/variables";
 import imageCompression from 'browser-image-compression';
 
 const base_url_endpoint: string = "";
@@ -402,6 +402,31 @@ export async function readNotifications(notification_id: string): Promise<APIRes
     });
 
     return status_to_apiresult(response.status);
+}
+
+
+type GetLocationsReturnType = {
+    locations: ReportLocation[];
+};
+
+export async function getLocations(): Promise<APIResultType | ReportLocation[]> {
+    // Fetch to API
+    const response = await fetch(base_url_endpoint + "/api/location/get", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    });
+
+    const status = status_to_apiresult(response.status);
+    if (status !== APIResultType.NoError) {
+        return status;
+    }
+
+    const jsonResponseData: GetLocationsReturnType = (await response.json()) as GetLocationsReturnType;
+
+    return jsonResponseData.locations;
 }
 
 // -------- Others
