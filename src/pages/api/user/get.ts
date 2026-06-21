@@ -31,8 +31,8 @@ export async function GET({ request }: APIContext) {
     // Making sure the returned value is valid
     const user_responsible_locations_data_parsed_result = z.array(UserResponsibleLocation_TypeGuard).safeParse(user_responsible_locations_data_insecure);
 
-    if(!user_responsible_locations_data_parsed_result.success) {
-        return create_response_status(402);
+    if (!user_responsible_locations_data_parsed_result.success) {
+        return create_response_status(503);
     }
 
     const user_responsible_locations_data = user_responsible_locations_data_parsed_result.data;
