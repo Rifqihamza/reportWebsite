@@ -7,7 +7,7 @@ import PICStatisticsPage from "../../components/DashboardComponents/StatisticsDa
 import ExportPage from "../../components/DashboardComponents/ExportDashboard/ExportPage";
 import UsersPage from "../../components/DashboardComponents/UsersDashboard/UsersPage";
 import LocationPage from "../../components/DashboardComponents/LocationDashboard/LocationPage.astro";
-import SettingPage from "../../components/DashboardComponents/SettingDashboard/SettingPage";
+import SettingPage from "../../components/DashboardComponents/SettingDashboard/SettingPage.astro";
 
 // Others
 import Layout from "../../layouts/Layout.astro";
@@ -16,6 +16,7 @@ import UseUserDataHookEffect from "../../hooks/shared/useUserData";
 import UseReportConfigHookEffect from "../../hooks/shared/useReportConfig";
 import VersionTracker from "../../components/GlobalComponents/VersionTracker/VersionTracker";
 import NavbarDashboad from "../../components/DashboardComponents/NavbarDashboard/NavbarDashboad.astro";
+import TabManager from "../../components/DashboardComponents/GlobalDashboardComponents/TabManager";
 ---
 
 <Layout pageType="dashboard">
@@ -39,7 +40,8 @@ import NavbarDashboad from "../../components/DashboardComponents/NavbarDashboard
         <ExportPage client:only />
         <UsersPage client:only />
         <LocationPage />
-        <SettingPage client:only />
+        <SettingPage />
+        <TabManager client:only />
       </main>
     </div>
   </section>
