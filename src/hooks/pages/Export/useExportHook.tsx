@@ -5,7 +5,7 @@ import { useMessageToastHook } from "../../shared/useMessageToast";
 import { useReportDataHook } from "../../shared/useReportData";
 import strftime from "strftime";
 import * as XLSX from "xlsx";
-import { jsPDF } from "jspdf"
+import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 export const filterOptions: Partial<{
@@ -29,6 +29,9 @@ type UseExportType = {
   }>;
   maxExportedData: number;
   otherOption: otherOptionsType;
+  currentExportStep: number;
+  maxExportStep: number;
+  processingState: number;
 
   setRow: (newRow: (keyof ReportData)[]) => void;
   toggleAllRow: () => void;
@@ -43,6 +46,10 @@ type UseExportType = {
 
   setMaxExportedData: (newValue: number) => void;
   setOtherOption: (key: keyof otherOptionsType, newValue: string | number | boolean) => void;
+
+  setCurrentExportStep: (newValue: number) => void;
+  setMaxExportStep: (newValue: number) => void;
+  setProcessingState: (newValue: number) => void;
 };
 
 export const useExportHook = create<UseExportType>((set) => {
@@ -142,16 +149,37 @@ export const useExportHook = create<UseExportType>((set) => {
       set((state) => {
         const currentState = state.otherOption;
         if (typeof currentState[key] != typeof newValue) {
-          return {}
+          return {};
         }
 
         return {
           otherOption: {
             ...state.otherOption,
-            [key]: newValue as any
+            [key]: newValue as any,
           },
         };
       });
+    },
+
+    currentExportStep: 0,
+    setCurrentExportStep(newValue) {
+      set(() => ({
+        currentExportStep: newValue,
+      }));
+    },
+
+    maxExportStep: 0,
+    setMaxExportStep(newValue) {
+      set(() => ({
+        maxExportStep: newValue,
+      }));
+    },
+
+    processingState: 0,
+    setProcessingState(newValue) {
+      set(() => ({
+        processingState: newValue,
+      }));
     },
   };
 });
@@ -169,10 +197,11 @@ export default function UseExportHookEffect() {
   return <></>;
 }
 
-export const handleExport = async (setCurrentStep: (step: number) => void, setMaxStep: (maxStep: number) => void) => {
+export const handleExport = async () => {
   const { dateRange, selectedOutputType, selectedRows, filter, otherOption } = useExportHook.getState();
   const { showMessage } = useMessageToastHook.getState();
   const { reportData } = useReportDataHook.getState();
+  const { setCurrentExportStep, setMaxExportStep } = useExportHook.getState();
 
   // Check if report data is empty
   if (!reportData) {
@@ -213,18 +242,20 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     }),
   ];
 
-
   const file_name = `DataReport_${strftime("%d-%m-%Y", new Date())}`;
 
   await new Promise((res, rej) => {
-    setTimeout(() => {
-      res(true);
-    }, 100 * selectedRows.length + Math.random() * 1000);
+    setTimeout(
+      () => {
+        res(true);
+      },
+      100 * selectedRows.length + Math.random() * 1000,
+    );
   });
 
-  setMaxStep(resultData.length - 1);
+  setMaxExportStep(resultData.length - 1);
   // Output the result depends on the selected output file type
-  
+
   // ---- CSV ----
   if (selectedOutputType === ExportOutputType.CSV) {
     const csvContent = resultData.map((value) => value.map((value2) => `"${value2}"`).join(",")).join("\n");
@@ -236,40 +267,40 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     a.download = `${file_name}.csv`;
 
     return () => {
-      setCurrentStep(resultData.length);
+      setCurrentExportStep(resultData.length);
       a.click(); // Trigger Download
       URL.revokeObjectURL(url);
     };
-  } 
-  
+  }
+
   // ---- EXCEL ----
   else if (selectedOutputType === ExportOutputType.Excel) {
     const worksheet = XLSX.utils.aoa_to_sheet(
       resultData.map((row_value, row_index) =>
-        row_index == 0 ? row_value : row_value.map((col_value, col_index) => (selectedRows[col_index - 1] == "created_at" ? strftime("%d/%M/%Y", new Date(col_value)) : col_value))
-      )
+        row_index == 0 ? row_value : row_value.map((col_value, col_index) => (selectedRows[col_index - 1] == "created_at" ? strftime("%d/%M/%Y", new Date(col_value)) : col_value)),
+      ),
     );
     const workbook = XLSX.utils.book_new(); // Create new excel file
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // Add sheet
 
     return () => {
-      setCurrentStep(resultData.length);
+      setCurrentExportStep(resultData.length);
       XLSX.writeFile(workbook, `${file_name}.xlsx`); // Trigger download
     };
-  } 
-  
+  }
+
   // ---- PDF ----
   else if (selectedOutputType === ExportOutputType.PDF) {
     const pdf = new jsPDF({
       orientation: "landscape",
       unit: "mm",
-      format: "a1"
+      format: "a1",
     });
 
     const bodyResult = resultData.slice(1);
     const image_indexes = [selectedRows.indexOf("image") + 1, selectedRows.indexOf("image_after_finish") + 1];
 
-    if(image_indexes.some((image) => image !== 0) && !otherOption.usingLinkInsteadOfImage) {
+    if (image_indexes.some((image) => image !== 0) && !otherOption.usingLinkInsteadOfImage) {
       // Convert image URL to base64
       const toBase64 = async (url: string) => {
         const res = await fetch(url, { mode: "cors" });
@@ -280,59 +311,61 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
           reader.readAsDataURL(blob);
         });
       };
-  
+
       // Generate table
       let current_step = 0;
 
-      for(let index1 = 0; index1 < bodyResult.length; index1++) {
-        for(let index2 = 0; index2 < bodyResult[index1].length; index2++) {
-          if(!image_indexes.includes(index2) || !bodyResult[index1][index2].includes("http")) continue;
+      for (let index1 = 0; index1 < bodyResult.length; index1++) {
+        for (let index2 = 0; index2 < bodyResult[index1].length; index2++) {
+          if (!image_indexes.includes(index2) || !bodyResult[index1][index2].includes("http")) continue;
 
-          setCurrentStep(current_step);
-          bodyResult[index1][index2] = ({ image: (await toBase64(bodyResult[index1][index2])) } as any);
-          
+          setCurrentExportStep(current_step);
+          bodyResult[index1][index2] = { image: await toBase64(bodyResult[index1][index2]) } as any;
+
           await new Promise((res, rej) => {
-            setTimeout(() => {
-              res(true);
-            }, (Math.floor(Math.random() * 1) * 1000) + 500); // 0.5-2.5 seconds of interval
-          })
+            setTimeout(
+              () => {
+                res(true);
+              },
+              Math.floor(Math.random() * 1) * 1000 + 500,
+            ); // 0.5-2.5 seconds of interval
+          });
         }
 
         current_step++;
       }
+    } else {
+      setCurrentExportStep(50);
     }
-    else {
-      setCurrentStep(50);
-    }
-    
+
     autoTable(pdf, {
       head: [resultData[0]],
       body: bodyResult,
       rowPageBreak: "avoid",
       headStyles: {
-        fontStyle: "bold"
+        fontStyle: "bold",
       },
       styles: {
-        fontSize: 20
+        fontSize: 20,
       },
       bodyStyles: {
         minCellHeight: 75,
         cellWidth: 75,
       },
       didDrawCell: (data) => {
-        if(image_indexes.every((image) => image === 0) || otherOption.usingLinkInsteadOfImage || data.column.index == 0 || typeof data.cell.raw !== "object") return;
+        if (image_indexes.every((image) => image === 0) || otherOption.usingLinkInsteadOfImage || data.column.index == 0 || typeof data.cell.raw !== "object") return;
 
         // Insert image manually into the right cell
         if (image_indexes.includes(data.column.index)) {
-          const raw = data.cell.raw as any
-          if(raw.image) {
+          const raw = data.cell.raw as any;
+          if (raw.image) {
             pdf.addImage(
               raw.image,
               "PNG",
               data.cell.x + 2,
               data.cell.y + 2,
               data.column.width - 4, // width
-              data.row.height - 4  // height
+              data.row.height - 4, // height
             );
           }
         }
@@ -340,7 +373,7 @@ export const handleExport = async (setCurrentStep: (step: number) => void, setMa
     });
 
     return () => {
-      setCurrentStep(100);
+      setCurrentExportStep(100);
       pdf.save(`${file_name}.pdf`);
     };
   }

@@ -1,0 +1,17 @@
+---
+import ExportFilterOptions from "./ExportFilterOptions.astro";
+import ExportProgressBar from "./ExportProgressBar";
+import ExportButton from "./ExportButton";
+import { UseReportStatisticsEffect } from "../../../hooks/pages/Statistics/useReportStatisticsHook";
+import UseReportDataHookEffect from "../../../hooks/shared/useReportData";
+import UseExportHookEffect from "../../../hooks/pages/Export/useExportHook";
+---
+
+<UseReportStatisticsEffect client:visible />
+<UseReportDataHookEffect client:visible />
+<UseExportHookEffect client:visible />
+<section class="h-full w-full py-4 md:px-4 overflow-auto grid grid-flow-row grid-rows-[1fr_auto] opacity-(--tab-3-opacity) [position:var(--tab-3-position)]">
+  <ExportFilterOptions />
+  <ExportButton />
+  <ExportProgressBar client:only />
+</section>

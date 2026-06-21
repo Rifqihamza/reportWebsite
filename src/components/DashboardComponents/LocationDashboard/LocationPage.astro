@@ -3,7 +3,7 @@ import LocationItems from "./LocationItems.astro";
 import LocationToolbar from "./LocationToolbar";
 ---
 
-<section class="h-full w-full p-4 flex flex-col gap-4 [position:var(--tab-7-position)] [visibility:var(--tab-7-visibility)]">
+<section class="h-full w-full p-4 flex flex-col gap-4 opacity-(--tab-7-opacity) [position:var(--tab-7-position)]">
   <LocationToolbar client:only />
   <LocationItems />
 </section>
