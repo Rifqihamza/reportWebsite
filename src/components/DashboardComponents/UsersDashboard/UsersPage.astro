@@ -1,0 +1,13 @@
+---
+import EditUserDataModal from "./EditUserDataModal";
+import UserToolbar from "./UserToolbar";
+import UserList from "./UserList";
+---
+
+<section class="overflow-y-auto overflow-x-hidden w-full h-full flex flex-col p-5">
+  <div class="flex flex-col md:flex-row gap-2 mb-4 w-full h-fit">
+    <UserToolbar client:visible />
+  </div>
+  <UserList client:visible />
+  <EditUserDataModal client:only />
+</section>

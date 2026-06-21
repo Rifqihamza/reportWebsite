@@ -5,7 +5,7 @@ import ReportTablePage from "../../components/DashboardComponents/TableDashboard
 import ReportStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/ReportStatisticsDashboard/ReportStatisticsPage";
 import PICStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/PICStatisticsDashboard/PICStatisticsPage";
 import ExportPage from "../../components/DashboardComponents/ExportDashboard/ExportPage";
-import UsersPage from "../../components/DashboardComponents/UsersDashboard/UsersPage";
+import UsersPage from "../../components/DashboardComponents/UsersDashboard/UsersPage.astro";
 import LocationPage from "../../components/DashboardComponents/LocationDashboard/LocationPage.astro";
 import SettingPage from "../../components/DashboardComponents/SettingDashboard/SettingPage.astro";
 
@@ -38,7 +38,7 @@ import TabManager from "../../components/DashboardComponents/GlobalDashboardComp
         <ReportStatisticsPage client:only />
         <PICStatisticsPage client:only />
         <ExportPage client:only />
-        <UsersPage client:only />
+        <UsersPage />
         <LocationPage />
         <SettingPage />
         <TabManager client:only />
