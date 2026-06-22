@@ -1,0 +1,13 @@
+---
+import DateFilterTimeRange from "./DateFilterTimeRange";
+import DateFilterTimeSpanDropdown from "./DateFilterTimeSpanDropdown";
+---
+
+<div class="flex flex-col md:flex-row gap-2 items-center">
+  <div class="w-full md:w-fit flex flex-row gap-2 text-xs md:text-base items-center justify-center px-2 h-12 border border-white rounded-md">
+    <DateFilterTimeRange client:visible />
+  </div>
+  <div class="w-full md:w-32 border! border-white! rounded-md! h-12 flex items-center">
+    <DateFilterTimeSpanDropdown client:only />
+  </div>
+</div>

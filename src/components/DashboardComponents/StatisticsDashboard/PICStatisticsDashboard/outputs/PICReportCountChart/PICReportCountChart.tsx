@@ -1,6 +1,6 @@
 import ReactApexChart from "react-apexcharts";
-import { ReportStatus, statusColorHex } from "../../../../../types/variables";
-import UsePICReportCountHookEffect, { usePICReportCountHook } from "../../../../../hooks/pages/Statistics/usePICReportCountHook";
+import { ReportStatus, statusColorHex } from "../../../../../../types/variables";
+import UsePICReportCountHookEffect, { usePICReportCountHook } from "../../../../../../hooks/pages/Statistics/usePICReportCountHook";
 
 export default function ReportCountChart() {
   const { picReportCountSeries, picReportCountNames, page, maxPage, maxValue, setPage } = usePICReportCountHook();
@@ -19,10 +19,10 @@ export default function ReportCountChart() {
             {
               from: 0,
               to: 0,
-              color: "#00000000"
-            }
-          ]
-        }
+              color: "#00000000",
+            },
+          ],
+        },
       },
     },
     dataLabels: {
@@ -49,7 +49,7 @@ export default function ReportCountChart() {
       },
       y: {
         formatter: function (val) {
-          if(val === 0) return "";
+          if (val === 0) return "";
           return val + " laporan";
         },
       },
@@ -61,7 +61,6 @@ export default function ReportCountChart() {
     legend: {
       position: "top",
     },
-    
   };
 
   return (
@@ -74,22 +73,22 @@ export default function ReportCountChart() {
           </div>
         </div>
         <div className="py-4 flex flex-row gap-4 w-full justify-center">
-            <button
-              className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-gray-600 duration-300 flex flex-row items-center justify-around"
-              disabled={page <= 0}
-              onClick={() => setPage(page - 1)}
-            >
-                <i className="pi pi-angle-left"></i>
-                Prev
-            </button>
-            <button
-                className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-gray-600 duration-300 flex flex-row items-center justify-around"
-                disabled={page >= (maxPage - 1)}
-                onClick={() => setPage(page + 1)}
-            >
-                Next
-                <i className="pi pi-angle-right"></i>
-            </button>
+          <button
+            className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-gray-600 duration-300 flex flex-row items-center justify-around"
+            disabled={page <= 0}
+            onClick={() => setPage(page - 1)}
+          >
+            <i className="pi pi-angle-left"></i>
+            Prev
+          </button>
+          <button
+            className="disabled:opacity-50 text-white px-2 py-1 rounded-lg bg-gray-600 duration-300 flex flex-row items-center justify-around"
+            disabled={page >= maxPage - 1}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+            <i className="pi pi-angle-right"></i>
+          </button>
         </div>
       </div>
     </>

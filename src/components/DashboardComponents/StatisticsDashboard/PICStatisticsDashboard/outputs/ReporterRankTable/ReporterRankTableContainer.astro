@@ -1,0 +1,29 @@
+---
+import LoadingAnimation from "../../../../../GlobalComponents/Loading/LoadingAnimation";
+import ReporterRankTableContents from "./ReporterRankTableContents";
+import ReporterRankTableButtons from "./ReporterRankTableButtons";
+---
+
+<div class="p-4 shadow w-full h-full rounded-2xl flex flex-col overflow-hidden">
+  <div class="overflow-auto">
+    <table class="w-full h-full overflow-auto">
+      <thead>
+        <tr class="">
+          <th class="border-b border-gray-300 py-4 text-left">Rank</th>
+          <th class="border-b border-gray-300 py-4 text-left">Nama Pelapor</th>
+          <th class="border-b border-gray-300 py-4 text-left">Total Laporan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ReporterRankTableContents server:defer>
+          <div class="w-full h-full relative">
+            <LoadingAnimation dark_bg />
+          </div>
+        </ReporterRankTableContents>
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-4 flex flex-row gap-4 w-full justify-center">
+    <ReporterRankTableButtons client:visible />
+  </div>
+</div>

@@ -1,0 +1,33 @@
+---
+import DateFilter from "./filter/DateFilter.astro";
+import PICCompactDataContainer from "./outputs/PICCompactData/PICCompactDataContainer.astro";
+import PICRankTableContainer from "./outputs/PICRankTable/PICRankTableContainer.astro";
+import PICReportCountChartContainer from "./outputs/PICReportCountChart/PICReportCountChartContainer.astro";
+---
+
+<div class="flex flex-col mx-4 mt-2 *:text-white opacity-(--tab-6-opacity) [position:var(--tab-6-position)]">
+  <h1 class="text-3xl">PIC Statistics</h1>
+
+  {/* Filter Table */}
+  <div class="mt-10 rounded-2xl border border-white bg-[#2b3440] p-4">
+    <DateFilter />
+  </div>
+
+  {/* Box Data */}
+  <div class="mt-10 rounded-2xl border border-white bg-[#2b3440] p-4">
+    <h1 class="mb-4 text-2xl">Quick Glance of Data</h1>
+    <PICCompactDataContainer />
+  </div>
+
+  {/* Reports Count Chart */}
+  <div class="mt-10 rounded-2xl border border-white bg-[#2b3440] py-4 px-2 md:px-4 min-h-68">
+    <h1 class="mb-4 text-2xl">Grafik Laporan PIC</h1>
+    <PICReportCountChartContainer />
+  </div>
+
+  {/* Ranking Table */}
+  <div class="mt-10 rounded-2xl border border-white bg-[#2b3440] p-4 min-h-80">
+    <h1 class="mb-4 text-2xl">Tabel Ranking PIC</h1>
+    <PICRankTableContainer />
+  </div>
+</div>

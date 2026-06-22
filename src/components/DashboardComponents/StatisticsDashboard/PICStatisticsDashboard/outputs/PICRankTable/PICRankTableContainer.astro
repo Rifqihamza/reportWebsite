@@ -1,0 +1,30 @@
+---
+import LoadingAnimation from "../../../../../GlobalComponents/Loading/LoadingAnimation";
+import PICRankTableButtons from "./PICRankTableButtons";
+import PICRankTableContents from "./PICRankTableContents";
+---
+
+<div class="p-4 shadow w-full h-full rounded-2xl flex flex-col overflow-hidden">
+  <div class="overflow-auto">
+    <table class="w-full h-full overflow-auto">
+      <thead>
+        <tr>
+          <th class="border-b border-gray-300 py-4 text-left">Rank</th>
+          <th class="border-b border-gray-300 py-4 text-left">Nama PIC</th>
+          <th class="border-b border-gray-300 py-4 text-left">Laporan Diurus</th>
+          <th class="border-b border-gray-300 py-4 text-left">Laporan Selesai</th>
+        </tr>
+      </thead>
+      <tbody>
+        <PICRankTableContents server:defer>
+          <div class="w-full h-full relative">
+            <LoadingAnimation dark_bg />
+          </div>
+        </PICRankTableContents>
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-4 flex flex-row gap-4 w-full justify-center">
+    <PICRankTableButtons client:visible />
+  </div>
+</div>

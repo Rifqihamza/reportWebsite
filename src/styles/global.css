@@ -16,19 +16,19 @@
   --primary: #504efc;
   --secondary: #7c86ff;
   --tab-1-position: absolute;
-  --tab-1-visibility: collapse;
+  --tab-1-opacity: 0;
   --tab-2-position: absolute;
-  --tab-2-visibility: collapse;
+  --tab-2-opacity: 0;
   --tab-3-position: absolute;
-  --tab-3-visibility: collapse;
+  --tab-3-opacity: 0;
   --tab-4-position: absolute;
-  --tab-4-visibility: collapse;
+  --tab-4-opacity: 0;
   --tab-5-position: absolute;
-  --tab-5-visibility: collapse;
+  --tab-5-opacity: 0;
   --tab-6-position: absolute;
-  --tab-6-visibility: collapse;
+  --tab-6-opacity: 0;
   --tab-7-position: absolute;
-  --tab-7-visibility: collapse;
+  --tab-7-opacity: 0;
 }
 
 ::-webkit-scrollbar {
