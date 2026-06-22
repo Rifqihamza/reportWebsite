@@ -1,0 +1,29 @@
+---
+import LoadingAnimation from "../../GlobalComponents/Loading/LoadingAnimation";
+import UseReportHookEffect from "../../../hooks/pages/ReportTable/useReportHookEffect";
+
+import HeavyComputedReportTableComponent from "./HeavyComputedReportTableComponent.astro";
+import ReportCompletionModal from "./Modals/ReportCompletionModal";
+import ReportEvidenceModal from "./Modals/ReportEvidenceModal";
+import ReportDetailModal from "./Modals/ReportDetailModal";
+import ReportEditModal from "./Modals/ReportEditModal";
+import ReportTableToolbarContainer from "./Toolbar/ReportTableToolbarContainer.astro";
+---
+
+<div class="p-4 flex flex-col gap-4 w-full opacity-(--tab-1-opacity) [position:var(--tab-1-position)]">
+  <UseReportHookEffect client:visible />
+  <ReportTableToolbarContainer server:defer>
+    <div class="w-full h-full">
+      <LoadingAnimation />
+    </div>
+  </ReportTableToolbarContainer>
+  <HeavyComputedReportTableComponent server:defer>
+    <div class="w-full h-full">
+      <LoadingAnimation />
+    </div>
+  </HeavyComputedReportTableComponent>
+  <ReportDetailModal client:only />
+  <ReportEditModal client:only />
+  <ReportCompletionModal client:only />
+  <ReportEvidenceModal client:only />
+</div>

@@ -1,7 +1,7 @@
 ---
 // Pages
 import WelcomePage from "../../components/DashboardComponents/WelcomeDashboard/WelcomePage";
-import ReportTablePage from "../../components/DashboardComponents/TableDashboard/ReportTablePage";
+import ReportTablePage from "../../components/DashboardComponents/TableDashboard/ReportTablePage.astro";
 import ReportStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/ReportStatisticsDashboard/ReportStatisticsPage.astro";
 import PICStatisticsPage from "../../components/DashboardComponents/StatisticsDashboard/PICStatisticsDashboard/PICStatisticsPage.astro";
 import ExportPage from "../../components/DashboardComponents/ExportDashboard/ExportPage.astro";
@@ -34,7 +34,7 @@ import TabManager from "../../components/DashboardComponents/GlobalDashboardComp
       <!-- Main Pages Scrollable -->
       <main class="flex-1 overflow-y-auto p-2 bg-(--background) lg:rounded-tl-2xl">
         <WelcomePage client:load />
-        <ReportTablePage client:only />
+        <ReportTablePage />
         <ReportStatisticsPage />
         <PICStatisticsPage />
         <ExportPage />

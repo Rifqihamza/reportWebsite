@@ -1,20 +1,19 @@
 import { create } from "zustand";
-import {
-  AccountType,
-  Campus,
-  ReportStatus,
-  ReportType,
-  table_rows,
-  type ReportData,
-} from "../../../types/variables";
-import UseReportDataHookEffect, { useReportDataHook } from "../../shared/useReportData";
+import { AccountType, Campus, ReportStatus, ReportType, type ReportData } from "../../../types/variables";
+import { useReportDataHook } from "../../shared/useReportData";
 import { useUserDataHook } from "../../shared/useUserData";
 import { APIResultType, deleteReport } from "../../../utils/api_interface";
 import { useMessageToastHook } from "../../shared/useMessageToast";
-import { useEffect } from "react";
 import { useNetworkConnectivityHook } from "../../shared/useNetworkConnectivity";
 
-const maxReportDataPerPage: number = 7;
+export const maxReportDataPerPage: number = 7;
+
+type SelectedFilterType = {
+  type: ReportType[];
+  status: ReportStatus[];
+  campus: Campus[];
+  location: [Campus, string][];
+};
 
 // --/ Report Detail Hook
 type useReportDetailHookType = {
@@ -30,6 +29,18 @@ type useReportDetailHookType = {
   deleteDisabled: boolean;
   setDeleteDisabled: (newDeleteDisabled: boolean) => void;
   handleDelete: (id: string) => Promise<boolean | undefined>;
+
+  currentTypeFilter: ReportType[];
+  setCurrentTypeFilter: (newValue: ReportType[]) => void;
+
+  currentStatusFilter: ReportStatus[];
+  setCurrentStatusFilter: (newValue: ReportStatus[]) => void;
+
+  currentCampusFilter: Campus[];
+  setCurrentCampusFilter: (newValue: Campus[]) => void;
+
+  currentLocationFilter: [Campus, string][];
+  setCurrentLocationFilter: (newValue: [Campus, string][]) => void;
 };
 
 export const useReportDetailHook = create<useReportDetailHookType>((set, get) => {
@@ -103,6 +114,34 @@ export const useReportDetailHook = create<useReportDetailHookType>((set, get) =>
       setDetailId(id);
       setIsChange(true);
     },
+
+    currentTypeFilter: [],
+    setCurrentTypeFilter(newValue) {
+      set(() => ({
+        currentTypeFilter: newValue,
+      }));
+    },
+
+    currentStatusFilter: [],
+    setCurrentStatusFilter(newValue) {
+      set(() => ({
+        currentStatusFilter: newValue,
+      }));
+    },
+
+    currentCampusFilter: [],
+    setCurrentCampusFilter(newValue) {
+      set(() => ({
+        currentCampusFilter: newValue,
+      }));
+    },
+
+    currentLocationFilter: [],
+    setCurrentLocationFilter(newValue) {
+      set(() => ({
+        currentLocationFilter: newValue,
+      }));
+    },
   };
 });
 
@@ -152,13 +191,6 @@ export const useReportEditHook = create<useReportEditType>((set) => {
   };
 });
 
-type SelectedFilterType = {
-  type: ReportType[],
-  status: ReportStatus[],
-  campus: Campus[],
-  location: [Campus, string][]
-}
-
 // --/ Report Filter Hook
 type useReportFilterType = {
   selectedFilter: SelectedFilterType;
@@ -182,7 +214,7 @@ export const useReportFilterHook = create<useReportFilterType>((set) => {
   return {
     selectedFilter: { campus: [], status: [], type: [], location: [] },
     setSelectedFilter(newSelectedFilter) {
-      set(() => ({ selectedFilter: newSelectedFilter }))
+      set(() => ({ selectedFilter: newSelectedFilter }));
     },
     setReportTypeFilter(newReportTypeFilter) {
       set((state) => {
@@ -190,28 +222,28 @@ export const useReportFilterHook = create<useReportFilterType>((set) => {
         currentSelectedFilter.type = newReportTypeFilter;
 
         return {
-          selectedFilter: currentSelectedFilter
-        }
+          selectedFilter: currentSelectedFilter,
+        };
       });
     },
     setReportStatusFilter(newReportStatusFilter) {
       set((state) => {
         const currentSelectedFilter = state.selectedFilter;
         currentSelectedFilter.status = newReportStatusFilter;
-        
+
         return {
-          selectedFilter: currentSelectedFilter
-        }
+          selectedFilter: currentSelectedFilter,
+        };
       });
     },
     setCampusFilter(newCampusFilter) {
       set((state) => {
         const currentSelectedFilter = state.selectedFilter;
         currentSelectedFilter.campus = newCampusFilter;
-        
+
         return {
-          selectedFilter: currentSelectedFilter
-        }
+          selectedFilter: currentSelectedFilter,
+        };
       });
     },
     resetFilter() {
@@ -234,87 +266,6 @@ export const useReportFilterHook = create<useReportFilterType>((set) => {
     },
   };
 });
-
-
-
-
-// -- REACT GLOBAL USE EFFECT COMPONENT
-export function ReportHookEffect() {
-  const { currentPage, setCurrentPage, setMaxPage, setShowedReportData } =
-    useReportPaginationHook();
-  const { reportData } = useReportDataHook();
-  const { selectedFilter, dateFilter, searchKeyword, filteredReports, setFilteredReports } =
-    useReportFilterHook();
-
-  useEffect(() => {
-    const { filteredReports } = useReportFilterHook.getState();
-    const newMaxPage = Math.ceil(filteredReports.length / maxReportDataPerPage);
-
-    // Set new max page
-    setMaxPage(newMaxPage),
-      // If the current page is higher than the new max page, set the current page to 0
-      setCurrentPage(currentPage >= newMaxPage ? 0 : currentPage),
-      // Update showed report data
-      setShowedReportData(
-        filteredReports.slice(
-          currentPage * maxReportDataPerPage,
-          (currentPage + 1) * maxReportDataPerPage
-        )
-      );
-  }, [filteredReports, currentPage]);
-
-  useEffect(() => {
-    if (!reportData) {
-      return;
-    }
-
-    // Filter Categories and Status
-    let result_data = reportData.filter((value, index) => {
-      if(selectedFilter.type.length > 0 && !selectedFilter.type.includes(value.type)) {
-        return false;
-      }
-
-      if(selectedFilter.status.length > 0 && !selectedFilter.status.includes(value.status)) {
-        return false;
-      }
-
-      if(selectedFilter.campus.length > 0 && !selectedFilter.campus.includes(value.campus)) {
-        return false;
-      }
-
-      if(selectedFilter.location.length > 0 && (!value.location_name || !selectedFilter.location.find((locationFilter) => locationFilter[0] == value.campus && locationFilter[1] == value.location_name))) {
-        return false
-      }
-
-      return true;
-    });
-
-    // Filter Date
-    if (dateFilter && (dateFilter[0] || dateFilter[1])) {
-      const max = dateFilter[1] ? dateFilter[1].getTime() + 1000 * 60 * 60 * 24 : null;
-      const min = dateFilter[0] ? dateFilter[0].getTime() : null;
-      result_data = result_data.filter((value) => {
-        const current = new Date(value.created_at).getTime();
-        return (max ? current <= max : true) && (min ? current >= min : true);
-      });
-    }
-
-    // Filter Keyword
-    if (searchKeyword) {
-      result_data = result_data.filter((value) => {
-        const search_data = (Object.values(table_rows).map((key) => value[key]).join("+")).toLowerCase();
-        return search_data.includes(searchKeyword.toLowerCase());
-      });
-    }
-
-    // Update Filtered Reports
-    setFilteredReports(result_data);
-  }, [selectedFilter, reportData, dateFilter, searchKeyword]);
-
-  return <>
-    <UseReportDataHookEffect />
-  </>;
-}
 
 // Utility constants
 export const statusColors = {

@@ -23,28 +23,28 @@ export default function ReportTableToolbar() {
             <FilterSelect />
           </div>
           <div className="flex flex-row gap-3 items-center">
-
             <Calendar
               className={`w-fit h-full *:cursor-pointer *:placeholder:text-white! [&_.p-inputtext]:py-3! [&_.p-inputtext]:bg-[#2b3440]! [&_.p-inputtext]:text-white! ${dateFilter[0] ? " " : ""}`}
               inputId="from-date"
               value={dateFilter ? dateFilter[0] : null}
-              onChange={(e) => setDateFilter([e.value?.getTime() === dateFilter[0]?.getTime() ? null : e.value ?? null, dateFilter[1] ?? null])}
+              onChange={(e) => setDateFilter([e.value?.getTime() === dateFilter[0]?.getTime() ? null : (e.value ?? null), dateFilter[1] ?? null])}
               readOnlyInput
               hideOnRangeSelection
               placeholder="Dari tanggal"
             />
-            <span className="text-black text-4xl">-</span>
+            <div className="h-full flex items-center">
+              <span className="text-white text-4xl">-</span>
+            </div>
             <Calendar
               className={`w-fit h-full *:cursor-pointer *:placeholder:text-white! [&_.p-inputtext]:py-3! [&_.p-inputtext]:bg-[#2b3440]! [&_.p-inputtext]:text-white! ${dateFilter[1] ? " " : ""}`}
               inputId="until-date"
               value={dateFilter ? dateFilter[1] : null}
-              onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() === dateFilter[1]?.getTime() ? null : e.value ?? null])}
+              onChange={(e) => setDateFilter([dateFilter[0] ?? null, e.value?.getTime() === dateFilter[1]?.getTime() ? null : (e.value ?? null)])}
               readOnlyInput
               hideOnRangeSelection
               placeholder="Sampai tanggal"
             />
           </div>
-
         </div>
       </PrimeReactProvider>
     </>

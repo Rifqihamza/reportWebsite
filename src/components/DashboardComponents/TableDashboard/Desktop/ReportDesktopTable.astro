@@ -1,0 +1,29 @@
+---
+import ReportDesktopTableContent from "./ReportDesktopTableContent";
+
+import UseUserDataHookEffect from "../../../../hooks/shared/useUserData";
+import { table_rows } from "../../../../types/variables";
+---
+
+<UseUserDataHookEffect />
+<div class="hidden md:block overflow-auto p-5 bg-[#374151] rounded-xl">
+  <table class="w-full relative min-h-48">
+    <thead>
+      <tr>
+        {
+          Object.keys(table_rows).map((key) => {
+            return (
+              <th scope="col" class="rounded-tl-xl px-2 py-3 border-b border-[#F97316] text-left text-sm font-semibold text-white uppercase tracking-wider truncate">
+                {key}
+              </th>
+            );
+          })
+        }
+        <th scope="col" class="rounded-tr-xl px-2 py-3 border-b border-[#F97316] text-center text-sm font-semibold text-white uppercase tracking-wider truncate"> Action </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ReportDesktopTableContent />
+    </tbody>
+  </table>
+</div>
